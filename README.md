@@ -1,132 +1,105 @@
 # My Arch Linux Setup: A Personal Wiki & Manual Guide
 
-This document is your personal wiki for understanding, backing up, and manually replicating your Arch Linux desktop environment. It prioritizes knowledge and manual control over automation.
+Welcome to my personal Arch Linux setup repository! This project serves as a comprehensive, manually-curated backup of my desktop environment, including package lists, configurations, and a wealth of information for setting up a new system from scratch.
+
+This guide prioritizes knowledge and manual control over automation, helping you understand each part of the setup process.
+
+---
+
+## How to Use This Repository
+
+If you're setting up a new machine, follow these steps to replicate this environment:
+
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/Astro-CLI/My_Linux_Setup.git ~/Projects/My_Linux_Setup
+    ```
+
+2.  **Install Applications:**
+    The `packages` directory contains lists of all installed applications. You can use them to quickly set up a new system. See the `packages/README.md` for detailed instructions.
+    ```bash
+    # Navigate to the repository
+    cd ~/Projects/My_Linux_Setup
+
+    # Install packages from the lists
+    sudo pacman -S --needed - < packages/pkglist.txt
+    paru -S --needed - < packages/aur_pkglist.txt
+    xargs -a packages/flatpak_list.txt -r flatpak install -y
+    ```
+
+3.  **Restore KDE Plasma Configuration:**
+    The `kde` directory contains backups of key Plasma configuration files. See the `kde/README.md` for detailed instructions on how to restore your desktop look and feel.
+
+---
+
+## Repository Structure
+
+-   `README.md`: This main guide.
+-   `packages/`: Contains lists of installed packages from Pacman, the AUR, and Flatpak. See the `packages/README.md` for more info.
+-   `kde/`: Contains backed-up configuration files for KDE Plasma. See the `kde/README.md` for restoration instructions.
+-   `.gitignore`: Specifies files and directories to be ignored by Git.
 
 ---
 
 ## Part 1: Application Management
 
-This section covers how to keep track of all the applications you've installed—from the official repositories, the AUR, and Flatpak—and how to reinstall them on a new system.
+The `packages` directory contains text files listing every application installed on the system, separated by source (official repositories, AUR, and Flatpak).
 
-### How it Works
+For detailed instructions on how to use these lists to regenerate them or to provision a new machine, please see the **[packages/README.md](packages/README.md)** file.
 
-- **Pacman:** Arch Linux's official package manager for vetted software.
-- **AUR (Arch User Repository):** A community-maintained repository, accessed with a helper like `paru`.
-- **Flatpak:** A universal package system that runs apps in a sandbox, separate from the main system.
+---
 
-### Step 1: Manually Create Package Lists
+## Part 2: KDE Plasma Configuration
 
-These commands read your system's package databases and create text files. They don't change anything.
+This repository stores key KDE Plasma configuration files in the `kde` directory. This allows for a quick and easy way to restore your desktop's appearance, settings, and terminal profiles on a new installation.
 
-1.  **List Official Packages:**
+The old method of using a bare git repository for dotfiles has been deprecated in favor of this more explicit and organized approach.
+
+For detailed instructions on how to restore your Plasma environment, please see the **[kde/README.md](kde/README.md)** file.
+
+---
+
+## Part 3: Extra Arch Linux Tips
+
+Here are some useful commands and tips for maintaining a healthy Arch Linux system.
+
+-   **Update Your System:**
+    Always keep your system up-to-date to get the latest security patches and features.
     ```bash
-    pacman -Qqe > /home/astro/Projects/My_Linux_Setup/pkglist.txt
+    sudo pacman -Syu
     ```
 
-2.  **List AUR Packages:**
+-   **Clean Pacman Cache:**
+    Over time, the pacman cache can grow large. You can safely remove all cached packages that are not currently installed.
     ```bash
-    pacman -Qqm > /home/astro/Projects/My_Linux_Setup/aur_pkglist.txt
+    sudo pacman -Sc
+    ```
+    To remove all cached packages, including for installed packages (which will be re-downloaded if you ever need to reinstall them), use:
+    ```bash
+    sudo pacman -Scc
     ```
 
-3.  **List Flatpak Packages:**
+-   **Find Orphaned Packages:**
+    Orphaned packages are dependencies that were installed for another package but are no longer needed. You can list them with:
     ```bash
-    flatpak list --app --columns=application > /home/astro/Projects/My_Linux_Setup/flatpak_list.txt
+    pacman -Qtdq
+    ```
+    And remove them with:
+    ```bash
+    sudo pacman -Rns $(pacman -Qtdq)
     ```
 
-### Step 2: Manually Restore Packages on a New System
-
-On a new machine, use your lists to reinstall your software.
-
-1.  **Install an AUR Helper (Paru):**
+-   **Check for Failed Services:**
+    Quickly see if any systemd services have failed to start.
     ```bash
-    sudo pacman -S --needed base-devel git
-    git clone https://aur.archlinux.org/paru.git
-    cd paru
-    makepkg -si
-    ```
-
-2.  **Install Your Packages:**
-    ```bash
-    # Install official packages
-    sudo pacman -S --needed - < /path/to/your/pkglist.txt
-
-    # Install AUR packages
-    paru -S --needed - < /path/to/your/aur_pkglist.txt
-
-    # Install Flatpak packages
-    xargs -a /path/to/your/flatpak_list.txt -r flatpak install -y
+    systemctl --failed
     ```
 
 ---
 
-## Part 2: Configuration & Dotfile Backup
+## Part 4: General System Tools & Services
 
-Your personal configurations for programs like Zsh, Git, and Plasma are stored in "dotfiles." The best way to back them up is with Git.
-
-### Using a Bare Git Repository for Dotfiles
-
-This method lets you track config files directly in your home directory without moving them.
-
-1.  **Initialize the Repository:** Create a bare repository to store the history.
-    ```bash
-    git init --bare $HOME/.dotfiles
-    ```
-
-2.  **Set up the Alias:** Create a special `dotgit` alias to work with this repository. To make it permanent, add the following line to your `~/.zshrc` file:
-    ```bash
-    alias dotgit='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-    ```
-
-3.  **Initial Configuration:** Run these commands once.
-    ```bash
-    # After adding the alias to .zshrc, source it:
-    source ~/.zshrc
-    # Tell git to not show all untracked files in your home directory:
-    dotgit config --local status.showUntrackedFiles no
-    ```
-
-### Backing Up Your Configuration Files
-
-Now you can add any configuration file to your backup.
-
-#### Zsh & Shell Configuration
-
-These are your most important shell files.
-
-```bash
-dotgit add .zshrc .p10k.zsh
-dotgit commit -m "Add Zsh and Powerlevel10k configs"
-```
-
-#### KDE Plasma Desktop Configuration
-
-To back up your Plasma look and feel, add the following files.
-
--   `~/.config/plasma-org.kde.plasma.desktop-appletsrc` (Panels and widgets)
--   `~/.config/kdeglobals` (Theme, fonts, colors)
--   `~/.config/kwinrc` (Window manager effects and rules)
--   `~/.config/konsolerc` (Terminal profiles)
-
-```bash
-dotgit add .config/plasma-org.kde.plasma.desktop-appletsrc .config/kdeglobals .config/kwinrc .config/konsolerc
-dotgit commit -m "Add KDE Plasma desktop settings"
-```
-
-### Pushing to a Remote (GitHub)
-
-To store your backup online, create a new, private repository on GitHub and run:
-
-```bash
-# Replace with your repository URL
-dotgit remote add origin git@github.com:YOUR_USERNAME/YOUR_REPO.git
-dotgit push -u origin main
-```
-
----
-
-## Part 3: General System Tools & Services
-
-These are useful tools and services for any Arch Linux installation, desktop or laptop.
+This section contains useful tools and services for any Arch Linux installation, desktop or laptop.
 
 ### Managing Services with `systemctl-tui`
 
@@ -148,7 +121,7 @@ sudo systemctl enable --now bluetooth.service
 
 ---
 
-## Part 4: Bootloader Information
+## Part 5: Bootloader Information
 
 Understanding your bootloader is crucial for system management, especially when dealing with kernel updates, hibernation, and advanced configurations.
 
@@ -193,7 +166,7 @@ bootctl status
 
 ---
 
-## Part 5: Advanced Customization
+## Part 6: Advanced Customization
 
 This section covers more advanced topics that can significantly change how your system behaves.
 
@@ -229,7 +202,7 @@ The Zen kernel is tuned for better desktop responsiveness and performance. It's 
 
 ---
 
-## Part 6: Exploring Graphical Interfaces
+## Part 7: Exploring Graphical Interfaces
 
 While you are using KDE Plasma, Arch Linux allows you to install and switch between many different graphical interfaces. Here are some popular choices.
 
@@ -250,7 +223,7 @@ For users who prefer keyboard-driven workflows and maximum screen real estate, t
 
 ---
 
-## Part 7: The Ultimate Laptop Guide
+## Part 8: The Ultimate Laptop Guide
 
 This section contains configurations specifically for laptops to improve battery life and convenience.
 
@@ -282,7 +255,7 @@ Hibernation saves your session to disk and powers off the machine. It requires a
    ```
 2. Add to `/etc/fstab`:
    ```bash
-   echo '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab
+   echo '/swapfile none swap defaults 0 0' | sudo tee -a /fstab
    ```
 
 **Option 3: Dedicated swap partition**
@@ -375,7 +348,7 @@ journalctl -b -u systemd-hibernate
 
 ---
 
-## Part 8: The Ultimate Resource List
+## Part 9: The Ultimate Resource List
 
 Here is a comprehensive list of official sites, documentation, and community resources related to your setup.
 
