@@ -1,0 +1,10 @@
+app.zen_browser.zen
+com.brave.Browser
+com.ktechpit.whatsie
+com.stremio.Stremio
+com.usebottles.bottles
+com.vysp3r.ProtonPlus
+org.libreoffice.LibreOffice
+org.telegram.desktop
+org.torproject.torbrowser-launcher
+org.vinegarhq.Sober
