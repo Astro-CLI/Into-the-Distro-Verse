@@ -1,10 +1,16 @@
 app.zen_browser.zen
 com.brave.Browser
+com.github.xournalpp.xournalpp
 com.ktechpit.whatsie
+com.obsproject.Studio
 com.stremio.Stremio
 com.usebottles.bottles
 com.vysp3r.ProtonPlus
+dev.vencord.Vesktop
+org.gimp.GIMP
+org.inkscape.Inkscape
 org.libreoffice.LibreOffice
 org.telegram.desktop
 org.torproject.torbrowser-launcher
+org.videolan.VLC
 org.vinegarhq.Sober
