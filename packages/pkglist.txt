@@ -25,8 +25,8 @@ fuse2
 gemini-cli
 ghostty
 git
-git-lfs
 github-cli
+git-lfs
 grub
 grub-btrfs
 gst-plugin-pipewire
