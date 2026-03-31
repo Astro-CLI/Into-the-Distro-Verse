@@ -42,7 +42,7 @@ This allows you to boot directly into a previous snapshot from your boot menu if
     *   **Reference Tool**: For a `grub-btrfs` experience, use `systemd-boot-btrfs-snapshots-git` (AUR). It automatically generates boot entries for your snapshots.
     *   **Command**: `paru -S systemd-boot-btrfs-snapshots-git`
 
-> **Note:** After installation, run `sudo timeshift --wizard` to select your BTRFS drive and set your backup frequency.
+> **Note:** After installation, open the **TimeShift** application from your app menu (GUI) or run `sudo timeshift --wizard` to select your BTRFS drive and set your backup frequency.
 
 ---
 
