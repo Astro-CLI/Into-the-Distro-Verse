@@ -98,11 +98,12 @@ This repository stores key configuration files in the `configs` directory. This 
 
 ---
 
-## Part 3: System Maintenance (TimeShift, BTRFS, GRUB)
+## Part 3: System Maintenance & Security
 
-Understanding how to maintain and recover your system is crucial. We use TimeShift for snapshots on a BTRFS filesystem, with GRUB as our bootloader.
+Understanding how to maintain and recover your system is crucial. 
 
-For detailed information, see **[docs/system_maintenance.md](docs/system_maintenance.md)**.
+-   **Backups (TimeShift, BTRFS, GRUB)**: See **[docs/system_maintenance.md](docs/system_maintenance.md)**.
+-   **Security (AppArmor, SELinux)**: See **[docs/security.md](docs/security.md)**.
 
 ---
 
