@@ -52,15 +52,13 @@ If you're setting up a new machine, follow these steps to replicate this environ
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/Astro-CLI/My_Linux_Setup.git ~/Projects/My_Linux_Setup
+    git clone https://github.com/Astro-CLI/My_Linux_Setup.git
+    cd My_Linux_Setup
     ```
 
 2.  **Install Applications:**
     The `packages` directory contains lists of all installed applications. You can use them to quickly set up a new system. See the `packages/README.md` for detailed instructions.
     ```bash
-    # Navigate to the repository
-    cd ~/Projects/My_Linux_Setup
-
     # Install packages from the lists
     sudo pacman -S --needed - < packages/pkglist.txt
     paru -S --needed - < packages/aur_pkglist.txt
