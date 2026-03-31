@@ -93,6 +93,7 @@ For detailed instructions on how to use these lists to regenerate them or to pro
 This repository stores key configuration files in the `configs` directory. This allows for a quick and easy way to restore your desktop's appearance, settings, and terminal profiles on a new installation.
 
 -   **KDE Plasma:** See **[configs/kde/README.md](configs/kde/README.md)** for restoration instructions.
+-   **GRUB & Theme:** See **[configs/grub/README.md](configs/grub/README.md)** for bootloader customization backups.
 
 ---
 
