@@ -4,22 +4,24 @@ This directory contains lists of installed packages from different sources on th
 
 ## Package Lists
 
--   `pkglist.txt`: A list of all explicitly installed packages from the official Arch Linux repositories.
+-   `pkglist.txt`: A list of all explicitly installed packages from the official Arch Linux repositories (core, extra, etc.).
 -   `aur_pkglist.txt`: A list of all explicitly installed packages from the Arch User Repository (AUR).
 -   `flatpak_list.txt`: A list of all installed Flatpak applications.
 
 ## How to Regenerate the Lists
 
-To keep these lists up-to-date with your current system, you can run the following commands from the root of this repository. This will overwrite the existing files.
+To keep these lists up-to-date with your current system, run the following commands from the root of this repository. This ensures that packages are correctly categorized by their source.
 
-1.  **List Official Packages:**
+1.  **List Official (Native) Packages:**
+    Only lists explicitly installed packages found in the official sync databases.
     ```bash
-    pacman -Qqe > packages/pkglist.txt
+    pacman -Qqen > packages/pkglist.txt
     ```
 
-2.  **List AUR Packages:**
+2.  **List AUR (Foreign) Packages:**
+    Uses `paru` to list explicitly installed packages NOT found in the official repositories.
     ```bash
-    pacman -Qqm > packages/aur_pkglist.txt
+    paru -Qqem > packages/aur_pkglist.txt
     ```
 
 3.  **List Flatpak Packages:**
