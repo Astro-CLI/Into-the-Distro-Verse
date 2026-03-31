@@ -4,17 +4,43 @@ Welcome to my personal Arch Linux setup repository! This project serves as a com
 
 ---
 
-## 🚀 Fresh Install: Safety First (One-Command Setup)
+## 🚀 Fresh Install: Safety First
 
-Run this command immediately on a fresh Arch installation to set up your AUR helper (`paru`) and system recovery tools (`timeshift`, `autosnap`, `grub-btrfs`). This ensures that from this point forward, every system update is automatically backed up.
+Follow these steps in order on a fresh Arch installation to set up a robust, auto-backing-up system.
 
+### 1. Install AUR Helper (`paru`)
+First, get the essential build tools and install `paru`.
 ```bash
 sudo pacman -S --needed base-devel git && \
-git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru && \
-paru -S --needed timeshift timeshift-autosnap grub-btrfs && \
-sudo systemctl enable --now grub-btrfsd
+git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru
 ```
-> **Note:** After running this, open TimeShift (GUI or `sudo timeshift --wizard`) to select your BTRFS drive and initialize the snapshot schedule.
+
+### 2. Set Up Snapshot Management
+Choose a tool to capture system states. **TimeShift is recommended** for its ease of use and GUI.
+
+*   **Option A: TimeShift (Recommended)**
+    Great for desktop users. `autosnap` ensures a backup is made before every `pacman` transaction.
+    ```bash
+    paru -S timeshift timeshift-autosnap
+    ```
+*   **Option B: Snapper (Alternative)**
+    Powerful and CLI-focused.
+    ```bash
+    paru -S snapper snap-pac
+    ```
+
+### 3. Integrate with Bootloader
+This allows you to boot directly into a previous snapshot from your boot menu if the system fails to start.
+
+*   **Option A: GRUB (Recommended for Snapshots)**
+    The most automated way to handle BTRFS snapshots. `grub-btrfs` automatically adds snapshots to your boot menu.
+    ```bash
+    paru -S grub-btrfs && sudo systemctl enable --now grub-btrfsd
+    ```
+*   **Option B: systemd-boot**
+    A simpler, modern bootloader. While faster, it does **not** natively support booting into BTRFS snapshots as easily as GRUB. You would need additional scripts or manual configuration to achieve similar rollback functionality.
+
+> **Note:** After installation, run `sudo timeshift --wizard` to select your BTRFS drive and set your backup frequency.
 
 ---
 
