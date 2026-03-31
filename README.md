@@ -38,7 +38,9 @@ This allows you to boot directly into a previous snapshot from your boot menu if
     paru -S grub-btrfs && sudo systemctl enable --now grub-btrfsd
     ```
 *   **Option B: systemd-boot**
-    A simpler, modern bootloader. While faster, it does **not** natively support booting into BTRFS snapshots as easily as GRUB. You would need additional scripts or manual configuration to achieve similar rollback functionality.
+    A simpler, modern bootloader. While faster, it does **not** natively support booting into BTRFS snapshots as easily as GRUB. 
+    *   **Reference Tool**: For a `grub-btrfs` experience, use `systemd-boot-btrfs-snapshots-git` (AUR). It automatically generates boot entries for your snapshots.
+    *   **Command**: `paru -S systemd-boot-btrfs-snapshots-git`
 
 > **Note:** After installation, run `sudo timeshift --wizard` to select your BTRFS drive and set your backup frequency.
 
