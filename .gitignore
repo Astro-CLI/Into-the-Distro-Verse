@@ -1,1 +1,15 @@
+# Git Ignore
+
+# Local dotfiles backup (legacy)
 .dotfiles
+
+# Packet Tracer backups
+*.bak
+apps/packettracer/logs/*
+!apps/packettracer/logs/.gitkeep
+
+# System junk
+.DS_Store
+Thumbs.db
+*~
+*.swp

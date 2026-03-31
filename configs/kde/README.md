@@ -26,10 +26,10 @@ To restore these settings on a new KDE Plasma installation, follow these steps:
 
 3.  **Copy the backed-up files to your `~/.config` directory.** Assuming you have cloned this repository to `~/Projects/My_Linux_Setup`, run the following commands:
     ```bash
-    cp ~/Projects/My_Linux_Setup/kde_config/plasma-org.kde.plasma.desktop-appletsrc ~/.config/
-    cp ~/Projects/My_Linux_Setup/kde_config/kdeglobals ~/.config/
-    cp ~/Projects/My_Linux_Setup/kde_config/kwinrc ~/.config/
-    cp ~/Projects/My_Linux_Setup/kde_config/konsolerc ~/.config/
+    cp ~/Projects/My_Linux_Setup/configs/kde/plasma-org.kde.plasma.desktop-appletsrc ~/.config/
+    cp ~/Projects/My_Linux_Setup/configs/kde/kdeglobals ~/.config/
+    cp ~/Projects/My_Linux_Setup/configs/kde/kwinrc ~/.config/
+    cp ~/Projects/My_Linux_Setup/configs/kde/konsolerc ~/.config/
     ```
 
 4.  **Log back into your Plasma session.** Your desktop layout, theme, window settings, and terminal profiles should now be restored.
