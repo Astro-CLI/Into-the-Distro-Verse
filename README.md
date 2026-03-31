@@ -103,11 +103,41 @@ Here are some useful commands and tips for maintaining a healthy Arch Linux syst
     systemctl --failed
     ```
 
----
+## Part 5: The Ultimate Linux Resource List
 
-## Part 5: The Ultimate Resource List
+A collection of the best documentation, creators, and communities in the Linux ecosystem.
 
-*   **Arch Linux:** [archlinux.org](https://archlinux.org)
-*   **Arch Wiki:** [wiki.archlinux.org](https://wiki.archlinux.org)
-*   **KDE Plasma:** [kde.org/plasma-desktop](https://kde.org/plasma-desktop)
-*   **Zsh:** [zsh.org](https://www.zsh.org) | **Oh My Zsh:** [ohmyz.sh](https://ohmyz.sh)
+### 📚 Essential Documentation
+*   **Arch Wiki:** [wiki.archlinux.org](https://wiki.archlinux.org) - The most comprehensive Linux documentation on the planet.
+*   **Gentoo Wiki:** [wiki.gentoo.org](https://wiki.gentoo.org) - Incredible depth for low-level system understanding.
+*   **Debian Handbook:** [debian.org/doc/manuals/debian-handbook](https://www.debian.org/doc/manuals/debian-handbook/) - Foundation for all things APT and stable.
+*   **Linux Journey:** [linuxjourney.com](https://linuxjourney.com) - The best place for beginners to start learning.
+*   **The Linux Book:** [thelinuxbook.com](https://thelinuxbook.com) - A fantastic free resource for mastering the system.
+
+### 📺 Content Creators (YouTube)
+*   **Chris Titus Tech:** [youtube.com/@ChrisTitusTech](https://www.youtube.com/@ChrisTitusTech) - Practical guides, scripts, and system optimization.
+*   **DistroTube:** [youtube.com/@DistroTube](https://www.youtube.com/@DistroTube) - Exploration of window managers, FOSS philosophy, and niche distros.
+*   **The Linux Experiment:** [youtube.com/@TheLinuxExperiment](https://www.youtube.com/@TheLinuxExperiment) - Weekly news and polished desktop reviews.
+*   **Brodie Robertson:** [youtube.com/@BrodieRobertson](https://www.youtube.com/@BrodieRobertson) - Commentary on the latest Linux drama, tech specs, and software.
+*   **Mental Outlaw:** [youtube.com/@MentalOutlaw](https://www.youtube.com/@MentalOutlaw) - Focus on privacy, security, and "bloat-free" computing.
+*   **Learn Linux TV:** [youtube.com/@LearnLinuxTV](https://www.youtube.com/@LearnLinuxTV) - Deep-dive technical tutorials and certifications.
+*   **The Linux Cast:** [youtube.com/@TheLinuxCast](https://www.youtube.com/@TheLinuxCast) - Discussions on workflow and productivity.
+*   **Linus Tech Tips:** [youtube.com/@LinusTechTips](https://www.youtube.com/@LinusTechTips) - See their "Linux Challenge" series for a high-production look at switching to Linux.
+
+### 📰 News & Blogs
+*   **Phoronix:** [phoronix.com](https://www.phoronix.com) - The go-to source for Linux hardware benchmarks and kernel news.
+*   **GamingOnLinux:** [gamingonlinux.com](https://www.gamingonlinux.com) - Keeping up with the massive strides in Linux gaming (Proton, Steam Deck).
+*   **It's FOSS:** [itsfoss.com](https://itsfoss.com) - Great tutorials and high-level news.
+*   **OMG! Ubuntu!:** [omgubuntu.co.uk](https://www.omgubuntu.co.uk) - Specifically for the Ubuntu and GNOME ecosystem.
+
+### 💬 Community & Discussion
+*   **r/linux:** [reddit.com/r/linux](https://www.reddit.com/r/linux/) - General Linux discussion.
+*   **r/archlinux:** [reddit.com/r/archlinux](https://www.reddit.com/r/archlinux/) - High-level technical support and updates.
+*   **r/unixporn:** [reddit.com/r/unixporn](https://www.reddit.com/r/unixporn/) - Inspiration for making your desktop look incredible.
+*   **Arch Linux Forums:** [bbs.archlinux.org](https://bbs.archlinux.org/) - Where the real experts hang out.
+
+### 🛠️ Software & Customization
+*   **Awesome Linux:** [github.com/aleksandar-todorovic/awesome-linux](https://github.com/aleksandar-todorovic/awesome-linux) - Curated list of awesome software.
+*   **Privacy Guides:** [privacyguides.org](https://www.privacyguides.org) - Hardening your system for maximum privacy.
+*   **Suckless.org:** [suckless.org](https://suckless.org) - Philosophy of minimalism and efficiency in software.
+*   **Flathub:** [flathub.org](https://flathub.org) - The primary repository for Flatpak apps.
