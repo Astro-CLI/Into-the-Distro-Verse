@@ -190,7 +190,12 @@ A collection of the best documentation, creators, and communities in the Linux e
 ### 🐚 Terminal & CLI Mastery
 *   **Linux Command Library:** [linuxcommandlibrary.com](https://linuxcommandlibrary.com) - Comprehensive manual for CLI tools.
 *   **ShellCheck:** [shellcheck.net](https://www.shellcheck.net) - A must-have tool for writing better bash scripts.
-*   **Oh My Zsh:** [ohmyz.sh](https://ohmyz.sh) - The framework for managing your Zsh configuration.
+*   **Oh My Bash:** [ohmybash.nathaniel.land](https://ohmybash.nathaniel.land) - A framework for managing your Bash configuration.
+*   **Oh My Zsh:** [ohmyz.sh](https://ohmyz.sh) - The most popular framework for Zsh.
+*   **Powerlevel10k:** [github.com/romkatv/powerlevel10k](https://github.com/romkatv/powerlevel10k) - A fast and highly customizable Zsh theme.
+*   **Fish Shell:** [fishshell.com](https://fishshell.com) - A smart and user-friendly shell that works out of the box.
+*   **Oh My Fish:** [github.com/oh-my-fish/oh-my-fish](https://github.com/oh-my-fish/oh-my-fish) - Package manager for Fish shell.
+*   **Starship:** [starship.rs](https://starship.rs) - The minimal, blazing-fast, and infinitely customizable prompt for any shell.
 *   **Terminals Are Sexy:** [github.com/herrbischoff/awesome-terminals](https://github.com/herrbischoff/awesome-terminals) - A massive list of terminal emulators and tools.
 
 ### 🔧 Performance & Hardening
