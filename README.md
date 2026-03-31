@@ -138,6 +138,8 @@ A collection of the best documentation, creators, and communities in the Linux e
 *   **Arch Wiki:** [wiki.archlinux.org](https://wiki.archlinux.org) - The most comprehensive Linux documentation on the planet.
 *   **Gentoo Wiki:** [wiki.gentoo.org](https://wiki.gentoo.org) - Incredible depth for low-level system understanding.
 *   **Debian Handbook:** [debian.org/doc/manuals/debian-handbook](https://www.debian.org/doc/manuals/debian-handbook/) - Foundation for all things APT and stable.
+*   **Fedora Docs:** [docs.fedoraproject.org](https://docs.fedoraproject.org) - Official documentation for the Fedora ecosystem.
+*   **NixOS Wiki:** [nixos.wiki](https://nixos.wiki) - Essential for understanding the declarative nature of Nix.
 *   **Linux Journey:** [linuxjourney.com](https://linuxjourney.com) - The best place for beginners to start learning.
 *   **The Linux Book:** [thelinuxbook.com](https://thelinuxbook.com) - A fantastic free resource for mastering the system.
 *   **tldr.sh:** [tldr.sh](https://tldr.sh/) - Practical, example-based command usage.
