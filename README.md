@@ -141,3 +141,21 @@ A collection of the best documentation, creators, and communities in the Linux e
 *   **Privacy Guides:** [privacyguides.org](https://www.privacyguides.org) - Hardening your system for maximum privacy.
 *   **Suckless.org:** [suckless.org](https://suckless.org) - Philosophy of minimalism and efficiency in software.
 *   **Flathub:** [flathub.org](https://flathub.org) - The primary repository for Flatpak apps.
+*   **Nerd Fonts:** [nerdfonts.com](https://www.nerdfonts.com) - Essential icons for your terminal and bar.
+
+### 🎙️ Podcasts & Audio
+*   **Linux Unplugged:** [linuxunplugged.com](https://linuxunplugged.com) - The most popular weekly Linux talk show.
+*   **Late Night Linux:** [latenightlinux.com](https://latenightlinux.com) - Honest, humorous, and critical views on the ecosystem.
+*   **Linux Action News:** [linuxactionnews.com](https://linuxactionnews.com) - Weekly summary of the most important news.
+*   **Destination Linux:** [destinationlinux.net](https://destinationlinux.net) - Friendly, community-focused discussion.
+
+### 🐚 Terminal & CLI Mastery
+*   **Linux Command Library:** [linuxcommandlibrary.com](https://linuxcommandlibrary.com) - Comprehensive manual for CLI tools.
+*   **ShellCheck:** [shellcheck.net](https://www.shellcheck.net) - A must-have tool for writing better bash scripts.
+*   **Oh My Zsh:** [ohmyz.sh](https://ohmyz.sh) - The framework for managing your Zsh configuration.
+*   **Terminals Are Sexy:** [github.com/herrbischoff/awesome-terminals](https://github.com/herrbischoff/awesome-terminals) - A massive list of terminal emulators and tools.
+
+### 🔧 Performance & Hardening
+*   **Linux Kernel Archive:** [kernel.org](https://www.kernel.org) - Where it all begins.
+*   **Arch Linux Security Advisories:** [security.archlinux.org](https://security.archlinux.org) - Keep your system safe.
+*   **TLDP (The Linux Documentation Project):** [tldp.org](https://tldp.org) - Classic guides and HOWTOs for deep learning.
