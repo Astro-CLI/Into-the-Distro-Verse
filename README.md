@@ -111,9 +111,15 @@ Understanding how to maintain and recover your system is crucial.
 Here are some useful commands and tips for maintaining a healthy Arch Linux system.
 
 -   **Update Your System:**
+    Update both system packages (including AUR) and Flatpaks in one go.
     ```bash
-    sudo pacman -Syu
+    paru -Syu; flatpak update
     ```
+
+-   **Command Chaining Tips:**
+    -   `command1 ; command2`: Runs `command2` regardless of the success/failure of `command1`.
+    -   `command1 && command2`: Runs `command2` **only if** `command1` succeeds.
+    -   `command1 || command2`: Runs `command2` **only if** `command1` fails.
 
 -   **Clean Pacman Cache:**
     ```bash
