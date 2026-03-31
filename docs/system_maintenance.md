@@ -1,74 +1,96 @@
-# System Maintenance: TimeShift, BTRFS, and GRUB
+# System Maintenance: Snapshots, Backups, and Bootloaders
 
-This guide covers the essential tools and configurations used for system backup, filesystem management, and booting on this Arch Linux setup.
-
----
-
-## 1. TimeShift: System Restore Points
-
-TimeShift is a powerful utility that provides system restore functionality, similar to "System Restore" in Windows or "Time Machine" in macOS. It creates incremental snapshots of the system at regular intervals.
-
-### Key Features
-- **Snapshots**: Captures the state of the system (excluding user data in `/home` by default).
-- **RSYNC vs. BTRFS**: 
-    - **RSYNC mode**: Uses `rsync` and hard links. Works on any filesystem.
-    - **BTRFS mode**: Uses BTRFS subvolumes. Snapshots are nearly instantaneous and take almost no space initially. **(Recommended for this setup)**.
-
-### Common Commands
-- **Create a snapshot**:
-    ```bash
-    sudo timeshift --create --comments "Before update"
-    ```
-- **List snapshots**:
-    ```bash
-    sudo timeshift --list
-    ```
-- **Restore a snapshot**:
-    ```bash
-    sudo timeshift --restore
-    ```
+This guide covers essential maintenance for both **Arch Linux** and **Fedora**, focusing on BTRFS, snapshots (TimeShift/Snapper), and bootloaders (GRUB/systemd-boot).
 
 ---
 
-## 2. BTRFS: The Modern Filesystem
+## 1. Snapshot Tools: TimeShift vs. Snapper
 
-BTRFS (B-Tree Filesystem) is a modern Copy-on-Write (CoW) filesystem for Linux aimed at implementing advanced features while also focusing on fault tolerance, repair, and easy administration.
+Snapshots are near-instantaneous state captures.
 
-### Subvolumes
-This setup typically uses subvolumes to organize data and enable efficient snapshots:
-- `@`: Mounted at `/` (root).
-- `@home`: Mounted at `/home`.
-- `@cache`: Mounted at `/var/cache`.
-- `@log`: Mounted at `/var/log`.
+### TimeShift (Recommended for Beginners)
+- **Best for**: Desktop users wanting a simple GUI.
+- **Arch**: `sudo pacman -S timeshift`
+- **Fedora**: `sudo dnf install timeshift`
+- **Logic**: Uses specific BTRFS subvolume names (`@` and `@home`).
+- **Automation**: Use `timeshift-autosnap` (AUR) on Arch to back up before updates.
 
-### Maintenance
-- **Scrub**: Regularly check for data corruption.
+### Snapper (Power User Alternative)
+- **Best for**: Advanced users and those who want more granular control.
+- **Arch**: `sudo pacman -S snapper snap-pac`
+- **Fedora**: `sudo dnf install snapper` (Snapper is very well integrated into Fedora/openSUSE).
+- **Configuration**:
+    ```bash
+    sudo snapper -c root create-config /
+    ```
+- **Timeline snapshots**: Snapper can be configured to take hourly snapshots automatically via systemd timers.
+
+---
+
+## 2. Backup Methods: BTRFS vs. RSYNC
+
+### BTRFS Snapshots
+- **Pros**: Instant, takes 0 space initially, perfect for system rollbacks.
+- **Cons**: Only works on BTRFS. If the drive dies, the snapshot dies too.
+- **Use Case**: Rolling back a broken update or a bad config change.
+
+### RSYNC Backups
+- **Pros**: Filesystem agnostic. Can be sent to external drives or cloud storage.
+- **Cons**: Slower, takes literal space for every new file.
+- **Command**:
+    ```bash
+    rsync -avAXP --delete /source/ /destination/
+    ```
+    *(Flags: -a archive, -v verbose, -A ACLs, -X xattrs, -P progress)*
+- **Use Case**: Off-site backups of personal data.
+
+---
+
+## 3. BTRFS Maintenance
+
+BTRFS is the default on Fedora and highly recommended for Arch.
+
+### Subvolume Layouts
+- **Arch (Common)**: `@` (root), `@home`, `@cache`, `@log`.
+- **Fedora (Default)**: `root` (root), `home` (home).
+- **Note**: TimeShift requires the Arch-style `@` naming convention. On Fedora, you may need to rename subvolumes to use TimeShift in BTRFS mode.
+
+### Health Checks
+- **Scrub (Check for errors)**:
     ```bash
     sudo btrfs scrub start /
     ```
-- **Balance**: Rebalance data across chunks (useful for reclaiming space).
+- **Balance (Free up space)**:
     ```bash
-    sudo btrfs balance start /
-    ```
-- **Usage**: Check real disk usage.
-    ```bash
-    sudo btrfs filesystem usage /
+    sudo btrfs balance start -dusage=50 /
     ```
 
 ---
 
-## 3. GRUB: The Bootloader
+## 4. Bootloaders: GRUB vs. systemd-boot
 
-GRUB (GRand Unified Bootloader) is the default bootloader for this system. It handles the initial boot process and allows selecting different kernels or operating systems.
+### GRUB
+- **Best for**: Snapshot integration and dual-booting.
+- **Update (Arch)**: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
+- **Update (Fedora)**: `sudo grub2-mkconfig -o /boot/grub2/grub.cfg`
+- **Snapshot Support**: Install `grub-btrfs` to see snapshots in the boot menu.
 
-### Configuration
-The main configuration file is `/boot/grub/grub.cfg`, but it should **never** be edited manually. Instead, edit `/etc/default/grub` and files in `/etc/grub.d/`.
+### systemd-boot
+- **Best for**: Speed, simplicity, and modern UEFI systems.
+- **Arch**: `bootctl install`
+- **Fedora**: Can be switched to, but GRUB is the default.
+- **Update**: No "config regeneration" command needed; it reads entries from `/boot/loader/entries/`.
+- **Snapshot Support**: Use `gummibbs` (Arch/AUR) to generate snapshot entries for the menu.
 
-### Updating GRUB
-After installing a new kernel or changing `/etc/default/grub`, always regenerate the config:
-```bash
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-```
+---
 
-### Integration with TimeShift
-With the `grub-btrfs` package, TimeShift snapshots can automatically appear in the GRUB boot menu, allowing you to boot into a previous system state directly if the current one fails.
+## 5. Summary: Arch vs. Fedora Maintenance
+
+| Task | Arch Linux | Fedora |
+| :--- | :--- | :--- |
+| **Package Manager** | `pacman` / `paru` | `dnf` |
+| **Snapshots** | TimeShift + `autosnap` | Snapper (native support) |
+| **Bootloader** | GRUB or systemd-boot | GRUB (default) |
+| **Kernel Updates** | Requires manual GRUB update* | Automatic via `dnf` |
+
+*\*Only if using custom hooks or specific manual setups; usually handled by hooks in Arch as well.*
