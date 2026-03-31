@@ -140,16 +140,20 @@ A collection of the best documentation, creators, and communities in the Linux e
 *   **Debian Handbook:** [debian.org/doc/manuals/debian-handbook](https://www.debian.org/doc/manuals/debian-handbook/) - Foundation for all things APT and stable.
 *   **Linux Journey:** [linuxjourney.com](https://linuxjourney.com) - The best place for beginners to start learning.
 *   **The Linux Book:** [thelinuxbook.com](https://thelinuxbook.com) - A fantastic free resource for mastering the system.
+*   **tldr.sh:** [tldr.sh](https://tldr.sh/) - Practical, example-based command usage.
+*   **DigitalOcean Tutorials:** [digitalocean.com/community/tutorials](https://www.digitalocean.com/community/tutorials) - High-quality guides for servers and security.
 
 ### 📺 Content Creators (YouTube)
-*   **Chris Titus Tech:** [youtube.com/@ChrisTitusTech](https://www.youtube.com/@ChrisTitusTech) - Practical guides, scripts, and system optimization.
-*   **DistroTube:** [youtube.com/@DistroTube](https://www.youtube.com/@DistroTube) - Exploration of window managers, FOSS philosophy, and niche distros.
-*   **The Linux Experiment:** [youtube.com/@TheLinuxExperiment](https://www.youtube.com/@TheLinuxExperiment) - Weekly news and polished desktop reviews.
-*   **Brodie Robertson:** [youtube.com/@BrodieRobertson](https://www.youtube.com/@BrodieRobertson) - Commentary on the latest Linux drama, tech specs, and software.
-*   **Mental Outlaw:** [youtube.com/@MentalOutlaw](https://www.youtube.com/@MentalOutlaw) - Focus on privacy, security, and "bloat-free" computing.
-*   **Learn Linux TV:** [youtube.com/@LearnLinuxTV](https://www.youtube.com/@LearnLinuxTV) - Deep-dive technical tutorials and certifications.
+*   **Chris Titus Tech:** [youtube.com/@ChrisTitusTech](https://www.youtube.com/@ChrisTitusTech) - Practical guides and system optimization.
+*   **The Linux Experiment:** [youtube.com/@TheLinuxExperiment](https://www.youtube.com/@TheLinuxExperiment) - Weekly news and desktop reviews.
+*   **DistroTube:** [youtube.com/@DistroTube](https://www.youtube.com/@DistroTube) - TWMs, terminal workflows, and FOSS philosophy.
+*   **Brodie Robertson:** [youtube.com/@BrodieRobertson](https://www.youtube.com/@BrodieRobertson) - Tech commentary and software deep-dives.
+*   **Learn Linux TV:** [youtube.com/@LearnLinuxTV](https://www.youtube.com/@LearnLinuxTV) - Professional technical tutorials.
+*   **Mental Outlaw:** [youtube.com/@MentalOutlaw](https://www.youtube.com/@MentalOutlaw) - Privacy and minimalism.
+*   **Gardiner Bryant:** [youtube.com/@GardinerBryant](https://www.youtube.com/@GardinerBryant) - Linux gaming and hardware.
+*   **Level1Techs:** [youtube.com/@Level1Techs](https://www.youtube.com/@Level1Techs) - High-end hardware and enterprise Linux.
+*   **Linus Tech Tips:** [youtube.com/@LinusTechTips](https://www.youtube.com/@LinusTechTips) - See their "Linux Challenge" series.
 *   **The Linux Cast:** [youtube.com/@TheLinuxCast](https://www.youtube.com/@TheLinuxCast) - Discussions on workflow and productivity.
-*   **Linus Tech Tips:** [youtube.com/@LinusTechTips](https://www.youtube.com/@LinusTechTips) - See their "Linux Challenge" series for a high-production look at switching to Linux.
 
 ### 📰 News & Blogs
 *   **Phoronix:** [phoronix.com](https://www.phoronix.com) - The go-to source for Linux hardware benchmarks and kernel news.
@@ -159,12 +163,16 @@ A collection of the best documentation, creators, and communities in the Linux e
 
 ### 💬 Community & Discussion
 *   **r/linux:** [reddit.com/r/linux](https://www.reddit.com/r/linux/) - General Linux discussion.
-*   **r/archlinux:** [reddit.com/r/archlinux](https://www.reddit.com/r/archlinux/) - High-level technical support and updates.
-*   **r/unixporn:** [reddit.com/r/unixporn](https://www.reddit.com/r/unixporn/) - Inspiration for making your desktop look incredible.
+*   **r/linux4noobs:** [reddit.com/r/linux4noobs](https://www.reddit.com/r/linux4noobs/) - Friendly beginner support.
+*   **r/linuxquestions:** [reddit.com/r/linuxquestions](https://www.reddit.com/r/linuxquestions/) - Technical troubleshooting.
+*   **r/linux_gaming:** [reddit.com/r/linux_gaming](https://www.reddit.com/r/linux_gaming/) - Gaming, Proton, and Wine.
+*   **r/unixporn:** [reddit.com/r/unixporn](https://www.reddit.com/r/unixporn/) - Desktop customization inspiration.
 *   **Arch Linux Forums:** [bbs.archlinux.org](https://bbs.archlinux.org/) - Where the real experts hang out.
 
 ### 🛠️ Software & Customization
-*   **Awesome Linux:** [github.com/aleksandar-todorovic/awesome-linux](https://github.com/aleksandar-todorovic/awesome-linux) - Curated list of awesome software.
+*   **Awesome Linux Software:** [github.com/luong-komorebi/Awesome-Linux-Software](https://github.com/luong-komorebi/Awesome-Linux-Software) - A massive directory of apps.
+*   **Awesome Linux Apps:** [github.com/cuongtk8/awesome-linux-apps](https://github.com/cuongtk8/awesome-linux-apps) - Curated modern applications.
+*   **Awesome Self-Hosted:** [github.com/awesome-selfhosted/awesome-selfhosted](https://github.com/awesome-selfhosted/awesome-selfhosted) - Services you can run yourself.
 *   **Privacy Guides:** [privacyguides.org](https://www.privacyguides.org) - Hardening your system for maximum privacy.
 *   **Suckless.org:** [suckless.org](https://suckless.org) - Philosophy of minimalism and efficiency in software.
 *   **Flathub:** [flathub.org](https://flathub.org) - The primary repository for Flatpak apps.
