@@ -2,7 +2,19 @@
 
 Welcome to my personal Arch Linux setup repository! This project serves as a comprehensive, manually-curated backup of my desktop environment, including package lists, configurations, and a wealth of information for setting up a new system from scratch.
 
-This guide prioritizes knowledge and manual control over automation, helping you understand each part of the setup process.
+---
+
+## 🚀 Fresh Install: Safety First (One-Command Setup)
+
+Run this command immediately on a fresh Arch installation to set up your AUR helper (`paru`) and system recovery tools (`timeshift`, `autosnap`, `grub-btrfs`). This ensures that from this point forward, every system update is automatically backed up.
+
+```bash
+sudo pacman -S --needed base-devel git && \
+git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru && \
+paru -S --needed timeshift timeshift-autosnap grub-btrfs && \
+sudo systemctl enable --now grub-btrfsd
+```
+> **Note:** After running this, open TimeShift (GUI or `sudo timeshift --wizard`) to select your BTRFS drive and initialize the snapshot schedule.
 
 ---
 
