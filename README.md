@@ -1,4 +1,4 @@
-# My Arch Linux Setup: A Personal Wiki & Manual Guide
+# 🕷️ Into the Distro-Verse: Across the Multi-Distro Universe
 
 Welcome to my personal Arch Linux setup repository! This project serves as a comprehensive, manually-curated backup of my desktop environment, including package lists, configurations, and a wealth of information for setting up a new system from scratch.
 
