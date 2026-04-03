@@ -62,6 +62,40 @@ flatpak remotes
 # flatpak remote-delete fedora
 ```
 
+### Flatpak Permissions & Flatseal
+Flatpaks are sandboxed, meaning they can't access your files or hardware unless you let them. Sometimes an app (like a Code Editor or Game) needs extra permissions to work.
+
+**Option A: Flatseal (The GUI Way)**
+The easiest way to manage permissions. It's a "settings" app for all your other Flatpaks.
+```bash
+flatpak install flathub com.github.tchx84.Flatseal
+```
+
+**Option B: The CLI Way (Overriding)**
+You can do everything Flatseal does from the terminal using the `override` command.
+
+*   **Allow access to a folder:**
+    ```bash
+    # Grant VS Codium access to a specific folder
+    flatpak override com.vscodium.codium --filesystem=/path/to/my/projects
+    ```
+*   **Allow access to all your files (Danger!):**
+    ```bash
+    flatpak override com.example.App --filesystem=home
+    ```
+*   **Allow access to USB devices:**
+    ```bash
+    flatpak override com.example.App --device=all
+    ```
+*   **Reset all overrides to default:**
+    ```bash
+    flatpak override com.example.App --reset
+    ```
+*   **Show current overrides:**
+    ```bash
+    flatpak override com.example.App --show
+    ```
+
 ---
 
 ## 🎬 3. Multimedia Codecs
