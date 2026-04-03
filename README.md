@@ -1,6 +1,6 @@
 # Into the Distro-Verse 🌌
 
-This repository serves as a centralized source of truth for Linux system configurations, package lists, and installation guides. It is designed to facilitate the replication of a consistent environment across multiple Linux distributions through a modular and distro-agnostic approach.
+My name is Ariel, and for the last few years, I've been the only Linux user in my neighborhood... maybe. I’ve learned that with great power comes great responsibility, especially when you’re dealing with a massive amount of configuration files. This is my attempt at a distro-agnostic guide for everyone, from beginners to power users. While I mostly use Arch, I truly believe that any user can benefit from these configurations, regardless of which distro they call home.
 
 ---
 
