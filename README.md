@@ -13,8 +13,9 @@ Detailed setup and maintenance guides for each system and toolset.
 | **Arch Linux** | Main desktop configuration & AUR setup | [**docs/arch.md**](docs/arch.md) |
 | **Fedora** | Workstation setup & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
 | **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
-| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
+| Homebrew | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
 | **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
+| **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
 | **Snapshots** | BTRFS & system recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
 
 ---
