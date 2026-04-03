@@ -1,78 +1,101 @@
-# Linux Security: AppArmor vs. SELinux
+# Linux Security: Hardening & Protection
 
-Security modules are essential for hardening your system. This guide covers how to set up **AppArmor** on Arch Linux and provides a reference for **SELinux** on Fedora.
+Security is about layers. This guide covers the "Defense in Depth" strategy implemented on this system, including Mandatory Access Control (AppArmor), Firewall (UFW), Antivirus (ClamAV), and Network Privacy.
 
 ---
 
-## 🛡️ AppArmor (Recommended for Arch Linux)
+## 🛡️ AppArmor (MAC)
 
-AppArmor is a Mandatory Access Control (MAC) system that is easy to manage and highly effective. It is the preferred security module for Arch Linux users.
+AppArmor is a Mandatory Access Control (MAC) system that restricts programs' capabilities.
 
 ### 1. Installation
-Install the core AppArmor packages:
 ```bash
 sudo pacman -S apparmor
 ```
 
 ### 2. Enable in Kernel
-You must tell the Linux kernel to initialize AppArmor at boot.
-1.  Edit your GRUB configuration: `sudo nano /etc/default/grub`
-2.  Add the following to `GRUB_CMDLINE_LINUX_DEFAULT`:
-    ```text
-    apparmor=1 lsm=lockdown,yama,apparmor,bpf
-    ```
-3.  Regenerate the GRUB config:
-    ```bash
-    sudo grub-mkconfig -o /boot/grub/grub.cfg
-    ```
+Add to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`:
+```text
+apparmor=1 lsm=landlock,lockdown,yama,integrity,apparmor,bpf
+```
+Then run: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
 
-### 3. Enable the Service
+### 3. Service
 ```bash
 sudo systemctl enable --now apparmor.service
 ```
 
-### 4. Advanced Profiles: `apparmor.d-git`
-For a comprehensive set of profiles (covering almost every common app), use the `apparmor.d` project from the AUR.
+---
+
+## 🧱 Firewall: UFW vs. Firewalld
+
+A firewall controls network traffic. This system uses **UFW** for its simplicity, but **firewalld** is a great alternative for mobile users.
+
+### Option A: UFW (Simple & Static - Current Choice)
+Best for desktops that stay on one network.
 ```bash
-paru -S apparmor.d-git
+# Install and Enable
+sudo pacman -S ufw
+sudo systemctl enable --now ufw.service
+
+# Standard "Gaming" Policy
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw enable
 ```
-This package provides hundreds of pre-configured profiles, significantly hardening your system with minimal manual effort.
+*   **KDE Integration:** Managed via **System Settings > Firewall**.
+
+### Option B: Firewalld (Dynamic & Zones)
+Best for laptops or users who need different rules for "Home" vs "Public" Wi-Fi.
+```bash
+# Install and Enable
+sudo pacman -S firewalld
+sudo systemctl enable --now firewalld.service
+
+# Change zones based on network trust
+sudo firewall-cmd --set-default-zone=home
+sudo firewall-cmd --reload
+```
 
 ---
 
-## 🔒 SELinux (Recommended for Fedora)
+## 🦠 Antivirus & Rootkit Detection
 
-SELinux (Security-Enhanced Linux) is the default security module for Fedora, RHEL, and CentOS. While extremely powerful, it is **not recommended for Arch Linux** because it requires a custom kernel and can easily break an Arch system if not perfectly configured.
+Linux malware exists, but it's often aimed at servers or used for data theft.
 
-### Using SELinux on Fedora
+### ClamAV (Antivirus)
+Standard FOSS antivirus. Used for on-demand scanning.
+*   **Install:** `sudo pacman -S clamav clamtk`
+*   **Database Updates:** `sudo systemctl enable --now clamav-freshclam.service`
+*   **GUI:** Open **ClamTk** from the application menu.
+*   **CLI Scan:** `clamscan -r ~/Downloads`
 
-#### 1. Check Status
-To see if SELinux is active and what mode it's in:
-```bash
-sestatus
-```
+### rkhunter (Rootkit Hunter)
+Scans for "rootkits" (hidden backdoors) and suspicious system changes.
+*   **Install:** `sudo pacman -S rkhunter`
+*   **Baseline:** `sudo rkhunter --propupd` (Run this after every major system update).
+*   **Check:** `sudo rkhunter --check`
 
-#### 2. SELinux Modes
--   **Enforcing**: Security policy is enforced. (Default and Recommended)
--   **Permissive**: Security policy is not enforced, but actions are logged. Useful for troubleshooting.
--   **Disabled**: SELinux is completely off.
+---
 
-To temporarily switch to Permissive mode:
-```bash
-sudo setenforce 0
-```
+## 🌐 Network Privacy: DNS-over-TLS (DoT)
 
-#### 3. Common Fixes (Labeling)
-Most SELinux issues on Fedora come from incorrect file labels. To fix the labels on your entire system:
-```bash
-sudo touch /.autorelabel
-# Then reboot
-```
-Or for a specific directory:
-```bash
-sudo restorecon -Rv /path/to/directory
-```
+Encrypt your DNS queries to prevent your ISP from tracking your browsing habits.
 
-### ⚠️ Arch Linux Warning
-**Do not attempt to install SELinux on your main Arch setup.** 
-Arch is designed with AppArmor in mind. SELinux on Arch is a niche use-case that usually results in a non-bootable system for most users. Stick to AppArmor!
+### Recommended Provider: AdGuard DNS
+Provides both privacy (encryption) and network-level ad blocking.
+
+**KDE GUI Setup:**
+1.  **System Settings > Network > Connections**.
+2.  Select your connection (`wlan0`/`Ethernet`).
+3.  **IPv4 Tab:** Set DNS to `94.140.14.14, 94.140.15.15`.
+4.  **IPv6 Tab:** Set DNS to `2a10:50c0::ad1:ff, 2a10:50c0::ad2:ff`.
+5.  **DNS-over-TLS:** Set to **Required**.
+6.  **Hostname:** `dns.adguard-dns.com`.
+
+---
+
+## 🔒 SELinux (Reference for Fedora)
+SELinux is the default on Fedora. **Do not attempt on Arch.**
+*   **Check status:** `sestatus`
+*   **Relabel system:** `sudo touch /.autorelabel && reboot`
