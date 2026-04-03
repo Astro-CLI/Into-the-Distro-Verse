@@ -4,53 +4,53 @@ This repository is a collection of my Linux system configurations, package lists
 
 ---
 
-## 📖 Quick Navigation
+## 📘 Documentation Index
 
-Detailed setup and maintenance guides for each system and toolset.
+Detailed setup and maintenance guides for specific systems and toolsets.
 
-| Distribution / Tool | Description | Guide |
+| System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Arch Linux** | Main desktop configuration & AUR setup | [**docs/arch.md**](docs/arch.md) |
-| **Fedora** | Workstation setup & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
-| **Debian** | The Stable Foundation & External Repos | [**docs/debian.md**](docs/debian.md) |
+| **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
+| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
+| **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
 | **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
 | **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
 | **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
 | **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
-| **Snapshots** | BTRFS & system recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
+| **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
 
 ---
 
-## 📦 Package Management
+## 📦 Software & Repositories
 
 The `packages/` directory contains text files listing all installed applications. These are used to quickly restore software on a fresh installation.
 
-### How to Restore
+### System Restoration
 1.  **Clone the Repository:**
     ```bash
     git clone https://github.com/Astro-CLI/Into-the-Distro-Verse.git
     cd Into-the-Distro-Verse
     ```
-2.  **Run the Restoration Guide:**
-    Follow the specific commands for your system in the **[Package Management Guide](packages/README.md)**.
+2.  **Follow the Guide:**
+    Execute the restoration commands for your specific system in the **[Package Management Guide](packages/README.md)**.
 
 ---
 
-## 🛡️ Security & System Maintenance
+## 🛡️ System Hardening & Integrity
 
-Guides for hardening and maintaining a healthy Linux system.
+Guides for securing and maintaining the integrity of a Linux system.
 
-*   **System Security:** Setup for AppArmor, UFW Firewall, ClamAV, and encrypted DNS (DoT). [**docs/security.md**](docs/security.md)
-*   **System Maintenance:** Instructions for BTRFS health checks and backup strategies. [**docs/snapshots.md**](docs/snapshots.md)
+*   **Network & Security:** Setup for AppArmor, UFW Firewall, ClamAV, and encrypted DNS (DoT). [**docs/security.md**](docs/security.md)
+*   **System Integrity:** Instructions for BTRFS health checks and automated snapshots. [**docs/snapshots.md**](docs/snapshots.md)
 
 ---
 
-## 🎨 Configuration & Dotfiles
+## ⚙️ Environment Configuration
 
-Backups of key desktop environment settings to ensure a consistent experience.
+Backups of user-specific settings and desktop configurations.
 
--   **KDE Plasma:** Restore desktop layout, shortcuts, and global themes. [**configs/kde/README.md**](configs/kde/README.md)
--   **GRUB Bootloader:** Visual customization and themes. [**configs/grub/README.md**](configs/grub/README.md)
+-   **Desktop Environment:** Restore KDE Plasma layout, shortcuts, and themes. [**configs/kde/README.md**](configs/kde/README.md)
+-   **Boot Configuration:** Visual customization for the GRUB bootloader. [**configs/grub/README.md**](configs/grub/README.md)
 
 ---
 
