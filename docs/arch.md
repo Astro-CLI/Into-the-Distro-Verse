@@ -41,6 +41,11 @@ sudo pacman -S --needed - < packages/arch_pkglist.txt
 paru -S --needed - < packages/arch_aur_list.txt
 ```
 
+### Universal Packages (Flatpak)
+For a comprehensive guide on managing Flatpaks, permissions, and Flathub, see the universal guide:
+
+*   📖 **[docs/flatpak.md](flatpak.md)**
+
 ---
 
 ## 🛠️ 3. Maintenance
