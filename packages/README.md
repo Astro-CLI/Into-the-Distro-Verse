@@ -2,6 +2,9 @@
 
 This directory contains the package lists and restoration scripts for various Linux distributions. Use these files to quickly replicate a software environment on a fresh installation.
 
+> [!IMPORTANT]
+> **Naming Conventions:** Most package names in these lists are based on **Arch Linux** or **AUR** naming conventions. Package names may vary slightly in other distributions or repositories (e.g., `python-pip` vs `python3-pip`). Always verify the exact name if using these lists on a non-Arch system.
+
 ---
 
 ## 📂 Package Lists
