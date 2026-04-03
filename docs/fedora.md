@@ -55,7 +55,15 @@ sudo dnf groupinstall "Multimedia" "Sound and Video"
 
 ---
 
-## 🛡️ 4. System Maintenance
+## 🛡️ 4. Snapshots & Maintenance
+
+Fedora uses BTRFS by default, making snapshots an incredibly powerful tool for system stability. For a guide on setting up **Snapper**, **TimeShift**, and BTRFS maintenance, see the universal guide:
+
+*   📖 **[docs/snapshots.md](snapshots.md)**
+
+---
+
+## 🧼 5. System Maintenance
 
 ### Package Management Cheat Sheet
 | Task | Command |
@@ -77,7 +85,7 @@ sudo dnf system-upgrade reboot
 
 ---
 
-## 🔒 5. SELinux vs. AppArmor
+## 🔒 6. SELinux vs. AppArmor
 Fedora uses **SELinux** by default. Unlike Arch (where AppArmor is optional), SELinux is baked into the system. **Do not disable it.** If you have permission issues, use `restorecon` to fix file labeling:
 ```bash
 sudo restorecon -Rv /home/user/my_folder

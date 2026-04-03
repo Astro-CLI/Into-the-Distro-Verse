@@ -34,27 +34,11 @@ git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. 
 
 ---
 
-## 📦 2. Snapshot & Maintenance
+## 🛡️ 2. Snapshots & Maintenance
 
-### Snapshot Management (BTRFS)
-BTRFS snapshots are your "safety net." Always set this up before doing major system tweaks.
-*   **TimeShift (Recommended):** `paru -S timeshift timeshift-autosnap`
-*   **Snapper (Alternative):** `paru -S snapper snap-pac`
+BTRFS snapshots are your "safety net." For a comprehensive guide on setting up **TimeShift**, **Snapper**, and bootloader integration for Arch and Fedora, see the universal guide:
 
-### BTRFS Maintenance
-If you're using BTRFS, you should run these occasionally to keep the filesystem healthy.
-```bash
-# Scrub: Check for data corruption
-sudo btrfs scrub start /
-
-# Balance: Free up unused chunks
-sudo btrfs balance start -dusage=50 /
-```
-
-### Bootloader Integration
-Ensure you can boot into your snapshots if the system fails to start.
-*   **GRUB:** `paru -S grub-btrfs && sudo systemctl enable --now grub-btrfsd`
-*   **systemd-boot:** Use `gummibbs` (AUR) to generate snapshot entries.
+*   📖 **[docs/snapshots.md](snapshots.md)**
 
 ---
 

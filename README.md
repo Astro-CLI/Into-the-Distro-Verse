@@ -17,6 +17,7 @@ Click on your current (or future) distribution to get started with a fresh insta
 | **Nix** | The Universal Multi-Tool | [**docs/nix.md**](docs/nix.md) |
 | **Homebrew** | The Linux "Brew" | [**docs/homebrew.md**](docs/homebrew.md) |
 | **Flatpak** | The Universal App Store | [**docs/flatpak.md**](docs/flatpak.md) |
+| **Snapshots** | The System Safety Net | [**docs/snapshots.md**](docs/snapshots.md) |
 
 ---
 
