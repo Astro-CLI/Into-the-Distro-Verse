@@ -115,3 +115,11 @@ Flatpaks can take up a lot of space because they keep old runtimes.
 # Removes runtimes that are no longer used by any installed app
 flatpak uninstall --unused
 ```
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Snap Guide](snaps.md)** - Canonical's alternative to Flatpak.
+*   📖 **[Nix Guide](nix.md)** - Declarative and universal package management.
+*   📖 **[Fedora Guide](fedora.md)** - Fedora's deep integration with Flatpak.
+*   📖 **[Arch Linux Guide](arch.md)** - Using Flatpak in the Arch ecosystem.

@@ -94,3 +94,11 @@ BTRFS is the default on Fedora and highly recommended for Arch.
 | **Kernel Updates** | Requires manual GRUB update* | Automatic via `dnf` |
 
 *\*Only if using custom hooks or specific manual setups; usually handled by hooks in Arch as well.*
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Snapshots Guide](snapshots.md)** - Comprehensive guide on TimeShift and Snapper.
+*   📖 **[Arch Linux Guide](arch.md)** - Specific maintenance for rolling-release systems.
+*   📖 **[Fedora Guide](fedora.md)** - DNF cleaning and system upgrades.
+*   📖 **[Security Guide](security.md)** - Hardening and protecting your system.

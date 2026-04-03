@@ -79,3 +79,10 @@ sudo snap set system refresh.retain=2
 | **Best For** | CLI tools, Servers, Proprietary Apps | Desktop Apps, GUI-heavy tools |
 | **Backend** | Proprietary (Snap Store) | Open Source (Flathub, etc.) |
 | **Mounting** | Uses Loop Devices (visible in `lsblk`) | Does not use Loop Devices |
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Flatpak Guide](flatpak.md)** - The community-driven alternative to Snap.
+*   📖 **[Nix Guide](nix.md)** - Universal and functional package management.
+*   📖 **[Homebrew Guide](homebrew.md)** - CLI-focused package manager for Linux.

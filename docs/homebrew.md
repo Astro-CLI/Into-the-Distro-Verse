@@ -81,3 +81,11 @@ brew cleanup
 *   **AUR (Arch):** Best for system-deep integration and desktop apps. Fast, but Arch-only.
 *   **Nix:** The most powerful and safest, but has a steeper learning curve.
 *   **Homebrew:** The easiest "universal" package manager for CLI tools. Very user-friendly and familiar to macOS users.
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Nix Guide](nix.md)** - The functional alternative to Homebrew.
+*   📖 **[Flatpak Guide](flatpak.md)** - Universal graphical applications.
+*   📖 **[Arch Linux Guide](arch.md)** - Setting up build essentials for Brew on Arch.
+*   📖 **[Fedora Guide](fedora.md)** - Setting up build essentials for Brew on Fedora.

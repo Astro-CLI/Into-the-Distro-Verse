@@ -71,3 +71,10 @@ sudo btrfs scrub start /
 # Balance: Free up unused chunks
 sudo btrfs balance start -dusage=50 /
 ```
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Arch Linux Guide](arch.md)** - Specific BTRFS layout and bootloader setup for Arch.
+*   📖 **[Fedora Guide](fedora.md)** - Snapshot management and SELinux considerations.
+*   📖 **[System Maintenance](system_maintenance.md)** - More details on backups and bootloaders.

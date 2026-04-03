@@ -77,3 +77,10 @@ To prevent Ubuntu or Kali from accidentally overwriting your core Debian system 
 | **Install from Specific Repo** | `sudo apt install -t kali-rolling package_name` |
 | **Fix Broken Deps** | `sudo apt install -f` |
 | **Clean Cache** | `sudo apt clean` |
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Arch Linux Guide](arch.md)** - Rolling-release setup and AUR management.
+*   📖 **[Fedora Guide](fedora.md)** - Setup and optimizations for Fedora Workstation.
+*   📖 **[Security Guide](security.md)** - Hardening your Debian system.

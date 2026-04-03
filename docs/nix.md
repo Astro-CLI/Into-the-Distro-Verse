@@ -97,3 +97,11 @@ Nix packages are usually located in `/nix/store` and linked to your profile. If 
 # Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu
 export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
 ```
+
+---
+
+## 🔗 Related Guides
+*   📖 **[Arch Linux Guide](arch.md)** - Native package management on Arch.
+*   📖 **[Fedora Guide](fedora.md)** - Native package management on Fedora.
+*   📖 **[Flatpak Guide](flatpak.md)** - Another universal app solution.
+*   📖 **[Homebrew Guide](homebrew.md)** - CLI-focused universal package manager.
