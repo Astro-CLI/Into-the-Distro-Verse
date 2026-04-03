@@ -1,6 +1,6 @@
 # Into the Distro-Verse 🌌
 
-This repository is a collection of my Linux system configurations, package lists, and setup guides. It is designed to be a "single source of truth" for replicating my environment across different Linux distributions, focusing on **Arch Linux**, **Fedora**, and universal tools like **Nix** and **Flatpak**.
+This repository serves as a centralized source of truth for Linux system configurations, package lists, and installation guides. It is designed to facilitate the replication of a consistent environment across multiple Linux distributions through a modular and distro-agnostic approach.
 
 ---
 
