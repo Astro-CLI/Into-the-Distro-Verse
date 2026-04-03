@@ -38,63 +38,10 @@ sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-releas
     sudo dnf install lazygit
     ```
 
-### Flatpak & Flathub (The Software Goldmine)
-Fedora comes with its own Flatpak repository (fedora), which is smaller and more curated. To get access to thousands of community apps (like Spotify, Discord, or Steam), you should enable the full **Flathub** repository.
+### Flatpak & Flathub
+Fedora is a first-class citizen for Flatpaks. For a comprehensive guide on enabling the full Flathub repository, managing permissions with Flatseal, and CLI overrides, see the universal guide:
 
-**1. Enable the Full Flathub Repo:**
-Fedora often includes a "filtered" version of Flathub by default. To get the full version:
-```bash
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-```
-
-**2. Why use Flathub over Fedora's repo?**
--   **Updates:** Flathub apps usually update faster.
--   **Selection:** Flathub contains proprietary apps (Discord, Zoom) that Fedora's FOSS-focused repo does not.
--   **Isolation:** Flatpaks are sandboxed, making them a great choice for apps you don't fully trust with your system files.
-
-**3. Manage Repositories:**
-```bash
-# See which repos are enabled
-flatpak remotes
-
-# To remove the default Fedora repo if you only want Flathub
-# (Warning: This will uninstall Fedora-provided Flatpaks)
-# flatpak remote-delete fedora
-```
-
-### Flatpak Permissions & Flatseal
-Flatpaks are sandboxed, meaning they can't access your files or hardware unless you let them. Sometimes an app (like a Code Editor or Game) needs extra permissions to work.
-
-**Option A: Flatseal (The GUI Way)**
-The easiest way to manage permissions. It's a "settings" app for all your other Flatpaks.
-```bash
-flatpak install flathub com.github.tchx84.Flatseal
-```
-
-**Option B: The CLI Way (Overriding)**
-You can do everything Flatseal does from the terminal using the `override` command.
-
-*   **Allow access to a folder:**
-    ```bash
-    # Grant VS Codium access to a specific folder
-    flatpak override com.vscodium.codium --filesystem=/path/to/my/projects
-    ```
-*   **Allow access to all your files (Danger!):**
-    ```bash
-    flatpak override com.example.App --filesystem=home
-    ```
-*   **Allow access to USB devices:**
-    ```bash
-    flatpak override com.example.App --device=all
-    ```
-*   **Reset all overrides to default:**
-    ```bash
-    flatpak override com.example.App --reset
-    ```
-*   **Show current overrides:**
-    ```bash
-    flatpak override com.example.App --show
-    ```
+*   📖 **[docs/flatpak.md](flatpak.md)**
 
 ---
 
