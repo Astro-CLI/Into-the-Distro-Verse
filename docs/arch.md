@@ -1,12 +1,12 @@
-# Arch Linux: The Power-User's Starship 🚀
+# Arch Linux Setup & Maintenance Guide 🚀
 
-This guide covers the specific steps to set up and maintain the Arch Linux dimension of your Distro-Verse.
+This guide covers the specific steps to set up and maintain an Arch Linux environment.
 
 ---
 
-## 🚀 1. Essential Setup: The Launchpad
+## 🚀 1. Essential Setup
 
-### Pacman Optimizations (The "Nice" Tweaks)
+### Pacman Optimizations (Quality of Life)
 Before installing packages, make `pacman` faster and more visual.
 1.  Edit the config: `sudo nano /etc/pacman.conf`
 2.  Uncomment or add these lines under `[options]`:
@@ -36,7 +36,7 @@ git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. 
 
 ## 🛡️ 2. Snapshots & Maintenance
 
-BTRFS snapshots are your "safety net." For a comprehensive guide on setting up **TimeShift**, **Snapper**, and bootloader integration for Arch and Fedora, see the universal guide:
+BTRFS snapshots are an essential "safety net" for system stability. For a comprehensive guide on setting up **TimeShift**, **Snapper**, and bootloader integration, see the universal guide:
 
 *   📖 **[docs/snapshots.md](snapshots.md)**
 

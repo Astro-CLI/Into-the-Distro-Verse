@@ -1,12 +1,12 @@
 # Package Management Guide
 
-This directory houses the blueprints for your system's software across different Linux dimensions.
+This directory contains the package lists and restoration scripts for various Linux distributions. Use these files to quickly replicate a software environment on a fresh installation.
 
 ---
 
-## 📂 Dimension-Specific Lists
+## 📂 Package Lists
 
-| List | Dimension | Source |
+| List | Distribution | Source |
 | :--- | :--- | :--- |
 | **`arch_pkglist.txt`** | Arch Linux | Official Repos (`core`, `extra`) |
 | **`arch_aur_list.txt`** | Arch Linux | AUR (via `paru`) |
@@ -17,7 +17,7 @@ This directory houses the blueprints for your system's software across different
 
 ## 🚀 Restoration (How to install everything)
 
-### For the Arch Dimension:
+### Arch Linux
 ```bash
 # 1. Install Official Packages
 sudo pacman -S --needed - < packages/arch_pkglist.txt
@@ -26,7 +26,7 @@ sudo pacman -S --needed - < packages/arch_pkglist.txt
 paru -S --needed - < packages/arch_aur_list.txt
 ```
 
-### For the Universal Dimension (Flatpaks):
+### Universal (Flatpaks)
 ```bash
 # Install Flatpaks on any system
 xargs -a packages/flatpak_list.txt -r flatpak install -y
@@ -36,7 +36,7 @@ xargs -a packages/flatpak_list.txt -r flatpak install -y
 
 ## 🔄 Maintenance & Syncing
 
-To keep these lists updated with your current machine's configuration:
+To keep these lists updated with your current system configuration:
 
 ### Sync Arch Lists
 ```bash
