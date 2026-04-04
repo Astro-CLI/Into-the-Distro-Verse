@@ -68,7 +68,25 @@ To prevent Ubuntu or Kali from accidentally overwriting your core Debian system 
 
 ---
 
-## 🛠️ 4. Essential Commands
+## 🎬 4. Multimedia & Wayland Utilities
+
+### Wayland Screen Sharing Support
+
+**Essential for Wayland users:** Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.
+
+```bash
+# Install Xwayland Video Bridge
+sudo apt install xwaylandvideobridge
+
+# If not available in main repos, try from backports:
+# sudo apt -t bookworm-backports install xwaylandvideobridge
+```
+
+💡 *Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.*
+
+---
+
+## 🛠️ 5. Essential Commands
 
 | Task | Command |
 | :--- | :--- |

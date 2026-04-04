@@ -53,6 +53,17 @@ sudo dnf groupupdate core
 sudo dnf groupinstall "Multimedia" "Sound and Video"
 ```
 
+### Wayland Screen Sharing Support
+
+**Essential for Wayland users:** Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.
+
+```bash
+# Install Xwayland Video Bridge
+sudo dnf install xwaylandvideobridge
+```
+
+💡 *If not found, check if it's available from COPR or Flathub as an alternative.*
+
 ---
 
 ## 🛡️ 4. Snapshots & Maintenance

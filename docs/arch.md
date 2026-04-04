@@ -32,6 +32,18 @@ sudo pacman -S --needed base-devel git && \
 git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru
 ```
 
+### Wayland Screen Sharing (Xwayland Video Bridge)
+
+**Essential for Wayland users:** Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.
+
+```bash
+# Install from AUR
+paru -S xwaylandvideobridge
+
+# Or search for it
+paru -Ss xwayland video bridge
+```
+
 ---
 
 ## 🛡️ 2. Snapshots & Maintenance
