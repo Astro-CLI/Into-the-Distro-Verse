@@ -1,467 +1,668 @@
-# Virtual Machines: KVM/QEMU/Libvirt Stack 🖥️
+# Virtual Machines: The Complete GUI Guide 🖥️
 
-A comprehensive guide to setting up and managing virtual machines on Linux using the native KVM hypervisor, QEMU emulator, and libvirt management layer. Perfect for testing distros, development environments, and isolated workloads.
-
----
-
-## 🚀 1. Understanding the Stack
-
-### The Three Components
-
-| Component | Purpose | Role |
-| :--- | :--- | :--- |
-| **KVM** | Kernel-based Virtual Machine | Hardware virtualization kernel module |
-| **QEMU** | Quick Emulator | System emulator and virtualizer |
-| **libvirt** | Virtualization API | Management layer with CLI/GUI tools |
-
-**How they work together:** KVM provides hardware acceleration → QEMU uses KVM for fast virtualization → libvirt provides user-friendly management tools.
+A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on Linux. Learn to create VMs, pass through GPUs and physical disks, install Windows with proper drivers, and build powerful virtualized workstations.
 
 ---
 
-## 🛠️ 2. Installation & Setup
+## 🚀 1. Quick Start: Installation
+
+### The Stack We're Using
+
+- **KVM:** Linux's native hypervisor (built into kernel)
+- **QEMU:** The actual virtualizer that uses KVM
+- **Virt-Manager:** Your main GUI control panel
+- **libvirt:** Background service managing everything
+
+---
+
+## 🛠️ 2. Install Everything You Need
 
 ### Arch Linux
 
 ```bash
-# Install core virtualization packages
-sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq bridge-utils
+# Core packages for virtualization
+sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq bridge-utils edk2-ovmf iptables-nft
 
-# Install optional but recommended packages
-sudo pacman -S edk2-ovmf iptables-nft ebtables
-
-# Enable and start libvirtd service
+# Start the service
 sudo systemctl enable --now libvirtd.service
 
-# Add your user to libvirt group (logout/login required)
+# Add yourself to the libvirt group (LOGOUT/LOGIN REQUIRED!)
 sudo usermod -aG libvirt $USER
 ```
 
 ### Fedora
 
 ```bash
-# Install virtualization group
+# One-liner virtualization group install
 sudo dnf install @virtualization
 
-# Or install individual packages
-sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer
-
-# Enable and start libvirtd
+# Start the service
 sudo systemctl enable --now libvirtd.service
 
-# Add user to libvirt group
+# Add yourself to the group
 sudo usermod -aG libvirt $USER
 ```
 
 ### Debian/Ubuntu
 
 ```bash
-# Install KVM and libvirt
-sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
+# Install everything
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virt-manager virt-viewer bridge-utils ovmf
 
-# Install management tools
-sudo apt install virt-manager virt-viewer virtinst
-
-# Enable and start libvirtd
+# Start the service
 sudo systemctl enable --now libvirtd
 
-# Add user to groups (logout/login required)
+# Add yourself to the groups
 sudo usermod -aG libvirt,kvm $USER
 ```
 
-### Verify Installation
+### ✅ Verify It Works
 
 ```bash
-# Check if KVM modules are loaded
+# Check for KVM support
 lsmod | grep kvm
+# Should show: kvm_intel OR kvm_amd
 
-# Expected output: kvm_intel or kvm_amd
-# Verify virtualization support
+# Verify virtualization is enabled
 LC_ALL=C lscpu | grep Virtualization
 
-# Check libvirt is running
-sudo systemctl status libvirtd
-
-# Test virsh connection
-virsh list --all
-```
-
-⚠️ **CPU Requirement:** Your CPU must support hardware virtualization (Intel VT-x or AMD-V). Enable it in BIOS/UEFI if not already active.
-
----
-
-## 🖥️ 3. Creating Virtual Machines
-
-### Option A: Using Virt-Manager (GUI)
-
-**Virt-Manager** is the easiest way to create and manage VMs with a graphical interface:
-
-```bash
 # Launch virt-manager
 virt-manager
 ```
 
-**Steps:**
-1. Click "Create a new virtual machine"
-2. Choose installation method:
-   - **Local install media:** Use ISO file
-   - **Network install:** PXE boot
-   - **Import existing disk:** Use existing qcow2/raw disk
-3. Configure memory and CPU allocation
-4. Set up storage (create new or use existing disk)
-5. Review and customize before installation
-
-### Option B: Using virsh (CLI)
-
-**Creating a VM with virt-install:**
-
-```bash
-# Create a VM from ISO
-virt-install \
-  --name archlinux-vm \
-  --ram 4096 \
-  --vcpus 4 \
-  --disk size=40 \
-  --os-variant archlinux \
-  --cdrom /path/to/archlinux.iso \
-  --network network=default \
-  --graphics spice \
-  --console pty,target_type=serial
-
-# Get list of supported OS variants
-osinfo-query os
-```
-
-**Common virt-install options:**
-
-| Option | Purpose | Example |
-| :--- | :--- | :--- |
-| `--name` | VM name | `--name myvm` |
-| `--ram` | Memory in MB | `--ram 8192` |
-| `--vcpus` | CPU cores | `--vcpus 4` |
-| `--disk` | Storage config | `--disk size=50,format=qcow2` |
-| `--os-variant` | OS optimization | `--os-variant fedora39` |
-| `--cdrom` | ISO path | `--cdrom ~/Downloads/fedora.iso` |
-| `--network` | Network type | `--network bridge=virbr0` |
+⚠️ **IMPORTANT:** 
+1. Enable **Intel VT-x** or **AMD-V** in your BIOS/UEFI
+2. For GPU passthrough, also enable **VT-d** (Intel) or **AMD-Vi** (AMD)
+3. **LOGOUT and LOGIN** after adding yourself to groups!
 
 ---
 
-## 💾 4. Importing Existing OS Disks
+## 🖥️ 3. Creating Your First VM (GUI Method)
 
-### Converting Disk Images
-
-**Convert various disk formats to qcow2:**
+### Launch Virt-Manager
 
 ```bash
-# VirtualBox VDI to qcow2
-qemu-img convert -f vdi -O qcow2 existing.vdi output.qcow2
-
-# VMware VMDK to qcow2
-qemu-img convert -f vmdk -O qcow2 existing.vmdk output.qcow2
-
-# Raw IMG to qcow2
-qemu-img convert -f raw -O qcow2 existing.img output.qcow2
-
-# Check disk info
-qemu-img info output.qcow2
+virt-manager
 ```
 
-### Importing an Existing Disk
+### Step-by-Step VM Creation
 
-**Method 1: virt-install with existing disk**
+1. **Click "Create a new virtual machine" (top-left)**
 
-```bash
-virt-install \
-  --name imported-vm \
-  --ram 4096 \
-  --vcpus 2 \
-  --disk path=/var/lib/libvirt/images/output.qcow2,format=qcow2 \
-  --os-variant linux2020 \
-  --network network=default \
-  --graphics spice \
-  --import
-```
+2. **Choose installation source:**
+   - **Local install media (ISO):** Most common - browse to your downloaded ISO
+   - **Import existing disk image:** For pre-made VM disks (qcow2, raw, etc.)
+   - **Network Install (HTTP/FTP):** Advanced users
+   - **Manual install:** When you want to configure everything yourself
 
-**Method 2: virt-manager GUI**
+3. **Select your ISO file**
+   - Click "Browse" → "Browse Local"
+   - Navigate to your ISO (e.g., `~/Downloads/archlinux.iso`)
+   - Virt-Manager will auto-detect the OS (or type to search)
 
-1. Open virt-manager
-2. Click "Create a new virtual machine"
-3. Select "Import existing disk image"
-4. Browse to your converted qcow2 file
-5. Configure RAM, CPUs, and complete setup
+4. **Allocate RAM and CPUs**
+   - **RAM:** Minimum 2GB for Linux, 4GB+ for Windows, 8GB+ for heavy workloads
+   - **CPUs:** 2-4 cores for most tasks, more for gaming/rendering
 
-### Cloning Physical Installations
+5. **Create virtual disk**
+   - **Size:** 40GB minimum for Linux, 60GB+ for Windows
+   - **Enable storage:** Check this box
+   - Click "Manage" to change disk location if needed
 
-**Using dd to clone a physical drive:**
+6. **Ready to begin installation - BUT WAIT!**
+   - ✅ **CHECK "Customize configuration before install"** (IMPORTANT!)
+   - Click "Finish"
 
-```bash
-# Clone entire physical disk to image (DANGEROUS - verify device!)
-sudo dd if=/dev/sdX of=~/physical-clone.img bs=4M status=progress
+### ⚙️ Customize Before Starting (Critical!)
 
-# Convert to qcow2 for space efficiency
-qemu-img convert -f raw -O qcow2 physical-clone.img physical-clone.qcow2
+**You're now in the VM hardware configuration screen. Here's what to change:**
 
-# Import as described above
-```
+#### Overview Tab
+- **Chipset:** Q35 (modern, required for PCIe passthrough)
+- **Firmware:** UEFI (for modern OSes) or BIOS (legacy)
+  - For Windows: Use UEFI
+  - For GPU passthrough: MUST use UEFI
 
-⚠️ **WARNING:** Double-check device names with `lsblk` before using `dd`. Wrong device = data loss!
+#### CPUs Tab
+- **Configuration:** Click "Copy host CPU configuration" for best performance
+- **Topology:** Manually set sockets/cores/threads for better scheduling
+  - Example: 1 socket, 4 cores, 2 threads = 8 vCPUs
+
+#### Boot Options Tab
+- **Enable boot menu:** Check this for multi-boot options
+
+#### SATA Disk 1 Tab
+- **Disk bus:** Change from SATA to **VirtIO** for 3-5x better performance
+  - ⚠️ Windows needs virtio drivers (see Windows section below)
+  - Linux works automatically with VirtIO
+
+#### NIC Tab (Network)
+- **Device model:** Change to **virtio** for best network performance
+
+Now click **"Begin Installation"** in the top-left!
 
 ---
 
-## 🌐 5. Networking Configuration
+## 💾 4. Windows VMs: The VirtIO Driver Setup
 
-### Network Types Overview
+### Why VirtIO Matters
 
-| Type | Use Case | VM-to-Internet | VM-to-Host | VM-to-VM | Host-to-VM |
-| :--- | :--- | :---: | :---: | :---: | :---: |
-| **NAT (default)** | Basic isolation | ✅ | ✅ | ✅ | ❌ |
-| **Bridge** | VM acts like physical machine | ✅ | ✅ | ✅ | ✅ |
-| **Host-Only** | Isolated network | ❌ | ✅ | ✅ | ✅ |
+**Without VirtIO drivers:** Windows will be SLOW (disk speeds ~50MB/s, bad network)
+**With VirtIO drivers:** FAST (disk speeds ~1GB/s+, native network performance)
 
-### Default NAT Network
-
-The **default** network provides NAT with DHCP:
+### Download VirtIO Drivers
 
 ```bash
-# Check default network status
-virsh net-list --all
-
-# Start default network if inactive
-virsh net-start default
-
-# Enable autostart
-virsh net-autostart default
-
-# View network configuration
-virsh net-dumpxml default
+# Download the latest stable VirtIO ISO
+cd ~/Downloads
+wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 ```
 
-### Creating a Bridge Network
+Or download from: [https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md)
 
-**Bridge Mode** connects VMs directly to your physical network:
+### Installing Windows with VirtIO
+
+**Step 1: Create Windows VM (customize before install as shown above)**
+
+**Step 2: Add the VirtIO ISO as a second CD drive**
+
+In the VM configuration screen (before starting):
+1. Click **"Add Hardware"** (bottom-left)
+2. Select **"Storage"**
+3. **Device type:** CDROM device
+4. Click **"Manage"** → Browse to `virtio-win.iso`
+5. Click **"Finish"**
+
+**Step 3: Start Windows Installation**
+
+When you reach "Where do you want to install Windows?" and see **no drives:**
+
+1. Click **"Load driver"**
+2. Click **"Browse"**
+3. Navigate to CD drive (E: or D:) → **`viostor`** folder
+4. Select your Windows version folder (e.g., `w10` or `w11`)
+5. Select `amd64` folder
+6. Click **OK**
+7. Windows will find "Red Hat VirtIO SCSI controller"
+8. Click **Next**
+
+Now your disk appears! Continue Windows installation normally.
+
+**Step 4: Install Remaining Drivers After Windows Boots**
+
+Once Windows is installed and running:
+
+1. Open File Explorer
+2. Navigate to the VirtIO CD drive
+3. Run **`virtio-win-guest-tools.exe`**
+4. Install all drivers (network, balloon, SPICE guest tools, etc.)
+5. Reboot
+
+✅ **Done!** Your Windows VM now runs at native speeds.
+
+### Pro Tip: SPICE Guest Tools
+
+After installing virtio drivers, install SPICE guest tools for:
+- Auto-resize VM window
+- Copy/paste between host and VM
+- Shared folders
+- Better graphics performance
+
+---
+
+## 🔌 5. Attaching Physical Disks (/dev/sda, /dev/nvme0n1, etc.)
+
+### Why Attach Physical Disks?
+
+- **Dual-boot OS access:** Mount your Windows partition in a Linux VM
+- **Data drives:** Give VM direct access to storage drives
+- **Pass-through performance:** Near-native disk speeds
+- **Recovery:** Boot failed installations in a VM
+
+### GUI Method: Add Physical Disk to VM
+
+**⚠️ WARNING:** VM must be **SHUT DOWN** (not running) to add hardware!
+
+1. **Identify your disk:**
+   ```bash
+   lsblk
+   # Example output:
+   # sda      8:0    0   1TB  0 disk
+   # ├─sda1   8:1    0   500M 0 part  /boot/efi
+   # ├─sda2   8:2    0   200G 0 part  /
+   # └─sda3   8:3    0   799G 0 part  /home
+   # sdb      8:16   0   2TB  0 disk
+   # └─sdb1   8:17   0   2TB  0 part
+   ```
+
+2. **Open VM in virt-manager** (must be powered off)
+
+3. **Click "Add Hardware"** (bottom-left or top-left icon)
+
+4. **Select "Storage"**
+   - **Device type:** Disk device
+   - **Storage format:** Select **"Select or create custom storage"**
+   - **Manage:** Type the device path manually
+     - For entire disk: `/dev/sdb`
+     - For partition: `/dev/sdb1`
+   - **Bus type:** VirtIO (for Linux guests) or SATA (for Windows without drivers)
+   - **Cache mode:** none (safest for physical disks)
+
+5. **Click "Finish"**
+
+6. **Start the VM** - the disk now appears inside!
+
+### Giving Yourself Permission
+
+By default, libvirt might not have permission to access `/dev/sdb`:
 
 ```bash
-# Create bridge interface (example for Arch/Fedora)
-# Edit /etc/systemd/network/br0.netdev
-sudo tee /etc/systemd/network/br0.netdev > /dev/null <<EOF
-[NetDev]
-Name=br0
-Kind=bridge
-EOF
+# Check current permissions
+ls -l /dev/sdb
 
-# Edit /etc/systemd/network/br0.network
-sudo tee /etc/systemd/network/br0.network > /dev/null <<EOF
-[Match]
-Name=br0
+# Add yourself to the disk group
+sudo usermod -aG disk $USER
 
-[Network]
-DHCP=yes
-EOF
+# OR change libvirt user permissions (in /etc/libvirt/qemu.conf)
+sudo nano /etc/libvirt/qemu.conf
 
-# Bind physical interface to bridge
-sudo tee /etc/systemd/network/bind.network > /dev/null <<EOF
-[Match]
-Name=enp3s0
+# Uncomment and set:
+user = "your-username"
+group = "your-username"
 
-[Network]
-Bridge=br0
-EOF
-
-# Restart networking
-sudo systemctl restart systemd-networkd
+# Restart libvirtd
+sudo systemctl restart libvirtd
 ```
 
-**Using bridge in libvirt:**
+### ⚠️ CRITICAL WARNINGS
+
+**DO NOT:**
+- ❌ Mount a disk in both host AND VM simultaneously (data corruption!)
+- ❌ Pass through your root partition (`/`) while booted from it
+- ❌ Write to disks without backups first
+
+**SAFE PRACTICES:**
+- ✅ Unmount partitions on host before passing to VM
+- ✅ Use read-only mode if just accessing data
+- ✅ Pass entire disks (`/dev/sdb`) rather than partitions when possible
+- ✅ Test with non-critical disks first
+
+### Read-Only Mode (Safe Exploration)
+
+To mount a disk as read-only:
+
+1. Add the disk as described above
+2. Before finishing, go to **XML tab**
+3. Add `<readonly/>` inside the `<disk>` block:
+   ```xml
+   <disk type='block' device='disk'>
+     <driver name='qemu' type='raw' cache='none'/>
+     <source dev='/dev/sdb1'/>
+     <target dev='vdb' bus='virtio'/>
+     <readonly/>
+   </disk>
+   ```
+
+---
+
+## 🎮 6. GPU Passthrough: Ultimate Performance
+
+### What is GPU Passthrough?
+
+**Give your VM exclusive access to a dedicated GPU** for:
+- Near-native gaming performance in Windows VMs
+- CUDA/compute workloads
+- GPU-accelerated rendering
+- Machine learning in VMs
+
+### Requirements
+
+✅ **CPU:** Intel VT-d or AMD-Vi support (enable in BIOS)
+✅ **GPU:** Second GPU (or iGPU + dedicated GPU)
+✅ **Motherboard:** IOMMU support
+✅ **Bootloader:** IOMMU enabled in kernel parameters
+
+⚠️ **You need 2 GPUs:** One for host, one to pass to VM (or use iGPU for host + dGPU for VM)
+
+### Step 1: Enable IOMMU
+
+**Edit GRUB configuration:**
 
 ```bash
-# Define bridge network for libvirt
-cat > bridge-network.xml <<EOF
-<network>
-  <name>bridge-network</name>
-  <forward mode="bridge"/>
-  <bridge name="br0"/>
-</network>
-EOF
-
-virsh net-define bridge-network.xml
-virsh net-start bridge-network
-virsh net-autostart bridge-network
+sudo nano /etc/default/grub
 ```
 
-### Port Forwarding with NAT
+**For Intel CPUs, add:**
+```
+GRUB_CMDLINE_LINUX_DEFAULT="... intel_iommu=on iommu=pt"
+```
 
-**Forward host ports to VM:**
+**For AMD CPUs, add:**
+```
+GRUB_CMDLINE_LINUX_DEFAULT="... amd_iommu=on iommu=pt"
+```
+
+**Update GRUB and reboot:**
+```bash
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo reboot
+```
+
+**Verify IOMMU is enabled:**
+```bash
+dmesg | grep -i iommu
+# Should show IOMMU enabled
+```
+
+### Step 2: Find Your GPU's PCI IDs
 
 ```bash
-# Get VM IP address
-virsh domifaddr vm-name
+lspci -nnk | grep -i nvidia
+# OR
+lspci -nnk | grep -i amd
+# OR
+lspci -nnk | grep -i vga
 
-# Add port forward using iptables
-sudo iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.122.10:80
-sudo iptables -A FORWARD -d 192.168.122.10 -p tcp --dport 80 -j ACCEPT
+# Example output:
+# 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
+# 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]
+```
+
+**Note the IDs in brackets:** `10de:2484` and `10de:228b`
+
+### Step 3: Isolate the GPU from Host
+
+**Create vfio config:**
+
+```bash
+sudo nano /etc/modprobe.d/vfio.conf
+```
+
+**Add (use YOUR IDs from above!):**
+```
+options vfio-pci ids=10de:2484,10de:228b
+softdep nvidia pre: vfio-pci
+softdep nouveau pre: vfio-pci
+```
+
+**Update initramfs:**
+
+**Arch:**
+```bash
+sudo mkinitcpio -P
+```
+
+**Fedora:**
+```bash
+sudo dracut --force
+```
+
+**Debian/Ubuntu:**
+```bash
+sudo update-initramfs -u
+```
+
+**Reboot:**
+```bash
+sudo reboot
+```
+
+**Verify GPU is bound to vfio:**
+```bash
+lspci -nnk -d 10de:2484
+# Should show: Kernel driver in use: vfio-pci
+```
+
+### Step 4: Configure VM for GPU Passthrough
+
+**In virt-manager:**
+
+1. **Shut down your VM** (if running)
+
+2. **Open VM configuration**
+
+3. **Overview tab:**
+   - **Chipset:** Q35
+   - **Firmware:** UEFI (required!)
+
+4. **CPUs tab:**
+   - Enable **"Copy host CPU configuration"**
+
+5. **Click "Add Hardware"**
+
+6. **Select "PCI Host Device"**
+   - Find your GPU (will show the PCI address)
+   - Add the **VGA controller** (01:00.0)
+   - Click "Finish"
+
+7. **Repeat "Add Hardware"** for GPU audio device (01:00.1)
+
+8. **XML tab** (for advanced config):
+   - Click **XML** tab at top
+   - Find `<domain type='kvm'>` and change to:
+   ```xml
+   <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
+   ```
+   
+   - Add before `</domain>`:
+   ```xml
+   <qemu:commandline>
+     <qemu:arg value='-cpu'/>
+     <qemu:arg value='host,kvm=off,hv_vendor_id=null'/>
+   </qemu:commandline>
+   ```
+
+9. **Optional:** Remove Spice/QXL display if GPU is primary display
+
+10. **Apply and start VM**
+
+### Step 5: Install GPU Drivers in Guest
+
+**Windows:**
+- Download NVIDIA/AMD drivers as normal
+- Install and reboot
+- GPU should appear in Device Manager
+
+**Linux:**
+- Install drivers via package manager
+- Configure Xorg if needed
+
+### Troubleshooting GPU Passthrough
+
+**Error: "device is already in use"**
+```bash
+# Check what's using it
+lspci -k -s 01:00.0
+
+# Make sure host drivers are blacklisted
+```
+
+**Black screen / Code 43 error:**
+- Add KVM hiding: `kvm=off,hv_vendor_id=null`
+- Ensure UEFI firmware, not BIOS
+- Update GPU VBIOS (advanced)
+
+**VM won't start:**
+```bash
+# Check libvirt logs
+sudo journalctl -u libvirtd -f
+```
+
+### Chris Titus Tech GPU Passthrough Script
+
+For automated GPU passthrough setup on Arch:
+
+```bash
+git clone https://github.com/ChrisTitusTech/gpu-passthrough
+cd gpu-passthrough
+./install.sh
 ```
 
 ---
 
-## 💿 6. Storage Management
+## 💿 7. Converting & Importing Existing VM Disks
 
-### Storage Pool Types
+### From VirtualBox (VDI)
 
 ```bash
-# List storage pools
-virsh pool-list --all
+# Convert VDI to qcow2
+qemu-img convert -f vdi -O qcow2 ~/VirtualBox\ VMs/myvm/disk.vdi ~/vm-disk.qcow2
 
-# View default pool details
-virsh pool-info default
-
-# Default pool location: /var/lib/libvirt/images/
+# Import in virt-manager:
+# 1. Create new VM → "Import existing disk image"
+# 2. Browse to ~/vm-disk.qcow2
+# 3. Select OS type
+# 4. Configure RAM/CPU → Finish
 ```
 
-### Creating Additional Storage Pools
-
-**Create directory-based pool:**
+### From VMware (VMDK)
 
 ```bash
-# Create directory
-sudo mkdir -p /mnt/vms
+# Convert VMDK to qcow2
+qemu-img convert -f vmdk -O qcow2 ~/vmware/myvm/disk.vmdk ~/vm-disk.qcow2
 
-# Define pool
-virsh pool-define-as vm-storage dir --target /mnt/vms
-
-# Build, start, and autostart pool
-virsh pool-build vm-storage
-virsh pool-start vm-storage
-virsh pool-autostart vm-storage
+# Import as above
 ```
 
-### Managing Virtual Disks
-
-**Common disk operations:**
+### From Hyper-V (VHD/VHDX)
 
 ```bash
-# Create new disk image
-qemu-img create -f qcow2 /var/lib/libvirt/images/newdisk.qcow2 50G
+# Convert VHD to qcow2
+qemu-img convert -f vpc -O qcow2 ~/hyperv/disk.vhd ~/vm-disk.qcow2
 
-# Resize existing disk
-qemu-img resize /var/lib/libvirt/images/disk.qcow2 +20G
-
-# Check disk usage
-qemu-img info /var/lib/libvirt/images/disk.qcow2
-
-# Attach disk to running VM
-virsh attach-disk vm-name \
-  /var/lib/libvirt/images/newdisk.qcow2 \
-  vdb --live --config
-
-# Detach disk from VM
-virsh detach-disk vm-name vdb --live --config
+# Convert VHDX to qcow2
+qemu-img convert -f vhdx -O qcow2 ~/hyperv/disk.vhdx ~/vm-disk.qcow2
 ```
 
-### Disk Performance Optimization
-
-**Use virtio drivers for best performance:**
+### From Physical Disk (Clone Entire Drive)
 
 ```bash
-# When creating VM, specify virtio
-virt-install \
-  --disk path=/path/to/disk.qcow2,bus=virtio,cache=writeback \
-  ... # other options
+# Find your disk
+lsblk
+
+# Clone to image file (VERIFY DEVICE NAME!)
+sudo dd if=/dev/sdb of=~/physical-disk.img bs=4M status=progress
+
+# Convert to qcow2 for better compression
+qemu-img convert -f raw -O qcow2 ~/physical-disk.img ~/vm-disk.qcow2
+
+# Import in virt-manager
 ```
 
-**Disk cache modes:**
+⚠️ **WARNING:** Triple-check device names! `if=/dev/sda` could wipe your host OS!
 
-| Cache Mode | Performance | Data Safety | Use Case |
-| :--- | :--- | :--- | :--- |
-| `none` | Slower | Safest | Production databases |
-| `writethrough` | Medium | Safe | General purpose |
-| `writeback` | Fastest | Risk on host crash | Development/testing |
-
----
-
-## 📸 7. Snapshots & Backups
-
-### Internal Snapshots (qcow2)
-
-**Quick snapshots stored inside qcow2 disk:**
+### Expand Disk Size After Import
 
 ```bash
-# Create snapshot
-virsh snapshot-create-as vm-name snapshot1 "Before system update"
+# Resize the qcow2 file
+qemu-img resize ~/vm-disk.qcow2 +50G
 
-# List snapshots
-virsh snapshot-list vm-name
-
-# Restore snapshot
-virsh snapshot-revert vm-name snapshot1
-
-# Delete snapshot
-virsh snapshot-delete vm-name snapshot1
-
-# View snapshot info
-virsh snapshot-info vm-name snapshot1
-```
-
-### External Snapshots
-
-**Better for production - separate snapshot files:**
-
-```bash
-# Create external snapshot
-virsh snapshot-create-as vm-name snapshot-external \
-  --disk-only --atomic
-
-# List snapshot disk chain
-qemu-img info --backing-chain /var/lib/libvirt/images/vm-disk.qcow2
-```
-
-### VM Backup Strategy
-
-**Complete VM backup:**
-
-```bash
-# 1. Shutdown VM gracefully
-virsh shutdown vm-name
-
-# 2. Export VM configuration
-virsh dumpxml vm-name > vm-name.xml
-
-# 3. Copy disk image
-cp /var/lib/libvirt/images/vm-name.qcow2 ~/backups/
-
-# 4. Restart VM
-virsh start vm-name
-```
-
-**Live backup (no downtime):**
-
-```bash
-# Create external snapshot for backup
-virsh snapshot-create-as vm-name backup-snap --disk-only --atomic
-
-# Copy the base image while VM uses snapshot
-cp /var/lib/libvirt/images/vm-disk.qcow2 ~/backups/
-
-# Commit snapshot back to base
-virsh blockcommit vm-name vda --active --pivot
+# Then inside the guest OS:
+# Linux: Use gparted or fdisk + resize2fs
+# Windows: Use Disk Management to extend partition
 ```
 
 ---
 
-## ⚡ 8. Performance Tuning
+## 📸 8. Snapshots: Time Travel for VMs
 
-### CPU Configuration
+### Creating Snapshots (GUI)
 
+**In virt-manager:**
+
+1. Open your VM (doesn't need to be running)
+2. Click **"Manage VM Snapshots"** icon (camera/clock icon)
+3. Click **"Create new snapshot"** (+ button)
+4. Give it a name: "Before Windows Update" or "Clean Install"
+5. Optional: Add description
+6. Click **"Finish"**
+
+### Restoring Snapshots
+
+1. Open "Manage VM Snapshots"
+2. Select the snapshot you want to restore
+3. Click **"Run snapshot"** (play button)
+4. Confirm → Your VM reverts instantly!
+
+### When to Snapshot
+
+✅ **Before:**
+- Major system updates
+- Installing new software
+- Changing system configurations
+- Experimenting with settings
+
+✅ **After:**
+- Fresh OS installation (clean slate)
+- Getting software environment working
+- Successful configurations
+
+### Snapshot Tips
+
+- **Name snapshots clearly:** "2024-04-04-before-nvidia-driver" not "snap1"
+- **Don't rely on 50+ snapshots:** They eat disk space and slow down VMs
+- **Delete old snapshots:** Keep 3-5 important ones max
+- **External snapshots for production:** More reliable than internal
+
+### Deleting Snapshots
+
+1. Open "Manage VM Snapshots"
+2. Select old snapshot
+3. Click **"Delete snapshot"** (trash icon)
+4. Confirm
+
+**This merges the snapshot back into the base disk** - doesn't lose data from current state.
+
+---
+
+## ⚡ 9. Performance Tips
+
+### In Virt-Manager (Easy Optimizations)
+
+**CPUs Tab:**
+- ✅ Check **"Copy host CPU configuration"** (huge performance boost!)
+- ✅ Manually set topology: 1 socket, 4 cores, 1-2 threads
+
+**Boot Options:**
+- ✅ Enable boot menu for flexibility
+
+**Disk:**
+- ✅ Use **VirtIO** bus (not SATA/IDE)
+- ✅ Cache mode: **writeback** for speed (dev), **none** for safety (production)
+- ✅ Discard mode: **unmap** (for SSD trim support)
+
+**Network:**
+- ✅ Device model: **virtio**
+
+**Video:**
+- ✅ For Linux guests: **Virtio**
+- ✅ For Windows (no GPU passthrough): **QXL** or **Virtio**
+- ⚠️ Remove when using GPU passthrough
+
+### XML Tweaks for Maximum Performance
+
+**Edit VM (virt-manager → Open VM → Edit → Preferences → Enable XML editing)**
+
+**Or via command line:**
 ```bash
-# Edit VM CPU settings
 virsh edit vm-name
+```
 
-# Add CPU pinning and topology:
-<cpu mode='host-passthrough'>
-  <topology sockets='1' cores='4' threads='2'/>
+**Add host-passthrough CPU mode:**
+```xml
+<cpu mode='host-passthrough' check='none'>
+  <topology sockets='1' dies='1' cores='4' threads='2'/>
 </cpu>
 ```
 
-**CPU pinning for dedicated cores:**
+**Enable hugepages (if configured on host):**
+```xml
+<memoryBacking>
+  <hugepages/>
+</memoryBacking>
+```
 
+**Add CPU pinning for dedicated cores:**
 ```xml
 <vcpu placement='static' cpuset='2-5'>4</vcpu>
 <cputune>
@@ -472,43 +673,18 @@ virsh edit vm-name
 </cputune>
 ```
 
-### Memory Optimization
-
-**Enable hugepages for better performance:**
-
-```bash
-# Configure hugepages (add 2GB of 2MB hugepages)
-echo 1024 | sudo tee /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
-
-# Make permanent in /etc/sysctl.d/99-hugepages.conf
-echo "vm.nr_hugepages = 1024" | sudo tee /etc/sysctl.d/99-hugepages.conf
-
-# Configure VM to use hugepages
-virsh edit vm-name
-
-# Add inside <domain>:
-<memoryBacking>
-  <hugepages/>
-</memoryBacking>
-```
-
-### I/O Performance
-
-**Use virtio-scsi for better performance:**
-
-```bash
-# When creating VM
-virt-install \
-  --disk path=/path/to/disk.qcow2,bus=scsi,io=threads,cache=writeback \
-  --controller type=scsi,model=virtio-scsi \
-  ... # other options
+**For VirtIO SCSI (better I/O):**
+```xml
+<controller type='scsi' index='0' model='virtio-scsi'>
+  <driver queues='4' iothread='1'/>
+</controller>
 ```
 
 ---
 
-## 🎯 9. Essential virsh Commands
+## 🔧 10. Useful Commands (Quick Reference)
 
-### VM Lifecycle
+### Starting/Stopping VMs
 
 ```bash
 # List all VMs
@@ -517,137 +693,141 @@ virsh list --all
 # Start VM
 virsh start vm-name
 
-# Shutdown VM gracefully
+# Shutdown gracefully
 virsh shutdown vm-name
 
-# Force stop VM
+# Force stop (like pulling power)
 virsh destroy vm-name
 
-# Suspend VM (pause)
-virsh suspend vm-name
-
-# Resume VM
-virsh resume vm-name
-
-# Reboot VM
-virsh reboot vm-name
-
-# Delete VM (keeps disks)
-virsh undefine vm-name
-
-# Delete VM with storage
-virsh undefine vm-name --remove-all-storage
-```
-
-### VM Configuration
-
-```bash
-# Edit VM XML configuration
-virsh edit vm-name
-
-# View VM XML
-virsh dumpxml vm-name
-
-# Clone VM
-virt-clone --original vm-name --name cloned-vm --auto-clone
-
-# Autostart VM on boot
+# Auto-start VM on boot
 virsh autostart vm-name
-
-# Disable autostart
-virsh autostart vm-name --disable
 ```
 
-### Monitoring & Info
+### Getting VM Information
 
 ```bash
-# View VM info
-virsh dominfo vm-name
-
-# Show VM IP address
+# Get VM IP address
 virsh domifaddr vm-name
 
-# Monitor VM resources
+# View VM details
+virsh dominfo vm-name
+
+# Monitor resource usage
 virt-top
 
-# View VM console
-virsh console vm-name
+# Check if default network is running
+virsh net-list --all
+
+# Start default network
+virsh net-start default
+```
+
+### Cloning VMs
+
+```bash
+# Clone entire VM (auto-generates new disk)
+virt-clone --original vm-name --name new-vm-name --auto-clone
+```
+
+### Deleting VMs
+
+```bash
+# Delete VM config (keeps disk)
+virsh undefine vm-name
+
+# Delete VM AND all disks
+virsh undefine vm-name --remove-all-storage
 ```
 
 ---
 
-## 🔧 10. Troubleshooting
+## 🔧 11. Troubleshooting
 
-### Common Issues
+### VM Won't Start
 
-**Issue: "Failed to connect socket" error**
-
+**Error: "network 'default' is not active"**
 ```bash
-# Check libvirtd is running
-sudo systemctl status libvirtd
-
-# Restart service
-sudo systemctl restart libvirtd
-
-# Check user group membership
-groups | grep libvirt
-```
-
-**Issue: VM won't start - "network default is not active"**
-
-```bash
-# Start and enable default network
 virsh net-start default
 virsh net-autostart default
 ```
 
-**Issue: Poor VM performance**
-
+**Error: "Failed to connect socket"**
 ```bash
-# Install virtio drivers in guest OS
-# For Windows: Download virtio-win ISO
-# For Linux: Usually built-in
-
-# Verify virtio in use
-virsh dumpxml vm-name | grep virtio
+sudo systemctl restart libvirtd
+# Check you're in libvirt group:
+groups | grep libvirt
+# If not, add yourself and logout/login
 ```
 
-**Issue: Cannot access VM from host**
-
+**Error: Permission denied accessing disk**
 ```bash
-# Switch from NAT to bridge network
-# Or set up port forwarding (see Networking section)
+# Check disk ownership
+ls -l /var/lib/libvirt/images/
+
+# Fix permissions
+sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/
 ```
+
+### Windows Won't Install (No Disk Found)
+
+✅ **Solution:** Load VirtIO drivers during Windows installation (see Windows section above)
+
+### Poor Performance
+
+1. ✅ Enable **VirtIO** for disk and network
+2. ✅ Set CPU mode to **host-passthrough**
+3. ✅ Install guest tools (SPICE, VirtIO drivers)
+4. ✅ Allocate enough RAM (4GB+ for Windows, 2GB+ for Linux)
+
+### GPU Passthrough Not Working
+
+**Black screen / Code 43:**
+- ✅ Verify IOMMU is enabled: `dmesg | grep -i iommu`
+- ✅ Check GPU is bound to vfio: `lspci -nnk -d YOUR:GPUID`
+- ✅ Use UEFI firmware (not BIOS)
+- ✅ Add KVM hiding in XML: `kvm=off,hv_vendor_id=null`
+
+**VM crashes when starting with GPU:**
+```bash
+# Check logs
+sudo journalctl -u libvirtd -f
+```
+
+### Can't Access VM from Host Network
+
+**Using NAT (default):**
+- VMs can access internet, but host can't reach VM directly
+- Solution: Use bridge network or port forwarding
+
+**Using Bridge:**
+- VM gets IP from your router/DHCP
+- Accessible from anywhere on your LAN
 
 ---
 
-## 📚 11. Additional Resources
+## 📚 12. Additional Resources
 
-### Chris Titus Tech Ultimate Arch Linux VM Script
+### Chris Titus Tech Guides
 
-**Automated VM setup for Arch Linux:**
-
+**Ultimate Arch Linux VM Installation:**
 ```bash
-# Clone the repository
+# Automated setup script
 git clone https://github.com/ChrisTitusTech/virtualization
-
-# Follow the repository instructions for automated setup
 cd virtualization
-bash setup.sh
+./setup.sh
 ```
 
-The script handles:
-- KVM/QEMU/libvirt installation
-- Optimal performance configurations
-- Network setup with bridge
-- Storage pool configuration
+**Chris Titus GPU Passthrough Guide:**
+- [YouTube: GPU Passthrough Tutorial](https://www.youtube.com/watch?v=h7SG7ccjn-g)
+- [GitHub: GPU Passthrough Scripts](https://github.com/ChrisTitusTech/gpu-passthrough)
 
-### Official Documentation
+### Essential Reading
 
 - **Arch Wiki - KVM:** [wiki.archlinux.org/title/KVM](https://wiki.archlinux.org/title/KVM)
+- **Arch Wiki - PCI Passthrough:** [wiki.archlinux.org/title/PCI_passthrough_via_OVMF](https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF)
 - **Arch Wiki - Libvirt:** [wiki.archlinux.org/title/Libvirt](https://wiki.archlinux.org/title/Libvirt)
-- **Libvirt Documentation:** [libvirt.org](https://libvirt.org)
-- **QEMU Documentation:** [qemu.org/documentation/](https://qemu.org/documentation/)
+- **VirtIO Drivers:** [github.com/virtio-win/virtio-win-pkg-scripts](https://github.com/virtio-win/virtio-win-pkg-scripts)
+- **r/VFIO Community:** [reddit.com/r/VFIO](https://www.reddit.com/r/VFIO) - GPU passthrough help
 
 ---
 
