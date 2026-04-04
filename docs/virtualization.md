@@ -19,61 +19,191 @@ A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on Linux. Lear
 
 ### Arch Linux
 
+⚠️ **Update your system first:**
 ```bash
-# Core packages for virtualization
-sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq bridge-utils edk2-ovmf iptables-nft
-
-# Start the service
-sudo systemctl enable --now libvirtd.service
-
-# Add yourself to the libvirt group (LOGOUT/LOGIN REQUIRED!)
-sudo usermod -aG libvirt $USER
+sudo pacman -Syu
 ```
+
+**Install QEMU/KVM packages:**
+
+```bash
+# Complete virtualization stack
+sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat ebtables nftables libguestfs edk2-ovmf
+```
+
+💡 **Note:** If prompted to REMOVE `iptables`, select **YES**. `nftables` is the modern replacement.
+
+**Configure libvirt permissions:**
+
+Edit `/etc/libvirt/libvirtd.conf`:
+```bash
+sudo nano /etc/libvirt/libvirtd.conf
+```
+
+Find and uncomment/change these lines:
+```
+unix_sock_group = "libvirt"
+unix_sock_rw_perms = "0770"
+```
+
+**Add your user to libvirt group:**
+```bash
+sudo usermod -a -G libvirt $(whoami)
+newgrp libvirt
+```
+
+**Start and enable libvirtd:**
+```bash
+sudo systemctl enable --now libvirtd.service
+```
+
+**Reboot your system:**
+```bash
+sudo reboot
+```
+
+After reboot, launch virt-manager:
+```bash
+virt-manager
+```
+
+---
 
 ### Fedora
 
+⚠️ **Update your system first:**
 ```bash
-# One-liner virtualization group install
+sudo dnf upgrade --refresh
+```
+
+**Install virtualization group:**
+
+```bash
+# One-liner that installs everything
 sudo dnf install @virtualization
 
-# Start the service
-sudo systemctl enable --now libvirtd.service
-
-# Add yourself to the group
-sudo usermod -aG libvirt $USER
+# Or install packages individually:
+sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer bridge-utils libguestfs-tools
 ```
+
+**Configure libvirt permissions:**
+
+Edit `/etc/libvirt/libvirtd.conf`:
+```bash
+sudo nano /etc/libvirt/libvirtd.conf
+```
+
+Find and uncomment/change these lines:
+```
+unix_sock_group = "libvirt"
+unix_sock_rw_perms = "0770"
+```
+
+**Add your user to libvirt group:**
+```bash
+sudo usermod -a -G libvirt $(whoami)
+newgrp libvirt
+```
+
+**Start and enable libvirtd:**
+```bash
+sudo systemctl enable --now libvirtd.service
+```
+
+**Reboot your system:**
+```bash
+sudo reboot
+```
+
+After reboot, launch virt-manager:
+```bash
+virt-manager
+```
+
+---
 
 ### Debian/Ubuntu
 
+⚠️ **Update your system first:**
 ```bash
-# Install everything
-sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virt-manager virt-viewer bridge-utils ovmf
-
-# Start the service
-sudo systemctl enable --now libvirtd
-
-# Add yourself to the groups
-sudo usermod -aG libvirt,kvm $USER
+sudo apt update && sudo apt upgrade
 ```
 
-### ✅ Verify It Works
+**Install QEMU/KVM packages:**
+
+```bash
+# Complete virtualization stack
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-daemon libvirt-clients bridge-utils virt-manager virt-viewer libguestfs-tools ovmf
+```
+
+**Configure libvirt permissions:**
+
+Edit `/etc/libvirt/libvirtd.conf`:
+```bash
+sudo nano /etc/libvirt/libvirtd.conf
+```
+
+Find and uncomment/change these lines:
+```
+unix_sock_group = "libvirt"
+unix_sock_rw_perms = "0770"
+```
+
+**Add your user to libvirt and kvm groups:**
+```bash
+sudo usermod -a -G libvirt,kvm $(whoami)
+newgrp libvirt
+```
+
+**Restart libvirtd:**
+```bash
+sudo systemctl restart libvirtd
+```
+
+**Reboot your system:**
+```bash
+sudo reboot
+```
+
+After reboot, launch virt-manager:
+```bash
+virt-manager
+```
+
+---
+
+### ✅ Verify Everything Works
 
 ```bash
 # Check for KVM support
 lsmod | grep kvm
 # Should show: kvm_intel OR kvm_amd
 
-# Verify virtualization is enabled
+# Verify virtualization is enabled in CPU
 LC_ALL=C lscpu | grep Virtualization
 
-# Launch virt-manager
+# Check libvirt service is running
+sudo systemctl status libvirtd
+
+# Verify you're in the libvirt group
+groups | grep libvirt
+
+# Test virsh connection
+virsh list --all
+
+# Launch virt-manager GUI
 virt-manager
 ```
 
-⚠️ **IMPORTANT:** 
-1. Enable **Intel VT-x** or **AMD-V** in your BIOS/UEFI
-2. For GPU passthrough, also enable **VT-d** (Intel) or **AMD-Vi** (AMD)
-3. **LOGOUT and LOGIN** after adding yourself to groups!
+⚠️ **IMPORTANT BIOS/UEFI Settings:** 
+1. Enable **Intel VT-x** or **AMD-V** (required for KVM)
+2. Enable **Intel VT-d** or **AMD-Vi** (required for GPU/device passthrough)
+3. **Disable Secure Boot** if you have issues booting VMs
+
+💡 **Troubleshooting:**
+- If `virt-manager` won't connect: Make sure you logged out and back in after adding yourself to groups
+- If you see "KVM not found": Check BIOS virtualization settings
+- If permission errors: Verify libvirtd.conf was edited correctly
 
 ---
 
