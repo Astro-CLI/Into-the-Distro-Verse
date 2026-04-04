@@ -18,6 +18,7 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 | **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
 | **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
 | **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
+| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
 
 ---
 
