@@ -90,12 +90,19 @@ nix-collect-garbage -d
 
 ---
 
-## ⚠️ Important Note
+### ⚠️ Important Note
 Nix packages are usually located in `/nix/store` and linked to your profile. If you are using a GUI app installed via Nix on KDE, you may need to add the Nix desktop files to your path so they show up in your application menu:
 
+**Shell (Bash/Zsh):**
 ```bash
 # Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu
 export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
+```
+
+**Shell (Fish):**
+```fish
+# Add this to your ~/.config/fish/config.fish if apps don't show in menu
+set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
 ```
 
 ---

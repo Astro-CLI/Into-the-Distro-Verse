@@ -259,7 +259,57 @@ Now click **"Begin Installation"** in the top-left!
 
 ---
 
-## 💾 4. Windows VMs: The VirtIO Driver Setup
+## 💽 4. Understanding Disk Controllers: SATA vs SCSI vs VirtIO
+
+When creating a VM, you need to choose a disk controller type. Here's what you need to know:
+
+### 📊 Quick Comparison
+
+| Controller | Performance | Windows Support | Best For |
+|------------|-------------|-----------------|----------|
+| **SATA** | ⭐⭐ Slow | ✅ Works out of the box | Easy setup, compatibility |
+| **SCSI (virtio-scsi)** | ⭐⭐⭐ Good | ⚠️ Needs VirtIO drivers | Many devices, server workloads |
+| **VirtIO (virtio-blk)** | ⭐⭐⭐⭐⭐ Fastest | ⚠️ Needs VirtIO drivers | Maximum performance |
+
+### 🔍 Detailed Breakdown
+
+#### SATA (Serial ATA)
+- ✅ **Works immediately** with Windows - no drivers needed
+- ❌ **Slower performance** - higher overhead
+- ❌ **Limited devices** - typically 4-6 drives per controller
+- 👍 **Use when:** You want zero hassle during Windows installation
+- 💡 **Speed:** ~100-200 MB/s typical
+
+#### SCSI (virtio-scsi)
+- ✅ **Better performance** than SATA
+- ✅ **Many devices** - can handle hundreds of drives
+- ✅ **Better for servers** - ideal for multi-disk setups
+- ⚠️ **Requires VirtIO drivers** for Windows
+- 👍 **Use when:** You need good performance with multiple disks
+- 💡 **Speed:** ~500-800 MB/s typical
+
+#### VirtIO (virtio-blk)
+- ✅ **Best performance** - lowest CPU overhead
+- ✅ **Native to KVM/QEMU** - optimized paravirtualization
+- ✅ **Linux works automatically** - drivers built into kernel
+- ⚠️ **Requires VirtIO drivers** for Windows
+- ❌ **One device per controller** - less flexible
+- 👍 **Use when:** You want maximum speed (gaming, intensive workloads)
+- 💡 **Speed:** ~1-2 GB/s+ possible
+
+### 🎯 Recommendation
+
+**For Windows VMs:**
+1. **During installation:** Use SATA for easy setup OR add VirtIO drivers during install (see below)
+2. **After installation:** Switch to VirtIO for best performance
+3. **For gaming/performance:** Always use VirtIO with drivers installed
+
+**For Linux VMs:**
+- Always use **VirtIO** - it works out of the box and gives best performance
+
+---
+
+## 💾 5. Windows VMs: The VirtIO Driver Setup
 
 ### Why VirtIO Matters
 
@@ -326,7 +376,7 @@ After installing virtio drivers, install SPICE guest tools for:
 
 ---
 
-## 🔌 5. Attaching Physical Disks (/dev/sda, /dev/nvme0n1, etc.)
+## 🔌 6. Attaching Physical Disks (/dev/sda, /dev/nvme0n1, etc.)
 
 ### Why Attach Physical Disks?
 
@@ -421,7 +471,7 @@ To mount a disk as read-only:
 
 ---
 
-## 🎮 6. GPU Passthrough: Ultimate Performance
+## 🎮 7. GPU Passthrough: Ultimate Performance
 
 ### What is GPU Passthrough?
 
@@ -616,7 +666,7 @@ cd gpu-passthrough
 
 ---
 
-## 💿 7. Converting & Importing Existing VM Disks
+## 💿 8. Converting & Importing Existing VM Disks
 
 ### From VirtualBox (VDI)
 
@@ -680,7 +730,7 @@ qemu-img resize ~/vm-disk.qcow2 +50G
 
 ---
 
-## 📸 8. Snapshots: Time Travel for VMs
+## 📸 9. Snapshots: Time Travel for VMs
 
 ### Creating Snapshots (GUI)
 
@@ -731,7 +781,7 @@ qemu-img resize ~/vm-disk.qcow2 +50G
 
 ---
 
-## ⚡ 9. Performance Tips
+## ⚡ 10. Performance Tips
 
 ### In Virt-Manager (Easy Optimizations)
 
@@ -798,7 +848,7 @@ virsh edit vm-name
 
 ---
 
-## 🔧 10. Useful Commands (Quick Reference)
+## 🔧 11. Useful Commands (Quick Reference)
 
 ### Starting/Stopping VMs
 
@@ -857,7 +907,7 @@ virsh undefine vm-name --remove-all-storage
 
 ---
 
-## 🔧 11. Troubleshooting
+## 🔧 12. Troubleshooting
 
 ### VM Won't Start
 
@@ -921,7 +971,7 @@ sudo journalctl -u libvirtd -f
 
 ---
 
-## 📚 12. Additional Resources
+## 📚 13. Additional Resources
 
 ### Chris Titus Tech Guides
 
@@ -947,7 +997,7 @@ cd virtualization
 
 ---
 
-## 🔗 Related Guides
+## 🔗 14. Related Guides
 
 *   📖 **[Arch Linux Setup](arch.md)** - Installing virtualization tools on Arch.
 *   📖 **[Fedora Configuration](fedora.md)** - Virtualization group installation on Fedora.

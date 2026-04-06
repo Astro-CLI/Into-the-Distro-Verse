@@ -27,6 +27,8 @@ sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mir
 
 ### Install AUR Helper (`paru`)
 Paru is a modern AUR helper written in Rust. It's the primary way to access the vast library of community packages.
+
+**Shell (Bash/Zsh/Fish):**
 ```bash
 sudo pacman -S --needed base-devel git && \
 git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru

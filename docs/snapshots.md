@@ -74,6 +74,29 @@ sudo btrfs balance start -dusage=50 /
 
 ---
 
+## ⚠️ 5. Troubleshooting & Performance
+
+### Btrfs Quota Freezes (NVMe/SSD Lockups)
+A common issue on BTRFS systems using TimeShift or Snapper is a **2-minute system-wide freeze** whenever a snapshot is deleted. This is caused by Btrfs Quotas (`qgroups`) trying to rescan and calculate disk usage.
+
+**The Fix:** Disable Btrfs quotas. TimeShift will still work, but it won't show the "Estimated Size" of snapshots in the GUI.
+
+**Shell (Bash/Zsh/Fish):**
+```bash
+sudo btrfs quota disable /
+```
+
+### Efficient Boot Menu Updates
+Instead of running `grub-mkconfig` manually or via heavy hooks (which can be slow), use the `grub-btrfsd` daemon. It only updates the menu when a snapshot change is detected.
+
+**Shell (Bash/Zsh/Fish):**
+```bash
+# Arch/Fedora
+sudo systemctl enable --now grub-btrfsd.service
+```
+
+---
+
 ## 🔗 Related Guides
 *   📖 **[Arch Linux Guide](arch.md)** - Specific BTRFS layout and bootloader setup for Arch.
 *   📖 **[Fedora Guide](fedora.md)** - Snapshot management and SELinux considerations.

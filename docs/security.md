@@ -25,6 +25,36 @@ Then run: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
 sudo systemctl enable --now apparmor.service
 ```
 
+### 4. Performance & Logging (Fixing "Slowness")
+AppArmor can severely slow down your system if it logs too many "ALLOWED" actions. This typically happens when profiles are in **Complain** mode.
+
+**The Fix:** Move profiles to **Enforce** mode. This allows the actions but stops the noisy logging to your disk.
+
+1. **Resolve Profile Conflicts:**
+   Duplicate profiles (e.g., `brave` and `brave.apparmor.d`) will cause errors. Backup and remove duplicates.
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo mkdir -p /etc/apparmor.d/backup
+   sudo mv /etc/apparmor.d/*.apparmor.d /etc/apparmor.d/backup/
+   ```
+
+2. **Switch to Enforce Mode:**
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo find /etc/apparmor.d/ -maxdepth 1 -type f -exec aa-enforce {} +
+   ```
+
+3. **Silence Audit Logging (If needed):**
+   If the system is still slow due to kernel auditing, you can temporarily silence it:
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo auditctl -e 0
+   ```
+   Or permanently by adding `audit=0` to your GRUB kernel parameters.
+
 ---
 
 ## 🧱 Firewall: UFW vs. Firewalld

@@ -38,11 +38,18 @@ Run the official installer script:
 
 ## ⚙️ 2. Post-Installation (Crucial)
 
-After the script finishes, it will give you a few lines to add to your `~/.bashrc` or `~/.zshrc`. **Don't skip this!** It usually looks like this:
+After the script finishes, it will give you a few lines to add to your shell profile. **Don't skip this!**
 
+**Shell (Bash/Zsh):**
 ```bash
-# Add this to your shell profile (~/.zshrc or ~/.bashrc)
+# Add this to your ~/.bashrc or ~/.zshrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+```
+
+**Shell (Fish):**
+```fish
+# Add this to your ~/.config/fish/config.fish
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 ```
 
 Then, verify the installation:
