@@ -585,6 +585,208 @@ sudo pacman -S pipewire-pulse libldac
 
 ---
 
+## 🗣️ Text-to-Speech (TTS) Systems
+
+Linux offers several text-to-speech engines for accessibility, voice assistants, and screen readers.
+
+### Comparison of TTS Engines
+
+| Engine | Quality | Speed | Resource Usage | Best For |
+|--------|---------|-------|----------------|----------|
+| **Piper** | Excellent | Fast | Medium | Modern neural TTS, best quality |
+| **Festival** | Basic | Slow | Low | Legacy compatibility |
+| **eSpeak-NG** | Good | Very Fast | Very Low | Speed and efficiency |
+| **Mimic 3** | Excellent | Medium | High | Cloud-based, high quality |
+
+### Piper (Recommended)
+
+**Piper** is a fast, local neural text-to-speech system that produces high-quality, natural-sounding voices. It uses ONNX models and provides excellent results without requiring cloud services.
+
+#### Installation
+
+```bash
+# Arch - Install Piper
+sudo pacman -S piper-tts
+
+# Install voice models (minimal - single US English voice)
+paru -S piper-voices-minimal
+
+# Or install more comprehensive US English voices
+paru -S piper-voices-en-us
+
+# Other languages available:
+# piper-voices-en-gb, piper-voices-de-de, piper-voices-es-es, etc.
+```
+
+#### Standalone Usage
+
+```bash
+# Basic text-to-speech
+echo "Hello, this is Piper speaking" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file output.wav
+
+# Play directly (requires aplay or paplay)
+echo "Welcome to Linux" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | aplay
+```
+
+#### Integrating with Speech-Dispatcher
+
+Speech-Dispatcher is the standard interface for TTS on Linux, used by screen readers and accessibility tools.
+
+**Step 1: Create Piper configuration**
+```bash
+sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
+```
+
+Add this configuration:
+```conf
+# Piper TTS module configuration
+
+Debug 0
+
+GenericExecuteSynth \
+"printf %s '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | $PLAY_COMMAND"
+
+GenericCmdDependency "piper-tts"
+GenericSoundIconFolder "/usr/share/sounds/sound-icons/"
+
+GenericPunctNone ""
+GenericPunctSome ""
+GenericPunctMost ""
+GenericPunctAll ""
+
+AddVoice "en" "MALE1" "en_US-lessac-medium"
+AddVoice "en" "FEMALE1" "en_US-lessac-medium"
+
+DefaultVoice "en_US-lessac-medium"
+```
+
+**Step 2: Enable Piper in Speech-Dispatcher**
+```bash
+sudo nano /etc/speech-dispatcher/speechd.conf
+```
+
+Find and modify these lines (around line 273-301):
+```conf
+# Comment out Festival (or other default)
+#AddModule "festival"                 "sd_festival"  "festival.conf"
+
+# Add Piper module
+AddModule "piper-generic"            "sd_generic"   "piper-generic.conf"
+
+# Set Piper as default
+DefaultModule piper-generic
+```
+
+**Step 3: Restart Speech-Dispatcher**
+```bash
+systemctl --user restart speech-dispatcher
+```
+
+**Step 4: Test it**
+```bash
+# Test with spd-say
+spd-say "Hello, this is Piper speaking through speech dispatcher"
+
+# Test with different voice types
+spd-say -t MALE1 "This is a male voice"
+spd-say -t FEMALE1 "This is a female voice"
+```
+
+#### Available Voice Models
+
+After installing voice packages, models are typically located in:
+```
+/usr/share/piper-voices/[language]/[locale]/[voice]/[quality]/
+```
+
+List available models:
+```bash
+find /usr/share/piper-voices -name "*.onnx"
+```
+
+### eSpeak-NG (Lightweight Alternative)
+
+Fast, lightweight TTS engine, great for low-resource systems.
+
+```bash
+# Arch
+sudo pacman -S espeak-ng
+
+# Test it
+espeak-ng "Hello from eSpeak"
+
+# With speech-dispatcher (usually pre-configured)
+spd-say -o espeak-ng "Testing espeak"
+```
+
+### Festival (Legacy)
+
+Classic TTS engine, often the default but lower quality.
+
+```bash
+# Arch
+sudo pacman -S festival festival-us
+
+# Test it
+echo "Hello from Festival" | festival --tts
+
+# Usually pre-configured in speech-dispatcher
+```
+
+### Mimic 3 (Cloud/Self-Hosted)
+
+High-quality neural TTS, can run locally or via remote server.
+
+```bash
+# Install as server (requires Python)
+pip install mycroft-mimic3-tts
+
+# Run local server
+mimic3-server
+
+# Configure speech-dispatcher to use mimic3-generic.conf
+# (Similar process to Piper configuration above)
+```
+
+---
+
+## 🎤 Screen Readers & Accessibility
+
+### Orca Screen Reader
+
+GNOME's screen reader, integrates with speech-dispatcher.
+
+```bash
+# Arch
+sudo pacman -S orca
+
+# Launch
+orca --setup
+
+# Enable on login
+gsettings set org.gnome.desktop.a11y.applications screen-reader-enabled true
+```
+
+### Speech-Dispatcher Tools
+
+```bash
+# List available output modules
+spd-say -O
+
+# Set volume
+spd-say -i 100 "Maximum volume"
+spd-say -i 50 "Half volume"
+
+# Set speaking rate
+spd-say -r 50 "Faster speech"
+spd-say -r -50 "Slower speech"
+
+# List voices
+spd-say -L
+```
+
+---
+
 ## 📚 Additional Resources
 
 - **Arch Wiki - PipeWire:** [wiki.archlinux.org/title/PipeWire](https://wiki.archlinux.org/title/PipeWire)
