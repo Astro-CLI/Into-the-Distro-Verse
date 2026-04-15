@@ -21,6 +21,7 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 | **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
 | **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
 | **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
+| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
 | **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
 
 ---
