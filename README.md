@@ -23,6 +23,7 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 | **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
 | **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
 | **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
+| **Streaming Services** | Music & video streaming without ads | [**docs/streaming/**](docs/streaming/) |
 
 ---
 
