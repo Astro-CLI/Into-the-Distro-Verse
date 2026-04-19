@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Management Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="site-title" href="index.html">Into the Distro-Verse Wiki</a>
+            <nav aria-label="Main navigation">
+                <ul class="top-links">
+                    <li><a href="index.html">Main page</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="wiki-layout">
+        <aside class="wiki-toc" aria-label="Page contents">
+            <h2>Contents</h2>
+            <ul>
+                <li class='level-1'><a href='#package-management-guide'>Package Management Guide</a></li>
+<li class='level-2'><a href='#package-lists'>📂 Package Lists</a></li>
+<li class='level-2'><a href='#restoration-how-to-install-everything'>🚀 Restoration (How to install everything)</a></li>
+<li class='level-3'><a href='#arch-linux'>Arch Linux</a></li>
+<li class='level-3'><a href='#universal-flatpaks'>Universal (Flatpaks)</a></li>
+<li class='level-2'><a href='#maintenance-syncing'>🔄 Maintenance & Syncing</a></li>
+<li class='level-3'><a href='#sync-arch-lists'>Sync Arch Lists</a></li>
+<li class='level-3'><a href='#sync-universal-lists'>Sync Universal Lists</a></li>
+            </ul>
+        </aside>
+
+        <article class="wiki-article">
+            <h1 id="package-management-guide">Package Management Guide</h1>
+<p>This directory contains the package lists and restoration scripts for various Linux distributions. Use these files to quickly replicate a software environment on a fresh installation.</p>
+<div class="markdown-alert markdown-alert-important">
+<p class="markdown-alert-title"><svg viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<p><strong>Naming Conventions:</strong> Most package names in these lists are based on <strong>Arch Linux</strong> or <strong>AUR</strong> naming conventions. Package names may vary slightly in other distributions or repositories (e.g., <code>python-pip</code> vs <code>python3-pip</code>). Always verify the exact name if using these lists on a non-Arch system.</p>
+</div>
+<hr />
+<h2 id="package-lists">📂 Package Lists</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">List</th>
+<th style="text-align: left;">Distribution</th>
+<th style="text-align: left;">Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>arch_pkglist.txt</code></strong></td>
+<td style="text-align: left;">Arch Linux</td>
+<td style="text-align: left;">Official Repos (<code>core</code>, <code>extra</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>arch_aur_list.txt</code></strong></td>
+<td style="text-align: left;">Arch Linux</td>
+<td style="text-align: left;">AUR (via <code>paru</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>fedora_pkglist.txt</code></strong></td>
+<td style="text-align: left;">Fedora</td>
+<td style="text-align: left;">Official DNF Repos</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>flatpak_list.txt</code></strong></td>
+<td style="text-align: left;">Universal</td>
+<td style="text-align: left;">Flathub</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="restoration-how-to-install-everything">🚀 Restoration (How to install everything)</h2>
+<h3 id="arch-linux">Arch Linux</h3>
+<pre><code class="language-bash"># 1. Install Official Packages
+sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
+
+# 2. Install AUR Packages
+paru -S --needed - &lt; packages/arch_aur_list.txt
+</code></pre>
+<h3 id="universal-flatpaks">Universal (Flatpaks)</h3>
+<pre><code class="language-bash"># Install Flatpaks on any system
+xargs -a packages/flatpak_list.txt -r flatpak install -y
+</code></pre>
+<hr />
+<h2 id="maintenance-syncing">🔄 Maintenance &amp; Syncing</h2>
+<p>To keep these lists updated with your current system configuration:</p>
+<h3 id="sync-arch-lists">Sync Arch Lists</h3>
+<pre><code class="language-bash">pacman -Qqen &gt; packages/arch_pkglist.txt
+paru -Qqem &gt; packages/arch_aur_list.txt
+</code></pre>
+<h3 id="sync-universal-lists">Sync Universal Lists</h3>
+<pre><code class="language-bash">flatpak list --app --columns=application &gt; packages/flatpak_list.txt
+</code></pre>
+        </article>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
