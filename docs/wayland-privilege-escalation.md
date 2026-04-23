@@ -71,11 +71,54 @@ wireshark
 
 ---
 
-## Solution 2: Wayland-Aware pkexec Wrapper
+## Solution 2: Direct pkexec with Environment Variables
 
-**Best for:** Apps that truly require full root GUI access (file editors on system files, admin tools, etc.)
+**Best for:** Quick one-off commands or minimal setup
 
-**How it works:** Create a wrapper script that preserves Wayland environment variables before `pkexec` escalates.
+**How it works:** Pass Wayland variables directly to `pkexec` via `env`.
+
+### Usage
+
+```bash
+# Edit system file with theme intact
+pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab
+
+# Or any other app
+pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR kate /etc/fstab
+```
+
+### Add an Alias (Optional)
+
+```bash
+# For Fish shell (~/.config/fish/config.fish)
+alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'
+
+# For Bash/Zsh (~/.bashrc or ~/.zshrc)
+alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'
+```
+
+Then use:
+```bash
+pkexec-gui kate /etc/fstab
+```
+
+### Advantages
+- ✅ Minimal setup (no wrapper script needed)
+- ✅ Transparent what variables are being passed
+- ✅ Works immediately
+- ✅ Good for one-off commands
+
+### Disadvantages
+- ❌ Long command line (but fixable with alias)
+- ❌ Runs entire application as root
+
+---
+
+## Solution 3: Wayland-Aware pkexec Wrapper
+
+**Best for:** Frequently used privileged apps, cleaner workflow
+
+**How it works:** Create a reusable wrapper script that preserves Wayland environment variables before `pkexec` escalates.
 
 ### Setup
 
@@ -122,12 +165,29 @@ pkexec /usr/local/bin/run-as-root kate /etc/fstab
 - ✅ Works for any GUI app
 - ✅ Wayland display and theme preserved
 - ✅ Reusable for multiple applications
-- ✅ One-liner usage with alias
+- ✅ Cleaner than long command lines
 
 ### Disadvantages
 - ❌ Runs entire application as root (less secure than group approach)
 - ❌ Requires creating wrapper script
 - ❌ Should only be used when necessary
+
+---
+
+## Comparison: Direct vs Wrapper Approach
+
+| Aspect | Direct (`env`) | Wrapper Script |
+|--------|----------------|----------------|
+| Setup Time | 30 seconds (alias only) | 2 minutes |
+| Command Length | Long (but alias hides it) | Short & clean |
+| Reusability | Good with alias | Better for frequent use |
+| Transparency | See variables in command | Hidden in wrapper |
+| Best For | One-off commands | Regular workflows |
+
+**Recommendation:** 
+- Use **direct `env`** for occasional root GUI access
+- Use **wrapper script** if you frequently need privileged GUI apps
+- Both are equally secure in terms of what's exposed
 
 ---
 
