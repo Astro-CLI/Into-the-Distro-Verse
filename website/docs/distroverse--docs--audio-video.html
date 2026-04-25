@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio & Video Production Setup 🎵🎬</title>
+    <title>Into the Distro-Verse 🌌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,84 +24,85 @@
     <main class="wiki-layout">
         <aside class="wiki-toc" aria-label="Page contents">
             <h2>Contents</h2>
-            <ul>
-                <li class='level-1'><a href='#audio-video-production-setup'>Audio & Video Production Setup 🎵🎬</a></li>
-<li class='level-2'><a href='#audio-server-comparison-pipewire-vs-pulseaudio'>🔊 Audio Server Comparison: PipeWire vs PulseAudio</a></li>
-<li class='level-3'><a href='#pipewire-modern-recommended'>PipeWire (Modern, Recommended)</a></li>
-<li class='level-3'><a href='#pulseaudio-legacy-still-widely-used'>PulseAudio (Legacy, Still Widely Used)</a></li>
-<li class='level-3'><a href='#checking-your-current-audio-server'>Checking Your Current Audio Server</a></li>
-<li class='level-2'><a href='#pipewire-setup-tools'>🎛️ PipeWire Setup & Tools</a></li>
-<li class='level-3'><a href='#installing-pipewire-arch'>Installing PipeWire (Arch)</a></li>
-<li class='level-3'><a href='#installing-pipewire-fedora'>Installing PipeWire (Fedora)</a></li>
-<li class='level-3'><a href='#installing-pipewire-debianubuntu'>Installing PipeWire (Debian/Ubuntu)</a></li>
-<li class='level-3'><a href='#pipewire-control-tools'>PipeWire Control Tools</a></li>
-<li class='level-3'><a href='#low-latency-configuration'>Low-Latency Configuration</a></li>
-<li class='level-2'><a href='#pulseaudio-tools-legacy'>🎚️ PulseAudio Tools (Legacy)</a></li>
-<li class='level-3'><a href='#installing-pulseaudio'>Installing PulseAudio</a></li>
-<li class='level-3'><a href='#pulseaudio-control-tools'>PulseAudio Control Tools</a></li>
-<li class='level-2'><a href='#easyeffects-audio-enhancement'>✨ EasyEffects (Audio Enhancement)</a></li>
-<li class='level-3'><a href='#installation'>Installation</a></li>
-<li class='level-3'><a href='#essential-plugins'>Essential Plugins</a></li>
-<li class='level-3'><a href='#popular-presets'>Popular Presets</a></li>
-<li class='level-3'><a href='#pro-tips'>Pro Tips</a></li>
-<li class='level-2'><a href='#pro-audio-production'>🎙️ Pro-Audio Production</a></li>
-<li class='level-3'><a href='#linux-audio-real-time-setup'>Linux Audio Real-Time Setup</a></li>
-<li class='level-3'><a href='#jack-audio-connection-kit'>JACK Audio Connection Kit</a></li>
-<li class='level-2'><a href='#digital-audio-workstations-daws'>🎹 Digital Audio Workstations (DAWs)</a></li>
-<li class='level-3'><a href='#ardour-professional-open-source'>Ardour (Professional, Open Source)</a></li>
-<li class='level-3'><a href='#reaper-commercial-linux-friendly'>Reaper (Commercial, Linux-friendly)</a></li>
-<li class='level-3'><a href='#lmms-beginner-friendly'>LMMS (Beginner-Friendly)</a></li>
-<li class='level-3'><a href='#bitwig-studio-commercial'>Bitwig Studio (Commercial)</a></li>
-<li class='level-3'><a href='#rosegarden-midi-focused'>Rosegarden (MIDI-focused)</a></li>
-<li class='level-3'><a href='#audacity-audio-editing'>Audacity (Audio Editing)</a></li>
-<li class='level-2'><a href='#audio-plugins-virtual-instruments'>🎸 Audio Plugins & Virtual Instruments</a></li>
-<li class='level-3'><a href='#plugin-formats'>Plugin Formats</a></li>
-<li class='level-3'><a href='#essential-plugin-collections'>Essential Plugin Collections</a></li>
-<li class='level-3'><a href='#virtual-instruments'>Virtual Instruments</a></li>
-<li class='level-3'><a href='#vst-support-winelinvst'>VST Support (Wine/LinVST)</a></li>
-<li class='level-2'><a href='#video-production-streaming'>🎬 Video Production & Streaming</a></li>
-<li class='level-3'><a href='#obs-studio-streaming-recording'>OBS Studio (Streaming & Recording)</a></li>
-<li class='level-3'><a href='#kdenlive-video-editing'>Kdenlive (Video Editing)</a></li>
-<li class='level-3'><a href='#davinci-resolve-professional-commercial'>DaVinci Resolve (Professional, Commercial)</a></li>
-<li class='level-3'><a href='#blender-3d-video-editing'>Blender (3D & Video Editing)</a></li>
-<li class='level-3'><a href='#shotcut-beginner-friendly'>Shotcut (Beginner-Friendly)</a></li>
-<li class='level-2'><a href='#screen-recording-capture'>🎥 Screen Recording & Capture</a></li>
-<li class='level-3'><a href='#simplescreenrecorder'>SimpleScreenRecorder</a></li>
-<li class='level-3'><a href='#gpu-screen-record'>GPU Screen Record</a></li>
-<li class='level-3'><a href='#kooha-wayland-native'>Kooha (Wayland-native)</a></li>
-<li class='level-2'><a href='#additional-tools'>🎨 Additional Tools</a></li>
-<li class='level-3'><a href='#video-converters'>Video Converters</a></li>
-<li class='level-3'><a href='#audio-converters'>Audio Converters</a></li>
-<li class='level-3'><a href='#noise-reduction'>Noise Reduction</a></li>
-<li class='level-2'><a href='#quick-start-guide'>🎯 Quick Start Guide</a></li>
-<li class='level-3'><a href='#for-music-production'>For Music Production</a></li>
-<li class='level-3'><a href='#for-streamingrecording'>For Streaming/Recording</a></li>
-<li class='level-3'><a href='#for-podcast-production'>For Podcast Production</a></li>
-<li class='level-2'><a href='#troubleshooting'>🔧 Troubleshooting</a></li>
-<li class='level-3'><a href='#no-sound-after-installing-pipewire'>No Sound After Installing PipeWire</a></li>
-<li class='level-3'><a href='#high-latency-in-daw'>High Latency in DAW</a></li>
-<li class='level-3'><a href='#obs-wont-capture-screen-wayland'>OBS Won't Capture Screen (Wayland)</a></li>
-<li class='level-3'><a href='#bluetooth-audio-quality-poor'>Bluetooth Audio Quality Poor</a></li>
-<li class='level-2'><a href='#text-to-speech-tts-systems'>🗣️ Text-to-Speech (TTS) Systems</a></li>
-<li class='level-3'><a href='#comparison-of-tts-engines'>Comparison of TTS Engines</a></li>
-<li class='level-3'><a href='#piper-recommended'>Piper (Recommended)</a></li>
-<li class='level-3'><a href='#espeak-ng-lightweight-alternative'>eSpeak-NG (Lightweight Alternative)</a></li>
-<li class='level-3'><a href='#festival-legacy'>Festival (Legacy)</a></li>
-<li class='level-3'><a href='#mimic-3-cloudself-hosted'>Mimic 3 (Cloud/Self-Hosted)</a></li>
-<li class='level-2'><a href='#screen-readers-accessibility'>🎤 Screen Readers & Accessibility</a></li>
-<li class='level-3'><a href='#orca-screen-reader'>Orca Screen Reader</a></li>
-<li class='level-3'><a href='#speech-dispatcher-tools'>Speech-Dispatcher Tools</a></li>
-<li class='level-2'><a href='#additional-resources'>📚 Additional Resources</a></li>
+<ul>
+                <li class='level-1'><a href='#audio-video-production-setup-'>Audio & Video Production Setup 🎵🎬</a></li>
+                <li class='level-2'><a href='#-audio-server-comparison-pipewire-vs-pulseaudio'>🔊 Audio Server Comparison: PipeWire vs PulseAudio</a></li>
+                <li class='level-3'><a href='#pipewire-modern-recommended'>PipeWire (Modern, Recommended)</a></li>
+                <li class='level-3'><a href='#pulseaudio-legacy-still-widely-used'>PulseAudio (Legacy, Still Widely Used)</a></li>
+                <li class='level-3'><a href='#checking-your-current-audio-server'>Checking Your Current Audio Server</a></li>
+                <li class='level-2'><a href='#-pipewire-setup-tools'>🎛️ PipeWire Setup & Tools</a></li>
+                <li class='level-3'><a href='#installing-pipewire-arch'>Installing PipeWire (Arch)</a></li>
+                <li class='level-3'><a href='#installing-pipewire-fedora'>Installing PipeWire (Fedora)</a></li>
+                <li class='level-3'><a href='#installing-pipewire-debianubuntu'>Installing PipeWire (Debian/Ubuntu)</a></li>
+                <li class='level-3'><a href='#pipewire-control-tools'>PipeWire Control Tools</a></li>
+                <li class='level-3'><a href='#low-latency-configuration'>Low-Latency Configuration</a></li>
+                <li class='level-2'><a href='#-pulseaudio-tools-legacy'>🎚️ PulseAudio Tools (Legacy)</a></li>
+                <li class='level-3'><a href='#installing-pulseaudio'>Installing PulseAudio</a></li>
+                <li class='level-3'><a href='#pulseaudio-control-tools'>PulseAudio Control Tools</a></li>
+                <li class='level-2'><a href='#-easyeffects-audio-enhancement'>✨ EasyEffects (Audio Enhancement)</a></li>
+                <li class='level-3'><a href='#installation'>Installation</a></li>
+                <li class='level-3'><a href='#essential-plugins'>Essential Plugins</a></li>
+                <li class='level-3'><a href='#popular-presets'>Popular Presets</a></li>
+                <li class='level-3'><a href='#pro-tips'>Pro Tips</a></li>
+                <li class='level-2'><a href='#-pro-audio-production'>🎙️ Pro-Audio Production</a></li>
+                <li class='level-3'><a href='#linux-audio-real-time-setup'>Linux Audio Real-Time Setup</a></li>
+                <li class='level-3'><a href='#jack-audio-connection-kit'>JACK Audio Connection Kit</a></li>
+                <li class='level-2'><a href='#-digital-audio-workstations-daws'>🎹 Digital Audio Workstations (DAWs)</a></li>
+                <li class='level-3'><a href='#ardour-professional-open-source'>Ardour (Professional, Open Source)</a></li>
+                <li class='level-3'><a href='#reaper-commercial-linux-friendly'>Reaper (Commercial, Linux-friendly)</a></li>
+                <li class='level-3'><a href='#lmms-beginner-friendly'>LMMS (Beginner-Friendly)</a></li>
+                <li class='level-3'><a href='#bitwig-studio-commercial'>Bitwig Studio (Commercial)</a></li>
+                <li class='level-3'><a href='#rosegarden-midi-focused'>Rosegarden (MIDI-focused)</a></li>
+                <li class='level-3'><a href='#audacity-audio-editing'>Audacity (Audio Editing)</a></li>
+                <li class='level-2'><a href='#-audio-plugins-virtual-instruments'>🎸 Audio Plugins & Virtual Instruments</a></li>
+                <li class='level-3'><a href='#plugin-formats'>Plugin Formats</a></li>
+                <li class='level-3'><a href='#essential-plugin-collections'>Essential Plugin Collections</a></li>
+                <li class='level-3'><a href='#virtual-instruments'>Virtual Instruments</a></li>
+                <li class='level-3'><a href='#vst-support-winelinvst'>VST Support (Wine/LinVST)</a></li>
+                <li class='level-2'><a href='#-video-production-streaming'>🎬 Video Production & Streaming</a></li>
+                <li class='level-3'><a href='#obs-studio-streaming-recording'>OBS Studio (Streaming & Recording)</a></li>
+                <li class='level-3'><a href='#kdenlive-video-editing'>Kdenlive (Video Editing)</a></li>
+                <li class='level-3'><a href='#davinci-resolve-professional-commercial'>DaVinci Resolve (Professional, Commercial)</a></li>
+                <li class='level-3'><a href='#blender-3d-video-editing'>Blender (3D & Video Editing)</a></li>
+                <li class='level-3'><a href='#shotcut-beginner-friendly'>Shotcut (Beginner-Friendly)</a></li>
+                <li class='level-2'><a href='#-screen-recording-capture'>🎥 Screen Recording & Capture</a></li>
+                <li class='level-3'><a href='#simplescreenrecorder'>SimpleScreenRecorder</a></li>
+                <li class='level-3'><a href='#gpu-screen-record'>GPU Screen Record</a></li>
+                <li class='level-3'><a href='#kooha-wayland-native'>Kooha (Wayland-native)</a></li>
+                <li class='level-2'><a href='#-additional-tools'>🎨 Additional Tools</a></li>
+                <li class='level-3'><a href='#video-converters'>Video Converters</a></li>
+                <li class='level-3'><a href='#audio-converters'>Audio Converters</a></li>
+                <li class='level-3'><a href='#noise-reduction'>Noise Reduction</a></li>
+                <li class='level-2'><a href='#-quick-start-guide'>🎯 Quick Start Guide</a></li>
+                <li class='level-3'><a href='#for-music-production'>For Music Production</a></li>
+                <li class='level-3'><a href='#for-streamingrecording'>For Streaming/Recording</a></li>
+                <li class='level-3'><a href='#for-podcast-production'>For Podcast Production</a></li>
+                <li class='level-2'><a href='#-troubleshooting'>🔧 Troubleshooting</a></li>
+                <li class='level-3'><a href='#no-sound-after-installing-pipewire'>No Sound After Installing PipeWire</a></li>
+                <li class='level-3'><a href='#high-latency-in-daw'>High Latency in DAW</a></li>
+                <li class='level-3'><a href='#obs-wont-capture-screen-wayland'>OBS Won't Capture Screen (Wayland)</a></li>
+                <li class='level-3'><a href='#bluetooth-audio-quality-poor'>Bluetooth Audio Quality Poor</a></li>
+                <li class='level-2'><a href='#-text-to-speech-tts-systems'>🗣️ Text-to-Speech (TTS) Systems</a></li>
+                <li class='level-3'><a href='#comparison-of-tts-engines'>Comparison of TTS Engines</a></li>
+                <li class='level-3'><a href='#piper-recommended'>Piper (Recommended)</a></li>
+                <li class='level-3'><a href='#espeak-ng-lightweight-alternative'>eSpeak-NG (Lightweight Alternative)</a></li>
+                <li class='level-3'><a href='#festival-legacy'>Festival (Legacy)</a></li>
+                <li class='level-3'><a href='#mimic-3-cloudself-hosted'>Mimic 3 (Cloud/Self-Hosted)</a></li>
+                <li class='level-2'><a href='#-screen-readers-accessibility'>🎤 Screen Readers & Accessibility</a></li>
+                <li class='level-3'><a href='#orca-screen-reader'>Orca Screen Reader</a></li>
+                <li class='level-3'><a href='#speech-dispatcher-tools'>Speech-Dispatcher Tools</a></li>
+                <li class='level-2'><a href='#-additional-resources'>📚 Additional Resources</a></li>
             </ul>
         </aside>
 
         <article class="wiki-article">
-            <h1 id="audio-video-production-setup">Audio &amp; Video Production Setup 🎵🎬</h1>
-<p>A comprehensive guide for setting up professional audio and video workflows on Linux, covering audio servers, effects, recording, and content creation tools.</p>
+            <h1 id="audio-video-production-setup-">Audio &amp; Video Production Setup 🎵🎬</h1>
 <hr />
-<h2 id="audio-server-comparison-pipewire-vs-pulseaudio">🔊 Audio Server Comparison: PipeWire vs PulseAudio</h2>
+<p>A comprehensive guide for setting up professional audio and video workflows on Linux, covering audio servers, effects, recording, and content creation tools.</p>
+<hr>
+<h2 id="-audio-server-comparison-pipewire-vs-pulseaudio">🔊 Audio Server Comparison: PipeWire vs PulseAudio</h2>
 <h3 id="pipewire-modern-recommended">PipeWire (Modern, Recommended)</h3>
-<p><strong>PipeWire</strong> is the modern audio/video server for Linux, designed to replace both PulseAudio and JACK. It's now the default on most major distributions.</p>
+<p><strong>PipeWire</strong> is the modern audio/video server for Linux, designed to replace both PulseAudio and JACK. It&#39;s now the default on most major distributions.</p>
 <p><strong>Advantages:</strong></p>
 <ul>
 <li><strong>Low Latency:</strong> Professional-grade audio latency comparable to JACK</li>
@@ -138,8 +139,8 @@ pactl info | grep &quot;Server Name&quot;
 # Or check processes
 ps aux | grep -E &quot;pipewire|pulseaudio&quot;
 </code></pre>
-<hr />
-<h2 id="pipewire-setup-tools">🎛️ PipeWire Setup &amp; Tools</h2>
+<hr>
+<h2 id="-pipewire-setup-tools">🎛️ PipeWire Setup &amp; Tools</h2>
 <h3 id="installing-pipewire-arch">Installing PipeWire (Arch)</h3>
 <pre><code class="language-bash"># Core PipeWire packages
 sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
@@ -163,7 +164,7 @@ sudo apt install pipewire pipewire-audio-client-libraries wireplumber
 sudo apt install pipewire-pulse
 </code></pre>
 <h3 id="pipewire-control-tools">PipeWire Control Tools</h3>
-<h4 id="helvum-visual-patchbay">Helvum (Visual Patchbay)</h4>
+<h4>Helvum (Visual Patchbay)</h4>
 <p>A beautiful GTK patchbay for routing audio/video streams graphically.</p>
 <pre><code class="language-bash"># Arch
 sudo pacman -S helvum
@@ -174,7 +175,7 @@ sudo dnf install helvum
 # Flatpak (all distros)
 flatpak install flathub org.pipewire.Helvum
 </code></pre>
-<h4 id="qpwgraph-qt-alternative">qpwgraph (Qt Alternative)</h4>
+<h4>qpwgraph (Qt Alternative)</h4>
 <p>Similar to Helvum but using Qt, inspired by QjackCtl.</p>
 <pre><code class="language-bash"># Arch
 sudo pacman -S qpwgraph
@@ -182,7 +183,7 @@ sudo pacman -S qpwgraph
 # Flatpak
 flatpak install flathub org.rncbc.qpwgraph
 </code></pre>
-<h4 id="wireplumber-configuration">WirePlumber Configuration</h4>
+<h4>WirePlumber Configuration</h4>
 <p>WirePlumber is the session/policy manager for PipeWire.</p>
 <pre><code class="language-bash"># View current configuration
 wpctl status
@@ -205,8 +206,8 @@ wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%
 <p>Restart PipeWire:</p>
 <pre><code class="language-bash">systemctl --user restart pipewire pipewire-pulse wireplumber
 </code></pre>
-<hr />
-<h2 id="pulseaudio-tools-legacy">🎚️ PulseAudio Tools (Legacy)</h2>
+<hr>
+<h2 id="-pulseaudio-tools-legacy">🎚️ PulseAudio Tools (Legacy)</h2>
 <h3 id="installing-pulseaudio">Installing PulseAudio</h3>
 <pre><code class="language-bash"># Arch
 sudo pacman -S pulseaudio pulseaudio-alsa
@@ -218,7 +219,7 @@ sudo dnf install pulseaudio pulseaudio-utils
 sudo apt install pulseaudio pavucontrol
 </code></pre>
 <h3 id="pulseaudio-control-tools">PulseAudio Control Tools</h3>
-<h4 id="pavucontrol-essential-gui">pavucontrol (Essential GUI)</h4>
+<h4>pavucontrol (Essential GUI)</h4>
 <p>The standard volume and device manager for PulseAudio.</p>
 <pre><code class="language-bash"># Arch
 sudo pacman -S pavucontrol
@@ -226,7 +227,7 @@ sudo pacman -S pavucontrol
 # Debian/Ubuntu
 sudo apt install pavucontrol
 </code></pre>
-<h4 id="command-line-controls">Command-Line Controls</h4>
+<h4>Command-Line Controls</h4>
 <pre><code class="language-bash"># List sinks (outputs)
 pactl list sinks short
 
@@ -239,8 +240,8 @@ pactl set-sink-volume @DEFAULT_SINK@ 50%
 # Mute/unmute
 pactl set-sink-mute @DEFAULT_SINK@ toggle
 </code></pre>
-<hr />
-<h2 id="easyeffects-audio-enhancement">✨ EasyEffects (Audio Enhancement)</h2>
+<hr>
+<h2 id="-easyeffects-audio-enhancement">✨ EasyEffects (Audio Enhancement)</h2>
 <p><strong>EasyEffects</strong> (formerly PulseEffects) provides professional audio effects for your desktop: equalization, compression, reverb, and more.</p>
 <h3 id="installation">Installation</h3>
 <pre><code class="language-bash"># Arch
@@ -264,8 +265,7 @@ sudo pacman -S zam-plugins
 </code></pre>
 <h3 id="popular-presets">Popular Presets</h3>
 <ul>
-<li><strong>AutoEQ:</strong> Headphone equalization based on measurements
-<ul>
+<li><strong>AutoEQ:</strong> Headphone equalization based on measurements<ul>
 <li>GitHub: <a href="https://github.com/jaakkopasanen/AutoEq">AutoEQ Presets</a></li>
 </ul>
 </li>
@@ -278,8 +278,8 @@ sudo pacman -S zam-plugins
 <li>Use <strong>Bass Enhancer</strong> for music without distortion</li>
 <li>Create separate presets for music, gaming, and communication</li>
 </ul>
-<hr />
-<h2 id="pro-audio-production">🎙️ Pro-Audio Production</h2>
+<hr>
+<h2 id="-pro-audio-production">🎙️ Pro-Audio Production</h2>
 <h3 id="linux-audio-real-time-setup">Linux Audio Real-Time Setup</h3>
 <pre><code class="language-bash"># Arch - Install realtime-privileges
 sudo pacman -S realtime-privileges
@@ -302,10 +302,10 @@ sudo pacman -S jack2 qjackctl
 sudo dnf install jack-audio-connection-kit qjackctl
 
 # Using JACK with PipeWire (recommended)
-# PipeWire's JACK compatibility is usually sufficient
+# PipeWire&#39;s JACK compatibility is usually sufficient
 </code></pre>
-<hr />
-<h2 id="digital-audio-workstations-daws">🎹 Digital Audio Workstations (DAWs)</h2>
+<hr>
+<h2 id="-digital-audio-workstations-daws">🎹 Digital Audio Workstations (DAWs)</h2>
 <h3 id="ardour-professional-open-source">Ardour (Professional, Open Source)</h3>
 <p>Full-featured DAW for recording, editing, and mixing.</p>
 <pre><code class="language-bash"># Arch
@@ -357,8 +357,8 @@ sudo pacman -S audacity
 flatpak install flathub org.audacityteam.Audacity
 </code></pre>
 <p><strong>Best for:</strong> Podcast editing, simple recording, audio cleanup</p>
-<hr />
-<h2 id="audio-plugins-virtual-instruments">🎸 Audio Plugins &amp; Virtual Instruments</h2>
+<hr>
+<h2 id="-audio-plugins-virtual-instruments">🎸 Audio Plugins &amp; Virtual Instruments</h2>
 <h3 id="plugin-formats">Plugin Formats</h3>
 <ul>
 <li><strong>LV2:</strong> Linux-native plugin standard (recommended)</li>
@@ -392,11 +392,11 @@ paru -S yabridge
 yabridgectl add &quot;$HOME/.wine/drive_c/Program Files/VSTPlugins&quot;
 yabridgectl sync
 </code></pre>
-<hr />
-<h2 id="video-production-streaming">🎬 Video Production &amp; Streaming</h2>
+<hr>
+<h2 id="-video-production-streaming">🎬 Video Production &amp; Streaming</h2>
 <h3 id="obs-studio-streaming-recording">OBS Studio (Streaming &amp; Recording)</h3>
 <p>The industry-standard for streaming and screen recording.</p>
-<h4 id="installation-1">Installation</h4>
+<h4>Installation</h4>
 <pre><code class="language-bash"># Arch
 sudo pacman -S obs-studio
 
@@ -411,7 +411,7 @@ sudo apt install obs-studio
 # Flatpak (all distros)
 flatpak install flathub com.obsproject.Studio
 </code></pre>
-<h4 id="essential-plugins-1">Essential Plugins</h4>
+<h4>Essential Plugins</h4>
 <pre><code class="language-bash"># Arch - Popular OBS plugins
 paru -S obs-plugin-input-overlay  # Show keyboard/mouse input
 paru -S obs-plugin-looking-glass  # VM capture
@@ -421,7 +421,7 @@ paru -S obs-backgroundremoval     # AI background removal
 # obs-websocket (remote control)
 sudo pacman -S obs-websocket
 </code></pre>
-<h4 id="wayland-screen-capture">Wayland Screen Capture</h4>
+<h4>Wayland Screen Capture</h4>
 <pre><code class="language-bash"># Install PipeWire screen capture support
 sudo pacman -S xdg-desktop-portal xdg-desktop-portal-gtk
 
@@ -431,7 +431,7 @@ sudo pacman -S xdg-desktop-portal-kde
 # For GNOME
 sudo pacman -S xdg-desktop-portal-gnome
 </code></pre>
-<h4 id="obs-configuration-tips">OBS Configuration Tips</h4>
+<h4>OBS Configuration Tips</h4>
 <ol>
 <li><p><strong>Settings → Output → Recording:</strong></p>
 <ul>
@@ -484,8 +484,8 @@ sudo pacman -S shotcut
 # Flatpak
 flatpak install flathub org.shotcut.Shotcut
 </code></pre>
-<hr />
-<h2 id="screen-recording-capture">🎥 Screen Recording &amp; Capture</h2>
+<hr>
+<h2 id="-screen-recording-capture">🎥 Screen Recording &amp; Capture</h2>
 <h3 id="simplescreenrecorder">SimpleScreenRecorder</h3>
 <p>Lightweight, efficient screen recorder.</p>
 <pre><code class="language-bash"># Arch
@@ -504,8 +504,8 @@ paru -S gpu-screen-recorder-git
 <pre><code class="language-bash"># Flatpak
 flatpak install flathub io.github.seadve.Kooha
 </code></pre>
-<hr />
-<h2 id="additional-tools">🎨 Additional Tools</h2>
+<hr>
+<h2 id="-additional-tools">🎨 Additional Tools</h2>
 <h3 id="video-converters">Video Converters</h3>
 <pre><code class="language-bash"># FFmpeg (essential)
 sudo pacman -S ffmpeg
@@ -530,8 +530,8 @@ paru -S noisetorch
 # Run NoiseTorch
 noisetorch -i
 </code></pre>
-<hr />
-<h2 id="quick-start-guide">🎯 Quick Start Guide</h2>
+<hr>
+<h2 id="-quick-start-guide">🎯 Quick Start Guide</h2>
 <h3 id="for-music-production">For Music Production</h3>
 <ol>
 <li>Install <strong>PipeWire</strong> + <strong>EasyEffects</strong></li>
@@ -555,8 +555,8 @@ noisetorch -i
 <li>Use <strong>PipeWire</strong> loopback for recording system audio</li>
 <li>Export with <strong>FFmpeg</strong> for final processing</li>
 </ol>
-<hr />
-<h2 id="troubleshooting">🔧 Troubleshooting</h2>
+<hr>
+<h2 id="-troubleshooting">🔧 Troubleshooting</h2>
 <h3 id="no-sound-after-installing-pipewire">No Sound After Installing PipeWire</h3>
 <pre><code class="language-bash"># Restart PipeWire services
 systemctl --user restart pipewire pipewire-pulse wireplumber
@@ -569,7 +569,7 @@ systemctl --user status pipewire
 # Ensure real-time privileges are configured
 groups | grep realtime
 </code></pre>
-<h3 id="obs-wont-capture-screen-wayland">OBS Won't Capture Screen (Wayland)</h3>
+<h3 id="obs-wont-capture-screen-wayland">OBS Won&#39;t Capture Screen (Wayland)</h3>
 <pre><code class="language-bash"># Ensure portals are installed
 sudo pacman -S xdg-desktop-portal-kde  # or -gnome, -wlr
 
@@ -577,13 +577,13 @@ sudo pacman -S xdg-desktop-portal-kde  # or -gnome, -wlr
 </code></pre>
 <h3 id="bluetooth-audio-quality-poor">Bluetooth Audio Quality Poor</h3>
 <pre><code class="language-bash"># Check codec in use
-pactl list | grep -A2 'Codec'
+pactl list | grep -A2 &#39;Codec&#39;
 
 # Install PipeWire Bluetooth support
 sudo pacman -S pipewire-pulse libldac
 </code></pre>
-<hr />
-<h2 id="text-to-speech-tts-systems">🗣️ Text-to-Speech (TTS) Systems</h2>
+<hr>
+<h2 id="-text-to-speech-tts-systems">🗣️ Text-to-Speech (TTS) Systems</h2>
 <p>Linux offers several text-to-speech engines for accessibility, voice assistants, and screen readers.</p>
 <h3 id="comparison-of-tts-engines">Comparison of TTS Engines</h3>
 <table>
@@ -596,8 +596,7 @@ sudo pacman -S pipewire-pulse libldac
 <th>Best For</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td><strong>Piper</strong></td>
 <td>Excellent</td>
 <td>Fast</td>
@@ -625,11 +624,10 @@ sudo pacman -S pipewire-pulse libldac
 <td>High</td>
 <td>Cloud-based, high quality</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3 id="piper-recommended">Piper (Recommended)</h3>
 <p><strong>Piper</strong> is a fast, local neural text-to-speech system that produces high-quality, natural-sounding voices. It uses ONNX models and provides excellent results without requiring cloud services.</p>
-<h4 id="installation-2">Installation</h4>
+<h4>Installation</h4>
 <pre><code class="language-bash"># Arch - Install Piper
 sudo pacman -S piper-tts
 
@@ -642,14 +640,14 @@ paru -S piper-voices-en-us
 # Other languages available:
 # piper-voices-en-gb, piper-voices-de-de, piper-voices-es-es, etc.
 </code></pre>
-<h4 id="standalone-usage">Standalone Usage</h4>
+<h4>Standalone Usage</h4>
 <pre><code class="language-bash"># Basic text-to-speech
 echo &quot;Hello, this is Piper speaking&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file output.wav
 
 # Play directly (requires aplay or paplay)
 echo &quot;Welcome to Linux&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | aplay
 </code></pre>
-<h4 id="integrating-with-speech-dispatcher">Integrating with Speech-Dispatcher</h4>
+<h4>Integrating with Speech-Dispatcher</h4>
 <p>Speech-Dispatcher is the standard interface for TTS on Linux, used by screen readers and accessibility tools.</p>
 <p><strong>Step 1: Create Piper configuration</strong></p>
 <pre><code class="language-bash">sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
@@ -660,7 +658,7 @@ echo &quot;Welcome to Linux&quot; | piper-tts --model /usr/share/piper-voices/en
 Debug 0
 
 GenericExecuteSynth \
-&quot;printf %s '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | $PLAY_COMMAND&quot;
+&quot;printf %s &#39;$DATA&#39; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | $PLAY_COMMAND&quot;
 
 GenericCmdDependency &quot;piper-tts&quot;
 GenericSoundIconFolder &quot;/usr/share/sounds/sound-icons/&quot;
@@ -699,7 +697,7 @@ spd-say &quot;Hello, this is Piper speaking through speech dispatcher&quot;
 spd-say -t MALE1 &quot;This is a male voice&quot;
 spd-say -t FEMALE1 &quot;This is a female voice&quot;
 </code></pre>
-<h4 id="available-voice-models">Available Voice Models</h4>
+<h4>Available Voice Models</h4>
 <p>After installing voice packages, models are typically located in:</p>
 <pre><code>/usr/share/piper-voices/[language]/[locale]/[voice]/[quality]/
 </code></pre>
@@ -738,10 +736,10 @@ mimic3-server
 # Configure speech-dispatcher to use mimic3-generic.conf
 # (Similar process to Piper configuration above)
 </code></pre>
-<hr />
-<h2 id="screen-readers-accessibility">🎤 Screen Readers &amp; Accessibility</h2>
+<hr>
+<h2 id="-screen-readers-accessibility">🎤 Screen Readers &amp; Accessibility</h2>
 <h3 id="orca-screen-reader">Orca Screen Reader</h3>
-<p>GNOME's screen reader, integrates with speech-dispatcher.</p>
+<p>GNOME&#39;s screen reader, integrates with speech-dispatcher.</p>
 <pre><code class="language-bash"># Arch
 sudo pacman -S orca
 
@@ -766,8 +764,8 @@ spd-say -r -50 &quot;Slower speech&quot;
 # List voices
 spd-say -L
 </code></pre>
-<hr />
-<h2 id="additional-resources">📚 Additional Resources</h2>
+<hr>
+<h2 id="-additional-resources">📚 Additional Resources</h2>
 <ul>
 <li><strong>Arch Wiki - PipeWire:</strong> <a href="https://wiki.archlinux.org/title/PipeWire">wiki.archlinux.org/title/PipeWire</a></li>
 <li><strong>Arch Wiki - Pro Audio:</strong> <a href="https://wiki.archlinux.org/title/Professional_audio">wiki.archlinux.org/title/Professional_audio</a></li>
@@ -776,8 +774,10 @@ spd-say -L
 <li><strong>Linux Musicians Forum:</strong> <a href="https://linuxmusicians.com">linuxmusicians.com</a></li>
 <li><strong>Unfa on YouTube:</strong> Excellent Linux audio production tutorials</li>
 </ul>
-<hr />
-<p><strong>Pro Tip:</strong> Most modern distributions ship with PipeWire by default. If you're unsure, stick with PipeWire—it's the future of Linux audio/video handling and provides the best overall experience for both casual users and professionals.</p>
+<hr>
+<p><strong>Pro Tip:</strong> Most modern distributions ship with PipeWire by default. If you&#39;re unsure, stick with PipeWire—it&#39;s the future of Linux audio/video handling and provides the best overall experience for both casual users and professionals.</p>
+
+
         </article>
     </main>
     <script src="script.js"></script>

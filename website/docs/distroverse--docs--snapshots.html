@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snapshots & Backups: The Safety Net 🛡️</title>
+    <title>Into the Distro-Verse 🌌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,28 +24,29 @@
     <main class="wiki-layout">
         <aside class="wiki-toc" aria-label="Page contents">
             <h2>Contents</h2>
-            <ul>
-                <li class='level-1'><a href='#snapshots-backups-the-safety-net'>Snapshots & Backups: The Safety Net 🛡️</a></li>
-<li class='level-2'><a href='#snapshot-tools'>🕒 1. Snapshot Tools</a></li>
-<li class='level-3'><a href='#option-a-timeshift-desktop-recommended'>Option A: TimeShift (Desktop Recommended)</a></li>
-<li class='level-3'><a href='#option-b-snapper-power-user-alternative'>Option B: Snapper (Power User Alternative)</a></li>
-<li class='level-2'><a href='#backup-methods'>💾 2. Backup Methods</a></li>
-<li class='level-3'><a href='#btrfs-snapshots-internal'>BTRFS Snapshots (Internal)</a></li>
-<li class='level-3'><a href='#rsync-backups-external'>RSYNC Backups (External)</a></li>
-<li class='level-2'><a href='#bootloader-integration'>🛠️ 3. Bootloader Integration</a></li>
-<li class='level-2'><a href='#maintenance-btrfs'>🧹 4. Maintenance (BTRFS)</a></li>
-<li class='level-2'><a href='#troubleshooting-performance'>⚠️ 5. Troubleshooting & Performance</a></li>
-<li class='level-3'><a href='#btrfs-quota-freezes-nvmessd-lockups'>Btrfs Quota Freezes (NVMe/SSD Lockups)</a></li>
-<li class='level-3'><a href='#efficient-boot-menu-updates'>Efficient Boot Menu Updates</a></li>
-<li class='level-2'><a href='#related-guides'>🔗 Related Guides</a></li>
+<ul>
+                <li class='level-1'><a href='#snapshots-backups-the-safety-net-'>Snapshots & Backups: The Safety Net 🛡️</a></li>
+                <li class='level-2'><a href='#-1-snapshot-tools'>🕒 1. Snapshot Tools</a></li>
+                <li class='level-3'><a href='#option-a-timeshift-desktop-recommended'>Option A: TimeShift (Desktop Recommended)</a></li>
+                <li class='level-3'><a href='#option-b-snapper-power-user-alternative'>Option B: Snapper (Power User Alternative)</a></li>
+                <li class='level-2'><a href='#-2-backup-methods'>💾 2. Backup Methods</a></li>
+                <li class='level-3'><a href='#btrfs-snapshots-internal'>BTRFS Snapshots (Internal)</a></li>
+                <li class='level-3'><a href='#rsync-backups-external'>RSYNC Backups (External)</a></li>
+                <li class='level-2'><a href='#-3-bootloader-integration'>🛠️ 3. Bootloader Integration</a></li>
+                <li class='level-2'><a href='#-4-maintenance-btrfs'>🧹 4. Maintenance (BTRFS)</a></li>
+                <li class='level-2'><a href='#-5-troubleshooting-performance'>⚠️ 5. Troubleshooting & Performance</a></li>
+                <li class='level-3'><a href='#btrfs-quota-freezes-nvmessd-lockups'>Btrfs Quota Freezes (NVMe/SSD Lockups)</a></li>
+                <li class='level-3'><a href='#efficient-boot-menu-updates'>Efficient Boot Menu Updates</a></li>
+                <li class='level-2'><a href='#-related-guides'>🔗 Related Guides</a></li>
             </ul>
         </aside>
 
         <article class="wiki-article">
-            <h1 id="snapshots-backups-the-safety-net">Snapshots &amp; Backups: The Safety Net 🛡️</h1>
-<p>Regardless of which distro you're using, snapshots and backups are essential for system recovery. This guide covers how to set up the perfect safety net for both Arch and Fedora users.</p>
+            <h1 id="snapshots-backups-the-safety-net-">Snapshots &amp; Backups: The Safety Net 🛡️</h1>
 <hr />
-<h2 id="snapshot-tools">🕒 1. Snapshot Tools</h2>
+<p>Regardless of which distro you&#39;re using, snapshots and backups are essential for system recovery. This guide covers how to set up the perfect safety net for both Arch and Fedora users.</p>
+<hr>
+<h2 id="-1-snapshot-tools">🕒 1. Snapshot Tools</h2>
 <p>Snapshots are near-instantaneous state captures of your filesystem. They are the best way to &quot;undo&quot; a broken update or a bad config change.</p>
 <h3 id="option-a-timeshift-desktop-recommended">Option A: TimeShift (Desktop Recommended)</h3>
 <p>Best for users who want a simple GUI. It uses specific BTRFS subvolume names (<code>@</code> and <code>@home</code>).</p>
@@ -55,17 +56,16 @@
 <li><strong>Automation:</strong> On Arch, <code>timeshift-autosnap</code> automatically takes a snapshot before every <code>pacman</code> update.</li>
 </ul>
 <h3 id="option-b-snapper-power-user-alternative">Option B: Snapper (Power User Alternative)</h3>
-<p>Powerful and CLI-focused. It's the native way snapshots are handled in Fedora and openSUSE.</p>
+<p>Powerful and CLI-focused. It&#39;s the native way snapshots are handled in Fedora and openSUSE.</p>
 <ul>
 <li><strong>Arch:</strong> <code>paru -S snapper snap-pac</code></li>
 <li><strong>Fedora:</strong> <code>sudo dnf install snapper</code></li>
-<li><strong>Initial Setup:</strong>
-<pre><code class="language-bash">sudo snapper -c root create-config /
+<li><strong>Initial Setup:</strong><pre><code class="language-bash">sudo snapper -c root create-config /
 </code></pre>
 </li>
 </ul>
-<hr />
-<h2 id="backup-methods">💾 2. Backup Methods</h2>
+<hr>
+<h2 id="-2-backup-methods">💾 2. Backup Methods</h2>
 <h3 id="btrfs-snapshots-internal">BTRFS Snapshots (Internal)</h3>
 <ul>
 <li><strong>Pros:</strong> Instant, takes 0 space initially.</li>
@@ -76,18 +76,16 @@
 <ul>
 <li><strong>Pros:</strong> Works on any filesystem. Can be sent to an external drive or cloud storage.</li>
 <li><strong>Cons:</strong> Slower, takes literal space for every new file.</li>
-<li><strong>Command:</strong>
-<pre><code class="language-bash">rsync -avAXP --delete /source/ /destination/
+<li><strong>Command:</strong><pre><code class="language-bash">rsync -avAXP --delete /source/ /destination/
 </code></pre>
 </li>
 <li><strong>Use Case:</strong> Off-site backups of your <code>/home</code> directory and personal data.</li>
 </ul>
-<hr />
-<h2 id="bootloader-integration">🛠️ 3. Bootloader Integration</h2>
+<hr>
+<h2 id="-3-bootloader-integration">🛠️ 3. Bootloader Integration</h2>
 <p>Ensure you can boot directly into a snapshot from your boot menu.</p>
 <ul>
-<li><strong>GRUB (Arch/Fedora):</strong> Install <code>grub-btrfs</code> to see snapshots in the boot menu.
-<pre><code class="language-bash"># Arch
+<li><strong>GRUB (Arch/Fedora):</strong> Install <code>grub-btrfs</code> to see snapshots in the boot menu.<pre><code class="language-bash"># Arch
 paru -S grub-btrfs &amp;&amp; sudo systemctl enable --now grub-btrfsd
 # Fedora
 sudo dnf install grub-btrfs
@@ -95,20 +93,20 @@ sudo dnf install grub-btrfs
 </li>
 <li><strong>systemd-boot (Arch):</strong> Use <code>gummibbs</code> (AUR) to generate boot entries for your snapshots automatically.</li>
 </ul>
-<hr />
-<h2 id="maintenance-btrfs">🧹 4. Maintenance (BTRFS)</h2>
-<p>If you're using BTRFS, you should run these occasionally to keep the filesystem healthy.</p>
+<hr>
+<h2 id="-4-maintenance-btrfs">🧹 4. Maintenance (BTRFS)</h2>
+<p>If you&#39;re using BTRFS, you should run these occasionally to keep the filesystem healthy.</p>
 <pre><code class="language-bash"># Scrub: Check for data corruption
 sudo btrfs scrub start /
 
 # Balance: Free up unused chunks
 sudo btrfs balance start -dusage=50 /
 </code></pre>
-<hr />
-<h2 id="troubleshooting-performance">⚠️ 5. Troubleshooting &amp; Performance</h2>
+<hr>
+<h2 id="-5-troubleshooting-performance">⚠️ 5. Troubleshooting &amp; Performance</h2>
 <h3 id="btrfs-quota-freezes-nvmessd-lockups">Btrfs Quota Freezes (NVMe/SSD Lockups)</h3>
 <p>A common issue on BTRFS systems using TimeShift or Snapper is a <strong>2-minute system-wide freeze</strong> whenever a snapshot is deleted. This is caused by Btrfs Quotas (<code>qgroups</code>) trying to rescan and calculate disk usage.</p>
-<p><strong>The Fix:</strong> Disable Btrfs quotas. TimeShift will still work, but it won't show the &quot;Estimated Size&quot; of snapshots in the GUI.</p>
+<p><strong>The Fix:</strong> Disable Btrfs quotas. TimeShift will still work, but it won&#39;t show the &quot;Estimated Size&quot; of snapshots in the GUI.</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
 <pre><code class="language-bash">sudo btrfs quota disable /
 </code></pre>
@@ -118,13 +116,15 @@ sudo btrfs balance start -dusage=50 /
 <pre><code class="language-bash"># Arch/Fedora
 sudo systemctl enable --now grub-btrfsd.service
 </code></pre>
-<hr />
-<h2 id="related-guides">🔗 Related Guides</h2>
+<hr>
+<h2 id="-related-guides">🔗 Related Guides</h2>
 <ul>
 <li>📖 <strong><a href="distroverse--docs--arch.html">Arch Linux Guide</a></strong> - Specific BTRFS layout and bootloader setup for Arch.</li>
 <li>📖 <strong><a href="distroverse--docs--fedora.html">Fedora Guide</a></strong> - Snapshot management and SELinux considerations.</li>
 <li>📖 <strong><a href="distroverse--docs--system_maintenance.html">System Maintenance</a></strong> - More details on backups and bootloaders.</li>
 </ul>
+
+
         </article>
     </main>
     <script src="script.js"></script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KDE Plasma Configuration Backup</title>
+    <title>Into the Distro-Verse 🌌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,15 +24,16 @@
     <main class="wiki-layout">
         <aside class="wiki-toc" aria-label="Page contents">
             <h2>Contents</h2>
-            <ul>
+<ul>
                 <li class='level-1'><a href='#kde-plasma-configuration-backup'>KDE Plasma Configuration Backup</a></li>
-<li class='level-2'><a href='#files-included'>Files Included</a></li>
-<li class='level-2'><a href='#how-to-restore-configuration'>How to Restore Configuration</a></li>
+                <li class='level-2'><a href='#files-included'>Files Included</a></li>
+                <li class='level-2'><a href='#how-to-restore-configuration'>How to Restore Configuration</a></li>
             </ul>
         </aside>
 
         <article class="wiki-article">
             <h1 id="kde-plasma-configuration-backup">KDE Plasma Configuration Backup</h1>
+<hr />
 <p>This directory contains a backup of key KDE Plasma configuration files.</p>
 <h2 id="files-included">Files Included</h2>
 <ul>
@@ -48,7 +49,7 @@
 <ol>
 <li><p><strong>Log out of your Plasma session.</strong> It is crucial to not be in an active session when overwriting these files. Use a TTY (<code>Ctrl+Alt+F3</code>) if necessary.</p>
 </li>
-<li><p><strong>Back up your existing configuration (optional but recommended).</strong></p>
+<li><p><strong>Back up your existing configuration (optional but recommended).</strong> </p>
 <pre><code class="language-bash">mkdir -p ~/.config/kde_backup_$(date +%Y-%m-%d)
 cp ~/.config/plasma-org.kde.plasma.desktop-appletsrc ~/.config/kdeglobals ~/.config/kwinrc ~/.config/konsolerc ~/.config/plasmarc ~/.config/kglobalshortcutsrc ~/.config/kde_backup_$(date +%Y-%m-%d)/
 </code></pre>
@@ -66,6 +67,8 @@ cp configs/kde/kglobalshortcutsrc ~/.config/
 </li>
 </ol>
 <p><strong>Note:</strong> Restoring configuration files from a different version of Plasma might lead to unexpected issues. This backup is most reliable when moving between similar Plasma versions.</p>
+
+
         </article>
     </main>
     <script src="script.js"></script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homebrew: The Linux "Brew"</title>
+    <title>Into the Distro-Verse 🌌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,34 +24,35 @@
     <main class="wiki-layout">
         <aside class="wiki-toc" aria-label="Page contents">
             <h2>Contents</h2>
-            <ul>
+<ul>
                 <li class='level-1'><a href='#homebrew-the-linux-brew'>Homebrew: The Linux "Brew"</a></li>
-<li class='level-2'><a href='#why-use-homebrew-on-linux'>🤔 Why use Homebrew on Linux?</a></li>
-<li class='level-2'><a href='#installation'>🚀 1. Installation</a></li>
-<li class='level-3'><a href='#on-arch-linux'>On Arch Linux</a></li>
-<li class='level-3'><a href='#on-fedora'>On Fedora</a></li>
-<li class='level-3'><a href='#install-command'>Install Command</a></li>
-<li class='level-2'><a href='#post-installation-crucial'>⚙️ 2. Post-Installation (Crucial)</a></li>
-<li class='level-2'><a href='#basic-usage'>🛠️ 3. Basic Usage</a></li>
-<li class='level-2'><a href='#maintenance'>🧹 4. Maintenance</a></li>
-<li class='level-2'><a href='#homebrew-vs.nix-vs.aur'>⚖️ Homebrew vs. Nix vs. AUR</a></li>
-<li class='level-2'><a href='#related-guides'>🔗 Related Guides</a></li>
+                <li class='level-2'><a href='#-why-use-homebrew-on-linux'>🤔 Why use Homebrew on Linux?</a></li>
+                <li class='level-2'><a href='#-1-installation'>🚀 1. Installation</a></li>
+                <li class='level-3'><a href='#on-arch-linux'>On Arch Linux</a></li>
+                <li class='level-3'><a href='#on-fedora'>On Fedora</a></li>
+                <li class='level-3'><a href='#install-command'>Install Command</a></li>
+                <li class='level-2'><a href='#-2-post-installation-crucial'>⚙️ 2. Post-Installation (Crucial)</a></li>
+                <li class='level-2'><a href='#-3-basic-usage'>🛠️ 3. Basic Usage</a></li>
+                <li class='level-2'><a href='#-4-maintenance'>🧹 4. Maintenance</a></li>
+                <li class='level-2'><a href='#-homebrew-vs-nix-vs-aur'>⚖️ Homebrew vs. Nix vs. AUR</a></li>
+                <li class='level-2'><a href='#-related-guides'>🔗 Related Guides</a></li>
             </ul>
         </aside>
 
         <article class="wiki-article">
             <h1 id="homebrew-the-linux-brew">Homebrew: The Linux &quot;Brew&quot;</h1>
-<p>Homebrew (originally for macOS) is a popular package manager for Linux that installs software into its own prefix (usually <code>/home/linuxbrew/.linuxbrew</code>). It's a great way to get the latest CLI tools without needing <code>sudo</code> or messing with your system's native package manager (Pacman/DNF).</p>
 <hr />
-<h2 id="why-use-homebrew-on-linux">🤔 Why use Homebrew on Linux?</h2>
+<p>Homebrew (originally for macOS) is a popular package manager for Linux that installs software into its own prefix (usually <code>/home/linuxbrew/.linuxbrew</code>). It&#39;s a great way to get the latest CLI tools without needing <code>sudo</code> or messing with your system&#39;s native package manager (Pacman/DNF).</p>
+<hr>
+<h2 id="-why-use-homebrew-on-linux">🤔 Why use Homebrew on Linux?</h2>
 <ol>
 <li><strong>User-Space Installs:</strong> Everything lives in your home directory or <code>/home/linuxbrew</code>. No <code>sudo</code> required after initial setup.</li>
 <li><strong>Mac-Native CLI Tools:</strong> If you follow many web-dev or DevOps tutorials, they often assume you have <code>brew</code>.</li>
 <li><strong>Consistent Experience:</strong> If you switch between Arch and Fedora, your Homebrew packages and configurations remain exactly the same.</li>
 <li><strong>Cutting-Edge CLI:</strong> Often has the absolute latest versions of CLI tools (like <code>fzf</code>, <code>gh</code>, <code>exa</code>, etc.) before they hit stable repos.</li>
 </ol>
-<hr />
-<h2 id="installation">🚀 1. Installation</h2>
+<hr>
+<h2 id="-1-installation">🚀 1. Installation</h2>
 <p>Homebrew requires some build essentials before it can be installed.</p>
 <h3 id="on-arch-linux">On Arch Linux</h3>
 <pre><code class="language-bash">sudo pacman -S --needed base-devel
@@ -64,9 +65,9 @@ sudo dnf install procps-ng curl file git
 <p>Run the official installer script:</p>
 <pre><code class="language-bash">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
 </code></pre>
-<hr />
-<h2 id="post-installation-crucial">⚙️ 2. Post-Installation (Crucial)</h2>
-<p>After the script finishes, it will give you a few lines to add to your shell profile. <strong>Don't skip this!</strong></p>
+<hr>
+<h2 id="-2-post-installation-crucial">⚙️ 2. Post-Installation (Crucial)</h2>
+<p>After the script finishes, it will give you a few lines to add to your shell profile. <strong>Don&#39;t skip this!</strong></p>
 <p><strong>Shell (Bash/Zsh):</strong></p>
 <pre><code class="language-bash"># Add this to your ~/.bashrc or ~/.zshrc
 eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;
@@ -78,63 +79,63 @@ eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 <p>Then, verify the installation:</p>
 <pre><code class="language-bash">brew doctor
 </code></pre>
-<hr />
-<h2 id="basic-usage">🛠️ 3. Basic Usage</h2>
+<hr>
+<h2 id="-3-basic-usage">🛠️ 3. Basic Usage</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Task</th>
-<th style="text-align: left;">Command</th>
+<th align="left">Task</th>
+<th align="left">Command</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Search</strong></td>
-<td style="text-align: left;"><code>brew search package_name</code></td>
+<tbody><tr>
+<td align="left"><strong>Search</strong></td>
+<td align="left"><code>brew search package_name</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Install</strong></td>
-<td style="text-align: left;"><code>brew install package_name</code></td>
+<td align="left"><strong>Install</strong></td>
+<td align="left"><code>brew install package_name</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Update Brew</strong></td>
-<td style="text-align: left;"><code>brew update</code></td>
+<td align="left"><strong>Update Brew</strong></td>
+<td align="left"><code>brew update</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Upgrade Apps</strong></td>
-<td style="text-align: left;"><code>brew upgrade</code></td>
+<td align="left"><strong>Upgrade Apps</strong></td>
+<td align="left"><code>brew upgrade</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Uninstall</strong></td>
-<td style="text-align: left;"><code>brew uninstall package_name</code></td>
+<td align="left"><strong>Uninstall</strong></td>
+<td align="left"><code>brew uninstall package_name</code></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>List Installed</strong></td>
-<td style="text-align: left;"><code>brew list</code></td>
+<td align="left"><strong>List Installed</strong></td>
+<td align="left"><code>brew list</code></td>
 </tr>
-</tbody>
-</table>
-<hr />
-<h2 id="maintenance">🧹 4. Maintenance</h2>
-<p>Homebrew doesn't delete old versions of packages automatically. Over time, this can eat up a lot of space in your home directory.</p>
+</tbody></table>
+<hr>
+<h2 id="-4-maintenance">🧹 4. Maintenance</h2>
+<p>Homebrew doesn&#39;t delete old versions of packages automatically. Over time, this can eat up a lot of space in your home directory.</p>
 <p><strong>Clean up old versions and cache:</strong></p>
 <pre><code class="language-bash">brew cleanup
 </code></pre>
-<hr />
-<h2 id="homebrew-vs.nix-vs.aur">⚖️ Homebrew vs. Nix vs. AUR</h2>
+<hr>
+<h2 id="-homebrew-vs-nix-vs-aur">⚖️ Homebrew vs. Nix vs. AUR</h2>
 <ul>
 <li><strong>AUR (Arch):</strong> Best for system-deep integration and desktop apps. Fast, but Arch-only.</li>
 <li><strong>Nix:</strong> The most powerful and safest, but has a steeper learning curve.</li>
 <li><strong>Homebrew:</strong> The easiest &quot;universal&quot; package manager for CLI tools. Very user-friendly and familiar to macOS users.</li>
 </ul>
-<hr />
-<h2 id="related-guides">🔗 Related Guides</h2>
+<hr>
+<h2 id="-related-guides">🔗 Related Guides</h2>
 <ul>
 <li>📖 <strong><a href="distroverse--docs--nix.html">Nix Guide</a></strong> - The functional alternative to Homebrew.</li>
 <li>📖 <strong><a href="distroverse--docs--flatpak.html">Flatpak Guide</a></strong> - Universal graphical applications.</li>
 <li>📖 <strong><a href="distroverse--docs--arch.html">Arch Linux Guide</a></strong> - Setting up build essentials for Brew on Arch.</li>
 <li>📖 <strong><a href="distroverse--docs--fedora.html">Fedora Guide</a></strong> - Setting up build essentials for Brew on Fedora.</li>
 </ul>
+
+
         </article>
     </main>
     <script src="script.js"></script>

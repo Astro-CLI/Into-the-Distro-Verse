@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Local AI & LLM Setup</title>
+    <title>Into the Distro-Verse 🌌</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,30 +24,31 @@
     <main class="wiki-layout">
         <aside class="wiki-toc" aria-label="Page contents">
             <h2>Contents</h2>
-            <ul>
+<ul>
                 <li class='level-1'><a href='#local-ai-llm-setup'>Local AI & LLM Setup</a></li>
-<li class='level-2'><a href='#hardware-context'>Hardware Context</a></li>
-<li class='level-2'><a href='#core-engine-ollama'>1. Core Engine: Ollama</a></li>
-<li class='level-3'><a href='#option-a-native-installation-recommended'>Option A: Native Installation (Recommended)</a></li>
-<li class='level-3'><a href='#option-b-docker-based-setup'>Option B: Docker-based Setup</a></li>
-<li class='level-2'><a href='#manager-script-ai'>2. Manager Script: ai</a></li>
-<li class='level-3'><a href='#key-features'>Key Features</a></li>
-<li class='level-2'><a href='#system-agent-open-interpreter'>3. System Agent: Open Interpreter</a></li>
-<li class='level-3'><a href='#setup-python-3.14-monkey-patch'>Setup (Python 3.14+ "Monkey-Patch")</a></li>
-<li class='level-3'><a href='#command-examples'>Command Examples</a></li>
-<li class='level-2'><a href='#security-the-internet-kill-switch'>4. Security: The Internet Kill-Switch</a></li>
-<li class='level-2'><a href='#helper-scripts'>5. Helper Scripts</a></li>
-<li class='level-3'><a href='#the-ai-model-manager'>The ai Model Manager</a></li>
-<li class='level-3'><a href='#the-interpreter-shortcut-portable-bash'>The interpreter Shortcut (Portable Bash)</a></li>
-<li class='level-2'><a href='#live-information-internet-access'>6. Live Information & Internet Access</a></li>
-<li class='level-3'><a href='#how-to-use-internet'>How to use Internet</a></li>
-<li class='level-2'><a href='#recommended-models-for-16gb-vram'>7. Recommended Models for 16GB VRAM</a></li>
-<li class='level-2'><a href='#maintenance-performance'>8. Maintenance & Performance</a></li>
+                <li class='level-2'><a href='#hardware-context'>Hardware Context</a></li>
+                <li class='level-2'><a href='#1-core-engine-ollama'>1. Core Engine: Ollama</a></li>
+                <li class='level-3'><a href='#option-a-native-installation-recommended'>Option A: Native Installation (Recommended)</a></li>
+                <li class='level-3'><a href='#option-b-docker-based-setup'>Option B: Docker-based Setup</a></li>
+                <li class='level-2'><a href='#2-manager-script-ai'>2. Manager Script: `ai`</a></li>
+                <li class='level-3'><a href='#key-features'>Key Features</a></li>
+                <li class='level-2'><a href='#3-system-agent-open-interpreter'>3. System Agent: Open Interpreter</a></li>
+                <li class='level-3'><a href='#setup-python-314-monkey-patch'>Setup (Python 3.14+ "Monkey-Patch")</a></li>
+                <li class='level-3'><a href='#command-examples'>Command Examples</a></li>
+                <li class='level-2'><a href='#4-security-the-internet-kill-switch'>4. Security: The Internet Kill-Switch</a></li>
+                <li class='level-2'><a href='#5-helper-scripts'>5. Helper Scripts</a></li>
+                <li class='level-3'><a href='#the-ai-model-manager'>The `ai` Model Manager</a></li>
+                <li class='level-3'><a href='#the-interpreter-shortcut-portable-bash'>The `interpreter` Shortcut (Portable Bash)</a></li>
+                <li class='level-2'><a href='#6-live-information-internet-access'>6. Live Information & Internet Access</a></li>
+                <li class='level-3'><a href='#how-to-use-internet'>How to use Internet</a></li>
+                <li class='level-2'><a href='#7-recommended-models-for-16gb-vram'>7. Recommended Models for 16GB VRAM</a></li>
+                <li class='level-2'><a href='#8-maintenance-performance'>8. Maintenance & Performance</a></li>
             </ul>
         </aside>
 
         <article class="wiki-article">
             <h1 id="local-ai-llm-setup">Local AI &amp; LLM Setup</h1>
+<hr />
 <p>This guide documents the setup of local Large Language Models (LLMs) on Arch Linux, optimized for AMD hardware (ROCm).</p>
 <h2 id="hardware-context">Hardware Context</h2>
 <ul>
@@ -57,8 +58,8 @@
 <li><strong>Driver Stack:</strong> ROCm (Radeon Open Compute)</li>
 </ul>
 <p>The 16GB of VRAM allows for running models up to 14B-20B parameters entirely on the GPU at high speeds.</p>
-<hr />
-<h2 id="core-engine-ollama">1. Core Engine: Ollama</h2>
+<hr>
+<h2 id="1-core-engine-ollama">1. Core Engine: Ollama</h2>
 <p>Ollama serves as the backend &quot;brain.&quot; While native installation is recommended on Arch, Docker is a viable alternative for isolation.</p>
 <h3 id="option-a-native-installation-recommended">Option A: Native Installation (Recommended)</h3>
 <p>Native installation provides the best performance and easiest integration with host-side tools.</p>
@@ -75,8 +76,8 @@ sudo systemctl enable --now ollama.service
   ollama/ollama:rocm
 </code></pre>
 <p><em>Note: GPU access is enabled by mapping <code>/dev/kfd</code> and <code>/dev/dri</code> device files.</em></p>
-<hr />
-<h2 id="manager-script-ai">2. Manager Script: <code>ai</code></h2>
+<hr>
+<h2 id="2-manager-script-ai">2. Manager Script: <code>ai</code></h2>
 <p>A portable Bash script located at <code>/usr/local/bin/ai</code> that provides an interactive menu to manage and launch models.</p>
 <h3 id="key-features">Key Features</h3>
 <ul>
@@ -85,10 +86,10 @@ sudo systemctl enable --now ollama.service
 <li><strong>Instant Unload:</strong> Press <code>0</code> to instantly clear VRAM (useful before launching heavy games).</li>
 <li><strong>Persistence:</strong> Remembers your last choice; just press <code>Enter</code> to resume the previous session.</li>
 </ul>
-<hr />
-<h2 id="system-agent-open-interpreter">3. System Agent: Open Interpreter</h2>
+<hr>
+<h2 id="3-system-agent-open-interpreter">3. System Agent: Open Interpreter</h2>
 <p>Open Interpreter provides the &quot;hands&quot; for the AI, allowing it to run terminal commands and python scripts with your approval.</p>
-<h3 id="setup-python-3.14-monkey-patch">Setup (Python 3.14+ &quot;Monkey-Patch&quot;)</h3>
+<h3 id="setup-python-314-monkey-patch">Setup (Python 3.14+ &quot;Monkey-Patch&quot;)</h3>
 <p>Newer Python versions (3.14+) have removed the legacy <code>pkg_resources</code> module. We install it in a virtual environment and apply a compatibility patch.</p>
 <ol>
 <li><p><strong>Create Environment:</strong></p>
@@ -114,13 +115,13 @@ Point it to your local Ollama instance:</p>
 <li><em>&quot;Help me find all my .pkt files and move them to a new folder.&quot;</em></li>
 <li><em>&quot;Check my current GPU temperatures using rocm-smi.&quot;</em></li>
 </ul>
-<hr />
-<h2 id="security-the-internet-kill-switch">4. Security: The Internet Kill-Switch</h2>
+<hr>
+<h2 id="4-security-the-internet-kill-switch">4. Security: The Internet Kill-Switch</h2>
 <p>For sensitive tasks, you can run the AI in a fully offline sandbox using <code>firejail</code>. It will still be able to &quot;talk&quot; to your local Ollama brain, but cannot reach the internet.</p>
 <pre><code class="language-bash">firejail --net=none ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
 </code></pre>
-<hr />
-<h2 id="helper-scripts">5. Helper Scripts</h2>
+<hr>
+<h2 id="5-helper-scripts">5. Helper Scripts</h2>
 <p>To make usage simple, the following scripts were created to automate model management and tool integration.</p>
 <h3 id="the-ai-model-manager">The <code>ai</code> Model Manager</h3>
 <p><strong>Location:</strong> <code>/usr/local/bin/ai</code> (Executable)</p>
@@ -155,7 +156,7 @@ SMALL_RANK=(
 )
 
 # Get current models from ollama
-mapfile -t current_models &lt; &lt;(ollama list | tail -n +2 | awk '{print $1}')
+mapfile -t current_models &lt; &lt;(ollama list | tail -n +2 | awk &#39;{print $1}&#39;)
 
 # Function to check if a model exists in current_models
 model_exists() {
@@ -270,95 +271,94 @@ else
     bash -c &quot;$CMD $*&quot;
 fi
 </code></pre>
-<hr />
-<h2 id="live-information-internet-access">6. Live Information &amp; Internet Access</h2>
+<hr>
+<h2 id="6-live-information-internet-access">6. Live Information &amp; Internet Access</h2>
 <p>While the LLM &quot;brain&quot; (Ollama) is offline, Open Interpreter can access the internet using host-side tools.</p>
 <h3 id="how-to-use-internet">How to use Internet</h3>
 <ol>
 <li>Run the command without the offline flag: <code>interpreter</code>.</li>
-<li>Ask the AI to perform a web-based task:
-<ul>
+<li>Ask the AI to perform a web-based task:<ul>
 <li><em>&quot;Find the current price of Bitcoin.&quot;</em></li>
 <li><em>&quot;Search the web for the latest Arch Linux news.&quot;</em></li>
 </ul>
 </li>
 </ol>
 <p>The AI will write and execute Python code (using libraries like <code>requests</code> or <code>selenium</code>) to fetch the data and present it to you.</p>
-<hr />
-<h2 id="recommended-models-for-16gb-vram">7. Recommended Models for 16GB VRAM</h2>
+<hr>
+<h2 id="7-recommended-models-for-16gb-vram">7. Recommended Models for 16GB VRAM</h2>
 <table>
 <thead>
 <tr>
-<th style="text-align: left;">Tier</th>
-<th style="text-align: left;">Recommended Model</th>
-<th style="text-align: left;">Best For...</th>
-<th style="text-align: left;">VRAM Usage</th>
+<th align="left">Tier</th>
+<th align="left">Recommended Model</th>
+<th align="left">Best For...</th>
+<th align="left">VRAM Usage</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong>Large</strong></td>
-<td style="text-align: left;"><code>gemma2:27b</code></td>
-<td style="text-align: left;"><strong>Google's Best:</strong> High Reasoning</td>
-<td style="text-align: left;">~16GB+</td>
+<tbody><tr>
+<td align="left"><strong>Large</strong></td>
+<td align="left"><code>gemma2:27b</code></td>
+<td align="left"><strong>Google&#39;s Best:</strong> High Reasoning</td>
+<td align="left">~16GB+</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Large</strong></td>
-<td style="text-align: left;"><code>qwen2.5-coder:14b</code></td>
-<td style="text-align: left;"><strong>Top Pick:</strong> Best for System Commands</td>
-<td style="text-align: left;">~9GB</td>
+<td align="left"><strong>Large</strong></td>
+<td align="left"><code>qwen2.5-coder:14b</code></td>
+<td align="left"><strong>Top Pick:</strong> Best for System Commands</td>
+<td align="left">~9GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Large</strong></td>
-<td style="text-align: left;"><code>phi4:latest</code></td>
-<td style="text-align: left;">Logic, Math, Reasoning</td>
-<td style="text-align: left;">~9GB</td>
+<td align="left"><strong>Large</strong></td>
+<td align="left"><code>phi4:latest</code></td>
+<td align="left">Logic, Math, Reasoning</td>
+<td align="left">~9GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Large</strong></td>
-<td style="text-align: left;"><code>deepseek-r1:14b</code></td>
-<td style="text-align: left;">Deep Thinking (Reasoning)</td>
-<td style="text-align: left;">~9GB</td>
+<td align="left"><strong>Large</strong></td>
+<td align="left"><code>deepseek-r1:14b</code></td>
+<td align="left">Deep Thinking (Reasoning)</td>
+<td align="left">~9GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Medium</strong></td>
-<td style="text-align: left;"><code>gemma2:9b</code></td>
-<td style="text-align: left;"><strong>Generalist King:</strong> Great Chat/Creative</td>
-<td style="text-align: left;">~6GB</td>
+<td align="left"><strong>Medium</strong></td>
+<td align="left"><code>gemma2:9b</code></td>
+<td align="left"><strong>Generalist King:</strong> Great Chat/Creative</td>
+<td align="left">~6GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Medium</strong></td>
-<td style="text-align: left;"><code>llama3.1:latest</code></td>
-<td style="text-align: left;">General Chat &amp; Reliability</td>
-<td style="text-align: left;">~5GB</td>
+<td align="left"><strong>Medium</strong></td>
+<td align="left"><code>llama3.1:latest</code></td>
+<td align="left">General Chat &amp; Reliability</td>
+<td align="left">~5GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Medium</strong></td>
-<td style="text-align: left;"><code>qwen2.5-coder:7b</code></td>
-<td style="text-align: left;">Coding &amp; Scripting</td>
-<td style="text-align: left;">~5GB</td>
+<td align="left"><strong>Medium</strong></td>
+<td align="left"><code>qwen2.5-coder:7b</code></td>
+<td align="left">Coding &amp; Scripting</td>
+<td align="left">~5GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Small</strong></td>
-<td style="text-align: left;"><code>qwen2.5:3b</code></td>
-<td style="text-align: left;">Instant Summaries / Low Resource</td>
-<td style="text-align: left;">~2GB</td>
+<td align="left"><strong>Small</strong></td>
+<td align="left"><code>qwen2.5:3b</code></td>
+<td align="left">Instant Summaries / Low Resource</td>
+<td align="left">~2GB</td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Small</strong></td>
-<td style="text-align: left;"><code>gemma2:2b</code></td>
-<td style="text-align: left;">Blazing Fast Basic Tasks</td>
-<td style="text-align: left;">~1.5GB</td>
+<td align="left"><strong>Small</strong></td>
+<td align="left"><code>gemma2:2b</code></td>
+<td align="left">Blazing Fast Basic Tasks</td>
+<td align="left">~1.5GB</td>
 </tr>
-</tbody>
-</table>
-<hr />
-<h2 id="maintenance-performance">8. Maintenance &amp; Performance</h2>
+</tbody></table>
+<hr>
+<h2 id="8-maintenance-performance">8. Maintenance &amp; Performance</h2>
 <ul>
 <li><strong>Monitor VRAM:</strong> Run <code>rocm-smi</code> to see real-time allocation.</li>
 <li><strong>Clear Memory:</strong> Use the <code>ai</code> command and select <code>0</code> to free up GPU space immediately.</li>
 <li><strong>Disk Usage:</strong> Models are stored in <code>/usr/share/ollama/.ollama</code> (Native) or Docker volumes.</li>
 </ul>
+
+
         </article>
     </main>
     <script src="script.js"></script>
