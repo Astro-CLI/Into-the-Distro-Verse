@@ -105,6 +105,8 @@ a:hover {
     position: sticky;
     top: 72px;
     height: fit-content;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
 
 .wiki-toc h2 {
@@ -120,6 +122,8 @@ a:hover {
 .wiki-toc ul {
     margin: 0;
     padding-left: 18px;
+    column-count: 2;
+    column-gap: clamp(16px, 2vw, 28px);
 }
 
 .wiki-toc li + li {
