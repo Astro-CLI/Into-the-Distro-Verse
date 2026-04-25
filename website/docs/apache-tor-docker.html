@@ -1,11 +1,11 @@
 <!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Into the Distro-Verse </title> <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet"> <link rel="stylesheet" href="../style.css"> </head><body>
 <header class="topbar"> <div class="topbar-inner"> <a class="site-title" href="../index.html">Into the Distro-Verse Wiki</a> <nav aria-label="Main navigation"> <ul class="top-links"> <li><a href="../index.html">Main page</a></li> </ul> </nav> </div> </header> <main class="wiki-layout" style="grid-template-columns: 1fr;">
 <article class="wiki-article">
-<button class="markdown-viewer-btn">📄 View Markdown</button>
+<button class="markdown-viewer-btn">View Markdown</button>
 <h1>Apache + Tor Hidden Service with Docker</h1>
 <p>A complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker. This setup allows you to host a website accessible only via Tor, with complete anonymity, easy management, and instant cleanup. Perfect for whistleblowers, privacy advocates, activists, and anyone who wants to share information without revealing their identity or location.</p>
 <hr />
-<h2>📋 Table of Contents</h2>
+<h2>Table of Contents</h2>
 <ul>
 <li>Prerequisites &amp; Installation</li>
 <li>Understanding Tor &amp; .onion Domains</li>
@@ -22,7 +22,7 @@
 <h3>What You'll Need</h3>
 <p>This guide requires Docker, Docker Compose, and optionally Tor Browser for testing. Let's install each component:</p>
 <hr />
-<h2>🐳 Docker Installation</h2>
+<h2>Docker Installation</h2>
 <p>Docker containerizes your entire application, making it portable and easy to manage.</p>
 <h3>On Arch Linux</h3>
 <pre><code class="language-bash"># Install Docker
@@ -81,7 +81,7 @@ docker --version
 </code></pre>
 <p><strong>Important:</strong> After adding your user to the docker group, log out and log back in for the changes to take effect.</p>
 <hr />
-<h2>🐳 Docker Compose Installation</h2>
+<h2>Docker Compose Installation</h2>
 <p>Docker Compose allows you to define multi-container applications in a single YAML file.</p>
 <h3>On Arch Linux</h3>
 <pre><code class="language-bash">sudo pacman -S docker-compose
@@ -102,7 +102,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 docker-compose --version
 </code></pre>
 <hr />
-<h2>🔒 Tor Browser Installation</h2>
+<h2>Tor Browser Installation</h2>
 <p>Tor Browser allows you to securely access your hidden service and browse the Tor network.</p>
 <h3>On Arch Linux (AUR)</h3>
 <pre><code class="language-bash"># Using yay or paru
@@ -127,7 +127,7 @@ torbrowser-launcher
 2. Extract: <code>tar -xf tor-browser-linux64-*.tar.xz</code>
 3. Run: <code>./tor-browser_*/Browser/start-tor-browser.desktop</code></p>
 <hr />
-<h2>🌐 Understanding Tor &amp; .onion Domains</h2>
+<h2>Understanding Tor &amp; .onion Domains</h2>
 <h3>What is Tor?</h3>
 <p><strong>Tor</strong> (The Onion Router) is free software that enables anonymous communication by:
 - Routing internet traffic through multiple volunteer-operated nodes
@@ -160,8 +160,8 @@ Previously v2: 16-character addresses (deprecated)
 <hr />
 <h2>Prerequisites</h2>
 <hr />
-<h2>🎯 Use Cases for Tor Hidden Services</h2>
-<h3>✅ Legitimate Use Cases</h3>
+<h2>Use Cases for Tor Hidden Services</h2>
+<h3>Legitimate Use Cases</h3>
 <ul>
 <li><strong>Whistleblowing platforms</strong> — Share sensitive information safely (like WikiLeaks)</li>
 <li><strong>Privacy-focused forums</strong> — Host discussions without tracking</li>
@@ -172,14 +172,14 @@ Previously v2: 16-character addresses (deprecated)
 <li><strong>Secure documentation</strong> — Store sensitive research or files</li>
 <li><strong>Testing &amp; development</strong> — Secure staging environment</li>
 </ul>
-<h3>⚠️ Note on Responsibilities</h3>
+<h3>️ Note on Responsibilities</h3>
 <p>Tor hidden services are powerful tools for privacy and freedom of speech. Use them responsibly:
 - Don't host illegal content
 - Respect laws and ethics
 - Remember anonymity ≠ immunity
 - Tor enables privacy, not lawlessness</p>
 <hr />
-<h2>🔐 Understanding Security &amp; Anonymity</h2>
+<h2>Understanding Security &amp; Anonymity</h2>
 <h3>Anonymity ≠ Privacy</h3>
 <table>
 <thead>
@@ -236,7 +236,7 @@ Previously v2: 16-character addresses (deprecated)
 - Government-level adversaries (maybe)
 - Your hosting provider knowing you run a hidden service</p>
 <hr />
-<h2>🚀 Setup Instructions</h2>
+<h2>Setup Instructions</h2>
 <h3>Step 1: Create Working Directory</h3>
 <pre><code class="language-bash">mkdir -p ~/apache-tor &amp;&amp; cd ~/apache-tor
 </code></pre>
@@ -264,7 +264,7 @@ EOF
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;h1&gt;🧅 Hello from .onion!&lt;/h1&gt;
+  &lt;h1&gt; Hello from .onion!&lt;/h1&gt;
   &lt;div class=&quot;info&quot;&gt;
     &lt;p&gt;This website is hosted via Tor hidden service.&lt;/p&gt;
     &lt;p&gt;You are accessing this through the Tor network.&lt;/p&gt;
@@ -416,7 +416,7 @@ EOF
 </tbody>
 </table>
 <hr />
-<h2>🚀 Starting the Services</h2>
+<h2>Starting the Services</h2>
 <h3>Launch Everything</h3>
 <pre><code class="language-bash">docker-compose up -d
 </code></pre>
@@ -446,7 +446,7 @@ docker-compose logs apache
 docker-compose logs -f tor
 </code></pre>
 <hr />
-<h2>🔑 Get Your .onion Address</h2>
+<h2>Get Your .onion Address</h2>
 <p>Your .onion address is generated automatically and stored persistently:</p>
 <pre><code class="language-bash">docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname
 </code></pre>
@@ -461,10 +461,10 @@ docker-compose logs -f tor
 <li><strong>Derived from</strong> — Your public key using elliptic curve cryptography</li>
 <li><strong>Uniqueness</strong> — Your address is unique; you can't choose it</li>
 </ul>
-<h3>⚠️ Important</h3>
+<h3>️ Important</h3>
 <p>Your .onion address is your hidden service's unique identifier and private key combined. If someone has access to your <code>tor-data</code> volume, they can impersonate your hidden service. <strong>Treat it like a password.</strong></p>
 <hr />
-<h2>🌐 Accessing Your Server</h2>
+<h2>Accessing Your Server</h2>
 <h3>Option 1: Via Tor Browser (Recommended for Others)</h3>
 <p>Best way for people to access your hidden service:</p>
 <ol>
@@ -505,7 +505,7 @@ ssh -L 8888:localhost:8080 user@remote-host
 curl http://localhost:8888
 </code></pre>
 <hr />
-<h2>⚙️ Customization Options</h2>
+<h2>️ Customization Options</h2>
 <h3>Add More Web Files</h3>
 <p>Add CSS, JavaScript, images, etc.:</p>
 <pre><code class="language-bash"># Create files directory
@@ -581,13 +581,13 @@ ports:
 <pre><code class="language-bash"># Remove containers, networks, and volumes (DELETES .onion ADDRESS)
 docker-compose down -v
 </code></pre>
-<p>⚠️ This <strong>deletes</strong> the <code>tor-data</code> volume, so you'll get a new .onion address next time.</p>
+<p>️ This <strong>deletes</strong> the <code>tor-data</code> volume, so you'll get a new .onion address next time.</p>
 <h3>Complete Cleanup</h3>
 <pre><code class="language-bash">cd ..
 rm -rf ~/apache-tor
 </code></pre>
 <hr />
-<h2>📊 Useful Docker Commands</h2>
+<h2>Useful Docker Commands</h2>
 <table>
 <thead>
 <tr>
@@ -639,7 +639,7 @@ rm -rf ~/apache-tor
 </tbody>
 </table>
 <hr />
-<h2>🐛 Troubleshooting</h2>
+<h2>Troubleshooting</h2>
 <h3>Tor Won't Start</h3>
 <p><strong>Symptom:</strong> <code>docker-compose logs tor</code> shows errors</p>
 <p><strong>Solutions:</strong></p>
@@ -709,32 +709,32 @@ sudo chmod -R 700 tor-data/
 # Or let Docker manage it (remove bind mount)
 </code></pre>
 <hr />
-<h2>🔐 Security Best Practices</h2>
-<h3>✅ DO</h3>
+<h2>Security Best Practices</h2>
+<h3>DO</h3>
 <ul>
-<li>✅ Use Docker networks (isolated, not host network)</li>
-<li>✅ Keep <code>tor-data</code> volume secure and backed up</li>
-<li>✅ Use <code>restart: unless-stopped</code> for reliability</li>
-<li>✅ Run health checks on Apache</li>
-<li>✅ Update Docker and Tor regularly</li>
-<li>✅ Enable CookieAuthentication on control port</li>
-<li>✅ Use HiddenServiceVersion 3 (not deprecated v2)</li>
-<li>✅ Keep .onion address private if you want anonymity</li>
-<li>✅ Use HTTPS if serving sensitive data</li>
-<li>✅ Monitor logs for suspicious activity</li>
+<li>Use Docker networks (isolated, not host network)</li>
+<li>Keep <code>tor-data</code> volume secure and backed up</li>
+<li>Use <code>restart: unless-stopped</code> for reliability</li>
+<li>Run health checks on Apache</li>
+<li>Update Docker and Tor regularly</li>
+<li>Enable CookieAuthentication on control port</li>
+<li>Use HiddenServiceVersion 3 (not deprecated v2)</li>
+<li>Keep .onion address private if you want anonymity</li>
+<li>Use HTTPS if serving sensitive data</li>
+<li>Monitor logs for suspicious activity</li>
 </ul>
-<h3>❌ DON'T</h3>
+<h3>DON'T</h3>
 <ul>
-<li>❌ Map Tor ports to public IP</li>
-<li>❌ Use host networking (breaks isolation)</li>
-<li>❌ Share your .onion address widely if you want anonymity</li>
-<li>❌ Host illegal content</li>
-<li>❌ Run untrusted code in containers</li>
-<li>❌ Ignore security updates</li>
-<li>❌ Use weak passwords in torrc</li>
-<li>❌ Mix Tor and non-Tor services carelessly</li>
-<li>❌ Assume anonymity = impunity</li>
-<li>❌ Leave tor-data unprotected</li>
+<li>Map Tor ports to public IP</li>
+<li>Use host networking (breaks isolation)</li>
+<li>Share your .onion address widely if you want anonymity</li>
+<li>Host illegal content</li>
+<li>Run untrusted code in containers</li>
+<li>Ignore security updates</li>
+<li>Use weak passwords in torrc</li>
+<li>Mix Tor and non-Tor services carelessly</li>
+<li>Assume anonymity = impunity</li>
+<li>Leave tor-data unprotected</li>
 </ul>
 <h3>Important Reminders</h3>
 <ul>
@@ -763,7 +763,7 @@ A complete guide to running an Apache web server as a Tor hidden service (.onion
 
 ---
 
-## 📋 Table of Contents
+##  Table of Contents
 
 - Prerequisites &amp; Installation
 - Understanding Tor &amp; .onion Domains
@@ -785,7 +785,7 @@ This guide requires Docker, Docker Compose, and optionally Tor Browser for testi
 
 ---
 
-## 🐳 Docker Installation
+##  Docker Installation
 
 Docker containerizes your entire application, making it portable and easy to manage.
 
@@ -857,7 +857,7 @@ docker --version
 
 ---
 
-## 🐳 Docker Compose Installation
+##  Docker Compose Installation
 
 Docker Compose allows you to define multi-container applications in a single YAML file.
 
@@ -890,7 +890,7 @@ docker-compose --version
 
 ---
 
-## 🔒 Tor Browser Installation
+##  Tor Browser Installation
 
 Tor Browser allows you to securely access your hidden service and browse the Tor network.
 
@@ -929,7 +929,7 @@ Download from [torproject.org/download](https://www.torproject.org/download/):
 
 ---
 
-## 🌐 Understanding Tor &amp; .onion Domains
+##  Understanding Tor &amp; .onion Domains
 
 ### What is Tor?
 
@@ -973,9 +973,9 @@ Previously v2: 16-character addresses (deprecated)
 
 ---
 
-## 🎯 Use Cases for Tor Hidden Services
+##  Use Cases for Tor Hidden Services
 
-### ✅ Legitimate Use Cases
+###  Legitimate Use Cases
 
 - **Whistleblowing platforms** — Share sensitive information safely (like WikiLeaks)
 - **Privacy-focused forums** — Host discussions without tracking
@@ -986,7 +986,7 @@ Previously v2: 16-character addresses (deprecated)
 - **Secure documentation** — Store sensitive research or files
 - **Testing &amp; development** — Secure staging environment
 
-### ⚠️ Note on Responsibilities
+### ️ Note on Responsibilities
 
 Tor hidden services are powerful tools for privacy and freedom of speech. Use them responsibly:
 - Don't host illegal content
@@ -996,7 +996,7 @@ Tor hidden services are powerful tools for privacy and freedom of speech. Use th
 
 ---
 
-## 🔐 Understanding Security &amp; Anonymity
+##  Understanding Security &amp; Anonymity
 
 ### Anonymity ≠ Privacy
 
@@ -1028,7 +1028,7 @@ Tor hidden services are powerful tools for privacy and freedom of speech. Use th
 
 ---
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### Step 1: Create Working Directory
 
@@ -1066,7 +1066,7 @@ cat &gt; index.html &lt;&lt; 'EOF'
   &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
-  &lt;h1&gt;🧅 Hello from .onion!&lt;/h1&gt;
+  &lt;h1&gt; Hello from .onion!&lt;/h1&gt;
   &lt;div class="info"&gt;
     &lt;p&gt;This website is hosted via Tor hidden service.&lt;/p&gt;
     &lt;p&gt;You are accessing this through the Tor network.&lt;/p&gt;
@@ -1171,7 +1171,7 @@ EOF
 
 ---
 
-## 🚀 Starting the Services
+##  Starting the Services
 
 ### Launch Everything
 
@@ -1214,7 +1214,7 @@ docker-compose logs -f tor
 
 ---
 
-## 🔑 Get Your .onion Address
+##  Get Your .onion Address
 
 Your .onion address is generated automatically and stored persistently:
 
@@ -1235,13 +1235,13 @@ abcd1234efgh5678ijkl9999nnnn5555.onion
 - **Derived from** — Your public key using elliptic curve cryptography
 - **Uniqueness** — Your address is unique; you can't choose it
 
-### ⚠️ Important
+### ️ Important
 
 Your .onion address is your hidden service's unique identifier and private key combined. If someone has access to your `tor-data` volume, they can impersonate your hidden service. **Treat it like a password.**
 
 ---
 
-## 🌐 Accessing Your Server
+##  Accessing Your Server
 
 ### Option 1: Via Tor Browser (Recommended for Others)
 
@@ -1298,7 +1298,7 @@ curl http://localhost:8888
 
 ---
 
-## ⚙️ Customization Options
+## ️ Customization Options
 
 ### Add More Web Files
 
@@ -1399,7 +1399,7 @@ Everything is preserved. Your .onion address stays the same when you restart.
 docker-compose down -v
 ```
 
-⚠️ This **deletes** the `tor-data` volume, so you'll get a new .onion address next time.
+️ This **deletes** the `tor-data` volume, so you'll get a new .onion address next time.
 
 ### Complete Cleanup
 
@@ -1410,7 +1410,7 @@ rm -rf ~/apache-tor
 
 ---
 
-## 📊 Useful Docker Commands
+##  Useful Docker Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -1427,7 +1427,7 @@ rm -rf ~/apache-tor
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Tor Won't Start
 
@@ -1519,33 +1519,33 @@ sudo chmod -R 700 tor-data/
 
 ---
 
-## 🔐 Security Best Practices
+##  Security Best Practices
 
-### ✅ DO
+###  DO
 
-- ✅ Use Docker networks (isolated, not host network)
-- ✅ Keep `tor-data` volume secure and backed up
-- ✅ Use `restart: unless-stopped` for reliability
-- ✅ Run health checks on Apache
-- ✅ Update Docker and Tor regularly
-- ✅ Enable CookieAuthentication on control port
-- ✅ Use HiddenServiceVersion 3 (not deprecated v2)
-- ✅ Keep .onion address private if you want anonymity
-- ✅ Use HTTPS if serving sensitive data
-- ✅ Monitor logs for suspicious activity
+-  Use Docker networks (isolated, not host network)
+-  Keep `tor-data` volume secure and backed up
+-  Use `restart: unless-stopped` for reliability
+-  Run health checks on Apache
+-  Update Docker and Tor regularly
+-  Enable CookieAuthentication on control port
+-  Use HiddenServiceVersion 3 (not deprecated v2)
+-  Keep .onion address private if you want anonymity
+-  Use HTTPS if serving sensitive data
+-  Monitor logs for suspicious activity
 
-### ❌ DON'T
+###  DON'T
 
-- ❌ Map Tor ports to public IP
-- ❌ Use host networking (breaks isolation)
-- ❌ Share your .onion address widely if you want anonymity
-- ❌ Host illegal content
-- ❌ Run untrusted code in containers
-- ❌ Ignore security updates
-- ❌ Use weak passwords in torrc
-- ❌ Mix Tor and non-Tor services carelessly
-- ❌ Assume anonymity = impunity
-- ❌ Leave tor-data unprotected
+-  Map Tor ports to public IP
+-  Use host networking (breaks isolation)
+-  Share your .onion address widely if you want anonymity
+-  Host illegal content
+-  Run untrusted code in containers
+-  Ignore security updates
+-  Use weak passwords in torrc
+-  Mix Tor and non-Tor services carelessly
+-  Assume anonymity = impunity
+-  Leave tor-data unprotected
 
 ### Important Reminders
 
