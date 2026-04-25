@@ -84,18 +84,7 @@ for (const block of codeBlocks) {
 
 // Markdown viewer functionality
 function getMdContent() {
-	const article = document.querySelector('.wiki-article[data-markdown]');
-	if (!article) return null;
-	
-	const mdData = article.getAttribute('data-markdown');
-	if (!mdData) return null;
-	
-	try {
-		return JSON.parse(mdData);
-	} catch (e) {
-		console.error('Failed to parse embedded markdown:', e);
-		return null;
-	}
+	return window.__markdown_content__ || null;
 }
 
 function initMarkdownViewer() {
