@@ -93,11 +93,13 @@ function getMdFileName() {
 	
 	// Convert HTML filename to markdown filename
 	if (filename.startsWith('distroverse--docs--')) {
-		return filename.replace('distroverse--docs--', '').replace('.html', '.md');
+		// docs/file-sync-guide.html -> ../docs/file-sync-guide.md
+		const mdName = filename.replace('distroverse--docs--', '').replace('.html', '.md');
+		return '../docs/' + mdName;
 	} else if (filename.startsWith('distroverse--configs--')) {
-		return '../docs/' + filename.replace('distroverse--configs--', '').replace('.html', '.md');
+		return null; // Config pages don't have markdown equivalents
 	} else if (filename === 'apache-tor-docker.html') {
-		return 'apache-tor-docker.md';
+		return '../docs/apache-tor-docker.md';
 	}
 	
 	return null;
@@ -130,7 +132,9 @@ async function showMarkdownModal(mdPath) {
 
 	try {
 		const response = await fetch(mdPath);
-		if (!response.ok) throw new Error('Failed to load markdown');
+		if (!response.ok) {
+			throw new Error(`Failed to load markdown: ${response.status}`);
+		}
 		
 		const mdContent = await response.text();
 		
@@ -174,7 +178,7 @@ async function showMarkdownModal(mdPath) {
 		});
 	} catch (error) {
 		console.error('Error loading markdown:', error);
-		alert('Failed to load markdown file');
+		alert('Failed to load markdown file: ' + error.message);
 	}
 }
 
