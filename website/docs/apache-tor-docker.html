@@ -1,761 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Into the Distro-Verse - Secret Website with Docker & Tor</title>
-    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="../style.css">
+    <title>How to Set Up a Hidden Website with Docker and Tor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            color: #222;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 0.3em;
+        }
+        h1 {
+            border: none;
+            color: #1a1a1a;
+            font-size: 2.5em;
+        }
+        h2 {
+            font-size: 1.8em;
+            margin-top: 2em;
+        }
+        pre {
+            background: #f4f4f4;
+            border-left: 4px solid #007bff;
+            padding: 12px;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul, ol {
+            margin: 1em 0;
+            padding-left: 2em;
+        }
+        li {
+            margin: 0.5em 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #f4f4f4;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 2em 0;
+        }
+        #toc {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px 20px;
+            margin: 2em 0;
+        }
+        #toc h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        #toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        #toc li {
+            margin: 0.3em 0;
+            padding-left: 1.5em;
+        }
+        #toc li:before {
+            content: "→ ";
+            margin-left: -1.5em;
+            margin-right: 0.5em;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-    <header class="topbar">
-        <div class="topbar-inner">
-            <a class="site-title" href="../index.html">Into the Distro-Verse Wiki</a>
-            <nav aria-label="Main navigation">
-                <ul class="top-links">
-                    <li><a href="../index.html">Main page</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main class="wiki-layout">
-        <!-- SIDEBAR: TABLE OF CONTENTS -->
-        <aside class="wiki-toc" aria-label="Page contents">
-            <h2>Contents</h2>
-            <div class="toc">
+    <div class="container">
+        <h1>How to Set Up a Hidden Website with Docker and Tor</h1>
+        <div class="toc">
 <ul>
-<li><a href="#running-a-secret-website-with-docker-tor-a-beginners-guide">Running a Secret Website with Docker &amp; Tor: A Beginner's Guide</a><ul>
-<li><a href="#quick-navigation">📑 Quick Navigation</a></li>
-<li><a href="#what-is-this">What is This?</a></li>
-<li><a href="#before-you-start">Before You Start</a></li>
+<li><a href="#what-youre-actually-doing">What You're Actually Doing</a></li>
+<li><a href="#what-you-need">What You Need</a></li>
 <li><a href="#installing-docker">Installing Docker</a><ul>
-<li><a href="#step-1-install-docker">Step 1: Install Docker</a></li>
-<li><a href="#step-2-start-docker">Step 2: Start Docker</a></li>
-<li><a href="#step-3-let-your-user-run-docker">Step 3: Let Your User Run Docker</a></li>
+<li><a href="#ubuntu-or-debian">Ubuntu or Debian</a></li>
+<li><a href="#arch-linux">Arch Linux</a></li>
+<li><a href="#fedora">Fedora</a></li>
+<li><a href="#other-distros">Other Distros</a></li>
 </ul>
 </li>
-<li><a href="#setting-everything-up">Setting Everything Up</a><ul>
-<li><a href="#step-1-make-a-folder-for-your-project">Step 1: Make a Folder for Your Project</a></li>
-<li><a href="#step-2-create-the-folder-structure">Step 2: Create the Folder Structure</a></li>
+<li><a href="#set-up-your-project">Set Up Your Project</a></li>
+<li><a href="#create-your-website">Create Your Website</a></li>
+<li><a href="#create-apache-settings">Create Apache Settings</a></li>
+<li><a href="#create-the-dockerfile">Create the Dockerfile</a></li>
+<li><a href="#create-tor-configuration">Create Tor Configuration</a></li>
+<li><a href="#create-docker-composeyml">Create docker-compose.yml</a></li>
+<li><a href="#start-everything">Start Everything</a></li>
+<li><a href="#get-your-onion-address">Get Your .onion Address</a></li>
+<li><a href="#access-your-site">Access Your Site</a></li>
+<li><a href="#common-problems">Common Problems</a><ul>
+<li><a href="#cant-connect-to-my-onion-address">Can't connect to my .onion address</a></li>
+<li><a href="#504-bad-gateway">504 Bad Gateway</a></li>
+<li><a href="#i-want-to-update-my-website">I want to update my website</a></li>
+<li><a href="#i-want-to-stop-my-site-but-keep-the-onion-address">I want to stop my site but keep the .onion address</a></li>
+<li><a href="#i-want-to-completely-start-over-and-get-a-new-onion-address">I want to completely start over and get a new .onion address</a></li>
 </ul>
 </li>
-<li><a href="#creating-your-website">Creating Your Website</a><ul>
-<li><a href="#step-1-create-the-main-website-file">Step 1: Create the Main Website File</a></li>
-<li><a href="#step-2-create-apaches-settings-file">Step 2: Create Apache's Settings File</a></li>
-<li><a href="#step-3-create-the-dockerfile">Step 3: Create the Dockerfile</a></li>
-<li><a href="#step-4-create-the-tor-settings-file">Step 4: Create the Tor Settings File</a></li>
-<li><a href="#step-5-create-the-docker-composeyml-file">Step 5: Create the docker-compose.yml File</a></li>
-</ul>
-</li>
-<li><a href="#starting-your-hidden-service">Starting Your Hidden Service</a><ul>
-<li><a href="#step-1-build-and-start-everything">Step 1: Build and Start Everything</a></li>
-<li><a href="#step-2-watch-tor-start">Step 2: Watch Tor Start</a></li>
-<li><a href="#step-3-get-your-onion-address">Step 3: Get Your .onion Address</a></li>
-</ul>
-</li>
-<li><a href="#access-your-website">Access Your Website</a><ul>
-<li><a href="#step-1-download-tor-browser">Step 1: Download Tor Browser</a></li>
-<li><a href="#step-2-run-tor-browser">Step 2: Run Tor Browser</a></li>
-<li><a href="#step-3-visit-your-site">Step 3: Visit Your Site</a></li>
-</ul>
-</li>
-<li><a href="#common-problems-fixes">Common Problems &amp; Fixes</a><ul>
-<li><a href="#cant-connect-to-my-onion-address">"Can't connect to my .onion address"</a></li>
-<li><a href="#504-bad-gateway">"504 Bad Gateway"</a></li>
-<li><a href="#port-already-in-use">"Port already in use"</a></li>
-<li><a href="#want-to-update-my-website">"Want to update my website"</a></li>
-<li><a href="#want-to-start-over">"Want to start over"</a></li>
-</ul>
-</li>
-<li><a href="#common-commands">Common Commands</a></li>
-<li><a href="#keep-your-website-safe">Keep Your Website Safe</a><ul>
-<li><a href="#1-dont-upload-photos-with-location-data">1. Don't Upload Photos with Location Data</a></li>
-<li><a href="#2-keep-urls-simple">2. Keep URLs Simple</a></li>
-<li><a href="#3-keep-your-website-simple">3. Keep Your Website Simple</a></li>
-<li><a href="#4-backup-your-onion-address">4. Backup Your .onion Address</a></li>
-</ul>
-</li>
-<li><a href="#add-more-pages-to-your-website">Add More Pages to Your Website</a></li>
+<li><a href="#basic-commands-youll-use">Basic Commands You'll Use</a></li>
+<li><a href="#keep-it-safe">Keep It Safe</a></li>
+<li><a href="#adding-more-pages">Adding More Pages</a></li>
 <li><a href="#check-your-visitor-stats">Check Your Visitor Stats</a></li>
-<li><a href="#stop-your-website-temporarily">Stop Your Website Temporarily</a><ul>
-<li><a href="#start-it-again">Start It Again</a></li>
-</ul>
-</li>
-<li><a href="#what-happens-when-someone-visits">What Happens When Someone Visits?</a></li>
-<li><a href="#questions">Questions?</a></li>
-<li><a href="#quick-summary">Quick Summary</a></li>
-</ul>
-</li>
+<li><a href="#whats-actually-happening">What's Actually Happening</a></li>
+<li><a href="#distro-notes">Distro Notes</a></li>
+<li><a href="#need-help">Need Help</a></li>
+<li><a href="#one-more-thing">One More Thing</a></li>
 </ul>
 </div>
 
-        </aside>
-
-        <!-- MAIN ARTICLE -->
-        <article class="wiki-article">
-            <h1 id="running-a-secret-website-with-docker-tor-a-beginners-guide">Running a Secret Website with Docker &amp; Tor: A Beginner's Guide</h1>
-<p>Hey! So you want to create a website that only people with Tor Browser can access? A site that's completely hidden and anonymous? This guide will walk you through it step by step. Don't worry if you don't know what Docker or Tor is yet – we'll explain everything in simple terms!</p>
+        <h1 id="how-to-set-up-a-hidden-website-with-docker-and-tor">How to Set Up a Hidden Website with Docker and Tor</h1>
+<p>So you want to host a website that only works on Tor Browser and nobody can trace back to you. This guide walks you through it. I'm going to assume you've never done this before, so we'll go step by step.</p>
 <hr />
-<h2 id="quick-navigation">📑 Quick Navigation</h2>
-<ul>
-<li><a href="#what-is-this">What is This?</a></li>
-<li><a href="#before-you-start">Before You Start</a></li>
-<li><a href="#installing-docker">Installing Docker</a></li>
-<li><a href="#setting-everything-up">Setting Everything Up</a></li>
-<li><a href="#creating-your-website">Creating Your Website</a></li>
-<li><a href="#starting-your-hidden-service">Starting Your Hidden Service</a></li>
-<li><a href="#common-problems--fixes">Common Problems &amp; Fixes</a></li>
-</ul>
-<hr />
-<h2 id="what-is-this">What is This?</h2>
-<p>Imagine you want a website that:
-- <strong>Only works on Tor Browser</strong> (so it's private)
-- <strong>Nobody can see your real location</strong> (totally anonymous)
-- <strong>Gets a weird address</strong> like <code>thisisyourwebsiteaddress7xq4fx2zfuzed5oxc.onion</code></p>
-<p>That's what we're building today! Here's how it works:</p>
+<h2 id="what-youre-actually-doing">What You're Actually Doing</h2>
+<p>Three things are happening here:</p>
 <ol>
 <li>
-<p><strong>Docker</strong> = Think of it like a box on your computer. Inside that box, you run a web server and Tor separately. If someone breaks into the web server, they can't escape the box and mess with your computer.</p>
+<p>Docker creates isolated containers on your computer. Think of it like running separate mini-computers inside your main computer. If someone breaks into one, they can't mess with the others.</p>
 </li>
 <li>
-<p><strong>Tor</strong> = This software hides who you are by bouncing your connection around the world multiple times before reaching the website.</p>
+<p>Tor is software that hides your location by routing traffic through multiple computers around the world. When someone visits your site, their connection bounces around and they never see your real IP.</p>
 </li>
 <li>
-<p><strong>Apache</strong> = This is the actual web server that serves your website (what shows the HTML files).</p>
+<p>Apache is a web server. It's what actually shows people your website files.</p>
 </li>
 </ol>
-<p>So the flow looks like:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">Your</span> <span class="n">visitor</span> (<span class="n">using</span> <span class="n">Tor</span> <span class="n">Browser</span>)
-     → <span class="n">connects</span> <span class="nb">to</span> <span class="n">Tor</span>
-     → <span class="n">gets</span> <span class="n">bounced</span> <span class="n">around</span> <span class="n">the</span> <span class="n">internet</span>
-     → <span class="n">finds</span> <span class="n">your</span> .<span class="n">onion</span> <span class="n">address</span>
-     → <span class="n">Docker&#39;s</span> <span class="n">Tor</span> <span class="n">container</span> <span class="n">accepts</span> <span class="n">the</span> <span class="n">connection</span>
-     → <span class="n">Docker&#39;s</span> <span class="n">Apache</span> <span class="n">container</span> <span class="n">shows</span> <span class="n">your</span> <span class="n">website</span>
-</code></pre></div>
-
+<p>So basically: your visitor connects through Tor, reaches your Tor container, which talks to your Apache container, which serves your HTML files.</p>
 <hr />
-<h2 id="before-you-start">Before You Start</h2>
-<p>You'll need:
-- A computer running Linux (any distro - Arch, Ubuntu, Fedora, Debian, etc.)
-- About 1 hour and coffee ☕
-- Ability to type commands in the terminal
-- At least 2GB of free disk space</p>
-<p><strong>Note:</strong> This guide works on ANY Linux distro. If a command doesn't work, let me know which one you're using!</p>
+<h2 id="what-you-need">What You Need</h2>
+<ul>
+<li>Linux (any distro: Ubuntu, Debian, Arch, Fedora, whatever)</li>
+<li>A terminal (you'll be typing commands)</li>
+<li>About an hour</li>
+<li>2GB of free disk space</li>
+</ul>
+<p>If you don't have Linux, this won't work. But if you're reading this, you probably already know that.</p>
 <hr />
 <h2 id="installing-docker">Installing Docker</h2>
-<p>Docker is the magic tool that creates isolated environments for your services.</p>
-<h3 id="step-1-install-docker">Step 1: Install Docker</h3>
-<p><strong>On Ubuntu/Debian:</strong></p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>apt<span class="w"> </span>update
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker.io<span class="w"> </span>docker-compose
-</code></pre></div>
-
-<p><strong>On Arch:</strong></p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>docker<span class="w"> </span>docker-compose
-</code></pre></div>
-
-<p><strong>On Fedora:</strong></p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>docker<span class="w"> </span>docker-compose
-</code></pre></div>
-
-<p><strong>On any other distro</strong>, visit <a href="https://docker.com/get-started">docker.com/get-started</a> and follow their guide.</p>
-<h3 id="step-2-start-docker">Step 2: Start Docker</h3>
-<p>Docker is like an app - you need to turn it on:</p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>docker
-sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
-</code></pre></div>
-
-<p>This tells Docker to automatically start when your computer boots up.</p>
-<h3 id="step-3-let-your-user-run-docker">Step 3: Let Your User Run Docker</h3>
-<p>By default, you need <code>sudo</code> to use Docker. Let's fix that:</p>
-<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
-newgrp<span class="w"> </span>docker
-</code></pre></div>
-
-<p>Now close your terminal and open a new one. Test it works:</p>
-<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>hello-world
-</code></pre></div>
-
-<p>If you see "Hello from Docker!" you're good to go! 🎉</p>
-<hr />
-<h2 id="setting-everything-up">Setting Everything Up</h2>
-<p>Now let's create folders and files for your hidden website.</p>
-<h3 id="step-1-make-a-folder-for-your-project">Step 1: Make a Folder for Your Project</h3>
-<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>~/my-onion-site
-<span class="nb">cd</span><span class="w"> </span>~/my-onion-site
-</code></pre></div>
-
-<p>This creates a folder called <code>my-onion-site</code> in your home directory and puts you inside it.</p>
-<h3 id="step-2-create-the-folder-structure">Step 2: Create the Folder Structure</h3>
-<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>tor/keys
-mkdir<span class="w"> </span>-p<span class="w"> </span>apache/html
-mkdir<span class="w"> </span>-p<span class="w"> </span>apache/config
-mkdir<span class="w"> </span>-p<span class="w"> </span>logs
-</code></pre></div>
-
-<p>Now your folder looks like this:</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">my</span><span class="o">-</span><span class="nx">onion</span><span class="o">-</span><span class="nx">site</span><span class="o">/</span>
-<span class="err">├──</span><span class="w"> </span><span class="nx">tor</span><span class="o">/</span>
-<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">keys</span><span class="o">/</span><span class="w">          </span><span class="p">(</span><span class="nx">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="nx">your</span><span class="w"> </span><span class="p">.</span><span class="nx">onion</span><span class="w"> </span><span class="nx">address</span><span class="w"> </span><span class="nx">will</span><span class="w"> </span><span class="nx">be</span><span class="w"> </span><span class="nx">saved</span><span class="p">!)</span>
-<span class="err">├──</span><span class="w"> </span><span class="nx">apache</span><span class="o">/</span>
-<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">html</span><span class="o">/</span><span class="w">          </span><span class="p">(</span><span class="nx">your</span><span class="w"> </span><span class="nx">website</span><span class="w"> </span><span class="nx">files</span><span class="w"> </span><span class="nx">go</span><span class="w"> </span><span class="nx">here</span><span class="p">)</span>
-<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">config</span><span class="o">/</span><span class="w">        </span><span class="p">(</span><span class="nx">settings</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nx">Apache</span><span class="p">)</span>
-<span class="err">└──</span><span class="w"> </span><span class="nx">logs</span><span class="o">/</span><span class="w">              </span><span class="p">(</span><span class="k">where</span><span class="w"> </span><span class="nx">errors</span><span class="w"> </span><span class="nx">get</span><span class="w"> </span><span class="nx">written</span><span class="p">)</span>
-</code></pre></div>
-
-<hr />
-<h2 id="creating-your-website">Creating Your Website</h2>
-<h3 id="step-1-create-the-main-website-file">Step 1: Create the Main Website File</h3>
-<p>Create a file called <code>index.html</code> in the <code>apache/html/</code> folder. Open your text editor:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>apache/html/index.html
-</code></pre></div>
-
-<p>Then copy and paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>My Secret Website<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-<span class="w">        </span><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#000</span><span class="p">;</span>
-<span class="w">            </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#00ff00</span><span class="p">;</span>
-<span class="w">            </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="kc">monospace</span><span class="p">;</span>
-<span class="w">            </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="nt">h1</span><span class="w"> </span><span class="p">{</span>
-<span class="w">            </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span>
-<span class="w">        </span><span class="p">}</span>
-<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>🧅 Welcome to My Hidden Website!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>If you can see this, you&#39;re using Tor Browser.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Your real location is hidden.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>You are totally anonymous right now.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
-
-<p>Save it by pressing <code>Ctrl + X</code>, then <code>Y</code>, then <code>Enter</code>.</p>
-<h3 id="step-2-create-apaches-settings-file">Step 2: Create Apache's Settings File</h3>
-<p>Apache needs some safety rules. Open your editor:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>apache/config/custom.conf
-</code></pre></div>
-
-<p>Copy and paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">ServerTokens</span><span class="w"> </span><span class="k">ProductOnly</span>
-<span class="nb">ServerSignature</span><span class="w"> </span><span class="k">Off</span>
-
-<span class="nt">&lt;DirectoryMatch</span><span class="w"> </span><span class="s">&quot;/\.&quot;</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nb">Require</span><span class="w"> </span><span class="k">all</span><span class="w"> </span>denied
-<span class="nt">&lt;/DirectoryMatch&gt;</span>
-
-<span class="nb">Header</span><span class="w"> </span>set<span class="w"> </span>X-Content-Type-Options<span class="w"> </span><span class="s2">&quot;nosniff&quot;</span>
-<span class="nb">Header</span><span class="w"> </span>set<span class="w"> </span>X-Frame-Options<span class="w"> </span><span class="s2">&quot;DENY&quot;</span>
-<span class="nb">Header</span><span class="w"> </span>set<span class="w"> </span>Referrer-Policy<span class="w"> </span><span class="s2">&quot;no-referrer&quot;</span>
-
-<span class="nt">&lt;Directory</span><span class="w"> </span><span class="s">/usr/local/apache2/htdocs</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nb">Options</span><span class="w"> </span>-Indexes
-<span class="nt">&lt;/Directory&gt;</span>
-</code></pre></div>
-
-<p>Save it (Ctrl + X, Y, Enter).</p>
-<h3 id="step-3-create-the-dockerfile">Step 3: Create the Dockerfile</h3>
-<p>This tells Docker how to create the Apache container. Open your editor:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>Dockerfile
-</code></pre></div>
-
-<p>Copy and paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">httpd:2.4-alpine</span>
-
-<span class="k">COPY</span><span class="w"> </span>apache/html/<span class="w"> </span>/usr/local/apache2/htdocs/
-<span class="k">COPY</span><span class="w"> </span>apache/config/custom.conf<span class="w"> </span>/usr/local/apache2/conf.d/
-
-<span class="k">RUN</span><span class="w"> </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^#LoadModule headers_module/LoadModule headers_module/&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>/usr/local/apache2/conf/httpd.conf<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^#LoadModule rewrite_module/LoadModule rewrite_module/&#39;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>/usr/local/apache2/conf/httpd.conf
-
-<span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>3s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="k">CMD</span><span class="w"> </span>curl<span class="w"> </span>-f<span class="w"> </span>http://localhost/<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
-
-<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;httpd-foreground&quot;</span><span class="p">]</span>
-</code></pre></div>
-
-<p>Save it.</p>
-<h3 id="step-4-create-the-tor-settings-file">Step 4: Create the Tor Settings File</h3>
-<p>Tor needs configuration. Open your editor:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>tor/torrc
-</code></pre></div>
-
-<p>Copy and paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">SocksPort</span><span class="w"> </span><span class="mi">0</span>
-<span class="n">ControlPort</span><span class="w"> </span><span class="mi">9051</span>
-<span class="n">CookieAuthentication</span><span class="w"> </span><span class="mi">1</span>
-
-<span class="n">HiddenServiceDir</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">hidden_service</span><span class="o">/</span>
-<span class="n">HiddenServicePort</span><span class="w"> </span><span class="mi">80</span><span class="w"> </span><span class="n">apache</span><span class="p">:</span><span class="mi">80</span>
-<span class="n">HiddenServiceVersion</span><span class="w"> </span><span class="mi">3</span>
-
-<span class="n">Log</span><span class="w"> </span><span class="n">notice</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">tor</span><span class="o">/</span><span class="n">notices</span><span class="o">.</span><span class="n">log</span>
-</code></pre></div>
-
-<p>Save it.</p>
-<h3 id="step-5-create-the-docker-composeyml-file">Step 5: Create the docker-compose.yml File</h3>
-<p>This is the master file that brings it all together:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>docker-compose.yml
-</code></pre></div>
-
-<p>Copy and paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.8&#39;</span>
-
-<span class="nt">services</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">tor</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goldy/tor-hidden-service:latest</span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tor-gateway</span>
-<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
-
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SERVICES=apache:80</span>
-
-<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./tor/keys:/var/lib/tor/hidden_service/</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./tor/torrc:/etc/tor/torrc:ro</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./logs/tor:/var/log/tor:rw</span>
-
-<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hidden_net</span>
-
-<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache</span>
-
-<span class="w">  </span><span class="nt">apache</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
-<span class="w">    </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apache-server</span>
-<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-
-<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./logs/apache:/usr/local/apache2/logs:rw</span>
-
-<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hidden_net</span>
-
-<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;CMD&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;curl&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;-f&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;http://localhost/&quot;</span><span class="p p-Indicator">]</span>
-<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
-<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3s</span>
-<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-<span class="w">      </span><span class="nt">start_period</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
-
-<span class="nt">networks</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">hidden_net</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bridge</span>
-<span class="w">    </span><span class="nt">ipam</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">config</span><span class="p">:</span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">subnet</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">172.18.0.0/16</span>
-</code></pre></div>
-
-<p>Save it. Done with file creation!</p>
-<hr />
-<h2 id="starting-your-hidden-service">Starting Your Hidden Service</h2>
-<p>Make sure you're in your project folder:</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>~/my-onion-site
-</code></pre></div>
-
-<h3 id="step-1-build-and-start-everything">Step 1: Build and Start Everything</h3>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
-</code></pre></div>
-
-<p>This starts both the Tor container and Apache container in the background.</p>
-<h3 id="step-2-watch-tor-start">Step 2: Watch Tor Start</h3>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>tor
-</code></pre></div>
-
-<p>Wait until you see "Bootstrapped 100%" - this usually takes 30-60 seconds.</p>
-<p>Press <code>Ctrl + C</code> to stop watching.</p>
-<h3 id="step-3-get-your-onion-address">Step 3: Get Your .onion Address</h3>
-<div class="codehilite"><pre><span></span><code>cat<span class="w"> </span>tor/keys/hostname
-</code></pre></div>
-
-<p>You'll see something like:</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">thisisyouronionaddressv3example7xq4fx2zfuzed5oxc</span><span class="p">.</span><span class="nx">onion</span>
-</code></pre></div>
-
-<p><strong>Save this! This is your website's address.</strong></p>
-<hr />
-<h2 id="access-your-website">Access Your Website</h2>
-<h3 id="step-1-download-tor-browser">Step 1: Download Tor Browser</h3>
-<p>Visit <a href="https://www.torproject.org/download">torproject.org/download</a> and download Tor Browser.</p>
-<h3 id="step-2-run-tor-browser">Step 2: Run Tor Browser</h3>
-<p>Extract it and run it. Wait 1-2 minutes for it to connect to Tor.</p>
-<h3 id="step-3-visit-your-site">Step 3: Visit Your Site</h3>
-<p>In the address bar, paste your .onion address:</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">http</span><span class="p">:</span><span class="c1">//thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/</span>
-</code></pre></div>
-
-<p><strong>You should see your website!</strong> 🎉</p>
-<hr />
-<h2 id="common-problems-fixes">Common Problems &amp; Fixes</h2>
-<h3 id="cant-connect-to-my-onion-address">"Can't connect to my .onion address"</h3>
-<p>First, wait 60 seconds. Tor takes time to build circuits.</p>
-<p>Check if Tor is ready:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>logs<span class="w"> </span>tor<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Bootstrapped&quot;</span>
-</code></pre></div>
-
-<p>If you see "Bootstrapped 100%", it's ready.</p>
-<p>Check if Apache is working:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>logs<span class="w"> </span>apache
-</code></pre></div>
-
-<p>If there are errors, restart everything:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>down
-docker-compose<span class="w"> </span>up<span class="w"> </span>-d
-</code></pre></div>
-
-<h3 id="504-bad-gateway">"504 Bad Gateway"</h3>
-<p>Try this:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tor<span class="w"> </span>ping<span class="w"> </span>apache
-</code></pre></div>
-
-<p>If that fails, restart:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>restart
-</code></pre></div>
-
-<h3 id="port-already-in-use">"Port already in use"</h3>
-<p>Stop any other containers:</p>
-<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>stop<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-q<span class="k">)</span>
-</code></pre></div>
-
-<p>Then start again:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>up<span class="w"> </span>-d
-</code></pre></div>
-
-<h3 id="want-to-update-my-website">"Want to update my website"</h3>
-<p>Just edit your HTML file:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>apache/html/index.html
-</code></pre></div>
-
-<p>Save and it updates automatically! You don't need to restart anything.</p>
-<h3 id="want-to-start-over">"Want to start over"</h3>
-<p>To stop but keep your .onion address:</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>down
-</code></pre></div>
-
-<p>To delete everything and start fresh (new .onion address):</p>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>down<span class="w"> </span>-v
-</code></pre></div>
-
-<hr />
-<h2 id="common-commands">Common Commands</h2>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Start your site</span>
-docker-compose<span class="w"> </span>up<span class="w"> </span>-d
-
-<span class="c1"># Stop your site (keeps your .onion address)</span>
-docker-compose<span class="w"> </span>down
-
-<span class="c1"># View what&#39;s happening</span>
-docker-compose<span class="w"> </span>logs<span class="w"> </span>-f
-
-<span class="c1"># Check if everything is running</span>
-docker-compose<span class="w"> </span>ps
-
-<span class="c1"># Get your .onion address</span>
-cat<span class="w"> </span>tor/keys/hostname
-
-<span class="c1"># Check Tor is bootstrapped</span>
-docker-compose<span class="w"> </span>logs<span class="w"> </span>tor<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Bootstrapped&quot;</span>
-
-<span class="c1"># Stop watching logs</span>
-Ctrl<span class="w"> </span>+<span class="w"> </span>C
-
-<span class="c1"># Edit your website</span>
-nano<span class="w"> </span>apache/html/index.html
-</code></pre></div>
-
-<hr />
-<h2 id="keep-your-website-safe">Keep Your Website Safe</h2>
-<h3 id="1-dont-upload-photos-with-location-data">1. Don't Upload Photos with Location Data</h3>
-<p>Photos sometimes have GPS coordinates hidden inside them! Before uploading, strip them:</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Install exiftool first:</span>
-<span class="c1"># Ubuntu/Debian:</span>
-sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>exiftool
-
-<span class="c1"># Arch:</span>
-sudo<span class="w"> </span>pacman<span class="w"> </span>-S<span class="w"> </span>perl-image-exiftool
-
-<span class="c1"># Then use it:</span>
-exiftool<span class="w"> </span>-all<span class="o">=</span><span class="w"> </span>your-photo.jpg
-</code></pre></div>
-
-<h3 id="2-keep-urls-simple">2. Keep URLs Simple</h3>
-<p>Don't link to your real website or real email address.</p>
-<h3 id="3-keep-your-website-simple">3. Keep Your Website Simple</h3>
-<ul>
-<li>Use only HTML (no PHP, Python, or Node.js)</li>
-<li>No database needed</li>
-<li>No user logins</li>
-<li>Simple = safe</li>
-</ul>
-<h3 id="4-backup-your-onion-address">4. Backup Your .onion Address</h3>
-<p>The file <code>tor/keys/hs_ed25519_secret_key</code> is your secret key. Never lose it!</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># Make a backup</span>
-cp<span class="w"> </span>tor/keys/hs_ed25519_secret_key<span class="w"> </span>~/my-backup-key.txt
-
-<span class="c1"># Store it somewhere safe!</span>
-</code></pre></div>
-
-<hr />
-<h2 id="add-more-pages-to-your-website">Add More Pages to Your Website</h2>
-<p>You can add as many pages as you want. Just create new HTML files:</p>
-<div class="codehilite"><pre><span></span><code>nano<span class="w"> </span>apache/html/about.html
-</code></pre></div>
-
-<p>Paste this:</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>About Me<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>About This Site<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>This is my secret website!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;index.html&quot;</span><span class="p">&gt;</span>Go back home<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
-
-<p>Then link to it from your index.html by adding:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;about.html&quot;</span><span class="p">&gt;</span>Read about me<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-</code></pre></div>
-
-<hr />
-<h2 id="check-your-visitor-stats">Check Your Visitor Stats</h2>
-<p>See who's visiting your site (without storing their IP address):</p>
-<div class="codehilite"><pre><span></span><code>tail<span class="w"> </span>-f<span class="w"> </span>logs/apache/access_log
-</code></pre></div>
-
-<p>Press <code>Ctrl + C</code> to stop watching.</p>
-<hr />
-<h2 id="stop-your-website-temporarily">Stop Your Website Temporarily</h2>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>stop
-</code></pre></div>
-
-<h3 id="start-it-again">Start It Again</h3>
-<div class="codehilite"><pre><span></span><code>docker-compose<span class="w"> </span>start
-</code></pre></div>
-
-<hr />
-<h2 id="what-happens-when-someone-visits">What Happens When Someone Visits?</h2>
-<ol>
-<li>They open Tor Browser</li>
-<li>They type your .onion address</li>
-<li>Tor bounces their connection through 3 random computers around the world</li>
-<li>Connection arrives at your Tor container (their location is hidden)</li>
-<li>Tor talks to Apache</li>
-<li>Apache sends your website</li>
-<li>They see it!</li>
-<li>Nobody can trace it back to you! 🎉</li>
-</ol>
-<hr />
-<h2 id="questions">Questions?</h2>
-<ul>
-<li>Docker help: <a href="https://docker.com/docs">docker.com/docs</a></li>
-<li>Tor questions: <a href="https://torproject.org/docs">torproject.org/docs</a></li>
-<li>Apache help: <a href="https://httpd.apache.org/docs">httpd.apache.org/docs</a></li>
-</ul>
-<hr />
-<h2 id="quick-summary">Quick Summary</h2>
-<p>You now have:
-✅ A hidden website<br />
-✅ Total anonymity<br />
-✅ A cool .onion address<br />
-✅ A way to share information safely  </p>
-<p>Have fun and be safe! 🚀</p>
-<p><strong>Pro Tip:</strong> The first time takes 1 hour. By the third time, you'll do it in 10 minutes!</p>
-        </article>
-    </main>
-
-    <!-- MARKDOWN SOURCE -->
-    <script type="text/plain" id="md-content">
-# Running a Secret Website with Docker & Tor: A Beginner's Guide
-
-Hey! So you want to create a website that only people with Tor Browser can access? A site that's completely hidden and anonymous? This guide will walk you through it step by step. Don't worry if you don't know what Docker or Tor is yet – we'll explain everything in simple terms!
-
----
-
-## 📑 Quick Navigation
-
-- [What is This?](#what-is-this)
-- [Before You Start](#before-you-start)
-- [Installing Docker](#installing-docker)
-- [Setting Everything Up](#setting-everything-up)
-- [Creating Your Website](#creating-your-website)
-- [Starting Your Hidden Service](#starting-your-hidden-service)
-- [Common Problems & Fixes](#common-problems--fixes)
-
----
-
-## What is This?
-
-Imagine you want a website that:
-- **Only works on Tor Browser** (so it's private)
-- **Nobody can see your real location** (totally anonymous)
-- **Gets a weird address** like `thisisyourwebsiteaddress7xq4fx2zfuzed5oxc.onion`
-
-That's what we're building today! Here's how it works:
-
-1. **Docker** = Think of it like a box on your computer. Inside that box, you run a web server and Tor separately. If someone breaks into the web server, they can't escape the box and mess with your computer.
-
-2. **Tor** = This software hides who you are by bouncing your connection around the world multiple times before reaching the website.
-
-3. **Apache** = This is the actual web server that serves your website (what shows the HTML files).
-
-So the flow looks like:
-```
-Your visitor (using Tor Browser)
-     → connects to Tor
-     → gets bounced around the internet
-     → finds your .onion address
-     → Docker's Tor container accepts the connection
-     → Docker's Apache container shows your website
-```
-
----
-
-## Before You Start
-
-You'll need:
-- A computer running Linux (any distro - Arch, Ubuntu, Fedora, Debian, etc.)
-- About 1 hour and coffee ☕
-- Ability to type commands in the terminal
-- At least 2GB of free disk space
-
-**Note:** This guide works on ANY Linux distro. If a command doesn't work, let me know which one you're using!
-
----
-
-## Installing Docker
-
-Docker is the magic tool that creates isolated environments for your services.
-
-### Step 1: Install Docker
-
-**On Ubuntu/Debian:**
-```bash
+<p>First we need Docker. The commands are different depending on which Linux distro you're using.</p>
+<h3 id="ubuntu-or-debian">Ubuntu or Debian</h3>
+<p><code>bash
 sudo apt update
 sudo apt install docker.io docker-compose
-```
-
-**On Arch:**
-```bash
-sudo pacman -S docker docker-compose
-```
-
-**On Fedora:**
-```bash
-sudo dnf install docker docker-compose
-```
-
-**On any other distro**, visit [docker.com/get-started](https://docker.com/get-started) and follow their guide.
-
-### Step 2: Start Docker
-
-Docker is like an app - you need to turn it on:
-
-```bash
 sudo systemctl start docker
-sudo systemctl enable docker
-```
-
-This tells Docker to automatically start when your computer boots up.
-
-### Step 3: Let Your User Run Docker
-
-By default, you need `sudo` to use Docker. Let's fix that:
-
-```bash
+sudo systemctl enable docker</code></p>
+<h3 id="arch-linux">Arch Linux</h3>
+<p><code>bash
+sudo pacman -S docker docker-compose
+sudo systemctl start docker
+sudo systemctl enable docker</code></p>
+<h3 id="fedora">Fedora</h3>
+<p><code>bash
+sudo dnf install docker docker-compose
+sudo systemctl start docker
+sudo systemctl enable docker</code></p>
+<h3 id="other-distros">Other Distros</h3>
+<p>Go to docker.com and follow their installation guide.</p>
+<p>After installing, let Docker run without sudo:</p>
+<p><code>bash
 sudo usermod -aG docker $USER
-newgrp docker
-```
-
-Now close your terminal and open a new one. Test it works:
-
-```bash
-docker run hello-world
-```
-
-If you see "Hello from Docker!" you're good to go! 🎉
-
----
-
-## Setting Everything Up
-
-Now let's create folders and files for your hidden website.
-
-### Step 1: Make a Folder for Your Project
-
-```bash
+newgrp docker</code></p>
+<p>Test it works:</p>
+<p><code>bash
+docker run hello-world</code></p>
+<p>If you see a message saying hello, you're good.</p>
+<hr />
+<h2 id="set-up-your-project">Set Up Your Project</h2>
+<p>Create a folder for everything and make the subdirectories:</p>
+<p><code>bash
 mkdir -p ~/my-onion-site
 cd ~/my-onion-site
-```
-
-This creates a folder called `my-onion-site` in your home directory and puts you inside it.
-
-### Step 2: Create the Folder Structure
-
-```bash
-mkdir -p tor/keys
-mkdir -p apache/html
-mkdir -p apache/config
-mkdir -p logs
-```
-
-Now your folder looks like this:
-```
-my-onion-site/
+mkdir -p tor/keys apache/html apache/config logs</code></p>
+<p>Now you have a structure like this:</p>
+<p><code>my-onion-site/
 ├── tor/
-│   └── keys/          (this is where your .onion address will be saved!)
+│   └── keys/          (your .onion address will be here)
 ├── apache/
-│   ├── html/          (your website files go here)
-│   └── config/        (settings for Apache)
-└── logs/              (where errors get written)
-```
-
----
-
-## Creating Your Website
-
-### Step 1: Create the Main Website File
-
-Create a file called `index.html` in the `apache/html/` folder. Open your text editor:
-
-```bash
-nano apache/html/index.html
-```
-
-Then copy and paste this:
-
-```html
+│   ├── html/          (your website files)
+│   └── config/        (Apache settings)
+└── logs/              (where errors get written)</code></p>
+<hr />
+<h2 id="create-your-website">Create Your Website</h2>
+<p>Open a text editor and create your first HTML file:</p>
+<p><code>bash
+nano apache/html/index.html</code></p>
+<p>Paste this in:</p>
+<p>```html</p>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>My Secret Website</title>
+    <title>Hidden Site</title>
     <style>
         body {
             background-color: #000;
-            color: #00ff00;
+            color: #0f0;
             font-family: monospace;
             padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
         }
         h1 {
             text-align: center;
@@ -763,458 +251,283 @@ Then copy and paste this:
     </style>
 </head>
 <body>
-    <h1>🧅 Welcome to My Hidden Website!</h1>
-    <p>If you can see this, you're using Tor Browser.</p>
-    <p>Your real location is hidden.</p>
-    <p>You are totally anonymous right now.</p>
+    <h1>Welcome</h1>
+    <p>If you can see this, you're using Tor Browser and your connection is completely hidden.</p>
+    <p>Your real location is protected.</p>
 </body>
 </html>
-```
-
-Save it by pressing `Ctrl + X`, then `Y`, then `Enter`.
-
-### Step 2: Create Apache's Settings File
-
-Apache needs some safety rules. Open your editor:
-
-```bash
-nano apache/config/custom.conf
-```
-
-Copy and paste this:
-
-```apache
+<p>```</p>
+<p>Save it: Ctrl+X, then Y, then Enter.</p>
+<hr />
+<h2 id="create-apache-settings">Create Apache Settings</h2>
+<p>Create another file for Apache configuration:</p>
+<p><code>bash
+nano apache/config/custom.conf</code></p>
+<p>Paste this:</p>
+<p>```apache
 ServerTokens ProductOnly
-ServerSignature Off
-
-<DirectoryMatch "/\.">
+ServerSignature Off</p>
+<p><DirectoryMatch "/\.">
     Require all denied
-</DirectoryMatch>
-
-Header set X-Content-Type-Options "nosniff"
+</DirectoryMatch></p>
+<p>Header set X-Content-Type-Options "nosniff"
 Header set X-Frame-Options "DENY"
-Header set Referrer-Policy "no-referrer"
-
-<Directory /usr/local/apache2/htdocs>
+Header set Referrer-Policy "no-referrer"</p>
+<p><Directory /usr/local/apache2/htdocs>
     Options -Indexes
 </Directory>
-```
-
-Save it (Ctrl + X, Y, Enter).
-
-### Step 3: Create the Dockerfile
-
-This tells Docker how to create the Apache container. Open your editor:
-
-```bash
-nano Dockerfile
-```
-
-Copy and paste this:
-
-```dockerfile
-FROM httpd:2.4-alpine
-
-COPY apache/html/ /usr/local/apache2/htdocs/
-COPY apache/config/custom.conf /usr/local/apache2/conf.d/
-
-RUN sed -i 's/^#LoadModule headers_module/LoadModule headers_module/' \
-    /usr/local/apache2/conf/httpd.conf && \
+```</p>
+<p>These are just safety rules. Save it the same way.</p>
+<hr />
+<h2 id="create-the-dockerfile">Create the Dockerfile</h2>
+<p>This tells Docker how to build the Apache container:</p>
+<p><code>bash
+nano Dockerfile</code></p>
+<p>Paste this:</p>
+<p>```dockerfile
+FROM httpd:2.4-alpine</p>
+<p>COPY apache/html/ /usr/local/apache2/htdocs/
+COPY apache/config/custom.conf /usr/local/apache2/conf.d/</p>
+<p>RUN sed -i 's/^#LoadModule headers_module/LoadModule headers_module/' \
+    /usr/local/apache2/conf/httpd.conf &amp;&amp; \
     sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' \
-    /usr/local/apache2/conf/httpd.conf
-
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
-
-CMD ["httpd-foreground"]
-```
-
-Save it.
-
-### Step 4: Create the Tor Settings File
-
-Tor needs configuration. Open your editor:
-
-```bash
-nano tor/torrc
-```
-
-Copy and paste this:
-
-```conf
+    /usr/local/apache2/conf/httpd.conf</p>
+<p>HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1</p>
+<p>CMD ["httpd-foreground"]
+```</p>
+<p>Save it.</p>
+<hr />
+<h2 id="create-tor-configuration">Create Tor Configuration</h2>
+<p>Tor needs its own config file:</p>
+<p><code>bash
+nano tor/torrc</code></p>
+<p>Paste this:</p>
+<p>```conf
 SocksPort 0
 ControlPort 9051
-CookieAuthentication 1
-
-HiddenServiceDir /var/lib/tor/hidden_service/
+CookieAuthentication 1</p>
+<p>HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServicePort 80 apache:80
-HiddenServiceVersion 3
-
-Log notice file /var/log/tor/notices.log
-```
-
-Save it.
-
-### Step 5: Create the docker-compose.yml File
-
-This is the master file that brings it all together:
-
-```bash
-nano docker-compose.yml
-```
-
-Copy and paste this:
-
-```yaml
-version: '3.8'
-
-services:
+HiddenServiceVersion 3</p>
+<p>Log notice file /var/log/tor/notices.log
+```</p>
+<p>Save it. The key lines are:
+- HiddenServicePort tells Tor to listen on port 80 and forward to your Apache container
+- HiddenServiceVersion 3 means use the newer, more secure Tor addresses</p>
+<hr />
+<h2 id="create-docker-composeyml">Create docker-compose.yml</h2>
+<p>This is the file that orchestrates everything. It tells Docker to run both Tor and Apache and connect them:</p>
+<p><code>bash
+nano docker-compose.yml</code></p>
+<p>Paste this:</p>
+<p>```yaml
+version: '3.8'</p>
+<p>services:
   tor:
     image: goldy/tor-hidden-service:latest
     container_name: tor-gateway
-    restart: always
-    
-    environment:
-      - SERVICES=apache:80
-    
-    volumes:
-      - ./tor/keys:/var/lib/tor/hidden_service/
-      - ./tor/torrc:/etc/tor/torrc:ro
-      - ./logs/tor:/var/log/tor:rw
-    
-    networks:
-      - hidden_net
-    
-    depends_on:
-      - apache
+    restart: always</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><code>environment:
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span>SERVICES<span style="color: #666">=</span>apache:<span style="color: #666">80</span>
 
-  apache:
-    build: .
-    container_name: apache-server
-    restart: unless-stopped
-    
-    volumes:
-      - ./logs/apache:/usr/local/apache2/logs:rw
-    
-    networks:
-      - hidden_net
-    
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 10s
+volumes:
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span><span style="color: #666">./</span>tor<span style="color: #666">/</span>keys:<span style="color: #666">/</span><span style="color: #008000; font-weight: bold">var</span><span style="color: #666">/</span>lib<span style="color: #666">/</span>tor<span style="color: #666">/</span>hidden_service<span style="color: #666">/</span>
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span><span style="color: #666">./</span>tor<span style="color: #666">/</span>torrc:<span style="color: #666">/</span>etc<span style="color: #666">/</span>tor<span style="color: #666">/</span>torrc:ro
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span><span style="color: #666">./</span>logs<span style="color: #666">/</span>tor:<span style="color: #666">/</span><span style="color: #008000; font-weight: bold">var</span><span style="color: #666">/</span><span style="color: #008000">log</span><span style="color: #666">/</span>tor:rw
 
 networks:
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span>hidden_net
+
+depends_on:
+<span style="color: #BBB">  </span><span style="color: #666">-</span><span style="color: #BBB"> </span>apache
+</code></pre></div>
+
+<p>apache:
+    build: .
+    container_name: apache-server
+    restart: unless-stopped</p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><code>volumes:
+  <span style="color: #008000; font-weight: bold">-</span> ./logs/apache:/usr/local/apache2/logs:rw
+
+networks:
+  <span style="color: #008000; font-weight: bold">-</span> hidden_net
+
+healthcheck:
+  test: [&quot;CMD&quot;, &quot;curl&quot;, &quot;-f&quot;, &quot;http://localhost/&quot;]
+  interval: 30s
+  timeout: 3s
+  retries: 3
+  start_period: 10s
+</code></pre></div>
+
+<p>networks:
   hidden_net:
     driver: bridge
     ipam:
       config:
         - subnet: 172.18.0.0/16
-```
-
-Save it. Done with file creation!
-
----
-
-## Starting Your Hidden Service
-
-Make sure you're in your project folder:
-
-```bash
-cd ~/my-onion-site
-```
-
-### Step 1: Build and Start Everything
-
-```bash
-docker-compose up -d
-```
-
-This starts both the Tor container and Apache container in the background.
-
-### Step 2: Watch Tor Start
-
-```bash
-docker-compose logs -f tor
-```
-
-Wait until you see "Bootstrapped 100%" - this usually takes 30-60 seconds.
-
-Press `Ctrl + C` to stop watching.
-
-### Step 3: Get Your .onion Address
-
-```bash
-cat tor/keys/hostname
-```
-
-You'll see something like:
-```
-thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
-```
-
-**Save this! This is your website's address.**
-
----
-
-## Access Your Website
-
-### Step 1: Download Tor Browser
-
-Visit [torproject.org/download](https://www.torproject.org/download) and download Tor Browser.
-
-### Step 2: Run Tor Browser
-
-Extract it and run it. Wait 1-2 minutes for it to connect to Tor.
-
-### Step 3: Visit Your Site
-
-In the address bar, paste your .onion address:
-```
-http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/
-```
-
-**You should see your website!** 🎉
-
----
-
-## Common Problems & Fixes
-
-### "Can't connect to my .onion address"
-
-First, wait 60 seconds. Tor takes time to build circuits.
-
-Check if Tor is ready:
-```bash
-docker-compose logs tor | grep "Bootstrapped"
-```
-
-If you see "Bootstrapped 100%", it's ready.
-
-Check if Apache is working:
-```bash
-docker-compose logs apache
-```
-
-If there are errors, restart everything:
-```bash
+```</p>
+<p>Save it. That's all the files.</p>
+<hr />
+<h2 id="start-everything">Start Everything</h2>
+<p>Make sure you're in your project folder:</p>
+<p><code>bash
+cd ~/my-onion-site</code></p>
+<p>Start both containers:</p>
+<p><code>bash
+docker-compose up -d</code></p>
+<p>The -d means run in the background.</p>
+<p>Watch Tor start up:</p>
+<p><code>bash
+docker-compose logs -f tor</code></p>
+<p>Wait until you see "Bootstrapped 100%". This takes 30-60 seconds. When you see it, press Ctrl+C to stop watching.</p>
+<hr />
+<h2 id="get-your-onion-address">Get Your .onion Address</h2>
+<p>When Tor starts for the first time, it generates your .onion address and saves it:</p>
+<p><code>bash
+cat tor/keys/hostname</code></p>
+<p>You'll see something like:</p>
+<p><code>thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion</code></p>
+<p>Save this. This is your website's URL. Don't lose it.</p>
+<hr />
+<h2 id="access-your-site">Access Your Site</h2>
+<p>Download Tor Browser from torproject.org if you don't have it already.</p>
+<p>Open Tor Browser and wait for it to connect (takes a minute or two).</p>
+<p>In the address bar, paste your .onion address:</p>
+<p><code>http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/</code></p>
+<p>You should see your website. Your location is hidden. You're totally anonymous. That's it.</p>
+<hr />
+<h2 id="common-problems">Common Problems</h2>
+<h3 id="cant-connect-to-my-onion-address">Can't connect to my .onion address</h3>
+<p>First, wait 60 seconds. Tor takes time.</p>
+<p>Check if Tor is bootstrapped:</p>
+<p><code>bash
+docker-compose logs tor | grep "Bootstrapped"</code></p>
+<p>If it says 100%, then Tor is ready.</p>
+<p>Check if Apache is running:</p>
+<p><code>bash
+docker-compose logs apache</code></p>
+<p>If there are errors, restart:</p>
+<p><code>bash
 docker-compose down
-docker-compose up -d
-```
-
-### "504 Bad Gateway"
-
-Try this:
-```bash
-docker-compose exec tor ping apache
-```
-
-If that fails, restart:
-```bash
-docker-compose restart
-```
-
-### "Port already in use"
-
-Stop any other containers:
-```bash
-docker stop $(docker ps -q)
-```
-
-Then start again:
-```bash
-docker-compose up -d
-```
-
-### "Want to update my website"
-
-Just edit your HTML file:
-```bash
-nano apache/html/index.html
-```
-
-Save and it updates automatically! You don't need to restart anything.
-
-### "Want to start over"
-
-To stop but keep your .onion address:
-```bash
-docker-compose down
-```
-
-To delete everything and start fresh (new .onion address):
-```bash
-docker-compose down -v
-```
-
----
-
-## Common Commands
-
-```bash
-# Start your site
-docker-compose up -d
-
-# Stop your site (keeps your .onion address)
-docker-compose down
-
-# View what's happening
-docker-compose logs -f
-
-# Check if everything is running
-docker-compose ps
-
-# Get your .onion address
-cat tor/keys/hostname
-
-# Check Tor is bootstrapped
-docker-compose logs tor | grep "Bootstrapped"
-
-# Stop watching logs
-Ctrl + C
-
-# Edit your website
-nano apache/html/index.html
-```
-
----
-
-## Keep Your Website Safe
-
-### 1. Don't Upload Photos with Location Data
-
-Photos sometimes have GPS coordinates hidden inside them! Before uploading, strip them:
-
-```bash
-# Install exiftool first:
-# Ubuntu/Debian:
-sudo apt install exiftool
-
-# Arch:
-sudo pacman -S perl-image-exiftool
-
-# Then use it:
-exiftool -all= your-photo.jpg
-```
-
-### 2. Keep URLs Simple
-
-Don't link to your real website or real email address.
-
-### 3. Keep Your Website Simple
-
-- Use only HTML (no PHP, Python, or Node.js)
-- No database needed
-- No user logins
-- Simple = safe
-
-### 4. Backup Your .onion Address
-
-The file `tor/keys/hs_ed25519_secret_key` is your secret key. Never lose it!
-
-```bash
-# Make a backup
-cp tor/keys/hs_ed25519_secret_key ~/my-backup-key.txt
-
-# Store it somewhere safe!
-```
-
----
-
-## Add More Pages to Your Website
-
-You can add as many pages as you want. Just create new HTML files:
-
-```bash
-nano apache/html/about.html
-```
-
-Paste this:
-
-```html
+docker-compose up -d</code></p>
+<h3 id="504-bad-gateway">504 Bad Gateway</h3>
+<p>Tor can't reach Apache. Try restarting:</p>
+<p><code>bash
+docker-compose restart</code></p>
+<h3 id="i-want-to-update-my-website">I want to update my website</h3>
+<p>Just edit your HTML file:</p>
+<p><code>bash
+nano apache/html/index.html</code></p>
+<p>Save it. It updates automatically. You don't need to restart anything.</p>
+<h3 id="i-want-to-stop-my-site-but-keep-the-onion-address">I want to stop my site but keep the .onion address</h3>
+<p><code>bash
+docker-compose down</code></p>
+<p>The .onion address stays the same.</p>
+<h3 id="i-want-to-completely-start-over-and-get-a-new-onion-address">I want to completely start over and get a new .onion address</h3>
+<p><code>bash
+docker-compose down -v</code></p>
+<p>Only do this if you actually want a new address. You can't get the old one back.</p>
+<hr />
+<h2 id="basic-commands-youll-use">Basic Commands You'll Use</h2>
+<p>Start your site:
+<code>bash
+docker-compose up -d</code></p>
+<p>Stop your site (keeps your .onion address):
+<code>bash
+docker-compose down</code></p>
+<p>See what's happening:
+<code>bash
+docker-compose logs -f</code></p>
+<p>Check if everything is running:
+<code>bash
+docker-compose ps</code></p>
+<p>Get your .onion address:
+<code>bash
+cat tor/keys/hostname</code></p>
+<hr />
+<h2 id="keep-it-safe">Keep It Safe</h2>
+<p>Don't upload photos that have GPS data in them. Strip the metadata first:</p>
+<p>```bash</p>
+<h1 id="install-exiftool">Install exiftool</h1>
+<p>sudo apt install exiftool          # Debian/Ubuntu
+sudo pacman -S perl-image-exiftool  # Arch</p>
+<h1 id="strip-all-metadata-from-a-photo">Strip all metadata from a photo</h1>
+<p>exiftool -all= your-photo.jpg
+```</p>
+<p>Don't link to your real website or real email address.</p>
+<p>Don't use PHP, Python, or Node.js unless you really have to. Just HTML and CSS. The simpler, the safer.</p>
+<p>Keep your .onion private key safe. It's in tor/keys/hs_ed25519_secret_key. If you lose it, you lose your address forever. Maybe copy it somewhere safe:</p>
+<p><code>bash
+cp tor/keys/hs_ed25519_secret_key ~/backup-key.txt</code></p>
+<p>Store it somewhere offline.</p>
+<hr />
+<h2 id="adding-more-pages">Adding More Pages</h2>
+<p>Create another HTML file:</p>
+<p><code>bash
+nano apache/html/about.html</code></p>
+<p>Paste this:</p>
+<p>```html</p>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>About Me</title>
+    <title>About</title>
 </head>
 <body>
     <h1>About This Site</h1>
-    <p>This is my secret website!</p>
-    <a href="index.html">Go back home</a>
+    <p>This is my about page.</p>
+    <a href="index.html">Back to home</a>
 </body>
 </html>
-```
-
-Then link to it from your index.html by adding:
-```html
-<a href="about.html">Read about me</a>
-```
-
----
-
-## Check Your Visitor Stats
-
-See who's visiting your site (without storing their IP address):
-
-```bash
-tail -f logs/apache/access_log
-```
-
-Press `Ctrl + C` to stop watching.
-
----
-
-## Stop Your Website Temporarily
-
-```bash
-docker-compose stop
-```
-
-### Start It Again
-
-```bash
-docker-compose start
-```
-
----
-
-## What Happens When Someone Visits?
-
-1. They open Tor Browser
-2. They type your .onion address
-3. Tor bounces their connection through 3 random computers around the world
-4. Connection arrives at your Tor container (their location is hidden)
-5. Tor talks to Apache
-6. Apache sends your website
-7. They see it!
-8. Nobody can trace it back to you! 🎉
-
----
-
-## Questions?
-
-- Docker help: [docker.com/docs](https://docker.com/docs)
-- Tor questions: [torproject.org/docs](https://torproject.org/docs)
-- Apache help: [httpd.apache.org/docs](https://httpd.apache.org/docs)
-
----
-
-## Quick Summary
-
-You now have:
-✅ A hidden website  
-✅ Total anonymity  
-✅ A cool .onion address  
-✅ A way to share information safely  
-
-Have fun and be safe! 🚀
-
-**Pro Tip:** The first time takes 1 hour. By the third time, you'll do it in 10 minutes!
-
-    </script>
-
-    <script src="../script.js"></script>
+<p>```</p>
+<p>Link to it from your index.html:</p>
+<p><code>html
+&lt;a href="about.html"&gt;About&lt;/a&gt;</code></p>
+<hr />
+<h2 id="check-your-visitor-stats">Check Your Visitor Stats</h2>
+<p>See who's visiting (without storing their IP):</p>
+<p><code>bash
+tail -f logs/apache/access_log</code></p>
+<p>Press Ctrl+C to stop.</p>
+<hr />
+<h2 id="whats-actually-happening">What's Actually Happening</h2>
+<p>When someone visits:</p>
+<ol>
+<li>They open Tor Browser</li>
+<li>They type your .onion address</li>
+<li>Tor bounces their connection through 3 random computers around the world</li>
+<li>Their traffic arrives at your Tor container</li>
+<li>Your Tor container talks to your Apache container</li>
+<li>Apache sends your website files</li>
+<li>They see it</li>
+<li>Nobody can trace it back to you</li>
+</ol>
+<hr />
+<h2 id="distro-notes">Distro Notes</h2>
+<p>Most of the guide is the same on any distro. The only thing that changes is the package manager:</p>
+<p>Ubuntu/Debian: apt or apt-get
+Arch: pacman
+Fedora/CentOS: dnf or yum
+Others: usually apt or dnf, check their docs</p>
+<p>If a command doesn't work on your distro, Google the error. You'll find an answer.</p>
+<hr />
+<h2 id="need-help">Need Help</h2>
+<p>If something breaks:</p>
+<ol>
+<li>Read the error message carefully</li>
+<li>Google the error</li>
+<li>Check docker-compose logs -f to see what's actually happening</li>
+<li>Restart everything</li>
+<li>Wait 60 seconds before trying again</li>
+</ol>
+<p>If it's really broken, start over. The nice thing about Docker is you can just delete everything and try again. Your .onion address is saved in tor/keys/, so if you keep that folder, you keep your address.</p>
+<hr />
+<h2 id="one-more-thing">One More Thing</h2>
+<p>The first time you do this, it takes about an hour. The second time, 20 minutes. By the third time, 5 minutes. It gets easier.</p>
+<p>The website is now live and completely anonymous. Be safe and be smart about what you put on it.</p>
+        <hr>
+        <p style="font-size: 0.9em; color: #666; margin-top: 3em;">Generated from markdown documentation. Last updated: 1777159491.785181</p>
+    </div>
 </body>
 </html>
