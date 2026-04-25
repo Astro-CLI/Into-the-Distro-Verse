@@ -1,640 +1,173 @@
-<!-- 
-    WIKI GUIDE: distroverse--docs--apache-tor-docker.md
-    This is an advanced, deep-dive guide into hosting anonymous services.
-    It covers the architecture, security, and interaction of Docker, Tor, and Apache.
-    Updated with comprehensive step-by-step instructions and practical examples.
--->
+# Running a Secret Website with Docker & Tor: A Beginner's Guide
 
-# Apache + Tor Hidden Service: The Complete Production Guide
-
-A comprehensive guide for running an Apache web server as a **Tor Hidden Service (v3)** using **Docker**. This covers not just the "how," but the technical "why" behind every component, plus practical troubleshooting and security hardening.
+Hey! So you want to create a website that only people with Tor Browser can access? A site that's completely hidden and anonymous? This guide will walk you through it step by step. Don't worry if you don't know what Docker or Tor is yet – we'll explain everything in simple terms!
 
 ---
 
-## 📑 Table of Contents
+## 📑 Quick Navigation
 
-1. [🏗️ Architecture Overview](#-architecture-overview)
-2. [🐳 Docker Fundamentals](#-docker-fundamentals)
-3. [🧅 Tor Deep Dive](#-tor-deep-dive)
-4. [🦅 Apache Configuration](#-apache-configuration)
-5. [🛠️ Step-by-Step Implementation](#-step-by-step-implementation)
-6. [🔐 Security Hardening](#-security-hardening)
-7. [📈 Monitoring & Troubleshooting](#-monitoring--troubleshooting)
-8. [🚀 Advanced Topics](#-advanced-topics)
+- [What is This?](#what-is-this)
+- [Before You Start](#before-you-start)
+- [Installing Docker](#installing-docker)
+- [Setting Everything Up](#setting-everything-up)
+- [Creating Your Website](#creating-your-website)
+- [Starting Your Hidden Service](#starting-your-hidden-service)
+- [Common Problems & Fixes](#common-problems--fixes)
 
 ---
 
-## 🏗️ Architecture Overview
+## What is This?
 
-### The Big Picture
+Imagine you want a website that:
+- **Only works on Tor Browser** (so it's private)
+- **Nobody can see your real location** (totally anonymous)
+- **Gets a weird address** like `thisisyourwebsiteaddress7xq4fx2zfuzed5oxc.onion`
 
-When a user connects to your `.onion` address via Tor Browser, they don't connect to you directly. Instead:
+That's what we're building today! Here's how it works:
 
+1. **Docker** = Think of it like a box on your computer. Inside that box, you run a web server and Tor separately. If someone breaks into the web server, they can't escape the box and mess with your computer.
+
+2. **Tor** = This software hides who you are by bouncing your connection around the world multiple times before reaching the website.
+
+3. **Apache** = This is the actual web server that serves your website (what shows the HTML files).
+
+So the flow looks like:
 ```
-[User's Tor Browser] 
-      ↓ (3-hop circuit)
-[Tor Entry → Middle → Guard Nodes]
-      ↓ (Rendezvous Point)
-[Your Tor Container (Gateway)]
-      ↓ (Docker Internal Bridge)
-[Apache Container (Content Server)]
+Your visitor (using Tor Browser)
+     → connects to Tor
+     → gets bounced around the internet
+     → finds your .onion address
+     → Docker's Tor container accepts the connection
+     → Docker's Apache container shows your website
 ```
-
-**Key Principle:** The Apache server **never touches the public internet**. It only communicates with the Tor container over a private Docker bridge network.
-
-### Why This Architecture?
-
-1. **Isolation:** If Apache is exploited, the attacker is trapped in a container with no internet access
-2. **Anonymity:** Your real IP is never exposed; all traffic routes through Tor
-3. **Separation of Concerns:** The Tor gateway and web server are independent services
-4. **Scalability:** You can add multiple web server instances behind the Tor gateway
 
 ---
 
-## 🐳 Docker Fundamentals
+## Before You Start
 
-### What is Docker?
+You'll need:
+- A computer running Linux (any distro - Arch, Ubuntu, Fedora, Debian, etc.)
+- About 1 hour and coffee ☕
+- Ability to type commands in the terminal
+- At least 2GB of free disk space
 
-Docker uses **OS-level virtualization** (not hypervisor-based) to run isolated applications. Unlike VMs, containers share the host's kernel but run in isolated user spaces.
+**Note:** This guide works on ANY Linux distro. If a command doesn't work, let me know which one you're using!
 
-### Key Concepts
+---
 
-#### Images vs. Containers
-- **Image:** A read-only template (blueprint) containing all dependencies
-- **Container:** A running instance of an image with read-write layer on top
-- **Registry:** Repository of images (Docker Hub, Quay.io, etc.)
+## Installing Docker
 
-**Example:**
+Docker is the magic tool that creates isolated environments for your services.
+
+### Step 1: Install Docker
+
+**On Ubuntu/Debian:**
 ```bash
-# Pull an image from Docker Hub
-docker pull httpd:2.4-alpine
-
-# Run it as a container
-docker run -d --name web httpd:2.4-alpine
-
-# List running containers
-docker ps
+sudo apt update
+sudo apt install docker.io docker-compose
 ```
 
-#### Linux Namespaces (Isolation)
-
-Docker uses Linux kernel namespaces to isolate processes:
-
-- **Network Namespace (net):** Isolated network stack
-  - Own `eth0`, routing tables, firewall rules
-  - Invisible to external network scanners
-  - Can't see host's open ports
-
-- **Mount Namespace (mnt):** Isolated filesystem
-  - Container has its own root (`/`)
-  - Can't access host's `/etc/shadow` or sensitive files
-  - Files mapped via `volumes` in docker-compose
-
-- **PID Namespace (pid):** Isolated process tree
-  - Processes think they're PID 1 (init)
-  - Can't see host's other processes
-  - `docker exec` lets you run commands inside
-
-- **IPC Namespace (ipc):** Isolated inter-process communication
-  - Prevents access to host's shared memory
-  - Stops process signaling between host and container
-
-- **UTS Namespace (uts):** Isolated hostname/domain
-  - Container has its own hostname
-  - Example: `apache-server` vs `my-laptop`
-
-#### Control Groups (cgroups)
-
-Limit resource usage:
+**On Arch:**
 ```bash
-# Prevent Apache from using more than 512MB RAM
-# Or more than 50% CPU
-
-docker run -d --memory=512m --cpus=0.5 httpd:2.4-alpine
+sudo pacman -S docker docker-compose
 ```
 
-### Docker Networking Modes
-
-For this guide, we use **Bridge Networking**:
-
-```
-┌─────────────────────────────────────────┐
-│         Host (Your Server)              │
-│  ┌──────────────────────────────────┐   │
-│  │  Docker Virtual Bridge (172.18.0.0/16) │
-│  │                                  │   │
-│  │  ┌─────────────────────────────┐ │   │
-│  │  │  Tor Container              │ │   │
-│  │  │  IP: 172.18.0.2             │ │   │
-│  │  └─────────────────────────────┘ │   │
-│  │                                  │   │
-│  │  ┌─────────────────────────────┐ │   │
-│  │  │  Apache Container           │ │   │
-│  │  │  IP: 172.18.0.3             │ │   │
-│  │  └─────────────────────────────┘ │   │
-│  └──────────────────────────────────┘   │
-│           ↑                              │
-│    (Only exposed via Tor)                │
-└─────────────────────────────────────────┘
+**On Fedora:**
+```bash
+sudo dnf install docker docker-compose
 ```
 
-**Benefits:**
-- Containers can reach each other by hostname (DNS)
-- Both containers invisible to clearnet
-- Uses `iptables` for internal NAT
-- Completely separate from host's network
+**On any other distro**, visit [docker.com/get-started](https://docker.com/get-started) and follow their guide.
 
-### Docker Storage
+### Step 2: Start Docker
 
-Each container gets a read-write layer on top of the read-only image:
-
-```
-Read-Only Image Layers (from Dockerfile)
-  └─ base OS (Alpine)
-  └─ Apache packages
-  └─ Config files
-
-Read-Write Container Layer (active at runtime)
-  └─ New files created during runtime
-  └─ Modified files
-  └─ Deleted files (marked as deleted, not actually removed)
-```
-
-**Volume Mapping:**
-- `volumes:` in docker-compose maps persistent directories
-- Without volumes, data is lost when container stops
-- Essential for Tor's private key storage (`.onion` address)
-
----
-
-## 🧅 Tor Deep Dive
-
-### How Tor Provides Anonymity
-
-Tor uses **onion routing** (multi-layered encryption):
-
-**For Regular Tor Users (Exit Traffic):**
-```
-Client's Browser
-  ↓ (Encrypted to Guard, Guard knows client IP)
-Guard Node (Entry Node)
-  ↓ (Encrypted to Middle, Middle sees neither end)
-Middle Relay
-  ↓ (Encrypted to Exit, Exit knows destination but not source)
-Exit Node
-  ↓ (Unencrypted)
-Regular Website
-```
-
-**For Hidden Services (No Exit):**
-```
-Your Server (Tor Container)
-  ↓ (Encrypted, builds 3-hop circuit outbound)
-Guard → Middle → Rendezvous Point
-  
-User (Tor Browser)
-  ↓ (Encrypted, builds 3-hop circuit inbound)
-Guard → Middle → Rendezvous Point
-  
-[Both meet at Rendezvous Point anonymously]
-```
-
-### Tor Hidden Services (v3)
-
-**v3 Addresses (56 characters):**
-```
-thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
-```
-
-This address is **self-authenticating**:
-- Contains a SHA3 hash of your Ed25519 public key
-- No Certificate Authority needed
-- Cannot be forged without the private key
-- Automatically verified by Tor Browser
-
-**The v3 Registration Process:**
-
-1. **Introduction Points Selection**
-   - Your Tor daemon picks 3 random relays
-   - Tells them "I'm an intro point for this service"
-   - Gives them your public key
-
-2. **Descriptor Creation**
-   - Create a "Service Descriptor" containing:
-     - List of Introduction Points
-     - Your public key
-     - Current timestamp
-   - Sign it with your private key
-
-3. **Directory Upload**
-   - Upload descriptor to **Hidden Service Directories (HSDir)**
-   - Multiple HSDir relays store copies redundantly
-   - Encrypted so HSDir operators can't see the content
-
-4. **User Discovery**
-   - User gets your `.onion` address (from website, QR code, etc.)
-   - Queries HSDir network for your descriptor
-   - Downloads the descriptor with your Intro Points
-
-5. **Rendezvous Connection**
-   - User picks a random relay as **Rendezvous Point**
-   - Sends intro message to one of your Intro Points
-   - Your Tor container connects to the same Rendezvous Point
-   - Both parties authenticate and exchange encryption keys
-   - Connection established!
-
-### Ed25519 Cryptography
-
-v3 uses **Ed25519** (Curve25519 derivatives):
-
-- **Advantages over RSA:**
-  - Much smaller key size (32 bytes vs. 256+ for RSA-2048)
-  - Faster verification
-  - Resistant to timing attacks
-  - No random number generation (deterministic)
-
-- **Key Files:**
-  - `hs_ed25519_secret_key` - Your private key (KEEP SECURE!)
-  - `hs_ed25519_public_key` - Derived public key
-  - `hostname` - Your `.onion` address
-
-**Critical:** If you lose the private key, you lose your address forever.
-
----
-
-## 🦅 Apache Configuration
-
-### Why Apache for Tor?
-
-- **Configurability:** Extensive `.htaccess` and module support
-- **Performance:** Event MPM handles concurrent connections efficiently
-- **Maturity:** 25+ years of battle-tested reliability
-- **Security:** Strong track record with rapid patch cycles
-
-### Multi-Processing Modules (MPM)
-
-Apache can handle requests with different models:
-
-**Event MPM (Recommended for Tor):**
-```apache
-<IfModule mpm_event_module>
-    StartServers             2
-    MinSpareServers          2
-    MaxSpareServers          5
-    MaxRequestWorkers        150
-    MaxConnectionsPerChild   0
-</IfModule>
-```
-
-**Why Event?**
-- Single dedicated thread handles new connections
-- Other threads handle long-running requests
-- One slow Tor user won't block others
-- Better for high-latency, unpredictable traffic
-
-### Security Hardening Configuration
-
-```apache
-# 1. Hide Server Information
-ServerTokens ProductOnly
-ServerSignature Off
-
-# 2. Deny Access to Sensitive Files
-<DirectoryMatch "/\.(?!well-known)">
-    Require all denied
-</DirectoryMatch>
-
-# 3. Restrict File Uploads
-<Directory /var/www>
-    <FilesMatch "\.(php|phtml|php3|php4|php5|phtml|phps|pht|phar|phpt|pgif|shtml|htaccess|phtml|php7)$">
-        Require all denied
-    </FilesMatch>
-</Directory>
-
-# 4. Disable Directory Listing
-<Directory /var/www/html>
-    Options -Indexes
-    Options -FollowSymLinks
-</Directory>
-
-# 5. Prevent Code Execution
-<LocationMatch "^/upload">
-    php_flag engine off
-    AddType text/plain .php
-</LocationMatch>
-
-# 6. Add Security Headers
-Header set X-Content-Type-Options "nosniff"
-Header set X-Frame-Options "DENY"
-Header set X-XSS-Protection "1; mode=block"
-Header set Referrer-Policy "no-referrer"
-```
-
-### Resource Limits (Prevent DoS)
-
-```apache
-# Prevent buffer overflow attacks
-LimitRequestBody 1048576         # 1MB max per request
-LimitRequestFields 50             # Max 50 headers per request
-LimitRequestFieldSize 8190        # Max 8KB per header
-
-# Prevent Slowloris DDoS
-TimeOut 30
-KeepAliveTimeout 10
-MaxKeepAliveRequests 100
-
-# Connection limits
-MaxClients 200
-```
-
----
-
-## 🛠️ Step-by-Step Implementation
-
-### Prerequisites
-
-1. **Docker & Docker Compose installed:**
-   ```bash
-   # Verify installation
-   docker --version
-   docker-compose --version
-   ```
-
-2. **Sufficient disk space:**
-   - At least 2GB free for images and containers
-
-3. **Basic understanding of:**
-   - Linux commands and shell
-   - YAML syntax
-   - Network fundamentals
-
-### Step 1: Create Project Structure
+Docker is like an app - you need to turn it on:
 
 ```bash
-# Create dedicated directory
-mkdir -p ~/tor-service && cd ~/tor-service
-
-# Create subdirectories
-mkdir -p tor/keys             # Tor private keys (.onion identity)
-mkdir -p apache/conf          # Apache configuration overrides
-mkdir -p apache/htdocs        # Website content
-mkdir -p logs                 # Docker container logs
-
-# Directory structure:
-# tor-service/
-# ├── docker-compose.yml      # Orchestration
-# ├── Dockerfile              # Apache image definition
-# ├── tor/
-# │   ├── keys/               # .onion address storage (PERSISTENT!)
-# │   └── torrc               # Tor configuration
-# ├── apache/
-# │   ├── conf/               # Apache config overrides
-# │   └── htdocs/             # Website files
-# └── logs/                   # Container logs
+sudo systemctl start docker
+sudo systemctl enable docker
 ```
 
-### Step 2: Create Apache Dockerfile
+This tells Docker to automatically start when your computer boots up.
 
-Create `~/tor-service/Dockerfile`:
+### Step 3: Let Your User Run Docker
 
-```dockerfile
-FROM httpd:2.4-alpine
+By default, you need `sudo` to use Docker. Let's fix that:
 
-# Update packages
-RUN apk update && apk add --no-cache \
-    curl \
-    ca-certificates \
-    openssl
-
-# Create necessary directories
-RUN mkdir -p /usr/local/apache2/logs && \
-    mkdir -p /usr/local/apache2/conf.d
-
-# Remove default index
-RUN rm -f /usr/local/apache2/htdocs/index.html
-
-# Copy website content
-COPY ./apache/htdocs/ /usr/local/apache2/htdocs/
-
-# Copy custom Apache config
-COPY ./apache/conf/httpd-custom.conf /usr/local/apache2/conf.d/custom.conf
-
-# Security: Remove documentation and CGI examples
-RUN rm -rf /usr/local/apache2/cgi-bin/* && \
-    rm -rf /usr/local/apache2/error/* && \
-    rm -rf /usr/local/apache2/icons/*
-
-# Enable required modules
-RUN sed -i 's/^#LoadModule headers_module/LoadModule headers_module/' \
-    /usr/local/apache2/conf/httpd.conf && \
-    sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' \
-    /usr/local/apache2/conf/httpd.conf
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
-
-# Default command
-CMD ["httpd-foreground"]
+```bash
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
-### Step 3: Create Apache Configuration Override
+Now close your terminal and open a new one. Test it works:
 
-Create `~/tor-service/apache/conf/httpd-custom.conf`:
-
-```apache
-# Security Headers
-Header set X-Content-Type-Options "nosniff"
-Header set X-Frame-Options "DENY"
-Header set X-XSS-Protection "1; mode=block"
-Header set Referrer-Policy "no-referrer"
-
-# Hide server info
-ServerTokens ProductOnly
-ServerSignature Off
-
-# Deny access to hidden files
-<DirectoryMatch "/\.">
-    Require all denied
-</DirectoryMatch>
-
-# Disable directory listing
-<Directory /usr/local/apache2/htdocs>
-    Options -Indexes
-    Options -FollowSymLinks
-</Directory>
-
-# Resource limits
-LimitRequestBody 1048576
-LimitRequestFields 50
-
-# Performance
-KeepAliveTimeout 10
-MaxKeepAliveRequests 100
-TimeOut 30
+```bash
+docker run hello-world
 ```
 
-### Step 4: Create Tor Configuration
+If you see "Hello from Docker!" you're good to go! 🎉
 
-Create `~/tor-service/tor/torrc`:
+---
 
-```conf
-# Tor configuration for hidden service
+## Setting Everything Up
 
-# Disable SOCKS (we don't need it for inbound services)
-SocksPort 0
+Now let's create folders and files for your hidden website.
 
-# Enable control port for monitoring (internal only)
-ControlPort 9051
-CookieAuthentication 1
+### Step 1: Make a Folder for Your Project
 
-# Hidden Service Configuration
-HiddenServiceDir /var/lib/tor/hidden_service/
-HiddenServicePort 80 apache:80
-HiddenServiceVersion 3
-
-# Logging (helpful for debugging)
-Log notice file /var/log/tor/notices.log
-
-# Performance tuning
-NumEntryGuards 3
-NumDirectoryGuards 3
-
-# Safety: Disable IPv6 relay (optional, for extra caution)
-# IPv6Traffic NoPrefer
+```bash
+mkdir -p ~/my-onion-site
+cd ~/my-onion-site
 ```
 
-### Step 5: Create Docker Compose
+This creates a folder called `my-onion-site` in your home directory and puts you inside it.
 
-Create `~/tor-service/docker-compose.yml`:
+### Step 2: Create the Folder Structure
 
-```yaml
-version: '3.8'
-
-services:
-  # Tor Hidden Service Gateway
-  tor:
-    image: goldy/tor-hidden-service:latest
-    container_name: tor-gateway
-    restart: always
-    
-    # Environment configuration
-    environment:
-      # Service mapping (format: ServiceName:Port)
-      - SERVICES=apache:80
-      
-    # Mount volumes for persistent storage
-    volumes:
-      # Persistent .onion address identity
-      - ./tor/keys:/var/lib/tor/hidden_service/
-      
-      # Custom Tor configuration
-      - ./tor/torrc:/etc/tor/torrc:ro
-      
-      # Logs for monitoring
-      - ./logs/tor:/var/log/tor:rw
-    
-    # Network configuration
-    networks:
-      - onion_net
-    
-    # Resource limits
-    # (prevents Tor from consuming all resources)
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 512M
-        reservations:
-          cpus: '0.5'
-          memory: 256M
-    
-    # Wait for Apache to be ready
-    depends_on:
-      apache:
-        condition: service_healthy
-
-  # Apache Web Server
-  apache:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: apache-server
-    restart: unless-stopped
-    
-    # CRITICAL: No 'ports' mapping!
-    # Apache only communicates via Docker bridge
-    # This keeps it completely off the clearnet
-    
-    # Mount volumes
-    volumes:
-      # Read-write logs
-      - ./logs/apache:/usr/local/apache2/logs:rw
-      
-      # Optional: Hot-reload website content
-      - ./apache/htdocs:/usr/local/apache2/htdocs:ro
-    
-    # Network configuration (on isolated bridge)
-    networks:
-      - onion_net
-    
-    # Resource limits
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 1G
-        reservations:
-          cpus: '1'
-          memory: 512M
-    
-    # Health check
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 10s
-
-# Custom bridge network (isolated, no clearnet access)
-networks:
-  onion_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.18.0.0/16
-          gateway: 172.18.0.1
-    driver_opts:
-      # Ensure this network is completely internal
-      com.docker.network.bridge.enable_ip_masquerade: "true"
-
-# Named volumes for persistence
-volumes:
-  tor_keys:
-  apache_logs:
+```bash
+mkdir -p tor/keys
+mkdir -p apache/html
+mkdir -p apache/config
+mkdir -p logs
 ```
 
-### Step 6: Create Sample Website
+Now your folder looks like this:
+```
+my-onion-site/
+├── tor/
+│   └── keys/          (this is where your .onion address will be saved!)
+├── apache/
+│   ├── html/          (your website files go here)
+│   └── config/        (settings for Apache)
+└── logs/              (where errors get written)
+```
 
-Create `~/tor-service/apache/htdocs/index.html`:
+---
+
+## Creating Your Website
+
+### Step 1: Create the Main Website File
+
+Create a file called `index.html` in the `apache/html/` folder. Open your text editor:
+
+```bash
+nano apache/html/index.html
+```
+
+Then copy and paste this:
 
 ```html
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anonymous Service</title>
+    <title>My Secret Website</title>
     <style>
         body {
+            background-color: #000;
+            color: #00ff00;
             font-family: monospace;
-            background: #000;
-            color: #0f0;
             padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
         }
         h1 {
             text-align: center;
@@ -642,444 +175,452 @@ Create `~/tor-service/apache/htdocs/index.html`:
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧅 Hidden Service Online</h1>
-        <p>This site is only accessible via Tor.</p>
-        <p>You are using Tor. Your IP address is hidden.</p>
-    </div>
+    <h1>🧅 Welcome to My Hidden Website!</h1>
+    <p>If you can see this, you're using Tor Browser.</p>
+    <p>Your real location is hidden.</p>
+    <p>You are totally anonymous right now.</p>
 </body>
 </html>
 ```
 
-### Step 7: Start the Services
+Save it by pressing `Ctrl + X`, then `Y`, then `Enter`.
+
+### Step 2: Create Apache's Settings File
+
+Apache needs some safety rules. Open your editor:
 
 ```bash
-cd ~/tor-service
+nano apache/config/custom.conf
+```
 
-# Build and start containers
+Copy and paste this:
+
+```apache
+ServerTokens ProductOnly
+ServerSignature Off
+
+<DirectoryMatch "/\.">
+    Require all denied
+</DirectoryMatch>
+
+Header set X-Content-Type-Options "nosniff"
+Header set X-Frame-Options "DENY"
+Header set Referrer-Policy "no-referrer"
+
+<Directory /usr/local/apache2/htdocs>
+    Options -Indexes
+</Directory>
+```
+
+Save it (Ctrl + X, Y, Enter).
+
+### Step 3: Create the Dockerfile
+
+This tells Docker how to create the Apache container. Open your editor:
+
+```bash
+nano Dockerfile
+```
+
+Copy and paste this:
+
+```dockerfile
+FROM httpd:2.4-alpine
+
+COPY apache/html/ /usr/local/apache2/htdocs/
+COPY apache/config/custom.conf /usr/local/apache2/conf.d/
+
+RUN sed -i 's/^#LoadModule headers_module/LoadModule headers_module/' \
+    /usr/local/apache2/conf/httpd.conf && \
+    sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' \
+    /usr/local/apache2/conf/httpd.conf
+
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+
+CMD ["httpd-foreground"]
+```
+
+Save it.
+
+### Step 4: Create the Tor Settings File
+
+Tor needs configuration. Open your editor:
+
+```bash
+nano tor/torrc
+```
+
+Copy and paste this:
+
+```conf
+SocksPort 0
+ControlPort 9051
+CookieAuthentication 1
+
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 apache:80
+HiddenServiceVersion 3
+
+Log notice file /var/log/tor/notices.log
+```
+
+Save it.
+
+### Step 5: Create the docker-compose.yml File
+
+This is the master file that brings it all together:
+
+```bash
+nano docker-compose.yml
+```
+
+Copy and paste this:
+
+```yaml
+version: '3.8'
+
+services:
+  tor:
+    image: goldy/tor-hidden-service:latest
+    container_name: tor-gateway
+    restart: always
+    
+    environment:
+      - SERVICES=apache:80
+    
+    volumes:
+      - ./tor/keys:/var/lib/tor/hidden_service/
+      - ./tor/torrc:/etc/tor/torrc:ro
+      - ./logs/tor:/var/log/tor:rw
+    
+    networks:
+      - hidden_net
+    
+    depends_on:
+      - apache
+
+  apache:
+    build: .
+    container_name: apache-server
+    restart: unless-stopped
+    
+    volumes:
+      - ./logs/apache:/usr/local/apache2/logs:rw
+    
+    networks:
+      - hidden_net
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  hidden_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+```
+
+Save it. Done with file creation!
+
+---
+
+## Starting Your Hidden Service
+
+Make sure you're in your project folder:
+
+```bash
+cd ~/my-onion-site
+```
+
+### Step 1: Build and Start Everything
+
+```bash
 docker-compose up -d
+```
 
-# View startup logs
-docker-compose logs -f
+This starts both the Tor container and Apache container in the background.
 
-# Wait for Tor to bootstrap (check for "Bootstrapped 100%")
+### Step 2: Watch Tor Start
+
+```bash
+docker-compose logs -f tor
+```
+
+Wait until you see "Bootstrapped 100%" - this usually takes 30-60 seconds.
+
+Press `Ctrl + C` to stop watching.
+
+### Step 3: Get Your .onion Address
+
+```bash
+cat tor/keys/hostname
+```
+
+You'll see something like:
+```
+thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
+```
+
+**Save this! This is your website's address.**
+
+---
+
+## Access Your Website
+
+### Step 1: Download Tor Browser
+
+Visit [torproject.org/download](https://www.torproject.org/download) and download Tor Browser.
+
+### Step 2: Run Tor Browser
+
+Extract it and run it. Wait 1-2 minutes for it to connect to Tor.
+
+### Step 3: Visit Your Site
+
+In the address bar, paste your .onion address:
+```
+http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/
+```
+
+**You should see your website!** 🎉
+
+---
+
+## Common Problems & Fixes
+
+### "Can't connect to my .onion address"
+
+First, wait 60 seconds. Tor takes time to build circuits.
+
+Check if Tor is ready:
+```bash
 docker-compose logs tor | grep "Bootstrapped"
 ```
 
-### Step 8: Retrieve Your .onion Address
+If you see "Bootstrapped 100%", it's ready.
 
+Check if Apache is working:
 ```bash
-# The .onion address is generated on first run
-cat ~/tor-service/tor/keys/hostname
-
-# Output looks like:
-# thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
-```
-
-**Save this address immediately!** Share it securely with intended users.
-
-### Step 9: Access Your Service
-
-1. **Download Tor Browser** from [torproject.org](https://www.torproject.org)
-2. **Open Tor Browser**
-3. **Navigate to your `.onion` address**
-4. **You should see your website!**
-
----
-
-## 🔐 Security Hardening
-
-### 1. Metadata Removal
-
-Before uploading any files, strip metadata:
-
-```bash
-# Install exiftool
-sudo pacman -S perl-image-exiftool  # Arch
-sudo apt install libimage-exiftool-perl  # Debian
-
-# Remove ALL metadata from images
-exiftool -all= ~/my-photo.jpg
-
-# Verify metadata is removed
-exiftool ~/my-photo.jpg | head -5
-```
-
-### 2. Rootless Docker (Advanced)
-
-By default, Docker daemon runs as root. Configure rootless mode:
-
-```bash
-# Install rootless setup script
-curl https://get.docker.com/rootless | bash
-
-# Start rootless daemon
-systemctl --user enable --now docker.service
-
-# Verify
-docker run --rm alpine whoami  # Should output: root (inside container), but daemon runs as your user
-```
-
-### 3. Network Isolation
-
-Verify the network is truly internal:
-
-```bash
-# List networks
-docker network ls
-
-# Inspect our network
-docker network inspect tor-service_onion_net
-
-# Check for "Internal: false" in output
-# If you see "Internal: false", add it to docker-compose.yml:
-# networks:
-#   onion_net:
-#     internal: true
-```
-
-### 4. Disable Server-Side Scripting
-
-**Remove support for PHP, Python, Node.js unless absolutely necessary:**
-
-```apache
-# In httpd-custom.conf
-<FilesMatch "\.(php|phtml|php3|php4|php5|phtml|phps|pht|phar|phpt|shtml|cgi|pl|py|pyc)$">
-    Require all denied
-</FilesMatch>
-```
-
-**Why?**
-- 99% of de-anonymization attacks exploit code execution
-- PHP/Python can accidentally log visitor data
-- Environment variables might leak
-
-### 5. Backups & Key Management
-
-```bash
-# CRITICAL: Backup your .onion private key
-cp ~/tor-service/tor/keys/hs_ed25519_secret_key ~/hs_ed25519_secret_key.backup
-
-# Store securely (offline, encrypted USB, etc.)
-# If you lose this, your .onion address is gone forever
-
-# To restore from backup:
-cp ~/hs_ed25519_secret_key.backup ~/tor-service/tor/keys/hs_ed25519_secret_key
-docker-compose restart tor
-```
-
-### 6. Content Verification
-
-```bash
-# Create a hash of your website content
-sha256sum ~/tor-service/apache/htdocs/index.html > index.html.sha256
-
-# Users can verify:
-sha256sum -c index.html.sha256
-```
-
----
-
-## 📈 Monitoring & Troubleshooting
-
-### View Logs
-
-```bash
-# All logs
-docker-compose logs
-
-# Specific service
-docker-compose logs tor
 docker-compose logs apache
-
-# Follow in real-time
-docker-compose logs -f
-
-# Last 50 lines
-docker-compose logs --tail=50
-
-# Since specific time
-docker-compose logs --since 2024-01-01
 ```
 
-### Common Issues & Solutions
-
-#### Issue: "Can't connect to .onion address"
-
-**Checklist:**
-1. **Wait 60 seconds** - Tor needs time to build circuits
-2. **Check Tor status:**
-   ```bash
-   docker-compose logs tor | grep "Bootstrapped"
-   # Should show "Bootstrapped 100%"
-   ```
-
-3. **Test internal connectivity:**
-   ```bash
-   docker-compose exec tor ping apache
-   # Should show: 64 bytes from apache (172.18.0.3): seq=0 ttl=64 time=0.xxx ms
-   ```
-
-4. **Check Apache is running:**
-   ```bash
-   docker-compose exec apache curl http://localhost/
-   # Should return your HTML
-   ```
-
-5. **Verify Tor service file exists:**
-   ```bash
-   ls -la ~/tor-service/tor/keys/
-   # Should show: hostname, hs_ed25519_public_key, hs_ed25519_secret_key
-   ```
-
-#### Issue: "504 Bad Gateway"
-
-The Tor container can't reach Apache. Run:
-
+If there are errors, restart everything:
 ```bash
-# Check if Apache is responding
-docker-compose exec tor curl http://apache:80/
-
-# If timeout, check if containers are on same network
-docker network inspect tor-service_onion_net | grep -A 5 "Containers"
-
-# Check Apache health
-docker-compose exec apache ps aux | grep apache
-
-# Restart services in order
-docker-compose restart apache
-sleep 5
-docker-compose restart tor
-```
-
-#### Issue: ".onion address changed"
-
-If your address changed, you probably deleted the volume:
-
-```bash
-# Check volume
-docker volume ls | grep tor
-
-# To prevent: Never run 'docker-compose down -v'
-# Always use: 'docker-compose down'
-```
-
-#### Issue: High Memory Usage
-
-Tor can use significant memory during peak traffic:
-
-```bash
-# Check resource usage
-docker stats tor apache
-
-# Reduce Tor memory footprint
-# Edit ~/tor-service/tor/torrc and add:
-# MaxMemInQueues 256 MB
-```
-
-### Monitoring Commands
-
-```bash
-# Check container status
-docker-compose ps
-
-# View resource usage
-docker stats
-
-# Inspect Tor circuit information
-docker-compose exec tor cat /var/log/tor/notices.log | tail -20
-
-# Test performance
-docker-compose exec tor curl -w "Time: %{time_total}s\n" http://apache:80/
-
-# Check disk usage
-du -sh ~/tor-service/
-
-# Verify network isolation
-docker-compose exec apache curl http://example.com/
-# Should timeout (no external internet)
-```
-
----
-
-## 🚀 Advanced Topics
-
-### Multiple Services Behind Tor
-
-To host multiple services (.onion address shared):
-
-```yaml
-# In docker-compose.yml
-services:
-  tor:
-    environment:
-      - SERVICES=apache:80,api:8080,chat:9000
-  
-  # Add your other services...
-```
-
-### Using Own Tor Image
-
-Instead of pre-built image, build your own:
-
-```dockerfile
-# Dockerfile.tor
-FROM alpine:latest
-
-RUN apk update && apk add --no-cache tor
-
-COPY torrc /etc/tor/torrc
-
-EXPOSE 9050 9051
-
-CMD ["tor", "-f", "/etc/tor/torrc"]
-```
-
-Then update docker-compose.yml:
-
-```yaml
-services:
-  tor:
-    build:
-      context: .
-      dockerfile: Dockerfile.tor
-```
-
-### Load Balancing
-
-For high-traffic services, use multiple Apache containers:
-
-```yaml
-services:
-  tor:
-    # ... existing config
-  
-  apache-1:
-    build: .
-    networks:
-      - onion_net
-    # ... health checks
-  
-  apache-2:
-    build: .
-    networks:
-      - onion_net
-    # ... health checks
-  
-  load-balancer:
-    image: nginx:alpine
-    networks:
-      - onion_net
-    # Configure nginx to round-robin to apache-1 and apache-2
-```
-
-### SSL/TLS (Onion Sites Don't Need It)
-
-Standard HTTPS is **unnecessary** for onion sites because:
-- Tor already provides encryption (layer 3)
-- Adding HTTPS creates redundant encryption
-- Most onion sites serve plain HTTP
-
-However, if you want certificate pinning:
-
-```bash
-# Generate self-signed certificate
-openssl req -x509 -newkey rsa:4096 -nodes \
-  -out cert.pem -keyout key.pem -days 365
-```
-
-### Performance Tuning
-
-```apache
-# In httpd-custom.conf
-
-# Enable caching headers for static content
-<FilesMatch "\\.(jpg|jpeg|png|gif|ico|css|js)$">
-    Header set Cache-Control "max-age=86400, public"
-</FilesMatch>
-
-# Gzip compression
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript
-</IfModule>
-
-# Connection tuning
-KeepAliveTimeout 5
-MaxKeepAliveRequests 200
-TimeOut 60
-```
-
-### Monitoring with Prometheus
-
-For advanced monitoring (optional):
-
-```bash
-# Export Tor statistics
-docker-compose exec tor monitor
-# Parse via prometheus_client
-```
-
----
-
-## 📚 Important Tips
-
-### Before Going Live
-
-- ✅ **Test everything locally first** with Tor Browser
-- ✅ **Backup your private key** multiple times
-- ✅ **Remove all metadata** from files
-- ✅ **Verify links are relative** (no absolute URLs to your real domain)
-- ✅ **Enable HTTPS** if handling sensitive data (even though Tor encrypts)
-- ✅ **Set up logging** for debugging but don't log user IPs
-- ✅ **Monitor for updates** to Docker images
-
-### Persistence
-
-```bash
-# IMPORTANT: These commands affect your .onion address
-
-# Safe (keeps .onion):
-docker-compose down        # Stops containers, keeps volumes
-
-# DANGEROUS (regenerates .onion):
-docker-compose down -v     # Deletes everything including volumes!
-docker volume rm tor-service_tor_keys
-
-# Only use down -v if you want a NEW .onion address
-```
-
-### Access Logs
-
-By default, Tor hides visitor information. However, access logs are still created:
-
-```bash
-# Check Apache access logs (no IP addresses, just generic "hidden")
-tail -f ~/tor-service/logs/apache/access_log
-```
-
-### Keep Images Updated
-
-```bash
-# Pull latest versions
-docker-compose pull
-
-# Rebuild Apache image
-docker-compose build --no-cache apache
-
-# Restart services
+docker-compose down
 docker-compose up -d
 ```
 
+### "504 Bad Gateway"
+
+Try this:
+```bash
+docker-compose exec tor ping apache
+```
+
+If that fails, restart:
+```bash
+docker-compose restart
+```
+
+### "Port already in use"
+
+Stop any other containers:
+```bash
+docker stop $(docker ps -q)
+```
+
+Then start again:
+```bash
+docker-compose up -d
+```
+
+### "Want to update my website"
+
+Just edit your HTML file:
+```bash
+nano apache/html/index.html
+```
+
+Save and it updates automatically! You don't need to restart anything.
+
+### "Want to start over"
+
+To stop but keep your .onion address:
+```bash
+docker-compose down
+```
+
+To delete everything and start fresh (new .onion address):
+```bash
+docker-compose down -v
+```
+
 ---
 
-## 📖 Additional Resources
+## Common Commands
 
-- **Tor Project:** [torproject.org](https://www.torproject.org)
-- **Tor Hidden Services Documentation:** [trac.torproject.org/projects/tor/wiki/doc/HiddenServices](https://trac.torproject.org/projects/tor/wiki/doc/HiddenServices)
-- **Docker Documentation:** [docs.docker.com](https://docs.docker.com)
-- **Apache Security Guide:** [httpd.apache.org/security](https://httpd.apache.org/security)
-- **Onion Share** (simpler alternative): [onionshare.org](https://onionshare.org)
+```bash
+# Start your site
+docker-compose up -d
+
+# Stop your site (keeps your .onion address)
+docker-compose down
+
+# View what's happening
+docker-compose logs -f
+
+# Check if everything is running
+docker-compose ps
+
+# Get your .onion address
+cat tor/keys/hostname
+
+# Check Tor is bootstrapped
+docker-compose logs tor | grep "Bootstrapped"
+
+# Stop watching logs
+Ctrl + C
+
+# Edit your website
+nano apache/html/index.html
+```
 
 ---
 
-**Pro Tip:** Keep your service simple, static, and boring. The less complexity, the fewer attack vectors. A simple HTML site is infinitely more secure than a dynamic WordPress installation.
+## Keep Your Website Safe
+
+### 1. Don't Upload Photos with Location Data
+
+Photos sometimes have GPS coordinates hidden inside them! Before uploading, strip them:
+
+```bash
+# Install exiftool first:
+# Ubuntu/Debian:
+sudo apt install exiftool
+
+# Arch:
+sudo pacman -S perl-image-exiftool
+
+# Then use it:
+exiftool -all= your-photo.jpg
+```
+
+### 2. Keep URLs Simple
+
+Don't link to your real website or real email address.
+
+### 3. Keep Your Website Simple
+
+- Use only HTML (no PHP, Python, or Node.js)
+- No database needed
+- No user logins
+- Simple = safe
+
+### 4. Backup Your .onion Address
+
+The file `tor/keys/hs_ed25519_secret_key` is your secret key. Never lose it!
+
+```bash
+# Make a backup
+cp tor/keys/hs_ed25519_secret_key ~/my-backup-key.txt
+
+# Store it somewhere safe!
+```
+
+---
+
+## Add More Pages to Your Website
+
+You can add as many pages as you want. Just create new HTML files:
+
+```bash
+nano apache/html/about.html
+```
+
+Paste this:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Me</title>
+</head>
+<body>
+    <h1>About This Site</h1>
+    <p>This is my secret website!</p>
+    <a href="index.html">Go back home</a>
+</body>
+</html>
+```
+
+Then link to it from your index.html by adding:
+```html
+<a href="about.html">Read about me</a>
+```
+
+---
+
+## Check Your Visitor Stats
+
+See who's visiting your site (without storing their IP address):
+
+```bash
+tail -f logs/apache/access_log
+```
+
+Press `Ctrl + C` to stop watching.
+
+---
+
+## Stop Your Website Temporarily
+
+```bash
+docker-compose stop
+```
+
+### Start It Again
+
+```bash
+docker-compose start
+```
+
+---
+
+## What Happens When Someone Visits?
+
+1. They open Tor Browser
+2. They type your .onion address
+3. Tor bounces their connection through 3 random computers around the world
+4. Connection arrives at your Tor container (their location is hidden)
+5. Tor talks to Apache
+6. Apache sends your website
+7. They see it!
+8. Nobody can trace it back to you! 🎉
+
+---
+
+## Questions?
+
+- Docker help: [docker.com/docs](https://docker.com/docs)
+- Tor questions: [torproject.org/docs](https://torproject.org/docs)
+- Apache help: [httpd.apache.org/docs](https://httpd.apache.org/docs)
+
+---
+
+## Quick Summary
+
+You now have:
+✅ A hidden website  
+✅ Total anonymity  
+✅ A cool .onion address  
+✅ A way to share information safely  
+
+Have fun and be safe! 🚀
+
+**Pro Tip:** The first time takes 1 hour. By the third time, you'll do it in 10 minutes!
