@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apache + Tor Hidden Service with Docker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d73a49;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 3px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left-color: #ffc107;
+            color: #856404;
+        }
+        .info {
+            background: #d1ecf1;
+            border-left-color: #17a2b8;
+            color: #0c5460;
+        }
+        .success {
+            background: #d4edda;
+            border-left-color: #28a745;
+            color: #155724;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #667eea;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+            border-bottom: 1px dotted #667eea;
+        }
+        a:hover {
+            color: #764ba2;
+            border-bottom-color: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧅 Apache + Tor Hidden Service with Docker</h1>
+        <p>A complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker.</p>
+
+        <div class="section info">
+            <strong>ℹ️ What You'll Get:</strong> A hidden service accessible only via Tor, with easy cleanup (just delete the Docker containers).
+        </div>
+
+        <h2>📋 Prerequisites</h2>
+        <ul>
+            <li>Docker installed</li>
+            <li>Docker Compose installed</li>
+            <li><a href="https://www.torproject.org/download/">Tor Browser</a> (for testing)</li>
+        </ul>
+
+        <h2>🚀 Setup Instructions</h2>
+
+        <h3>Step 1: Create Working Directory</h3>
+        <pre><code>mkdir -p ~/apache-tor && cd ~/apache-tor</code></pre>
+
+        <h3>Step 2: Create Dockerfile</h3>
+        <pre><code>cat > Dockerfile << 'EOF'
+FROM httpd:latest
+COPY index.html /usr/local/apache2/htdocs/
+EOF</code></pre>
+
+        <h3>Step 3: Create index.html</h3>
+        <pre><code>cat > index.html << 'EOF'
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Onion Server&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello from .onion!&lt;/h1&gt;
+&lt;p&gt;This is hosted via Tor hidden service&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF</code></pre>
+
+        <h3>Step 4: Create Torrc Configuration</h3>
+        <pre><code>cat > torrc << 'EOF'
+SocksPort 0
+ControlPort 9051
+CookieAuthentication 1
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 apache:80
+Log notice file /var/log/tor/notices.log
+EOF</code></pre>
+
+        <h3>Step 5: Create docker-compose.yml</h3>
+        <pre><code>cat > docker-compose.yml << 'EOF'
+version: '3'
+services:
+  apache:
+    build: .
+    container_name: apache-server
+    ports:
+      - "8080:80"
+    networks:
+      - tornet
+
+  tor:
+    image: torproject/tor:latest
+    container_name: tor-hidden-service
+    volumes:
+      - ./torrc:/etc/tor/torrc
+      - tor-data:/var/lib/tor
+    networks:
+      - tornet
+    depends_on:
+      - apache
+
+networks:
+  tornet:
+
+volumes:
+  tor-data:
+EOF</code></pre>
+
+        <h2>▶️ Start the Services</h2>
+        <pre><code>docker-compose up -d</code></pre>
+
+        <h2>🔗 Get Your .onion Address</h2>
+        <pre><code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></pre>
+
+        <div class="section success">
+            <strong>✅ Output Example:</strong> <code>abcd1234efgh5678ijkl9999nnnn5555.onion</code>
+        </div>
+
+        <h2>🌐 Access Your Server</h2>
+
+        <h3>Option 1: Via Tor Browser (Recommended)</h3>
+        <ol>
+            <li>Download and install <a href="https://www.torproject.org/download/">Tor Browser</a></li>
+            <li>Open Tor Browser</li>
+            <li>Visit: <code>http://YOUR_ONION_ADDRESS.onion</code></li>
+        </ol>
+
+        <h3>Option 2: Via Torsocks (CLI)</h3>
+        <pre><code>torsocks curl http://YOUR_ONION_ADDRESS.onion</code></pre>
+
+        <h3>Option 3: Local HTTP Access</h3>
+        <pre><code>curl http://localhost:8080</code></pre>
+
+        <h2>⚙️ Customization</h2>
+
+        <h3>Mount Custom Apache Config</h3>
+        <p>Create <code>httpd.conf</code> and add to <code>docker-compose.yml</code>:</p>
+        <pre><code>apache:
+  volumes:
+    - ./httpd.conf:/usr/local/apache2/conf/httpd.conf</code></pre>
+
+        <h3>Add HTTPS to .onion</h3>
+        <p>Update <code>torrc</code>:</p>
+        <pre><code>HiddenServicePort 443 apache:443</code></pre>
+
+        <h3>Custom Port Mapping</h3>
+        <pre><code>apache:
+  ports:
+    - "3000:80"  # Access via http://localhost:3000</code></pre>
+
+        <h2>🛑 Stop & Cleanup</h2>
+
+        <h3>Stop Services (Keep Data)</h3>
+        <pre><code>docker-compose down</code></pre>
+
+        <h3>Stop & Remove Everything</h3>
+        <pre><code>docker-compose down -v  # -v removes volumes</code></pre>
+
+        <h3>Complete Cleanup</h3>
+        <pre><code>cd ..
+rm -rf ~/apache-tor</code></pre>
+
+        <h2>📊 Useful Commands</h2>
+
+        <table>
+            <tr>
+                <th>Command</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td><code>docker-compose logs tor</code></td>
+                <td>View Tor logs</td>
+            </tr>
+            <tr>
+                <td><code>docker-compose logs apache</code></td>
+                <td>View Apache logs</td>
+            </tr>
+            <tr>
+                <td><code>docker exec tor-hidden-service</code></td>
+                <td>Run commands inside Tor container</td>
+            </tr>
+            <tr>
+                <td><code>docker ps</code></td>
+                <td>List running containers</td>
+            </tr>
+        </table>
+
+        <h2>🔒 Security Notes</h2>
+
+        <div class="section warning">
+            <strong>⚠️ Important:</strong>
+            <ul>
+                <li>Your .onion address is YOUR private key — keep it secret</li>
+                <li>Don't expose the <code>tor-data</code> volume outside the project</li>
+                <li>Tor hidden services are anonymous, but your content is visible to everyone with the address</li>
+                <li>Always run containers with minimal privileges</li>
+            </ul>
+        </div>
+
+        <h2>🐛 Troubleshooting</h2>
+
+        <h3>Port Already in Use</h3>
+        <pre><code>sudo lsof -i :8080
+kill -9 &lt;PID&gt;</code></pre>
+
+        <h3>Tor Won't Start</h3>
+        <pre><code>docker-compose logs tor</code></pre>
+
+        <h3>Apache Returns 404</h3>
+        <pre><code>docker exec apache-server ls /usr/local/apache2/htdocs/</code></pre>
+
+        <h3>Can't Access .onion Address</h3>
+        <ul>
+            <li>Wait 30-60 seconds after startup (Tor needs time to bootstrap)</li>
+            <li>Ensure Tor Browser is connected</li>
+            <li>Check hostname file exists: <code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></li>
+        </ul>
+
+        <h2>📚 References</h2>
+        <ul>
+            <li><a href="https://www.torproject.org/">Tor Project</a></li>
+            <li><a href="https://hub.docker.com/_/httpd">Apache Docker Image</a></li>
+            <li><a href="https://hub.docker.com/r/torproject/tor">Tor Docker Image</a></li>
+            <li><a href="https://2019.www.torproject.org/docs/tor-manual.html.en">Tor Manual</a></li>
+        </ul>
+
+        <hr style="margin-top: 40px; border: none; border-top: 2px solid #667eea;">
+        <p style="margin-top: 20px; text-align: center; color: #999; font-size: 14px;">
+            Created with ❤️ for Into the Distro-Verse
+        </p>
+    </div>
+</body>
+</html>
