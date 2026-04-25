@@ -126,6 +126,42 @@ a:hover {
     margin-top: 6px;
 }
 
+.wiki-toc li.level-1 {
+    font-weight: 500;
+    color: #f2f6fc;
+}
+
+.wiki-toc li.level-2 {
+    margin-top: 8px;
+    padding-left: 8px;
+    border-left: 2px solid var(--border);
+    color: #d8dde7;
+}
+
+.wiki-toc li.level-3 {
+    margin-top: 5px;
+    padding-left: 8px;
+    color: #98a2b3;
+    font-size: 0.95rem;
+}
+
+.wiki-toc li.level-1 a {
+    color: #a7d0ff;
+    font-weight: 500;
+}
+
+.wiki-toc li.level-2 a {
+    color: #7cb7ff;
+}
+
+.wiki-toc li.level-3 a {
+    color: #7cb7ff;
+}
+
+.wiki-toc a:hover {
+    color: var(--link-hover);
+}
+
 .wiki-article {
     padding: clamp(18px, 1.6vw, 34px);
 }
