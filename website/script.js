@@ -84,7 +84,11 @@ for (const block of codeBlocks) {
 
 // Markdown viewer functionality
 function getMdContent() {
-	return window.__markdown_content__ || null;
+	const script = document.getElementById('md-content');
+	if (!script) return null;
+	
+	// Get raw text content from script tag with type="text/plain"
+	return script.textContent || null;
 }
 
 function initMarkdownViewer() {

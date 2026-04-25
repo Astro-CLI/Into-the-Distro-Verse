@@ -1,1 +1,522 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Into the Distro-Verse </title> <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet"> <link rel="stylesheet" href="../style.css"> </head> <body> <header class="topbar"> <div class="topbar-inner"> <a class="site-title" href="../index.html">Into the Distro-Verse Wiki</a> <nav aria-label="Main navigation"> <ul class="top-links"> <li><a href="../index.html">Main page</a></li> </ul> </nav> </div> </header> <main class="wiki-layout"> <aside class="wiki-toc" aria-label="Page contents"> <h2>Contents</h2> <ul> <li class='level-1'><a href='#music-streaming-without-ads'>Music Streaming Without Ads</a></li> <li class='level-2'><a href='#table-of-contents'>Table of Contents</a></li> <li class='level-2'><a href='#spicetify-spotify'>Spicetify + Spotify</a></li> <li class='level-3'><a href='#why-spicetify'>Why Spicetify?</a></li> <li class='level-3'><a href='#requirements'>Requirements</a></li> <li class='level-3'><a href='#installation'>Installation</a></li> <li class='level-3'><a href='#initial-setup'>Initial Setup</a></li> <li class='level-3'><a href='#install-themes'>Install Themes</a></li> <li class='level-3'><a href='#install-extensions'>Install Extensions</a></li> <li class='level-3'><a href='#remove-ads-spotify-free'>Remove Ads (Spotify Free)</a></li> <li class='level-3'><a href='#custom-keybindings'>Custom Keybindings</a></li> <li class='level-3'><a href='#common-spicetify-commands'>Common Spicetify Commands</a></li> <li class='level-2'><a href='#youtube-music-web-desktop'>YouTube Music (Web + Desktop)</a></li> <li class='level-3'><a href='#why-youtube-music'>Why YouTube Music?</a></li> <li class='level-3'><a href='#option-1-web-player-best-free-alternative'>Option 1: Web Player (Best Free Alternative)</a></li> <li class='level-3'><a href='#option-2-desktop-app-linuxmacoswindows'>Option 2: Desktop App (Linux/macOS/Windows)</a></li> <li class='level-3'><a href='#desktop-app-features'>Desktop App Features</a></li> <li class='level-3'><a href='#remove-ads-on-web'>Remove Ads on Web</a></li> <li class='level-3'><a href='#youtube-music-tips-tricks'>YouTube Music Tips & Tricks</a></li> <li class='level-2'><a href='#comparison-recommendations'>Comparison & Recommendations</a></li> <li class='level-3'><a href='#best-setup-for-each-user'>Best Setup for Each User</a></li> <li class='level-2'><a href='#troubleshooting'>Troubleshooting</a></li> <li class='level-3'><a href='#spicetify-spotify-doesnt-start-after-apply'>Spicetify: Spotify Doesn't Start After Apply</a></li> <li class='level-3'><a href='#spicetify-extensions-not-loading'>Spicetify: Extensions Not Loading</a></li> <li class='level-3'><a href='#youtube-music-videos-not-playing'>YouTube Music: Videos Not Playing</a></li> <li class='level-3'><a href='#youtube-music-desktop-no-sound'>YouTube Music Desktop: No Sound</a></li> <li class='level-3'><a href='#spicetify-not-found-after-install'>Spicetify: Not Found After Install</a></li> <li class='level-2'><a href='#quick-start'>Quick Start</a></li> <li class='level-3'><a href='#spicetify-5-minutes'>Spicetify (5 minutes)</a></li> <li class='level-3'><a href='#youtube-music-2-minutes'>YouTube Music (2 minutes)</a></li> <li class='level-2'><a href='#resources'>Resources</a></li> </ul> </aside> <article class="wiki-article"> **Note:** Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).\n\n### Custom Keybindings\n\nCreate `~/.config/spicetify/Extensions/customKeybinds.js`:\n\n```javascript\n// Custom keybindings for Spicetify\nSpicetify.Keyboard.registerShortcut({\n  key: 'Ctrl+Shift+P',\n  callback: () => {\n    Spicetify.showNotification('Custom shortcut triggered!');\n  }\n});\n```\n\nApply:\n```bash\nspicetify apply\n```\n\n### Common Spicetify Commands\n\n```bash\n# Show current config\nspicetify config-dir\n\n# Apply changes\nspicetify apply\n\n# Restore original Spotify (undo Spicetify)\nspicetify restore\n\n# Backup before major changes\nspicetify backup\n\n# Update Spicetify to latest\nspicetify upgrade\n\n# Check status\nspicetify status\n```\n\n---\n\n## YouTube Music (Web + Desktop)\n\nYouTube Music is Google's Spotify competitor. Free tier includes ads; Premium removes them.\n\n### Why YouTube Music?\n\n- \u2705 Free tier available (with ads)\n- \u2705 Massive music library + music videos\n- \u2705 Upload your own music\n- \u2705 Podcasts integrated\n- \u2705 Works on web, Android, iOS, desktop\n- \u2705 Cross-device sync (phone \u2192 desktop)\n- \u2705 Cheaper Premium than Spotify in some regions\n\n### Option 1: Web Player (Best Free Alternative)\n\nSimply visit **https://music.youtube.com**\n\n**Ad-blocking on web:**\n- Use browser extension: **uBlock Origin** or **Adblock Plus**\n- Install and enable on `music.youtube.com`\n- Ads will be blocked (mostly)\n\n### Option 2: Desktop App (Linux/macOS/Windows)\n\n#### Linux Installation\n\n**Via Package Manager:**\n```bash\n# Ubuntu/Debian\nsudo apt install youtube-music\n\n# Arch\nyay -S youtube-music-desktop-app\n# or\nparu -S youtube-music-desktop-app\n\n# Fedora\nsudo dnf install youtube-music\n```\n\n**Via Snap:**\n```bash\nsudo snap install youtube-music-desktop-app\n```\n\n**Via Flatpak:**\n```bash\nflatpak install flathub com.github.th-ch.YouTubeMusic\nflatpak run com.github.th-ch.YouTubeMusic\n```\n\n#### macOS Installation\n\n```bash\nbrew install youtube-music\n# or\nbrew install --cask youtube-music\n```\n\n#### Windows Installation\n\nDownload from: https://github.com/th-ch/YouTubeMusic/releases\n\n### Desktop App Features\n\nThe YouTube Music desktop app (`youtube-music-desktop-app`) includes:\n\n- \u2705 Standalone app (doesn't need browser tab)\n- \u2705 System media controls (play/pause from taskbar)\n- \u2705 Rich presence (Discord shows what you're listening)\n- \u2705 Built-in ad blocker (on some versions)\n- \u2705 Keyboard shortcuts\n- \u2705 Lyrics display (on hover)\n- \u2705 Dark mode\n- \u2705 Tray icon (minimize to system tray)\n\n### Remove Ads on Web\n\n**Easiest: Browser Extension**\n\n1. Install **uBlock Origin**: https://ublockorigin.com/\n2. Go to `music.youtube.com`\n3. Open uBlock Origin settings\n4. Add this filter to \"My filters\":\n\n```\nmusic.youtube.com##.ytmusic-ad-frame\nmusic.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header\n||adservice.google.com^\n```\n\n5. Refresh YouTube Music\n\n**Alternative: Premium (Honest Option)**\n\nIf you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.\n\n### YouTube Music Tips & Tricks\n\n#### Create Playlists\n\n1. Click **Create** \u2192 **New playlist**\n2. Add songs via **+ Add songs**\n3. Share playlist link\n\n#### Upload Your Own Music\n\n1. Go to **Library** \u2192 **Uploads**\n2. Click **Upload songs**\n3. Upload up to 100,000 personal songs\n4. Use in playlists & recommendations\n\n#### Keyboard Shortcuts\n\n| Shortcut | Action |\n|----------|--------|\n| `Space` | Play/Pause |\n| `J` | Next song |\n| `K` | Previous song |\n| `L` | Like (thumbs up) |\n| `D` | Dislike (thumbs down) |\n| `+` | Volume up |\n| `-` | Volume down |\n| `M` | Mute |\n\n#### Use on Mobile\n\n- **Android:** YouTube Music app (free, with ads; Premium removes them)\n- **iOS:** YouTube Music app (free, with ads; Premium removes them)\n- Sync playlists across devices automatically\n\n---\n\n## Comparison & Recommendations\n\n| Feature | Spotify | YouTube Music |\n|---------|---------|---------------|\n| **Ad removal (Free)** | \u274c No | \u26a0\ufe0f Browser extensions |\n| **Unlimited skips (Free)** | \u2705 With Spicetify | \u2705 Yes |\n| **Video content** | \u274c No | \u2705 Music videos |\n| **Upload own music** | \u274c No | \u2705 Yes (100k limit) |\n| **Podcasts** | \u2705 Yes | \u26a0\ufe0f Limited |\n| **UI customization** | \u2705 Spicetify | \u26a0\ufe0f Limited |\n| **Lyrics** | \u2705 Yes | \u2705 Yes |\n| **Premium price** | $12.99/mo | $14.99/mo (YouTube Premium) |\n| **Desktop app** | \u2705 Native | \u2705 Third-party app |\n| **Linux support** | \u2705 Native | \u2705 Via third-party app |\n\n### Best Setup for Each User\n\n**\ud83c\udfb5 Most Control:**\n- **Spotify + Spicetify**: Customize everything, ad-free experience, unlimited skips\n\n**\ud83c\udfac Music Video Fan:**\n- **YouTube Music Premium** or **YouTube Music + uBlock Origin**: Watch music videos, vast library\n\n**\ud83d\udcb0 Budget-Conscious:**\n- **YouTube Music + uBlock Origin**: Free music streaming with no ads (needs browser extension)\n\n**\ud83c\udf0d Everywhere:**\n- **Spotify Premium**: Works perfectly on desktop, mobile, web, Alexa, smart speakers\n\n---\n\n## Troubleshooting\n\n### Spicetify: Spotify Doesn't Start After Apply\n\n```bash\n# Restore to original\nspicetify restore\n\n# Restart Spotify\nspotify &\n\n# Check logs\ncat ~/.config/spicetify/config-xpui.ini\n```\n\n### Spicetify: Extensions Not Loading\n\n```bash\n# Verify extensions folder\nls -la ~/.config/spicetify/Extensions/\n\n# Ensure extensions are listed in config\ncat ~/.config/spicetify/config-xpui.ini | grep extensions\n\n# Reapply\nspicetify apply\n```\n\n### YouTube Music: Videos Not Playing\n\n- Clear browser cache: `Ctrl+Shift+Delete`\n- Disable extensions temporarily\n- Try Incognito mode: `Ctrl+Shift+N`\n- Restart the app\n\n### YouTube Music Desktop: No Sound\n\n```bash\n# Check audio output\npactl list sinks\n\n# Restart app and try again\npkill youtube-music\nyoutube-music &\n```\n\n### Spicetify: Not Found After Install\n\nMake sure PATH is updated:\n\n```bash\n# Check if installed\nls ~/.spicetify/\n\n# Add to PATH manually\nexport PATH=\"$HOME/.spicetify:$PATH\"\n\n# Make permanent (add to ~/.bashrc or ~/.zshrc)\necho 'export PATH=\"$HOME/.spicetify:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc\n```\n\n---\n\n## Quick Start\n\n### Spicetify (5 minutes)\n\n```bash\n# Install\ncurl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh\nexport PATH=\"$HOME/.spicetify:$PATH\"\n\n# Setup\nspicetify init\nspicetify backup apply\n\n# Install theme\ncd ~/.config/spicetify/Themes\ngit clone https://github.com/spicetify/spicetify-themes.git\ncp -r spicetify-themes/Dribbblish .\nspicetify config current_theme Dribbblish\nspicetify apply\n\n# Restart Spotify \u2192 Done!\n```\n\n### YouTube Music (2 minutes)\n\n```bash\n# Install desktop app\nsudo apt install youtube-music  # Linux\n# or\nbrew install youtube-music  # macOS\n\n# Open\nyoutube-music &\n\n# Install uBlock Origin in browser\n# Visit music.youtube.com \u2192 Enjoy ad-free music!\n```\n\n---\n\n## Resources\n\n- **Spicetify GitHub:** https://github.com/spicetify/cli\n- **Spicetify Themes:** https://github.com/spicetify/spicetify-themes\n- **Spicetify Extensions:** https://github.com/spicetify/spicetify-extensions\n- **YouTube Music Desktop:** https://github.com/th-ch/YouTubeMusic\n- **uBlock Origin:** https://ublockorigin.com/\n- **Spotify Forum:** https://community.spotify.com/\n\n---\n\n**Last Updated:** April 2026  \n**Difficulty:** Beginner-Friendly  \n**Time to Setup:** 10 minutes total\n"> <h1 id="music-streaming-without-ads">Music Streaming Without Ads</h1> <hr /> <p>Get premium music experiences without the ads, paywalls, or bloat. This guide covers <strong>Spicetify</strong> for Spotify and <strong>YouTube Music</strong> setup.</p> <hr> <h2 id="table-of-contents">Table of Contents</h2> <ol> <li><a href="#spicetify--spotify">Spicetify + Spotify</a></li> <li><a href="#youtube-music-web--desktop">YouTube Music (Web + Desktop)</a></li> <li><a href="#comparison--recommendations">Comparison &amp; Recommendations</a></li> <li><a href="#troubleshooting">Troubleshooting</a></li> </ol> <hr> <h2 id="spicetify-spotify">Spicetify + Spotify</h2> <p><strong>Spicetify</strong> is a command-line tool that customizes the Spotify client, removes ads, and adds powerful extensions.</p> <h3 id="why-spicetify">Why Spicetify?</h3> <ul> <li> Remove ads from Spotify client</li> <li> Unlimited skips (on Free tier)</li> <li> Custom themes &amp; visual tweaks</li> <li> UI improvements &amp; extensions</li> <li> Keyboard shortcuts customization</li> <li> Lyrics display</li> <li> Works with Spotify Free or Premium</li> </ul> <h3 id="requirements">Requirements</h3> <ul> <li>Spotify account (Free or Premium)</li> <li>Spotify desktop client installed</li> <li>Python 3.7+ (for installation)</li> <li>curl or git</li> </ul> <h3 id="installation">Installation</h3> <h4>Ubuntu/Debian/Arch (Linux)</h4> <pre><code class="language-bash"># Install Spicetify curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh # Add to PATH export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Verify installation spicetify --version </code></pre> <p>Add to <code>~/.bashrc</code> or <code>~/.zshrc</code>:</p> <pre><code class="language-bash">export PATH=&quot;$HOME/.spicetify:$PATH&quot; </code></pre> <h4>macOS</h4> <pre><code class="language-bash">brew install spicetify-cli # Verify spicetify --version </code></pre> <h4>Windows (PowerShell)</h4> <pre><code class="language-powershell">iwr -useb https://raw.githubusercontent.com/spicetify/cli/main/install.ps1 | iex </code></pre> <h3 id="initial-setup">Initial Setup</h3> <ol> <li><p><strong>Close Spotify completely</strong></p> <pre><code class="language-bash">pkill spotify </code></pre> </li> <li><p><strong>Initialize Spicetify</strong> (first-time setup)</p> <pre><code class="language-bash">spicetify init spicetify config-dir </code></pre> <p>This creates <code>~/.config/spicetify/</code> with configuration files.</p> </li> <li><p><strong>Apply the first time</strong></p> <pre><code class="language-bash">spicetify backup apply </code></pre> </li> <li><p><strong>Restart Spotify</strong> and you should see improvements!</p> </li> </ol> <h3 id="install-themes">Install Themes</h3> <p>Themes customize Spotify&#39;s appearance. Popular options:</p> <h4>Theme: Dribbblish (Modern, Sleek)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes # Clone the Dribbblish theme git clone https://github.com/spicetify/spicetify-themes.git cp -r spicetify-themes/Dribbblish . # Set the theme spicetify config current_theme Dribbblish spicetify config color_scheme dark # or: light # Apply spicetify apply </code></pre> <h4>Theme: Comfy (Clean, Comfortable)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes cp -r spicetify-themes/Comfy . spicetify config current_theme Comfy spicetify apply </code></pre> <h4>Theme: Onepunch (VS Code-inspired)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes cp -r spicetify-themes/Onepunch . spicetify config current_theme Onepunch spicetify config color_scheme dark spicetify apply </code></pre> <h3 id="install-extensions">Install Extensions</h3> <p>Extensions add functionality to Spotify. Install from the marketplace:</p> <pre><code class="language-bash"># Navigate to extensions directory cd ~/.config/spicetify/Extensions # Clone community extensions git clone https://github.com/spicetify/spicetify-extensions.git # Copy desired extensions cp spicetify-extensions/fullAppDisplay/fullAppDisplay.js . cp spicetify-extensions/showQueueDuration/showQueueDuration.js . cp spicetify-extensions/groupSession/groupSession.js . </code></pre> <p>Edit <code>~/.config/spicetify/config-xpui.ini</code> and add to <code>[extensions]</code>:</p> <pre><code class="language-ini">[extensions] fullAppDisplay.js showQueueDuration.js groupSession.js </code></pre> <p>Then apply:</p> <pre><code class="language-bash">spicetify apply </code></pre> <h4>Popular Extensions Explained</h4> <table> <thead> <tr> <th>Extension</th> <th>Purpose</th> </tr> </thead> <tbody><tr> <td><strong>fullAppDisplay</strong></td> <td>Show full album art behind player</td> </tr> <tr> <td><strong>showQueueDuration</strong></td> <td>Display total queue duration</td> </tr> <tr> <td><strong>groupSession</strong></td> <td>Listen together with friends</td> </tr> <tr> <td><strong>keyboardShortcuts</strong></td> <td>Custom keyboard shortcuts</td> </tr> <tr> <td><strong>hidePodcasts</strong></td> <td>Hide podcast recommendations</td> </tr> <tr> <td><strong>NowPlayingThumbnail</strong></td> <td>Show album art in system tray</td> </tr> </tbody></table> <h3 id="remove-ads-spotify-free">Remove Ads (Spotify Free)</h3> <p>Edit <code>~/.config/spicetify/config-xpui.ini</code>:</p> <pre><code class="language-ini">[Patch] xpui = true </code></pre> <p>Then add to custom apps to block ads:</p> <pre><code class="language-bash">spicetify config prevent_ui_themes true spicetify config expose_apis true spicetify apply </code></pre> <blockquote> <p><strong>Note:</strong> Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).</p> </blockquote> <h3 id="custom-keybindings">Custom Keybindings</h3> <p>Create <code>~/.config/spicetify/Extensions/customKeybinds.js</code>:</p> <pre><code class="language-javascript">// Custom keybindings for Spicetify Spicetify.Keyboard.registerShortcut({ key: &#39;Ctrl+Shift+P&#39;, callback: () =&gt; { Spicetify.showNotification(&#39;Custom shortcut triggered!&#39;); } }); </code></pre> <p>Apply:</p> <pre><code class="language-bash">spicetify apply </code></pre> <h3 id="common-spicetify-commands">Common Spicetify Commands</h3> <pre><code class="language-bash"># Show current config spicetify config-dir # Apply changes spicetify apply # Restore original Spotify (undo Spicetify) spicetify restore # Backup before major changes spicetify backup # Update Spicetify to latest spicetify upgrade # Check status spicetify status </code></pre> <hr> <h2 id="youtube-music-web-desktop">YouTube Music (Web + Desktop)</h2> <p>YouTube Music is Google&#39;s Spotify competitor. Free tier includes ads; Premium removes them.</p> <h3 id="why-youtube-music">Why YouTube Music?</h3> <ul> <li> Free tier available (with ads)</li> <li> Massive music library + music videos</li> <li> Upload your own music</li> <li> Podcasts integrated</li> <li> Works on web, Android, iOS, desktop</li> <li> Cross-device sync (phone → desktop)</li> <li> Cheaper Premium than Spotify in some regions</li> </ul> <h3 id="option-1-web-player-best-free-alternative">Option 1: Web Player (Best Free Alternative)</h3> <p>Simply visit <strong><a href="https://music.youtube.com">https://music.youtube.com</a></strong></p> <p><strong>Ad-blocking on web:</strong></p> <ul> <li>Use browser extension: <strong>uBlock Origin</strong> or <strong>Adblock Plus</strong></li> <li>Install and enable on <code>music.youtube.com</code></li> <li>Ads will be blocked (mostly)</li> </ul> <h3 id="option-2-desktop-app-linuxmacoswindows">Option 2: Desktop App (Linux/macOS/Windows)</h3> <h4>Linux Installation</h4> <p><strong>Via Package Manager:</strong></p> <pre><code class="language-bash"># Ubuntu/Debian sudo apt install youtube-music # Arch yay -S youtube-music-desktop-app # or paru -S youtube-music-desktop-app # Fedora sudo dnf install youtube-music </code></pre> <p><strong>Via Snap:</strong></p> <pre><code class="language-bash">sudo snap install youtube-music-desktop-app </code></pre> <p><strong>Via Flatpak:</strong></p> <pre><code class="language-bash">flatpak install flathub com.github.th-ch.YouTubeMusic flatpak run com.github.th-ch.YouTubeMusic </code></pre> <h4>macOS Installation</h4> <pre><code class="language-bash">brew install youtube-music # or brew install --cask youtube-music </code></pre> <h4>Windows Installation</h4> <p>Download from: <a href="https://github.com/th-ch/YouTubeMusic/releases">https://github.com/th-ch/YouTubeMusic/releases</a></p> <h3 id="desktop-app-features">Desktop App Features</h3> <p>The YouTube Music desktop app (<code>youtube-music-desktop-app</code>) includes:</p> <ul> <li> Standalone app (doesn&#39;t need browser tab)</li> <li> System media controls (play/pause from taskbar)</li> <li> Rich presence (Discord shows what you&#39;re listening)</li> <li> Built-in ad blocker (on some versions)</li> <li> Keyboard shortcuts</li> <li> Lyrics display (on hover)</li> <li> Dark mode</li> <li> Tray icon (minimize to system tray)</li> </ul> <h3 id="remove-ads-on-web">Remove Ads on Web</h3> <p><strong>Easiest: Browser Extension</strong></p> <ol> <li>Install <strong>uBlock Origin</strong>: <a href="https://ublockorigin.com/">https://ublockorigin.com/</a></li> <li>Go to <code>music.youtube.com</code></li> <li>Open uBlock Origin settings</li> <li>Add this filter to &quot;My filters&quot;:</li> </ol> <pre><code>music.youtube.com##.ytmusic-ad-frame music.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header ||adservice.google.com^ </code></pre> <ol start="5"> <li>Refresh YouTube Music</li> </ol> <p><strong>Alternative: Premium (Honest Option)</strong></p> <p>If you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.</p> <h3 id="youtube-music-tips-tricks">YouTube Music Tips &amp; Tricks</h3> <h4>Create Playlists</h4> <ol> <li>Click <strong>Create</strong> → <strong>New playlist</strong></li> <li>Add songs via <strong>+ Add songs</strong></li> <li>Share playlist link</li> </ol> <h4>Upload Your Own Music</h4> <ol> <li>Go to <strong>Library</strong> → <strong>Uploads</strong></li> <li>Click <strong>Upload songs</strong></li> <li>Upload up to 100,000 personal songs</li> <li>Use in playlists &amp; recommendations</li> </ol> <h4>Keyboard Shortcuts</h4> <table> <thead> <tr> <th>Shortcut</th> <th>Action</th> </tr> </thead> <tbody><tr> <td><code>Space</code></td> <td>Play/Pause</td> </tr> <tr> <td><code>J</code></td> <td>Next song</td> </tr> <tr> <td><code>K</code></td> <td>Previous song</td> </tr> <tr> <td><code>L</code></td> <td>Like (thumbs up)</td> </tr> <tr> <td><code>D</code></td> <td>Dislike (thumbs down)</td> </tr> <tr> <td><code>+</code></td> <td>Volume up</td> </tr> <tr> <td><code>-</code></td> <td>Volume down</td> </tr> <tr> <td><code>M</code></td> <td>Mute</td> </tr> </tbody></table> <h4>Use on Mobile</h4> <ul> <li><strong>Android:</strong> YouTube Music app (free, with ads; Premium removes them)</li> <li><strong>iOS:</strong> YouTube Music app (free, with ads; Premium removes them)</li> <li>Sync playlists across devices automatically</li> </ul> <hr> <h2 id="comparison-recommendations">Comparison &amp; Recommendations</h2> <table> <thead> <tr> <th>Feature</th> <th>Spotify</th> <th>YouTube Music</th> </tr> </thead> <tbody><tr> <td><strong>Ad removal (Free)</strong></td> <td> No</td> <td> Browser extensions</td> </tr> <tr> <td><strong>Unlimited skips (Free)</strong></td> <td> With Spicetify</td> <td> Yes</td> </tr> <tr> <td><strong>Video content</strong></td> <td> No</td> <td> Music videos</td> </tr> <tr> <td><strong>Upload own music</strong></td> <td> No</td> <td> Yes (100k limit)</td> </tr> <tr> <td><strong>Podcasts</strong></td> <td> Yes</td> <td> Limited</td> </tr> <tr> <td><strong>UI customization</strong></td> <td> Spicetify</td> <td> Limited</td> </tr> <tr> <td><strong>Lyrics</strong></td> <td> Yes</td> <td> Yes</td> </tr> <tr> <td><strong>Premium price</strong></td> <td>$12.99/mo</td> <td>$14.99/mo (YouTube Premium)</td> </tr> <tr> <td><strong>Desktop app</strong></td> <td> Native</td> <td> Third-party app</td> </tr> <tr> <td><strong>Linux support</strong></td> <td> Native</td> <td> Via third-party app</td> </tr> </tbody></table> <h3 id="best-setup-for-each-user">Best Setup for Each User</h3> <p><strong> Most Control:</strong></p> <ul> <li><strong>Spotify + Spicetify</strong>: Customize everything, ad-free experience, unlimited skips</li> </ul> <p><strong> Music Video Fan:</strong></p> <ul> <li><strong>YouTube Music Premium</strong> or <strong>YouTube Music + uBlock Origin</strong>: Watch music videos, vast library</li> </ul> <p><strong> Budget-Conscious:</strong></p> <ul> <li><strong>YouTube Music + uBlock Origin</strong>: Free music streaming with no ads (needs browser extension)</li> </ul> <p><strong> Everywhere:</strong></p> <ul> <li><strong>Spotify Premium</strong>: Works perfectly on desktop, mobile, web, Alexa, smart speakers</li> </ul> <hr> <h2 id="troubleshooting">Troubleshooting</h2> <h3 id="spicetify-spotify-doesnt-start-after-apply">Spicetify: Spotify Doesn&#39;t Start After Apply</h3> <pre><code class="language-bash"># Restore to original spicetify restore # Restart Spotify spotify &amp; # Check logs cat ~/.config/spicetify/config-xpui.ini </code></pre> <h3 id="spicetify-extensions-not-loading">Spicetify: Extensions Not Loading</h3> <pre><code class="language-bash"># Verify extensions folder ls -la ~/.config/spicetify/Extensions/ # Ensure extensions are listed in config cat ~/.config/spicetify/config-xpui.ini | grep extensions # Reapply spicetify apply </code></pre> <h3 id="youtube-music-videos-not-playing">YouTube Music: Videos Not Playing</h3> <ul> <li>Clear browser cache: <code>Ctrl+Shift+Delete</code></li> <li>Disable extensions temporarily</li> <li>Try Incognito mode: <code>Ctrl+Shift+N</code></li> <li>Restart the app</li> </ul> <h3 id="youtube-music-desktop-no-sound">YouTube Music Desktop: No Sound</h3> <pre><code class="language-bash"># Check audio output pactl list sinks # Restart app and try again pkill youtube-music youtube-music &amp; </code></pre> <h3 id="spicetify-not-found-after-install">Spicetify: Not Found After Install</h3> <p>Make sure PATH is updated:</p> <pre><code class="language-bash"># Check if installed ls ~/.spicetify/ # Add to PATH manually export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Make permanent (add to ~/.bashrc or ~/.zshrc) echo &#39;export PATH=&quot;$HOME/.spicetify:$PATH&quot;&#39; &gt;&gt; ~/.bashrc source ~/.bashrc </code></pre> <hr> <h2 id="quick-start">Quick Start</h2> <h3 id="spicetify-5-minutes">Spicetify (5 minutes)</h3> <pre><code class="language-bash"># Install curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Setup spicetify init spicetify backup apply # Install theme cd ~/.config/spicetify/Themes git clone https://github.com/spicetify/spicetify-themes.git cp -r spicetify-themes/Dribbblish . spicetify config current_theme Dribbblish spicetify apply # Restart Spotify → Done! </code></pre> <h3 id="youtube-music-2-minutes">YouTube Music (2 minutes)</h3> <pre><code class="language-bash"># Install desktop app sudo apt install youtube-music # Linux # or brew install youtube-music # macOS # Open youtube-music &amp; # Install uBlock Origin in browser # Visit music.youtube.com → Enjoy ad-free music! </code></pre> <hr> <h2 id="resources">Resources</h2> <ul> <li><strong>Spicetify GitHub:</strong> <a href="https://github.com/spicetify/cli">https://github.com/spicetify/cli</a></li> <li><strong>Spicetify Themes:</strong> <a href="https://github.com/spicetify/spicetify-themes">https://github.com/spicetify/spicetify-themes</a></li> <li><strong>Spicetify Extensions:</strong> <a href="https://github.com/spicetify/spicetify-extensions">https://github.com/spicetify/spicetify-extensions</a></li> <li><strong>YouTube Music Desktop:</strong> <a href="https://github.com/th-ch/YouTubeMusic">https://github.com/th-ch/YouTubeMusic</a></li> <li><strong>uBlock Origin:</strong> <a href="https://ublockorigin.com/">https://ublockorigin.com/</a></li> <li><strong>Spotify Forum:</strong> <a href="https://community.spotify.com/">https://community.spotify.com/</a></li> </ul> <hr> <p><strong>Last Updated:</strong> April 2026<br><strong>Difficulty:</strong> Beginner-Friendly<br><strong>Time to Setup:</strong> 10 minutes total</p> </article> </main> <script src="../script.js"></script> <script>window.__markdown_content__='# Music Streaming Without Ads\n\nGet premium music experiences without the ads, paywalls, or bloat. This guide covers **Spicetify** for Spotify and **YouTube Music** setup.\n\n---\n\n## Table of Contents\n\n1. [Spicetify + Spotify](#spicetify--spotify)\n2. [YouTube Music (Web + Desktop)](#youtube-music-web--desktop)\n3. [Comparison & Recommendations](#comparison--recommendations)\n4. [Troubleshooting](#troubleshooting)\n\n---\n\n## Spicetify + Spotify\n\n**Spicetify** is a command-line tool that customizes the Spotify client, removes ads, and adds powerful extensions.\n\n### Why Spicetify?\n\n- ✅ Remove ads from Spotify client\n- ✅ Unlimited skips (on Free tier)\n- ✅ Custom themes & visual tweaks\n- ✅ UI improvements & extensions\n- ✅ Keyboard shortcuts customization\n- ✅ Lyrics display\n- ✅ Works with Spotify Free or Premium\n\n### Requirements\n\n- Spotify account (Free or Premium)\n- Spotify desktop client installed\n- Python 3.7+ (for installation)\n- curl or git\n\n### Installation\n\n#### Ubuntu/Debian/Arch (Linux)\n\n```bash\n# Install Spicetify\ncurl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh\n\n# Add to PATH\nexport PATH="$HOME/.spicetify:$PATH"\n\n# Verify installation\nspicetify --version\n```\n\nAdd to `~/.bashrc` or `~/.zshrc`:\n```bash\nexport PATH="$HOME/.spicetify:$PATH"\n```\n\n#### macOS\n\n```bash\nbrew install spicetify-cli\n\n# Verify\nspicetify --version\n```\n\n#### Windows (PowerShell)\n\n```powershell\niwr -useb https://raw.githubusercontent.com/spicetify/cli/main/install.ps1 | iex\n```\n\n### Initial Setup\n\n1. **Close Spotify completely**\n   ```bash\n   pkill spotify\n   ```\n\n2. **Initialize Spicetify** (first-time setup)\n   ```bash\n   spicetify init\n   spicetify config-dir\n   ```\n\n   This creates `~/.config/spicetify/` with configuration files.\n\n3. **Apply the first time**\n   ```bash\n   spicetify backup apply\n   ```\n\n4. **Restart Spotify** and you should see improvements!\n\n### Install Themes\n\nThemes customize Spotify\'s appearance. Popular options:\n\n#### Theme: Dribbblish (Modern, Sleek)\n\n```bash\ncd ~/.config/spicetify/Themes\n\n# Clone the Dribbblish theme\ngit clone https://github.com/spicetify/spicetify-themes.git\n\ncp -r spicetify-themes/Dribbblish .\n\n# Set the theme\nspicetify config current_theme Dribbblish\nspicetify config color_scheme dark  # or: light\n\n# Apply\nspicetify apply\n```\n\n#### Theme: Comfy (Clean, Comfortable)\n\n```bash\ncd ~/.config/spicetify/Themes\ncp -r spicetify-themes/Comfy .\nspicetify config current_theme Comfy\nspicetify apply\n```\n\n#### Theme: Onepunch (VS Code-inspired)\n\n```bash\ncd ~/.config/spicetify/Themes\ncp -r spicetify-themes/Onepunch .\nspicetify config current_theme Onepunch\nspicetify config color_scheme dark\nspicetify apply\n```\n\n### Install Extensions\n\nExtensions add functionality to Spotify. Install from the marketplace:\n\n```bash\n# Navigate to extensions directory\ncd ~/.config/spicetify/Extensions\n\n# Clone community extensions\ngit clone https://github.com/spicetify/spicetify-extensions.git\n\n# Copy desired extensions\ncp spicetify-extensions/fullAppDisplay/fullAppDisplay.js .\ncp spicetify-extensions/showQueueDuration/showQueueDuration.js .\ncp spicetify-extensions/groupSession/groupSession.js .\n```\n\nEdit `~/.config/spicetify/config-xpui.ini` and add to `[extensions]`:\n\n```ini\n[extensions]\nfullAppDisplay.js\nshowQueueDuration.js\ngroupSession.js\n```\n\nThen apply:\n```bash\nspicetify apply\n```\n\n#### Popular Extensions Explained\n\n| Extension | Purpose |\n|-----------|---------|\n| **fullAppDisplay** | Show full album art behind player |\n| **showQueueDuration** | Display total queue duration |\n| **groupSession** | Listen together with friends |\n| **keyboardShortcuts** | Custom keyboard shortcuts |\n| **hidePodcasts** | Hide podcast recommendations |\n| **NowPlayingThumbnail** | Show album art in system tray |\n\n### Remove Ads (Spotify Free)\n\nEdit `~/.config/spicetify/config-xpui.ini`:\n\n```ini\n[Patch]\nxpui = true\n```\n\nThen add to custom apps to block ads:\n\n```bash\nspicetify config prevent_ui_themes true\nspicetify config expose_apis true\nspicetify apply\n```\n\n> **Note:** Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).\n\n### Custom Keybindings\n\nCreate `~/.config/spicetify/Extensions/customKeybinds.js`:\n\n```javascript\n// Custom keybindings for Spicetify\nSpicetify.Keyboard.registerShortcut({\n  key: \'Ctrl+Shift+P\',\n  callback: () => {\n    Spicetify.showNotification(\'Custom shortcut triggered!\');\n  }\n});\n```\n\nApply:\n```bash\nspicetify apply\n```\n\n### Common Spicetify Commands\n\n```bash\n# Show current config\nspicetify config-dir\n\n# Apply changes\nspicetify apply\n\n# Restore original Spotify (undo Spicetify)\nspicetify restore\n\n# Backup before major changes\nspicetify backup\n\n# Update Spicetify to latest\nspicetify upgrade\n\n# Check status\nspicetify status\n```\n\n---\n\n## YouTube Music (Web + Desktop)\n\nYouTube Music is Google\'s Spotify competitor. Free tier includes ads; Premium removes them.\n\n### Why YouTube Music?\n\n- ✅ Free tier available (with ads)\n- ✅ Massive music library + music videos\n- ✅ Upload your own music\n- ✅ Podcasts integrated\n- ✅ Works on web, Android, iOS, desktop\n- ✅ Cross-device sync (phone → desktop)\n- ✅ Cheaper Premium than Spotify in some regions\n\n### Option 1: Web Player (Best Free Alternative)\n\nSimply visit **https://music.youtube.com**\n\n**Ad-blocking on web:**\n- Use browser extension: **uBlock Origin** or **Adblock Plus**\n- Install and enable on `music.youtube.com`\n- Ads will be blocked (mostly)\n\n### Option 2: Desktop App (Linux/macOS/Windows)\n\n#### Linux Installation\n\n**Via Package Manager:**\n```bash\n# Ubuntu/Debian\nsudo apt install youtube-music\n\n# Arch\nyay -S youtube-music-desktop-app\n# or\nparu -S youtube-music-desktop-app\n\n# Fedora\nsudo dnf install youtube-music\n```\n\n**Via Snap:**\n```bash\nsudo snap install youtube-music-desktop-app\n```\n\n**Via Flatpak:**\n```bash\nflatpak install flathub com.github.th-ch.YouTubeMusic\nflatpak run com.github.th-ch.YouTubeMusic\n```\n\n#### macOS Installation\n\n```bash\nbrew install youtube-music\n# or\nbrew install --cask youtube-music\n```\n\n#### Windows Installation\n\nDownload from: https://github.com/th-ch/YouTubeMusic/releases\n\n### Desktop App Features\n\nThe YouTube Music desktop app (`youtube-music-desktop-app`) includes:\n\n- ✅ Standalone app (doesn\'t need browser tab)\n- ✅ System media controls (play/pause from taskbar)\n- ✅ Rich presence (Discord shows what you\'re listening)\n- ✅ Built-in ad blocker (on some versions)\n- ✅ Keyboard shortcuts\n- ✅ Lyrics display (on hover)\n- ✅ Dark mode\n- ✅ Tray icon (minimize to system tray)\n\n### Remove Ads on Web\n\n**Easiest: Browser Extension**\n\n1. Install **uBlock Origin**: https://ublockorigin.com/\n2. Go to `music.youtube.com`\n3. Open uBlock Origin settings\n4. Add this filter to "My filters":\n\n```\nmusic.youtube.com##.ytmusic-ad-frame\nmusic.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header\n||adservice.google.com^\n```\n\n5. Refresh YouTube Music\n\n**Alternative: Premium (Honest Option)**\n\nIf you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.\n\n### YouTube Music Tips & Tricks\n\n#### Create Playlists\n\n1. Click **Create** → **New playlist**\n2. Add songs via **+ Add songs**\n3. Share playlist link\n\n#### Upload Your Own Music\n\n1. Go to **Library** → **Uploads**\n2. Click **Upload songs**\n3. Upload up to 100,000 personal songs\n4. Use in playlists & recommendations\n\n#### Keyboard Shortcuts\n\n| Shortcut | Action |\n|----------|--------|\n| `Space` | Play/Pause |\n| `J` | Next song |\n| `K` | Previous song |\n| `L` | Like (thumbs up) |\n| `D` | Dislike (thumbs down) |\n| `+` | Volume up |\n| `-` | Volume down |\n| `M` | Mute |\n\n#### Use on Mobile\n\n- **Android:** YouTube Music app (free, with ads; Premium removes them)\n- **iOS:** YouTube Music app (free, with ads; Premium removes them)\n- Sync playlists across devices automatically\n\n---\n\n## Comparison & Recommendations\n\n| Feature | Spotify | YouTube Music |\n|---------|---------|---------------|\n| **Ad removal (Free)** | ❌ No | ⚠️ Browser extensions |\n| **Unlimited skips (Free)** | ✅ With Spicetify | ✅ Yes |\n| **Video content** | ❌ No | ✅ Music videos |\n| **Upload own music** | ❌ No | ✅ Yes (100k limit) |\n| **Podcasts** | ✅ Yes | ⚠️ Limited |\n| **UI customization** | ✅ Spicetify | ⚠️ Limited |\n| **Lyrics** | ✅ Yes | ✅ Yes |\n| **Premium price** | $12.99/mo | $14.99/mo (YouTube Premium) |\n| **Desktop app** | ✅ Native | ✅ Third-party app |\n| **Linux support** | ✅ Native | ✅ Via third-party app |\n\n### Best Setup for Each User\n\n**🎵 Most Control:**\n- **Spotify + Spicetify**: Customize everything, ad-free experience, unlimited skips\n\n**🎬 Music Video Fan:**\n- **YouTube Music Premium** or **YouTube Music + uBlock Origin**: Watch music videos, vast library\n\n**💰 Budget-Conscious:**\n- **YouTube Music + uBlock Origin**: Free music streaming with no ads (needs browser extension)\n\n**🌍 Everywhere:**\n- **Spotify Premium**: Works perfectly on desktop, mobile, web, Alexa, smart speakers\n\n---\n\n## Troubleshooting\n\n### Spicetify: Spotify Doesn\'t Start After Apply\n\n```bash\n# Restore to original\nspicetify restore\n\n# Restart Spotify\nspotify &\n\n# Check logs\ncat ~/.config/spicetify/config-xpui.ini\n```\n\n### Spicetify: Extensions Not Loading\n\n```bash\n# Verify extensions folder\nls -la ~/.config/spicetify/Extensions/\n\n# Ensure extensions are listed in config\ncat ~/.config/spicetify/config-xpui.ini | grep extensions\n\n# Reapply\nspicetify apply\n```\n\n### YouTube Music: Videos Not Playing\n\n- Clear browser cache: `Ctrl+Shift+Delete`\n- Disable extensions temporarily\n- Try Incognito mode: `Ctrl+Shift+N`\n- Restart the app\n\n### YouTube Music Desktop: No Sound\n\n```bash\n# Check audio output\npactl list sinks\n\n# Restart app and try again\npkill youtube-music\nyoutube-music &\n```\n\n### Spicetify: Not Found After Install\n\nMake sure PATH is updated:\n\n```bash\n# Check if installed\nls ~/.spicetify/\n\n# Add to PATH manually\nexport PATH="$HOME/.spicetify:$PATH"\n\n# Make permanent (add to ~/.bashrc or ~/.zshrc)\necho \'export PATH="$HOME/.spicetify:$PATH"\' >> ~/.bashrc\nsource ~/.bashrc\n```\n\n---\n\n## Quick Start\n\n### Spicetify (5 minutes)\n\n```bash\n# Install\ncurl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh\nexport PATH="$HOME/.spicetify:$PATH"\n\n# Setup\nspicetify init\nspicetify backup apply\n\n# Install theme\ncd ~/.config/spicetify/Themes\ngit clone https://github.com/spicetify/spicetify-themes.git\ncp -r spicetify-themes/Dribbblish .\nspicetify config current_theme Dribbblish\nspicetify apply\n\n# Restart Spotify → Done!\n```\n\n### YouTube Music (2 minutes)\n\n```bash\n# Install desktop app\nsudo apt install youtube-music  # Linux\n# or\nbrew install youtube-music  # macOS\n\n# Open\nyoutube-music &\n\n# Install uBlock Origin in browser\n# Visit music.youtube.com → Enjoy ad-free music!\n```\n\n---\n\n## Resources\n\n- **Spicetify GitHub:** https://github.com/spicetify/cli\n- **Spicetify Themes:** https://github.com/spicetify/spicetify-themes\n- **Spicetify Extensions:** https://github.com/spicetify/spicetify-extensions\n- **YouTube Music Desktop:** https://github.com/th-ch/YouTubeMusic\n- **uBlock Origin:** https://ublockorigin.com/\n- **Spotify Forum:** https://community.spotify.com/\n\n---\n\n**Last Updated:** April 2026  \n**Difficulty:** Beginner-Friendly  \n**Time to Setup:** 10 minutes total\n';</script></body> </html> 
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Into the Distro-Verse </title> <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet"> <link rel="stylesheet" href="../style.css"> </head> <body> <header class="topbar"> <div class="topbar-inner"> <a class="site-title" href="../index.html">Into the Distro-Verse Wiki</a> <nav aria-label="Main navigation"> <ul class="top-links"> <li><a href="../index.html">Main page</a></li> </ul> </nav> </div> </header> <main class="wiki-layout"> <aside class="wiki-toc" aria-label="Page contents"> <h2>Contents</h2> <ul> <li class='level-1'><a href='#music-streaming-without-ads'>Music Streaming Without Ads</a></li> <li class='level-2'><a href='#table-of-contents'>Table of Contents</a></li> <li class='level-2'><a href='#spicetify-spotify'>Spicetify + Spotify</a></li> <li class='level-3'><a href='#why-spicetify'>Why Spicetify?</a></li> <li class='level-3'><a href='#requirements'>Requirements</a></li> <li class='level-3'><a href='#installation'>Installation</a></li> <li class='level-3'><a href='#initial-setup'>Initial Setup</a></li> <li class='level-3'><a href='#install-themes'>Install Themes</a></li> <li class='level-3'><a href='#install-extensions'>Install Extensions</a></li> <li class='level-3'><a href='#remove-ads-spotify-free'>Remove Ads (Spotify Free)</a></li> <li class='level-3'><a href='#custom-keybindings'>Custom Keybindings</a></li> <li class='level-3'><a href='#common-spicetify-commands'>Common Spicetify Commands</a></li> <li class='level-2'><a href='#youtube-music-web-desktop'>YouTube Music (Web + Desktop)</a></li> <li class='level-3'><a href='#why-youtube-music'>Why YouTube Music?</a></li> <li class='level-3'><a href='#option-1-web-player-best-free-alternative'>Option 1: Web Player (Best Free Alternative)</a></li> <li class='level-3'><a href='#option-2-desktop-app-linuxmacoswindows'>Option 2: Desktop App (Linux/macOS/Windows)</a></li> <li class='level-3'><a href='#desktop-app-features'>Desktop App Features</a></li> <li class='level-3'><a href='#remove-ads-on-web'>Remove Ads on Web</a></li> <li class='level-3'><a href='#youtube-music-tips-tricks'>YouTube Music Tips & Tricks</a></li> <li class='level-2'><a href='#comparison-recommendations'>Comparison & Recommendations</a></li> <li class='level-3'><a href='#best-setup-for-each-user'>Best Setup for Each User</a></li> <li class='level-2'><a href='#troubleshooting'>Troubleshooting</a></li> <li class='level-3'><a href='#spicetify-spotify-doesnt-start-after-apply'>Spicetify: Spotify Doesn't Start After Apply</a></li> <li class='level-3'><a href='#spicetify-extensions-not-loading'>Spicetify: Extensions Not Loading</a></li> <li class='level-3'><a href='#youtube-music-videos-not-playing'>YouTube Music: Videos Not Playing</a></li> <li class='level-3'><a href='#youtube-music-desktop-no-sound'>YouTube Music Desktop: No Sound</a></li> <li class='level-3'><a href='#spicetify-not-found-after-install'>Spicetify: Not Found After Install</a></li> <li class='level-2'><a href='#quick-start'>Quick Start</a></li> <li class='level-3'><a href='#spicetify-5-minutes'>Spicetify (5 minutes)</a></li> <li class='level-3'><a href='#youtube-music-2-minutes'>YouTube Music (2 minutes)</a></li> <li class='level-2'><a href='#resources'>Resources</a></li> </ul> </aside> <article class="wiki-article"> **Note:** Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).\n\n### Custom Keybindings\n\nCreate `~/.config/spicetify/Extensions/customKeybinds.js`:\n\n```javascript\n// Custom keybindings for Spicetify\nSpicetify.Keyboard.registerShortcut({\n  key: 'Ctrl+Shift+P',\n  callback: () => {\n    Spicetify.showNotification('Custom shortcut triggered!');\n  }\n});\n```\n\nApply:\n```bash\nspicetify apply\n```\n\n### Common Spicetify Commands\n\n```bash\n# Show current config\nspicetify config-dir\n\n# Apply changes\nspicetify apply\n\n# Restore original Spotify (undo Spicetify)\nspicetify restore\n\n# Backup before major changes\nspicetify backup\n\n# Update Spicetify to latest\nspicetify upgrade\n\n# Check status\nspicetify status\n```\n\n---\n\n## YouTube Music (Web + Desktop)\n\nYouTube Music is Google's Spotify competitor. Free tier includes ads; Premium removes them.\n\n### Why YouTube Music?\n\n- \u2705 Free tier available (with ads)\n- \u2705 Massive music library + music videos\n- \u2705 Upload your own music\n- \u2705 Podcasts integrated\n- \u2705 Works on web, Android, iOS, desktop\n- \u2705 Cross-device sync (phone \u2192 desktop)\n- \u2705 Cheaper Premium than Spotify in some regions\n\n### Option 1: Web Player (Best Free Alternative)\n\nSimply visit **https://music.youtube.com**\n\n**Ad-blocking on web:**\n- Use browser extension: **uBlock Origin** or **Adblock Plus**\n- Install and enable on `music.youtube.com`\n- Ads will be blocked (mostly)\n\n### Option 2: Desktop App (Linux/macOS/Windows)\n\n#### Linux Installation\n\n**Via Package Manager:**\n```bash\n# Ubuntu/Debian\nsudo apt install youtube-music\n\n# Arch\nyay -S youtube-music-desktop-app\n# or\nparu -S youtube-music-desktop-app\n\n# Fedora\nsudo dnf install youtube-music\n```\n\n**Via Snap:**\n```bash\nsudo snap install youtube-music-desktop-app\n```\n\n**Via Flatpak:**\n```bash\nflatpak install flathub com.github.th-ch.YouTubeMusic\nflatpak run com.github.th-ch.YouTubeMusic\n```\n\n#### macOS Installation\n\n```bash\nbrew install youtube-music\n# or\nbrew install --cask youtube-music\n```\n\n#### Windows Installation\n\nDownload from: https://github.com/th-ch/YouTubeMusic/releases\n\n### Desktop App Features\n\nThe YouTube Music desktop app (`youtube-music-desktop-app`) includes:\n\n- \u2705 Standalone app (doesn't need browser tab)\n- \u2705 System media controls (play/pause from taskbar)\n- \u2705 Rich presence (Discord shows what you're listening)\n- \u2705 Built-in ad blocker (on some versions)\n- \u2705 Keyboard shortcuts\n- \u2705 Lyrics display (on hover)\n- \u2705 Dark mode\n- \u2705 Tray icon (minimize to system tray)\n\n### Remove Ads on Web\n\n**Easiest: Browser Extension**\n\n1. Install **uBlock Origin**: https://ublockorigin.com/\n2. Go to `music.youtube.com`\n3. Open uBlock Origin settings\n4. Add this filter to \"My filters\":\n\n```\nmusic.youtube.com##.ytmusic-ad-frame\nmusic.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header\n||adservice.google.com^\n```\n\n5. Refresh YouTube Music\n\n**Alternative: Premium (Honest Option)**\n\nIf you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.\n\n### YouTube Music Tips & Tricks\n\n#### Create Playlists\n\n1. Click **Create** \u2192 **New playlist**\n2. Add songs via **+ Add songs**\n3. Share playlist link\n\n#### Upload Your Own Music\n\n1. Go to **Library** \u2192 **Uploads**\n2. Click **Upload songs**\n3. Upload up to 100,000 personal songs\n4. Use in playlists & recommendations\n\n#### Keyboard Shortcuts\n\n| Shortcut | Action |\n|----------|--------|\n| `Space` | Play/Pause |\n| `J` | Next song |\n| `K` | Previous song |\n| `L` | Like (thumbs up) |\n| `D` | Dislike (thumbs down) |\n| `+` | Volume up |\n| `-` | Volume down |\n| `M` | Mute |\n\n#### Use on Mobile\n\n- **Android:** YouTube Music app (free, with ads; Premium removes them)\n- **iOS:** YouTube Music app (free, with ads; Premium removes them)\n- Sync playlists across devices automatically\n\n---\n\n## Comparison & Recommendations\n\n| Feature | Spotify | YouTube Music |\n|---------|---------|---------------|\n| **Ad removal (Free)** | \u274c No | \u26a0\ufe0f Browser extensions |\n| **Unlimited skips (Free)** | \u2705 With Spicetify | \u2705 Yes |\n| **Video content** | \u274c No | \u2705 Music videos |\n| **Upload own music** | \u274c No | \u2705 Yes (100k limit) |\n| **Podcasts** | \u2705 Yes | \u26a0\ufe0f Limited |\n| **UI customization** | \u2705 Spicetify | \u26a0\ufe0f Limited |\n| **Lyrics** | \u2705 Yes | \u2705 Yes |\n| **Premium price** | $12.99/mo | $14.99/mo (YouTube Premium) |\n| **Desktop app** | \u2705 Native | \u2705 Third-party app |\n| **Linux support** | \u2705 Native | \u2705 Via third-party app |\n\n### Best Setup for Each User\n\n**\ud83c\udfb5 Most Control:**\n- **Spotify + Spicetify**: Customize everything, ad-free experience, unlimited skips\n\n**\ud83c\udfac Music Video Fan:**\n- **YouTube Music Premium** or **YouTube Music + uBlock Origin**: Watch music videos, vast library\n\n**\ud83d\udcb0 Budget-Conscious:**\n- **YouTube Music + uBlock Origin**: Free music streaming with no ads (needs browser extension)\n\n**\ud83c\udf0d Everywhere:**\n- **Spotify Premium**: Works perfectly on desktop, mobile, web, Alexa, smart speakers\n\n---\n\n## Troubleshooting\n\n### Spicetify: Spotify Doesn't Start After Apply\n\n```bash\n# Restore to original\nspicetify restore\n\n# Restart Spotify\nspotify &\n\n# Check logs\ncat ~/.config/spicetify/config-xpui.ini\n```\n\n### Spicetify: Extensions Not Loading\n\n```bash\n# Verify extensions folder\nls -la ~/.config/spicetify/Extensions/\n\n# Ensure extensions are listed in config\ncat ~/.config/spicetify/config-xpui.ini | grep extensions\n\n# Reapply\nspicetify apply\n```\n\n### YouTube Music: Videos Not Playing\n\n- Clear browser cache: `Ctrl+Shift+Delete`\n- Disable extensions temporarily\n- Try Incognito mode: `Ctrl+Shift+N`\n- Restart the app\n\n### YouTube Music Desktop: No Sound\n\n```bash\n# Check audio output\npactl list sinks\n\n# Restart app and try again\npkill youtube-music\nyoutube-music &\n```\n\n### Spicetify: Not Found After Install\n\nMake sure PATH is updated:\n\n```bash\n# Check if installed\nls ~/.spicetify/\n\n# Add to PATH manually\nexport PATH=\"$HOME/.spicetify:$PATH\"\n\n# Make permanent (add to ~/.bashrc or ~/.zshrc)\necho 'export PATH=\"$HOME/.spicetify:$PATH\"' >> ~/.bashrc\nsource ~/.bashrc\n```\n\n---\n\n## Quick Start\n\n### Spicetify (5 minutes)\n\n```bash\n# Install\ncurl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh\nexport PATH=\"$HOME/.spicetify:$PATH\"\n\n# Setup\nspicetify init\nspicetify backup apply\n\n# Install theme\ncd ~/.config/spicetify/Themes\ngit clone https://github.com/spicetify/spicetify-themes.git\ncp -r spicetify-themes/Dribbblish .\nspicetify config current_theme Dribbblish\nspicetify apply\n\n# Restart Spotify \u2192 Done!\n```\n\n### YouTube Music (2 minutes)\n\n```bash\n# Install desktop app\nsudo apt install youtube-music  # Linux\n# or\nbrew install youtube-music  # macOS\n\n# Open\nyoutube-music &\n\n# Install uBlock Origin in browser\n# Visit music.youtube.com \u2192 Enjoy ad-free music!\n```\n\n---\n\n## Resources\n\n- **Spicetify GitHub:** https://github.com/spicetify/cli\n- **Spicetify Themes:** https://github.com/spicetify/spicetify-themes\n- **Spicetify Extensions:** https://github.com/spicetify/spicetify-extensions\n- **YouTube Music Desktop:** https://github.com/th-ch/YouTubeMusic\n- **uBlock Origin:** https://ublockorigin.com/\n- **Spotify Forum:** https://community.spotify.com/\n\n---\n\n**Last Updated:** April 2026  \n**Difficulty:** Beginner-Friendly  \n**Time to Setup:** 10 minutes total\n"> <h1 id="music-streaming-without-ads">Music Streaming Without Ads</h1> <hr /> <p>Get premium music experiences without the ads, paywalls, or bloat. This guide covers <strong>Spicetify</strong> for Spotify and <strong>YouTube Music</strong> setup.</p> <hr> <h2 id="table-of-contents">Table of Contents</h2> <ol> <li><a href="#spicetify--spotify">Spicetify + Spotify</a></li> <li><a href="#youtube-music-web--desktop">YouTube Music (Web + Desktop)</a></li> <li><a href="#comparison--recommendations">Comparison &amp; Recommendations</a></li> <li><a href="#troubleshooting">Troubleshooting</a></li> </ol> <hr> <h2 id="spicetify-spotify">Spicetify + Spotify</h2> <p><strong>Spicetify</strong> is a command-line tool that customizes the Spotify client, removes ads, and adds powerful extensions.</p> <h3 id="why-spicetify">Why Spicetify?</h3> <ul> <li> Remove ads from Spotify client</li> <li> Unlimited skips (on Free tier)</li> <li> Custom themes &amp; visual tweaks</li> <li> UI improvements &amp; extensions</li> <li> Keyboard shortcuts customization</li> <li> Lyrics display</li> <li> Works with Spotify Free or Premium</li> </ul> <h3 id="requirements">Requirements</h3> <ul> <li>Spotify account (Free or Premium)</li> <li>Spotify desktop client installed</li> <li>Python 3.7+ (for installation)</li> <li>curl or git</li> </ul> <h3 id="installation">Installation</h3> <h4>Ubuntu/Debian/Arch (Linux)</h4> <pre><code class="language-bash"># Install Spicetify curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh # Add to PATH export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Verify installation spicetify --version </code></pre> <p>Add to <code>~/.bashrc</code> or <code>~/.zshrc</code>:</p> <pre><code class="language-bash">export PATH=&quot;$HOME/.spicetify:$PATH&quot; </code></pre> <h4>macOS</h4> <pre><code class="language-bash">brew install spicetify-cli # Verify spicetify --version </code></pre> <h4>Windows (PowerShell)</h4> <pre><code class="language-powershell">iwr -useb https://raw.githubusercontent.com/spicetify/cli/main/install.ps1 | iex </code></pre> <h3 id="initial-setup">Initial Setup</h3> <ol> <li><p><strong>Close Spotify completely</strong></p> <pre><code class="language-bash">pkill spotify </code></pre> </li> <li><p><strong>Initialize Spicetify</strong> (first-time setup)</p> <pre><code class="language-bash">spicetify init spicetify config-dir </code></pre> <p>This creates <code>~/.config/spicetify/</code> with configuration files.</p> </li> <li><p><strong>Apply the first time</strong></p> <pre><code class="language-bash">spicetify backup apply </code></pre> </li> <li><p><strong>Restart Spotify</strong> and you should see improvements!</p> </li> </ol> <h3 id="install-themes">Install Themes</h3> <p>Themes customize Spotify&#39;s appearance. Popular options:</p> <h4>Theme: Dribbblish (Modern, Sleek)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes # Clone the Dribbblish theme git clone https://github.com/spicetify/spicetify-themes.git cp -r spicetify-themes/Dribbblish . # Set the theme spicetify config current_theme Dribbblish spicetify config color_scheme dark # or: light # Apply spicetify apply </code></pre> <h4>Theme: Comfy (Clean, Comfortable)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes cp -r spicetify-themes/Comfy . spicetify config current_theme Comfy spicetify apply </code></pre> <h4>Theme: Onepunch (VS Code-inspired)</h4> <pre><code class="language-bash">cd ~/.config/spicetify/Themes cp -r spicetify-themes/Onepunch . spicetify config current_theme Onepunch spicetify config color_scheme dark spicetify apply </code></pre> <h3 id="install-extensions">Install Extensions</h3> <p>Extensions add functionality to Spotify. Install from the marketplace:</p> <pre><code class="language-bash"># Navigate to extensions directory cd ~/.config/spicetify/Extensions # Clone community extensions git clone https://github.com/spicetify/spicetify-extensions.git # Copy desired extensions cp spicetify-extensions/fullAppDisplay/fullAppDisplay.js . cp spicetify-extensions/showQueueDuration/showQueueDuration.js . cp spicetify-extensions/groupSession/groupSession.js . </code></pre> <p>Edit <code>~/.config/spicetify/config-xpui.ini</code> and add to <code>[extensions]</code>:</p> <pre><code class="language-ini">[extensions] fullAppDisplay.js showQueueDuration.js groupSession.js </code></pre> <p>Then apply:</p> <pre><code class="language-bash">spicetify apply </code></pre> <h4>Popular Extensions Explained</h4> <table> <thead> <tr> <th>Extension</th> <th>Purpose</th> </tr> </thead> <tbody><tr> <td><strong>fullAppDisplay</strong></td> <td>Show full album art behind player</td> </tr> <tr> <td><strong>showQueueDuration</strong></td> <td>Display total queue duration</td> </tr> <tr> <td><strong>groupSession</strong></td> <td>Listen together with friends</td> </tr> <tr> <td><strong>keyboardShortcuts</strong></td> <td>Custom keyboard shortcuts</td> </tr> <tr> <td><strong>hidePodcasts</strong></td> <td>Hide podcast recommendations</td> </tr> <tr> <td><strong>NowPlayingThumbnail</strong></td> <td>Show album art in system tray</td> </tr> </tbody></table> <h3 id="remove-ads-spotify-free">Remove Ads (Spotify Free)</h3> <p>Edit <code>~/.config/spicetify/config-xpui.ini</code>:</p> <pre><code class="language-ini">[Patch] xpui = true </code></pre> <p>Then add to custom apps to block ads:</p> <pre><code class="language-bash">spicetify config prevent_ui_themes true spicetify config expose_apis true spicetify apply </code></pre> <blockquote> <p><strong>Note:</strong> Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).</p> </blockquote> <h3 id="custom-keybindings">Custom Keybindings</h3> <p>Create <code>~/.config/spicetify/Extensions/customKeybinds.js</code>:</p> <pre><code class="language-javascript">// Custom keybindings for Spicetify Spicetify.Keyboard.registerShortcut({ key: &#39;Ctrl+Shift+P&#39;, callback: () =&gt; { Spicetify.showNotification(&#39;Custom shortcut triggered!&#39;); } }); </code></pre> <p>Apply:</p> <pre><code class="language-bash">spicetify apply </code></pre> <h3 id="common-spicetify-commands">Common Spicetify Commands</h3> <pre><code class="language-bash"># Show current config spicetify config-dir # Apply changes spicetify apply # Restore original Spotify (undo Spicetify) spicetify restore # Backup before major changes spicetify backup # Update Spicetify to latest spicetify upgrade # Check status spicetify status </code></pre> <hr> <h2 id="youtube-music-web-desktop">YouTube Music (Web + Desktop)</h2> <p>YouTube Music is Google&#39;s Spotify competitor. Free tier includes ads; Premium removes them.</p> <h3 id="why-youtube-music">Why YouTube Music?</h3> <ul> <li> Free tier available (with ads)</li> <li> Massive music library + music videos</li> <li> Upload your own music</li> <li> Podcasts integrated</li> <li> Works on web, Android, iOS, desktop</li> <li> Cross-device sync (phone → desktop)</li> <li> Cheaper Premium than Spotify in some regions</li> </ul> <h3 id="option-1-web-player-best-free-alternative">Option 1: Web Player (Best Free Alternative)</h3> <p>Simply visit <strong><a href="https://music.youtube.com">https://music.youtube.com</a></strong></p> <p><strong>Ad-blocking on web:</strong></p> <ul> <li>Use browser extension: <strong>uBlock Origin</strong> or <strong>Adblock Plus</strong></li> <li>Install and enable on <code>music.youtube.com</code></li> <li>Ads will be blocked (mostly)</li> </ul> <h3 id="option-2-desktop-app-linuxmacoswindows">Option 2: Desktop App (Linux/macOS/Windows)</h3> <h4>Linux Installation</h4> <p><strong>Via Package Manager:</strong></p> <pre><code class="language-bash"># Ubuntu/Debian sudo apt install youtube-music # Arch yay -S youtube-music-desktop-app # or paru -S youtube-music-desktop-app # Fedora sudo dnf install youtube-music </code></pre> <p><strong>Via Snap:</strong></p> <pre><code class="language-bash">sudo snap install youtube-music-desktop-app </code></pre> <p><strong>Via Flatpak:</strong></p> <pre><code class="language-bash">flatpak install flathub com.github.th-ch.YouTubeMusic flatpak run com.github.th-ch.YouTubeMusic </code></pre> <h4>macOS Installation</h4> <pre><code class="language-bash">brew install youtube-music # or brew install --cask youtube-music </code></pre> <h4>Windows Installation</h4> <p>Download from: <a href="https://github.com/th-ch/YouTubeMusic/releases">https://github.com/th-ch/YouTubeMusic/releases</a></p> <h3 id="desktop-app-features">Desktop App Features</h3> <p>The YouTube Music desktop app (<code>youtube-music-desktop-app</code>) includes:</p> <ul> <li> Standalone app (doesn&#39;t need browser tab)</li> <li> System media controls (play/pause from taskbar)</li> <li> Rich presence (Discord shows what you&#39;re listening)</li> <li> Built-in ad blocker (on some versions)</li> <li> Keyboard shortcuts</li> <li> Lyrics display (on hover)</li> <li> Dark mode</li> <li> Tray icon (minimize to system tray)</li> </ul> <h3 id="remove-ads-on-web">Remove Ads on Web</h3> <p><strong>Easiest: Browser Extension</strong></p> <ol> <li>Install <strong>uBlock Origin</strong>: <a href="https://ublockorigin.com/">https://ublockorigin.com/</a></li> <li>Go to <code>music.youtube.com</code></li> <li>Open uBlock Origin settings</li> <li>Add this filter to &quot;My filters&quot;:</li> </ol> <pre><code>music.youtube.com##.ytmusic-ad-frame music.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header ||adservice.google.com^ </code></pre> <ol start="5"> <li>Refresh YouTube Music</li> </ol> <p><strong>Alternative: Premium (Honest Option)</strong></p> <p>If you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.</p> <h3 id="youtube-music-tips-tricks">YouTube Music Tips &amp; Tricks</h3> <h4>Create Playlists</h4> <ol> <li>Click <strong>Create</strong> → <strong>New playlist</strong></li> <li>Add songs via <strong>+ Add songs</strong></li> <li>Share playlist link</li> </ol> <h4>Upload Your Own Music</h4> <ol> <li>Go to <strong>Library</strong> → <strong>Uploads</strong></li> <li>Click <strong>Upload songs</strong></li> <li>Upload up to 100,000 personal songs</li> <li>Use in playlists &amp; recommendations</li> </ol> <h4>Keyboard Shortcuts</h4> <table> <thead> <tr> <th>Shortcut</th> <th>Action</th> </tr> </thead> <tbody><tr> <td><code>Space</code></td> <td>Play/Pause</td> </tr> <tr> <td><code>J</code></td> <td>Next song</td> </tr> <tr> <td><code>K</code></td> <td>Previous song</td> </tr> <tr> <td><code>L</code></td> <td>Like (thumbs up)</td> </tr> <tr> <td><code>D</code></td> <td>Dislike (thumbs down)</td> </tr> <tr> <td><code>+</code></td> <td>Volume up</td> </tr> <tr> <td><code>-</code></td> <td>Volume down</td> </tr> <tr> <td><code>M</code></td> <td>Mute</td> </tr> </tbody></table> <h4>Use on Mobile</h4> <ul> <li><strong>Android:</strong> YouTube Music app (free, with ads; Premium removes them)</li> <li><strong>iOS:</strong> YouTube Music app (free, with ads; Premium removes them)</li> <li>Sync playlists across devices automatically</li> </ul> <hr> <h2 id="comparison-recommendations">Comparison &amp; Recommendations</h2> <table> <thead> <tr> <th>Feature</th> <th>Spotify</th> <th>YouTube Music</th> </tr> </thead> <tbody><tr> <td><strong>Ad removal (Free)</strong></td> <td> No</td> <td> Browser extensions</td> </tr> <tr> <td><strong>Unlimited skips (Free)</strong></td> <td> With Spicetify</td> <td> Yes</td> </tr> <tr> <td><strong>Video content</strong></td> <td> No</td> <td> Music videos</td> </tr> <tr> <td><strong>Upload own music</strong></td> <td> No</td> <td> Yes (100k limit)</td> </tr> <tr> <td><strong>Podcasts</strong></td> <td> Yes</td> <td> Limited</td> </tr> <tr> <td><strong>UI customization</strong></td> <td> Spicetify</td> <td> Limited</td> </tr> <tr> <td><strong>Lyrics</strong></td> <td> Yes</td> <td> Yes</td> </tr> <tr> <td><strong>Premium price</strong></td> <td>$12.99/mo</td> <td>$14.99/mo (YouTube Premium)</td> </tr> <tr> <td><strong>Desktop app</strong></td> <td> Native</td> <td> Third-party app</td> </tr> <tr> <td><strong>Linux support</strong></td> <td> Native</td> <td> Via third-party app</td> </tr> </tbody></table> <h3 id="best-setup-for-each-user">Best Setup for Each User</h3> <p><strong> Most Control:</strong></p> <ul> <li><strong>Spotify + Spicetify</strong>: Customize everything, ad-free experience, unlimited skips</li> </ul> <p><strong> Music Video Fan:</strong></p> <ul> <li><strong>YouTube Music Premium</strong> or <strong>YouTube Music + uBlock Origin</strong>: Watch music videos, vast library</li> </ul> <p><strong> Budget-Conscious:</strong></p> <ul> <li><strong>YouTube Music + uBlock Origin</strong>: Free music streaming with no ads (needs browser extension)</li> </ul> <p><strong> Everywhere:</strong></p> <ul> <li><strong>Spotify Premium</strong>: Works perfectly on desktop, mobile, web, Alexa, smart speakers</li> </ul> <hr> <h2 id="troubleshooting">Troubleshooting</h2> <h3 id="spicetify-spotify-doesnt-start-after-apply">Spicetify: Spotify Doesn&#39;t Start After Apply</h3> <pre><code class="language-bash"># Restore to original spicetify restore # Restart Spotify spotify &amp; # Check logs cat ~/.config/spicetify/config-xpui.ini </code></pre> <h3 id="spicetify-extensions-not-loading">Spicetify: Extensions Not Loading</h3> <pre><code class="language-bash"># Verify extensions folder ls -la ~/.config/spicetify/Extensions/ # Ensure extensions are listed in config cat ~/.config/spicetify/config-xpui.ini | grep extensions # Reapply spicetify apply </code></pre> <h3 id="youtube-music-videos-not-playing">YouTube Music: Videos Not Playing</h3> <ul> <li>Clear browser cache: <code>Ctrl+Shift+Delete</code></li> <li>Disable extensions temporarily</li> <li>Try Incognito mode: <code>Ctrl+Shift+N</code></li> <li>Restart the app</li> </ul> <h3 id="youtube-music-desktop-no-sound">YouTube Music Desktop: No Sound</h3> <pre><code class="language-bash"># Check audio output pactl list sinks # Restart app and try again pkill youtube-music youtube-music &amp; </code></pre> <h3 id="spicetify-not-found-after-install">Spicetify: Not Found After Install</h3> <p>Make sure PATH is updated:</p> <pre><code class="language-bash"># Check if installed ls ~/.spicetify/ # Add to PATH manually export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Make permanent (add to ~/.bashrc or ~/.zshrc) echo &#39;export PATH=&quot;$HOME/.spicetify:$PATH&quot;&#39; &gt;&gt; ~/.bashrc source ~/.bashrc </code></pre> <hr> <h2 id="quick-start">Quick Start</h2> <h3 id="spicetify-5-minutes">Spicetify (5 minutes)</h3> <pre><code class="language-bash"># Install curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh export PATH=&quot;$HOME/.spicetify:$PATH&quot; # Setup spicetify init spicetify backup apply # Install theme cd ~/.config/spicetify/Themes git clone https://github.com/spicetify/spicetify-themes.git cp -r spicetify-themes/Dribbblish . spicetify config current_theme Dribbblish spicetify apply # Restart Spotify → Done! </code></pre> <h3 id="youtube-music-2-minutes">YouTube Music (2 minutes)</h3> <pre><code class="language-bash"># Install desktop app sudo apt install youtube-music # Linux # or brew install youtube-music # macOS # Open youtube-music &amp; # Install uBlock Origin in browser # Visit music.youtube.com → Enjoy ad-free music! </code></pre> <hr> <h2 id="resources">Resources</h2> <ul> <li><strong>Spicetify GitHub:</strong> <a href="https://github.com/spicetify/cli">https://github.com/spicetify/cli</a></li> <li><strong>Spicetify Themes:</strong> <a href="https://github.com/spicetify/spicetify-themes">https://github.com/spicetify/spicetify-themes</a></li> <li><strong>Spicetify Extensions:</strong> <a href="https://github.com/spicetify/spicetify-extensions">https://github.com/spicetify/spicetify-extensions</a></li> <li><strong>YouTube Music Desktop:</strong> <a href="https://github.com/th-ch/YouTubeMusic">https://github.com/th-ch/YouTubeMusic</a></li> <li><strong>uBlock Origin:</strong> <a href="https://ublockorigin.com/">https://ublockorigin.com/</a></li> <li><strong>Spotify Forum:</strong> <a href="https://community.spotify.com/">https://community.spotify.com/</a></li> </ul> <hr> <p><strong>Last Updated:</strong> April 2026<br><strong>Difficulty:</strong> Beginner-Friendly<br><strong>Time to Setup:</strong> 10 minutes total</p> </article> </main> <script src="../script.js"></script> <script id="md-content" type="text/plain"># Music Streaming Without Ads
+
+Get premium music experiences without the ads, paywalls, or bloat. This guide covers **Spicetify** for Spotify and **YouTube Music** setup.
+
+---
+
+## Table of Contents
+
+1. [Spicetify + Spotify](#spicetify--spotify)
+2. [YouTube Music (Web + Desktop)](#youtube-music-web--desktop)
+3. [Comparison &amp; Recommendations](#comparison--recommendations)
+4. [Troubleshooting](#troubleshooting)
+
+---
+
+## Spicetify + Spotify
+
+**Spicetify** is a command-line tool that customizes the Spotify client, removes ads, and adds powerful extensions.
+
+### Why Spicetify?
+
+- ✅ Remove ads from Spotify client
+- ✅ Unlimited skips (on Free tier)
+- ✅ Custom themes &amp; visual tweaks
+- ✅ UI improvements &amp; extensions
+- ✅ Keyboard shortcuts customization
+- ✅ Lyrics display
+- ✅ Works with Spotify Free or Premium
+
+### Requirements
+
+- Spotify account (Free or Premium)
+- Spotify desktop client installed
+- Python 3.7+ (for installation)
+- curl or git
+
+### Installation
+
+#### Ubuntu/Debian/Arch (Linux)
+
+```bash
+# Install Spicetify
+curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+
+# Add to PATH
+export PATH=&quot;$HOME/.spicetify:$PATH&quot;
+
+# Verify installation
+spicetify --version
+```
+
+Add to `~/.bashrc` or `~/.zshrc`:
+```bash
+export PATH=&quot;$HOME/.spicetify:$PATH&quot;
+```
+
+#### macOS
+
+```bash
+brew install spicetify-cli
+
+# Verify
+spicetify --version
+```
+
+#### Windows (PowerShell)
+
+```powershell
+iwr -useb https://raw.githubusercontent.com/spicetify/cli/main/install.ps1 | iex
+```
+
+### Initial Setup
+
+1. **Close Spotify completely**
+   ```bash
+   pkill spotify
+   ```
+
+2. **Initialize Spicetify** (first-time setup)
+   ```bash
+   spicetify init
+   spicetify config-dir
+   ```
+
+   This creates `~/.config/spicetify/` with configuration files.
+
+3. **Apply the first time**
+   ```bash
+   spicetify backup apply
+   ```
+
+4. **Restart Spotify** and you should see improvements!
+
+### Install Themes
+
+Themes customize Spotify&#x27;s appearance. Popular options:
+
+#### Theme: Dribbblish (Modern, Sleek)
+
+```bash
+cd ~/.config/spicetify/Themes
+
+# Clone the Dribbblish theme
+git clone https://github.com/spicetify/spicetify-themes.git
+
+cp -r spicetify-themes/Dribbblish .
+
+# Set the theme
+spicetify config current_theme Dribbblish
+spicetify config color_scheme dark  # or: light
+
+# Apply
+spicetify apply
+```
+
+#### Theme: Comfy (Clean, Comfortable)
+
+```bash
+cd ~/.config/spicetify/Themes
+cp -r spicetify-themes/Comfy .
+spicetify config current_theme Comfy
+spicetify apply
+```
+
+#### Theme: Onepunch (VS Code-inspired)
+
+```bash
+cd ~/.config/spicetify/Themes
+cp -r spicetify-themes/Onepunch .
+spicetify config current_theme Onepunch
+spicetify config color_scheme dark
+spicetify apply
+```
+
+### Install Extensions
+
+Extensions add functionality to Spotify. Install from the marketplace:
+
+```bash
+# Navigate to extensions directory
+cd ~/.config/spicetify/Extensions
+
+# Clone community extensions
+git clone https://github.com/spicetify/spicetify-extensions.git
+
+# Copy desired extensions
+cp spicetify-extensions/fullAppDisplay/fullAppDisplay.js .
+cp spicetify-extensions/showQueueDuration/showQueueDuration.js .
+cp spicetify-extensions/groupSession/groupSession.js .
+```
+
+Edit `~/.config/spicetify/config-xpui.ini` and add to `[extensions]`:
+
+```ini
+[extensions]
+fullAppDisplay.js
+showQueueDuration.js
+groupSession.js
+```
+
+Then apply:
+```bash
+spicetify apply
+```
+
+#### Popular Extensions Explained
+
+| Extension | Purpose |
+|-----------|---------|
+| **fullAppDisplay** | Show full album art behind player |
+| **showQueueDuration** | Display total queue duration |
+| **groupSession** | Listen together with friends |
+| **keyboardShortcuts** | Custom keyboard shortcuts |
+| **hidePodcasts** | Hide podcast recommendations |
+| **NowPlayingThumbnail** | Show album art in system tray |
+
+### Remove Ads (Spotify Free)
+
+Edit `~/.config/spicetify/config-xpui.ini`:
+
+```ini
+[Patch]
+xpui = true
+```
+
+Then add to custom apps to block ads:
+
+```bash
+spicetify config prevent_ui_themes true
+spicetify config expose_apis true
+spicetify apply
+```
+
+&gt; **Note:** Spicetify modifies the Spotify client locally. Spotify may update and break modifications (rare, but Spicetify updates quickly).
+
+### Custom Keybindings
+
+Create `~/.config/spicetify/Extensions/customKeybinds.js`:
+
+```javascript
+// Custom keybindings for Spicetify
+Spicetify.Keyboard.registerShortcut({
+  key: &#x27;Ctrl+Shift+P&#x27;,
+  callback: () =&gt; {
+    Spicetify.showNotification(&#x27;Custom shortcut triggered!&#x27;);
+  }
+});
+```
+
+Apply:
+```bash
+spicetify apply
+```
+
+### Common Spicetify Commands
+
+```bash
+# Show current config
+spicetify config-dir
+
+# Apply changes
+spicetify apply
+
+# Restore original Spotify (undo Spicetify)
+spicetify restore
+
+# Backup before major changes
+spicetify backup
+
+# Update Spicetify to latest
+spicetify upgrade
+
+# Check status
+spicetify status
+```
+
+---
+
+## YouTube Music (Web + Desktop)
+
+YouTube Music is Google&#x27;s Spotify competitor. Free tier includes ads; Premium removes them.
+
+### Why YouTube Music?
+
+- ✅ Free tier available (with ads)
+- ✅ Massive music library + music videos
+- ✅ Upload your own music
+- ✅ Podcasts integrated
+- ✅ Works on web, Android, iOS, desktop
+- ✅ Cross-device sync (phone → desktop)
+- ✅ Cheaper Premium than Spotify in some regions
+
+### Option 1: Web Player (Best Free Alternative)
+
+Simply visit **https://music.youtube.com**
+
+**Ad-blocking on web:**
+- Use browser extension: **uBlock Origin** or **Adblock Plus**
+- Install and enable on `music.youtube.com`
+- Ads will be blocked (mostly)
+
+### Option 2: Desktop App (Linux/macOS/Windows)
+
+#### Linux Installation
+
+**Via Package Manager:**
+```bash
+# Ubuntu/Debian
+sudo apt install youtube-music
+
+# Arch
+yay -S youtube-music-desktop-app
+# or
+paru -S youtube-music-desktop-app
+
+# Fedora
+sudo dnf install youtube-music
+```
+
+**Via Snap:**
+```bash
+sudo snap install youtube-music-desktop-app
+```
+
+**Via Flatpak:**
+```bash
+flatpak install flathub com.github.th-ch.YouTubeMusic
+flatpak run com.github.th-ch.YouTubeMusic
+```
+
+#### macOS Installation
+
+```bash
+brew install youtube-music
+# or
+brew install --cask youtube-music
+```
+
+#### Windows Installation
+
+Download from: https://github.com/th-ch/YouTubeMusic/releases
+
+### Desktop App Features
+
+The YouTube Music desktop app (`youtube-music-desktop-app`) includes:
+
+- ✅ Standalone app (doesn&#x27;t need browser tab)
+- ✅ System media controls (play/pause from taskbar)
+- ✅ Rich presence (Discord shows what you&#x27;re listening)
+- ✅ Built-in ad blocker (on some versions)
+- ✅ Keyboard shortcuts
+- ✅ Lyrics display (on hover)
+- ✅ Dark mode
+- ✅ Tray icon (minimize to system tray)
+
+### Remove Ads on Web
+
+**Easiest: Browser Extension**
+
+1. Install **uBlock Origin**: https://ublockorigin.com/
+2. Go to `music.youtube.com`
+3. Open uBlock Origin settings
+4. Add this filter to &quot;My filters&quot;:
+
+```
+music.youtube.com##.ytmusic-ad-frame
+music.youtube.com##.yt-simple-endpoint.style-scope.ytmusic-desktop-player-header
+||adservice.google.com^
+```
+
+5. Refresh YouTube Music
+
+**Alternative: Premium (Honest Option)**
+
+If you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads across YouTube + YouTube Music + supports creators.
+
+### YouTube Music Tips &amp; Tricks
+
+#### Create Playlists
+
+1. Click **Create** → **New playlist**
+2. Add songs via **+ Add songs**
+3. Share playlist link
+
+#### Upload Your Own Music
+
+1. Go to **Library** → **Uploads**
+2. Click **Upload songs**
+3. Upload up to 100,000 personal songs
+4. Use in playlists &amp; recommendations
+
+#### Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| `Space` | Play/Pause |
+| `J` | Next song |
+| `K` | Previous song |
+| `L` | Like (thumbs up) |
+| `D` | Dislike (thumbs down) |
+| `+` | Volume up |
+| `-` | Volume down |
+| `M` | Mute |
+
+#### Use on Mobile
+
+- **Android:** YouTube Music app (free, with ads; Premium removes them)
+- **iOS:** YouTube Music app (free, with ads; Premium removes them)
+- Sync playlists across devices automatically
+
+---
+
+## Comparison &amp; Recommendations
+
+| Feature | Spotify | YouTube Music |
+|---------|---------|---------------|
+| **Ad removal (Free)** | ❌ No | ⚠️ Browser extensions |
+| **Unlimited skips (Free)** | ✅ With Spicetify | ✅ Yes |
+| **Video content** | ❌ No | ✅ Music videos |
+| **Upload own music** | ❌ No | ✅ Yes (100k limit) |
+| **Podcasts** | ✅ Yes | ⚠️ Limited |
+| **UI customization** | ✅ Spicetify | ⚠️ Limited |
+| **Lyrics** | ✅ Yes | ✅ Yes |
+| **Premium price** | $12.99/mo | $14.99/mo (YouTube Premium) |
+| **Desktop app** | ✅ Native | ✅ Third-party app |
+| **Linux support** | ✅ Native | ✅ Via third-party app |
+
+### Best Setup for Each User
+
+**🎵 Most Control:**
+- **Spotify + Spicetify**: Customize everything, ad-free experience, unlimited skips
+
+**🎬 Music Video Fan:**
+- **YouTube Music Premium** or **YouTube Music + uBlock Origin**: Watch music videos, vast library
+
+**💰 Budget-Conscious:**
+- **YouTube Music + uBlock Origin**: Free music streaming with no ads (needs browser extension)
+
+**🌍 Everywhere:**
+- **Spotify Premium**: Works perfectly on desktop, mobile, web, Alexa, smart speakers
+
+---
+
+## Troubleshooting
+
+### Spicetify: Spotify Doesn&#x27;t Start After Apply
+
+```bash
+# Restore to original
+spicetify restore
+
+# Restart Spotify
+spotify &amp;
+
+# Check logs
+cat ~/.config/spicetify/config-xpui.ini
+```
+
+### Spicetify: Extensions Not Loading
+
+```bash
+# Verify extensions folder
+ls -la ~/.config/spicetify/Extensions/
+
+# Ensure extensions are listed in config
+cat ~/.config/spicetify/config-xpui.ini | grep extensions
+
+# Reapply
+spicetify apply
+```
+
+### YouTube Music: Videos Not Playing
+
+- Clear browser cache: `Ctrl+Shift+Delete`
+- Disable extensions temporarily
+- Try Incognito mode: `Ctrl+Shift+N`
+- Restart the app
+
+### YouTube Music Desktop: No Sound
+
+```bash
+# Check audio output
+pactl list sinks
+
+# Restart app and try again
+pkill youtube-music
+youtube-music &amp;
+```
+
+### Spicetify: Not Found After Install
+
+Make sure PATH is updated:
+
+```bash
+# Check if installed
+ls ~/.spicetify/
+
+# Add to PATH manually
+export PATH=&quot;$HOME/.spicetify:$PATH&quot;
+
+# Make permanent (add to ~/.bashrc or ~/.zshrc)
+echo &#x27;export PATH=&quot;$HOME/.spicetify:$PATH&quot;&#x27; &gt;&gt; ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
+## Quick Start
+
+### Spicetify (5 minutes)
+
+```bash
+# Install
+curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
+export PATH=&quot;$HOME/.spicetify:$PATH&quot;
+
+# Setup
+spicetify init
+spicetify backup apply
+
+# Install theme
+cd ~/.config/spicetify/Themes
+git clone https://github.com/spicetify/spicetify-themes.git
+cp -r spicetify-themes/Dribbblish .
+spicetify config current_theme Dribbblish
+spicetify apply
+
+# Restart Spotify → Done!
+```
+
+### YouTube Music (2 minutes)
+
+```bash
+# Install desktop app
+sudo apt install youtube-music  # Linux
+# or
+brew install youtube-music  # macOS
+
+# Open
+youtube-music &amp;
+
+# Install uBlock Origin in browser
+# Visit music.youtube.com → Enjoy ad-free music!
+```
+
+---
+
+## Resources
+
+- **Spicetify GitHub:** https://github.com/spicetify/cli
+- **Spicetify Themes:** https://github.com/spicetify/spicetify-themes
+- **Spicetify Extensions:** https://github.com/spicetify/spicetify-extensions
+- **YouTube Music Desktop:** https://github.com/th-ch/YouTubeMusic
+- **uBlock Origin:** https://ublockorigin.com/
+- **Spotify Forum:** https://community.spotify.com/
+
+---
+
+**Last Updated:** April 2026  
+**Difficulty:** Beginner-Friendly  
+**Time to Setup:** 10 minutes total
+</script></body> </html> 

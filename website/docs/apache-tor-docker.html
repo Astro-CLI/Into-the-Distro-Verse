@@ -1,1 +1,378 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Apache + Tor Hidden Service with Docker</title> <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml"> <style> * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; } .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); padding: 40px; } h1 { color: #667eea; margin-bottom: 10px; border-bottom: 3px solid #667eea; padding-bottom: 10px; } h2 { color: #764ba2; margin-top: 30px; margin-bottom: 15px; } h3 { color: #667eea; margin-top: 20px; margin-bottom: 10px; } code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; color: #d73a49; } pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 15px 0; line-height: 1.4; font-size: 14px; } .section { margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 3px; } .warning { background: #fff3cd; border-left-color: #ffc107; color: #856404; } .info { background: #d1ecf1; border-left-color: #17a2b8; color: #0c5460; } .success { background: #d4edda; border-left-color: #28a745; color: #155724; } table { width: 100%; border-collapse: collapse; margin: 15px 0; } th, td { border: 1px solid #ddd; padding: 12px; text-align: left; } th { background: #667eea; color: white; } tr:nth-child(even) { background: #f9f9f9; } ul, ol { margin: 15px 0 15px 30px; } li { margin: 8px 0; } a { color: #667eea; text-decoration: none; border-bottom: 1px dotted #667eea; } a:hover { color: #764ba2; border-bottom-color: #764ba2; } </style> </head> <body> <div class="container"> <h1> Apache + Tor Hidden Service with Docker</h1> <p>A complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker.</p> <div class="section info"> <strong>ℹ What You'll Get:</strong> A hidden service accessible only via Tor, with easy cleanup (just delete the Docker containers). </div> <h2> Prerequisites</h2> <ul> <li>Docker installed</li> <li>Docker Compose installed</li> <li><a href="https://www.torproject.org/download/">Tor Browser</a> (for testing)</li> </ul> <h2> Setup Instructions</h2> <h3>Step 1: Create Working Directory</h3> <pre><code>mkdir -p ~/apache-tor && cd ~/apache-tor</code></pre> <h3>Step 2: Create Dockerfile</h3> <pre><code>cat > Dockerfile << 'EOF' FROM httpd:latest COPY index.html /usr/local/apache2/htdocs/ EOF</code></pre> <h3>Step 3: Create index.html</h3> <pre><code>cat > index.html << 'EOF' &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt;&lt;title&gt;Onion Server&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;h1&gt;Hello from .onion!&lt;/h1&gt; &lt;p&gt;This is hosted via Tor hidden service&lt;/p&gt; &lt;/body&gt; &lt;/html&gt; EOF</code></pre> <h3>Step 4: Create Torrc Configuration</h3> <pre><code>cat > torrc << 'EOF' SocksPort 0 ControlPort 9051 CookieAuthentication 1 HiddenServiceDir /var/lib/tor/hidden_service/ HiddenServicePort 80 apache:80 Log notice file /var/log/tor/notices.log EOF</code></pre> <h3>Step 5: Create docker-compose.yml</h3> <pre><code>cat > docker-compose.yml << 'EOF' version: '3' services: apache: build: . container_name: apache-server ports: - "8080:80" networks: - tornet tor: image: torproject/tor:latest container_name: tor-hidden-service volumes: - ./torrc:/etc/tor/torrc - tor-data:/var/lib/tor networks: - tornet depends_on: - apache networks: tornet: volumes: tor-data: EOF</code></pre> <h2> Start the Services</h2> <pre><code>docker-compose up -d</code></pre> <h2> Get Your .onion Address</h2> <pre><code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></pre> <div class="section success"> <strong> Output Example:</strong> <code>abcd1234efgh5678ijkl9999nnnn5555.onion</code> </div> <h2> Access Your Server</h2> <h3>Option 1: Via Tor Browser (Recommended)</h3> <ol> <li>Download and install <a href="https://www.torproject.org/download/">Tor Browser</a></li> <li>Open Tor Browser</li> <li>Visit: <code>http://YOUR_ONION_ADDRESS.onion</code></li> </ol> <h3>Option 2: Via Torsocks (CLI)</h3> <pre><code>torsocks curl http://YOUR_ONION_ADDRESS.onion</code></pre> <h3>Option 3: Local HTTP Access</h3> <pre><code>curl http://localhost:8080</code></pre> <h2> Customization</h2> <h3>Mount Custom Apache Config</h3> <p>Create <code>httpd.conf</code> and add to <code>docker-compose.yml</code>:</p> <pre><code>apache: volumes: - ./httpd.conf:/usr/local/apache2/conf/httpd.conf</code></pre> <h3>Add HTTPS to .onion</h3> <p>Update <code>torrc</code>:</p> <pre><code>HiddenServicePort 443 apache:443</code></pre> <h3>Custom Port Mapping</h3> <pre><code>apache: ports: - "3000:80" # Access via http://localhost:3000</code></pre> <h2> Stop & Cleanup</h2> <h3>Stop Services (Keep Data)</h3> <pre><code>docker-compose down</code></pre> <h3>Stop & Remove Everything</h3> <pre><code>docker-compose down -v # -v removes volumes</code></pre> <h3>Complete Cleanup</h3> <pre><code>cd .. rm -rf ~/apache-tor</code></pre> <h2> Useful Commands</h2> <table> <tr> <th>Command</th> <th>Purpose</th> </tr> <tr> <td><code>docker-compose logs tor</code></td> <td>View Tor logs</td> </tr> <tr> <td><code>docker-compose logs apache</code></td> <td>View Apache logs</td> </tr> <tr> <td><code>docker exec tor-hidden-service</code></td> <td>Run commands inside Tor container</td> </tr> <tr> <td><code>docker ps</code></td> <td>List running containers</td> </tr> </table> <h2> Security Notes</h2> <div class="section warning"> <strong> Important:</strong> <ul> <li>Your .onion address is YOUR private key — keep it secret</li> <li>Don't expose the <code>tor-data</code> volume outside the project</li> <li>Tor hidden services are anonymous, but your content is visible to everyone with the address</li> <li>Always run containers with minimal privileges</li> </ul> </div> <h2> Troubleshooting</h2> <h3>Port Already in Use</h3> <pre><code>sudo lsof -i :8080 kill -9 &lt;PID&gt;</code></pre> <h3>Tor Won't Start</h3> <pre><code>docker-compose logs tor</code></pre> <h3>Apache Returns 404</h3> <pre><code>docker exec apache-server ls /usr/local/apache2/htdocs/</code></pre> <h3>Can't Access .onion Address</h3> <ul> <li>Wait 30-60 seconds after startup (Tor needs time to bootstrap)</li> <li>Ensure Tor Browser is connected</li> <li>Check hostname file exists: <code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></li> </ul> <h2> References</h2> <ul> <li><a href="https://www.torproject.org/">Tor Project</a></li> <li><a href="https://hub.docker.com/_/httpd">Apache Docker Image</a></li> <li><a href="https://hub.docker.com/r/torproject/tor">Tor Docker Image</a></li> <li><a href="https://2019.www.torproject.org/docs/tor-manual.html.en">Tor Manual</a></li> </ul> <hr style="margin-top: 40px; border: none; border-top: 2px solid #667eea;"> <p style="margin-top: 20px; text-align: center; color: #999; font-size: 14px;"> Created with for Into the Distro-Verse </p> </div> <script>window.__markdown_content__='# Apache + Tor Hidden Service with Docker\n\nA complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker. This setup allows you to host a website accessible only via Tor, with easy cleanup once you\'re done.\n\n---\n\n## Prerequisites\n\n- Docker installed\n- Docker Compose installed\n- [Tor Browser](https://www.torproject.org/download/) (for testing)\n\n---\n\n## Setup Instructions\n\n### Step 1: Create Working Directory\n\n```bash\nmkdir -p ~/apache-tor && cd ~/apache-tor\n```\n\n### Step 2: Create Dockerfile\n\n```bash\ncat > Dockerfile << \'EOF\'\nFROM httpd:latest\nCOPY index.html /usr/local/apache2/htdocs/\nEOF\n```\n\n### Step 3: Create index.html\n\n```bash\ncat > index.html << \'EOF\'\n<!DOCTYPE html>\n<html>\n<head><title>Onion Server</title></head>\n<body>\n<h1>Hello from .onion!</h1>\n<p>This is hosted via Tor hidden service</p>\n</body>\n</html>\nEOF\n```\n\n### Step 4: Create Torrc Configuration\n\nThe `torrc` file configures Tor\'s hidden service:\n\n```bash\ncat > torrc << \'EOF\'\nSocksPort 0\nControlPort 9051\nCookieAuthentication 1\nHiddenServiceDir /var/lib/tor/hidden_service/\nHiddenServicePort 80 apache:80\nLog notice file /var/log/tor/notices.log\nEOF\n```\n\n**Config Explanation:**\n- `SocksPort 0` — Disable SOCKS proxy (not needed)\n- `HiddenServiceDir` — Where Tor stores the hidden service keys\n- `HiddenServicePort 80 apache:80` — Expose port 80 (HTTP) to Apache container\n- `Log notice file` — Log output to file\n\n### Step 5: Create docker-compose.yml\n\n```bash\ncat > docker-compose.yml << \'EOF\'\nversion: \'3\'\nservices:\n  apache:\n    build: .\n    container_name: apache-server\n    ports:\n      - "8080:80"\n    networks:\n      - tornet\n\n  tor:\n    image: torproject/tor:latest\n    container_name: tor-hidden-service\n    volumes:\n      - ./torrc:/etc/tor/torrc\n      - tor-data:/var/lib/tor\n    networks:\n      - tornet\n    depends_on:\n      - apache\n\nnetworks:\n  tornet:\n\nvolumes:\n  tor-data:\nEOF\n```\n\n**Configuration Details:**\n- `apache` service: Builds from local Dockerfile, maps port 8080 locally\n- `tor` service: Uses official Tor image, mounts torrc config and persistent volume\n- `tornet`: Private network for container communication\n- `tor-data`: Named volume to persist Tor keys (essential for stable .onion address)\n\n---\n\n## Starting the Services\n\n```bash\ndocker-compose up -d\n```\n\n**Output:**\n```\nCreating network "apache-tor_tornet" with driver "bridge"\nCreating volume "apache-tor_tor-data" with default driver\nBuilding apache\n...\nCreating apache-server\nCreating tor-hidden-service\n```\n\n---\n\n## Get Your .onion Address\n\n```bash\ndocker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname\n```\n\nOutput example:\n```\nabcd1234efgh5678ijkl9999nnnn5555.onion\n```\n\n⚠️ **Keep this address private!** It\'s your hidden service\'s unique identifier.\n\n---\n\n## Accessing Your Server\n\n### Option 1: Via Tor Browser (Recommended)\n\n1. Download [Tor Browser](https://www.torproject.org/download/)\n2. Open Tor Browser\n3. Navigate to: `http://YOUR_ONION_ADDRESS.onion`\n\n### Option 2: Via Torsocks (Command Line)\n\n```bash\ntorsocks curl http://YOUR_ONION_ADDRESS.onion\n```\n\nRequires `torsocks` package:\n```bash\n# Arch\nsudo pacman -S torsocks\n\n# Ubuntu/Debian\nsudo apt install torsocks\n\n# Fedora\nsudo dnf install torsocks\n```\n\n### Option 3: Local HTTP Access (No Tor)\n\nTest locally without Tor:\n```bash\ncurl http://localhost:8080\n```\n\nOr open browser to `http://localhost:8080`\n\n---\n\n## Customization\n\n### Mount Custom Apache Configuration\n\nCreate your own `httpd.conf` and update `docker-compose.yml`:\n\n```yaml\napache:\n  volumes:\n    - ./httpd.conf:/usr/local/apache2/conf/httpd.conf\n```\n\nThen restart:\n```bash\ndocker-compose down && docker-compose up -d\n```\n\n### Add HTTPS to .onion\n\nUpdate `torrc`:\n```\nHiddenServicePort 443 apache:443\n```\n\n### Custom Local Port\n\nMap to a different port:\n```yaml\napache:\n  ports:\n    - "3000:80"  # Access via http://localhost:3000\n```\n\n### Serve Multiple Sites\n\nUpdate Dockerfile:\n```dockerfile\nFROM httpd:latest\nCOPY site1/ /usr/local/apache2/htdocs/site1/\nCOPY site2/ /usr/local/apache2/htdocs/site2/\n```\n\nAccess via:\n- `http://YOUR_ONION.onion/site1/`\n- `http://YOUR_ONION.onion/site2/`\n\n---\n\n## Stopping & Cleanup\n\n### Pause Services (Keep Data)\n\n```bash\ndocker-compose down\n```\n\nContainer data is preserved in the `tor-data` volume. Your .onion address remains stable.\n\n### Stop & Remove Everything\n\n```bash\ndocker-compose down -v  # -v removes volumes\n```\n\n⚠️ This deletes the `tor-data` volume, so you\'ll get a **new .onion address** next time.\n\n### Complete Cleanup\n\n```bash\ncd ..\nrm -rf ~/apache-tor\n```\n\n---\n\n## Useful Commands\n\n| Command | Purpose |\n|---------|---------|\n| `docker-compose logs tor` | View Tor container logs |\n| `docker-compose logs apache` | View Apache container logs |\n| `docker-compose logs -f` | Follow logs in real-time |\n| `docker-compose ps` | List running containers |\n| `docker exec apache-server ls /usr/local/apache2/htdocs/` | List Apache web root |\n| `docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname` | Get .onion address |\n| `docker-compose restart tor` | Restart Tor container |\n| `docker-compose up -d --build` | Rebuild and restart |\n\n---\n\n## Troubleshooting\n\n### Port Already in Use\n\n```bash\n# Find what\'s using port 8080\nsudo lsof -i :8080\n\n# Kill the process\nkill -9 <PID>\n```\n\n### Tor Won\'t Start\n\nCheck logs:\n```bash\ndocker-compose logs tor\n```\n\nCommon issues:\n- Port 9051 already in use\n- `/var/lib/tor` permissions issue\n- Invalid torrc syntax\n\n### Apache Returns 404\n\nVerify files exist in container:\n```bash\ndocker exec apache-server ls /usr/local/apache2/htdocs/\n```\n\n### Can\'t Access .onion Address\n\n1. **Wait 30-60 seconds** after startup — Tor needs time to bootstrap and generate keys\n2. **Verify Tor Browser is connected** — Check connection status\n3. **Check hostname exists:**\n   ```bash\n   docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname\n   ```\n4. **View Tor logs:**\n   ```bash\n   docker-compose logs tor | tail -20\n   ```\n\n### Connection Refused Locally\n\n```bash\n# Verify Apache is running\ndocker ps | grep apache\n\n# Test on localhost\ncurl -v http://localhost:8080\n```\n\n---\n\n## Security Considerations\n\n### ✅ Good Practices\n\n- Use the `tornet` bridge network (not host network)\n- Don\'t map Tor ports to localhost (keep internal)\n- Use `tor-data` volume for persistent, secure keys\n- Enable `CookieAuthentication` in torrc\n- Run containers with minimal privileges\n- Use `.onion` addresses only when appropriate\n\n### ⚠️ Important Notes\n\n- **Your .onion address is unique and semi-permanent** — the same address persists as long as `tor-data` volume exists\n- **Tor hidden services are designed for anonymity**, but content visibility depends on who knows the address\n- **Don\'t confuse anonymity with privacy** — your hosting provider can see traffic\n- **Content indexed nowhere** — .onion sites don\'t appear in search engines\n- **Keep the address private** if you want genuine anonymity\n\n---\n\n## Advanced: Persistent .onion Address\n\nBy default, the `tor-data` volume is managed by Docker. To use a specific directory:\n\n```yaml\nvolumes:\n  tor-data:\n    driver: local\n    driver_opts:\n      type: none\n      o: bind\n      device: /home/user/my-tor-data\n```\n\nOr bind-mount directly:\n```yaml\ntor:\n  volumes:\n    - ./my-tor-data:/var/lib/tor\n```\n\nThis lets you backup and restore your exact .onion address.\n\n---\n\n## References\n\n- [Tor Project Documentation](https://www.torproject.org/docs/)\n- [Apache Docker Image](https://hub.docker.com/_/httpd)\n- [Tor Docker Image](https://hub.docker.com/r/torproject/tor)\n- [Tor Manual](https://2019.www.torproject.org/docs/tor-manual.html.en)\n- [Docker Compose Reference](https://docs.docker.com/compose/compose-file/)\n';</script></body> </html> 
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Apache + Tor Hidden Service with Docker</title> <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml"> <style> * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; } .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); padding: 40px; } h1 { color: #667eea; margin-bottom: 10px; border-bottom: 3px solid #667eea; padding-bottom: 10px; } h2 { color: #764ba2; margin-top: 30px; margin-bottom: 15px; } h3 { color: #667eea; margin-top: 20px; margin-bottom: 10px; } code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; color: #d73a49; } pre { background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 5px; overflow-x: auto; margin: 15px 0; line-height: 1.4; font-size: 14px; } .section { margin: 20px 0; padding: 15px; background: #f9f9f9; border-left: 4px solid #667eea; border-radius: 3px; } .warning { background: #fff3cd; border-left-color: #ffc107; color: #856404; } .info { background: #d1ecf1; border-left-color: #17a2b8; color: #0c5460; } .success { background: #d4edda; border-left-color: #28a745; color: #155724; } table { width: 100%; border-collapse: collapse; margin: 15px 0; } th, td { border: 1px solid #ddd; padding: 12px; text-align: left; } th { background: #667eea; color: white; } tr:nth-child(even) { background: #f9f9f9; } ul, ol { margin: 15px 0 15px 30px; } li { margin: 8px 0; } a { color: #667eea; text-decoration: none; border-bottom: 1px dotted #667eea; } a:hover { color: #764ba2; border-bottom-color: #764ba2; } </style> </head> <body> <div class="container"> <h1> Apache + Tor Hidden Service with Docker</h1> <p>A complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker.</p> <div class="section info"> <strong>ℹ What You'll Get:</strong> A hidden service accessible only via Tor, with easy cleanup (just delete the Docker containers). </div> <h2> Prerequisites</h2> <ul> <li>Docker installed</li> <li>Docker Compose installed</li> <li><a href="https://www.torproject.org/download/">Tor Browser</a> (for testing)</li> </ul> <h2> Setup Instructions</h2> <h3>Step 1: Create Working Directory</h3> <pre><code>mkdir -p ~/apache-tor && cd ~/apache-tor</code></pre> <h3>Step 2: Create Dockerfile</h3> <pre><code>cat > Dockerfile << 'EOF' FROM httpd:latest COPY index.html /usr/local/apache2/htdocs/ EOF</code></pre> <h3>Step 3: Create index.html</h3> <pre><code>cat > index.html << 'EOF' &lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt;&lt;title&gt;Onion Server&lt;/title&gt;&lt;/head&gt; &lt;body&gt; &lt;h1&gt;Hello from .onion!&lt;/h1&gt; &lt;p&gt;This is hosted via Tor hidden service&lt;/p&gt; &lt;/body&gt; &lt;/html&gt; EOF</code></pre> <h3>Step 4: Create Torrc Configuration</h3> <pre><code>cat > torrc << 'EOF' SocksPort 0 ControlPort 9051 CookieAuthentication 1 HiddenServiceDir /var/lib/tor/hidden_service/ HiddenServicePort 80 apache:80 Log notice file /var/log/tor/notices.log EOF</code></pre> <h3>Step 5: Create docker-compose.yml</h3> <pre><code>cat > docker-compose.yml << 'EOF' version: '3' services: apache: build: . container_name: apache-server ports: - "8080:80" networks: - tornet tor: image: torproject/tor:latest container_name: tor-hidden-service volumes: - ./torrc:/etc/tor/torrc - tor-data:/var/lib/tor networks: - tornet depends_on: - apache networks: tornet: volumes: tor-data: EOF</code></pre> <h2> Start the Services</h2> <pre><code>docker-compose up -d</code></pre> <h2> Get Your .onion Address</h2> <pre><code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></pre> <div class="section success"> <strong> Output Example:</strong> <code>abcd1234efgh5678ijkl9999nnnn5555.onion</code> </div> <h2> Access Your Server</h2> <h3>Option 1: Via Tor Browser (Recommended)</h3> <ol> <li>Download and install <a href="https://www.torproject.org/download/">Tor Browser</a></li> <li>Open Tor Browser</li> <li>Visit: <code>http://YOUR_ONION_ADDRESS.onion</code></li> </ol> <h3>Option 2: Via Torsocks (CLI)</h3> <pre><code>torsocks curl http://YOUR_ONION_ADDRESS.onion</code></pre> <h3>Option 3: Local HTTP Access</h3> <pre><code>curl http://localhost:8080</code></pre> <h2> Customization</h2> <h3>Mount Custom Apache Config</h3> <p>Create <code>httpd.conf</code> and add to <code>docker-compose.yml</code>:</p> <pre><code>apache: volumes: - ./httpd.conf:/usr/local/apache2/conf/httpd.conf</code></pre> <h3>Add HTTPS to .onion</h3> <p>Update <code>torrc</code>:</p> <pre><code>HiddenServicePort 443 apache:443</code></pre> <h3>Custom Port Mapping</h3> <pre><code>apache: ports: - "3000:80" # Access via http://localhost:3000</code></pre> <h2> Stop & Cleanup</h2> <h3>Stop Services (Keep Data)</h3> <pre><code>docker-compose down</code></pre> <h3>Stop & Remove Everything</h3> <pre><code>docker-compose down -v # -v removes volumes</code></pre> <h3>Complete Cleanup</h3> <pre><code>cd .. rm -rf ~/apache-tor</code></pre> <h2> Useful Commands</h2> <table> <tr> <th>Command</th> <th>Purpose</th> </tr> <tr> <td><code>docker-compose logs tor</code></td> <td>View Tor logs</td> </tr> <tr> <td><code>docker-compose logs apache</code></td> <td>View Apache logs</td> </tr> <tr> <td><code>docker exec tor-hidden-service</code></td> <td>Run commands inside Tor container</td> </tr> <tr> <td><code>docker ps</code></td> <td>List running containers</td> </tr> </table> <h2> Security Notes</h2> <div class="section warning"> <strong> Important:</strong> <ul> <li>Your .onion address is YOUR private key — keep it secret</li> <li>Don't expose the <code>tor-data</code> volume outside the project</li> <li>Tor hidden services are anonymous, but your content is visible to everyone with the address</li> <li>Always run containers with minimal privileges</li> </ul> </div> <h2> Troubleshooting</h2> <h3>Port Already in Use</h3> <pre><code>sudo lsof -i :8080 kill -9 &lt;PID&gt;</code></pre> <h3>Tor Won't Start</h3> <pre><code>docker-compose logs tor</code></pre> <h3>Apache Returns 404</h3> <pre><code>docker exec apache-server ls /usr/local/apache2/htdocs/</code></pre> <h3>Can't Access .onion Address</h3> <ul> <li>Wait 30-60 seconds after startup (Tor needs time to bootstrap)</li> <li>Ensure Tor Browser is connected</li> <li>Check hostname file exists: <code>docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname</code></li> </ul> <h2> References</h2> <ul> <li><a href="https://www.torproject.org/">Tor Project</a></li> <li><a href="https://hub.docker.com/_/httpd">Apache Docker Image</a></li> <li><a href="https://hub.docker.com/r/torproject/tor">Tor Docker Image</a></li> <li><a href="https://2019.www.torproject.org/docs/tor-manual.html.en">Tor Manual</a></li> </ul> <hr style="margin-top: 40px; border: none; border-top: 2px solid #667eea;"> <p style="margin-top: 20px; text-align: center; color: #999; font-size: 14px;"> Created with for Into the Distro-Verse </p> </div> <script id="md-content" type="text/plain"># Apache + Tor Hidden Service with Docker
+
+A complete guide to running an Apache web server as a Tor hidden service (.onion domain) using Docker. This setup allows you to host a website accessible only via Tor, with easy cleanup once you&#x27;re done.
+
+---
+
+## Prerequisites
+
+- Docker installed
+- Docker Compose installed
+- [Tor Browser](https://www.torproject.org/download/) (for testing)
+
+---
+
+## Setup Instructions
+
+### Step 1: Create Working Directory
+
+```bash
+mkdir -p ~/apache-tor &amp;&amp; cd ~/apache-tor
+```
+
+### Step 2: Create Dockerfile
+
+```bash
+cat &gt; Dockerfile &lt;&lt; &#x27;EOF&#x27;
+FROM httpd:latest
+COPY index.html /usr/local/apache2/htdocs/
+EOF
+```
+
+### Step 3: Create index.html
+
+```bash
+cat &gt; index.html &lt;&lt; &#x27;EOF&#x27;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Onion Server&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello from .onion!&lt;/h1&gt;
+&lt;p&gt;This is hosted via Tor hidden service&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+EOF
+```
+
+### Step 4: Create Torrc Configuration
+
+The `torrc` file configures Tor&#x27;s hidden service:
+
+```bash
+cat &gt; torrc &lt;&lt; &#x27;EOF&#x27;
+SocksPort 0
+ControlPort 9051
+CookieAuthentication 1
+HiddenServiceDir /var/lib/tor/hidden_service/
+HiddenServicePort 80 apache:80
+Log notice file /var/log/tor/notices.log
+EOF
+```
+
+**Config Explanation:**
+- `SocksPort 0` — Disable SOCKS proxy (not needed)
+- `HiddenServiceDir` — Where Tor stores the hidden service keys
+- `HiddenServicePort 80 apache:80` — Expose port 80 (HTTP) to Apache container
+- `Log notice file` — Log output to file
+
+### Step 5: Create docker-compose.yml
+
+```bash
+cat &gt; docker-compose.yml &lt;&lt; &#x27;EOF&#x27;
+version: &#x27;3&#x27;
+services:
+  apache:
+    build: .
+    container_name: apache-server
+    ports:
+      - &quot;8080:80&quot;
+    networks:
+      - tornet
+
+  tor:
+    image: torproject/tor:latest
+    container_name: tor-hidden-service
+    volumes:
+      - ./torrc:/etc/tor/torrc
+      - tor-data:/var/lib/tor
+    networks:
+      - tornet
+    depends_on:
+      - apache
+
+networks:
+  tornet:
+
+volumes:
+  tor-data:
+EOF
+```
+
+**Configuration Details:**
+- `apache` service: Builds from local Dockerfile, maps port 8080 locally
+- `tor` service: Uses official Tor image, mounts torrc config and persistent volume
+- `tornet`: Private network for container communication
+- `tor-data`: Named volume to persist Tor keys (essential for stable .onion address)
+
+---
+
+## Starting the Services
+
+```bash
+docker-compose up -d
+```
+
+**Output:**
+```
+Creating network &quot;apache-tor_tornet&quot; with driver &quot;bridge&quot;
+Creating volume &quot;apache-tor_tor-data&quot; with default driver
+Building apache
+...
+Creating apache-server
+Creating tor-hidden-service
+```
+
+---
+
+## Get Your .onion Address
+
+```bash
+docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname
+```
+
+Output example:
+```
+abcd1234efgh5678ijkl9999nnnn5555.onion
+```
+
+⚠️ **Keep this address private!** It&#x27;s your hidden service&#x27;s unique identifier.
+
+---
+
+## Accessing Your Server
+
+### Option 1: Via Tor Browser (Recommended)
+
+1. Download [Tor Browser](https://www.torproject.org/download/)
+2. Open Tor Browser
+3. Navigate to: `http://YOUR_ONION_ADDRESS.onion`
+
+### Option 2: Via Torsocks (Command Line)
+
+```bash
+torsocks curl http://YOUR_ONION_ADDRESS.onion
+```
+
+Requires `torsocks` package:
+```bash
+# Arch
+sudo pacman -S torsocks
+
+# Ubuntu/Debian
+sudo apt install torsocks
+
+# Fedora
+sudo dnf install torsocks
+```
+
+### Option 3: Local HTTP Access (No Tor)
+
+Test locally without Tor:
+```bash
+curl http://localhost:8080
+```
+
+Or open browser to `http://localhost:8080`
+
+---
+
+## Customization
+
+### Mount Custom Apache Configuration
+
+Create your own `httpd.conf` and update `docker-compose.yml`:
+
+```yaml
+apache:
+  volumes:
+    - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+```
+
+Then restart:
+```bash
+docker-compose down &amp;&amp; docker-compose up -d
+```
+
+### Add HTTPS to .onion
+
+Update `torrc`:
+```
+HiddenServicePort 443 apache:443
+```
+
+### Custom Local Port
+
+Map to a different port:
+```yaml
+apache:
+  ports:
+    - &quot;3000:80&quot;  # Access via http://localhost:3000
+```
+
+### Serve Multiple Sites
+
+Update Dockerfile:
+```dockerfile
+FROM httpd:latest
+COPY site1/ /usr/local/apache2/htdocs/site1/
+COPY site2/ /usr/local/apache2/htdocs/site2/
+```
+
+Access via:
+- `http://YOUR_ONION.onion/site1/`
+- `http://YOUR_ONION.onion/site2/`
+
+---
+
+## Stopping &amp; Cleanup
+
+### Pause Services (Keep Data)
+
+```bash
+docker-compose down
+```
+
+Container data is preserved in the `tor-data` volume. Your .onion address remains stable.
+
+### Stop &amp; Remove Everything
+
+```bash
+docker-compose down -v  # -v removes volumes
+```
+
+⚠️ This deletes the `tor-data` volume, so you&#x27;ll get a **new .onion address** next time.
+
+### Complete Cleanup
+
+```bash
+cd ..
+rm -rf ~/apache-tor
+```
+
+---
+
+## Useful Commands
+
+| Command | Purpose |
+|---------|---------|
+| `docker-compose logs tor` | View Tor container logs |
+| `docker-compose logs apache` | View Apache container logs |
+| `docker-compose logs -f` | Follow logs in real-time |
+| `docker-compose ps` | List running containers |
+| `docker exec apache-server ls /usr/local/apache2/htdocs/` | List Apache web root |
+| `docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname` | Get .onion address |
+| `docker-compose restart tor` | Restart Tor container |
+| `docker-compose up -d --build` | Rebuild and restart |
+
+---
+
+## Troubleshooting
+
+### Port Already in Use
+
+```bash
+# Find what&#x27;s using port 8080
+sudo lsof -i :8080
+
+# Kill the process
+kill -9 &lt;PID&gt;
+```
+
+### Tor Won&#x27;t Start
+
+Check logs:
+```bash
+docker-compose logs tor
+```
+
+Common issues:
+- Port 9051 already in use
+- `/var/lib/tor` permissions issue
+- Invalid torrc syntax
+
+### Apache Returns 404
+
+Verify files exist in container:
+```bash
+docker exec apache-server ls /usr/local/apache2/htdocs/
+```
+
+### Can&#x27;t Access .onion Address
+
+1. **Wait 30-60 seconds** after startup — Tor needs time to bootstrap and generate keys
+2. **Verify Tor Browser is connected** — Check connection status
+3. **Check hostname exists:**
+   ```bash
+   docker exec tor-hidden-service cat /var/lib/tor/hidden_service/hostname
+   ```
+4. **View Tor logs:**
+   ```bash
+   docker-compose logs tor | tail -20
+   ```
+
+### Connection Refused Locally
+
+```bash
+# Verify Apache is running
+docker ps | grep apache
+
+# Test on localhost
+curl -v http://localhost:8080
+```
+
+---
+
+## Security Considerations
+
+### ✅ Good Practices
+
+- Use the `tornet` bridge network (not host network)
+- Don&#x27;t map Tor ports to localhost (keep internal)
+- Use `tor-data` volume for persistent, secure keys
+- Enable `CookieAuthentication` in torrc
+- Run containers with minimal privileges
+- Use `.onion` addresses only when appropriate
+
+### ⚠️ Important Notes
+
+- **Your .onion address is unique and semi-permanent** — the same address persists as long as `tor-data` volume exists
+- **Tor hidden services are designed for anonymity**, but content visibility depends on who knows the address
+- **Don&#x27;t confuse anonymity with privacy** — your hosting provider can see traffic
+- **Content indexed nowhere** — .onion sites don&#x27;t appear in search engines
+- **Keep the address private** if you want genuine anonymity
+
+---
+
+## Advanced: Persistent .onion Address
+
+By default, the `tor-data` volume is managed by Docker. To use a specific directory:
+
+```yaml
+volumes:
+  tor-data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/user/my-tor-data
+```
+
+Or bind-mount directly:
+```yaml
+tor:
+  volumes:
+    - ./my-tor-data:/var/lib/tor
+```
+
+This lets you backup and restore your exact .onion address.
+
+---
+
+## References
+
+- [Tor Project Documentation](https://www.torproject.org/docs/)
+- [Apache Docker Image](https://hub.docker.com/_/httpd)
+- [Tor Docker Image](https://hub.docker.com/r/torproject/tor)
+- [Tor Manual](https://2019.www.torproject.org/docs/tor-manual.html.en)
+- [Docker Compose Reference](https://docs.docker.com/compose/compose-file/)
+</script></body> </html> 
