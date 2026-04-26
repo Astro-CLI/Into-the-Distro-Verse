@@ -1,120 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>How to Set Up a Hidden Website with Docker and Tor</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1, h2, h3, h4, h5, h6 {
-            margin-top: 1.5em;
-            margin-bottom: 0.5em;
-            color: #222;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 0.3em;
-        }
-        h1 {
-            border: none;
-            color: #1a1a1a;
-            font-size: 2.5em;
-        }
-        h2 {
-            font-size: 1.8em;
-            margin-top: 2em;
-        }
-        pre {
-            background: #f4f4f4;
-            border-left: 4px solid #007bff;
-            padding: 12px;
-            overflow-x: auto;
-            border-radius: 4px;
-        }
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: "Monaco", "Courier New", monospace;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        ul, ol {
-            margin: 1em 0;
-            padding-left: 2em;
-        }
-        li {
-            margin: 0.5em 0;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 1em 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background: #f4f4f4;
-        }
-        hr {
-            border: none;
-            border-top: 2px solid #ddd;
-            margin: 2em 0;
-        }
-        #toc {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 15px 20px;
-            margin: 2em 0;
-        }
-        #toc h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-        }
-        #toc ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        #toc li {
-            margin: 0.3em 0;
-            padding-left: 1.5em;
-        }
-        #toc li:before {
-            content: "→ ";
-            margin-left: -1.5em;
-            margin-right: 0.5em;
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>How to Set Up a Hidden Website with Docker and Tor</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - How to Set Up a Hidden Website with Docker and Tor</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
         <div class="toc">
 <ul>
 <li><a href="#what-youre-actually-doing">What You're Actually Doing</a></li>
@@ -154,6 +73,8 @@
 </ul>
 </div>
 
+      </aside>
+      <article class="wiki-article">
         <h1 id="how-to-set-up-a-hidden-website-with-docker-and-tor">How to Set Up a Hidden Website with Docker and Tor</h1>
 <p>So you want to host a website that only works on Tor Browser and nobody can trace back to you. This guide walks you through it. I'm going to assume you've never done this before, so we'll go step by step.</p>
 <hr />
@@ -526,8 +447,32 @@ Others: usually apt or dnf, check their docs</p>
 <h2 id="one-more-thing">One More Thing</h2>
 <p>The first time you do this, it takes about an hour. The second time, 20 minutes. By the third time, 5 minutes. It gets easier.</p>
 <p>The website is now live and completely anonymous. Be safe and be smart about what you put on it.</p>
-        <hr>
-        <p style="font-size: 0.9em; color: #666; margin-top: 3em;">Generated from markdown documentation. Last updated: 1777159491.785181</p>
-    </div>
-</body>
+        
+        <hr />
+        <h2 id="-related-guides">Related Guides</h2>
+        <ul>
+          <li>
+            <strong><a href="../history.html">Linux & Open Source History</a></strong> - Learn about the creators and history behind Linux, Tor, and the open-source movement.
+          </li>
+          <li>
+            <strong><a href="security.html">Security Guide</a></strong> - General security practices and hardening techniques.
+          </li>
+          <li>
+            <strong><a href="arch.html">Arch Linux Setup</a></strong> - Setup and optimization for Arch systems.
+          </li>
+          <li>
+            <strong><a href="debian.html">Debian Setup</a></strong> - Setup and optimization for Debian systems.
+          </li>
+          <li>
+            <strong><a href="fedora.html">Fedora Setup</a></strong> - Setup and optimization for Fedora systems.
+          </li>
+          <li>
+            <strong><a href="virtualization.html">Virtualization Guide</a></strong> - Guide to virtual machines and containerization.
+          </li>
+        </ul>
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+  </body>
 </html>
