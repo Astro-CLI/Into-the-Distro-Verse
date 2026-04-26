@@ -19,11 +19,9 @@ Before installing packages, make `pacman` faster and more visual.
 1.  Edit the config: `sudo nano /etc/pacman.conf`
 2.  Uncomment or add these lines under `[options]` (ILoveCandy adds a Pac-Man eating pellets to your progress bars):
 
-    ```
     Color
     ILoveCandy
     ParallelDownloads = 10
-    ```
 
 <!-- Quick sub-note for this part -->
 ### Mirror Management (Reflector)

@@ -4,25 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Into the Distro-Verse - arch</title>
-    <link
-      rel="icon"
-      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
-      type="image/svg+xml"
-    />
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../style.css" />
   </head>
   <body>
     <header class="topbar">
       <div class="topbar-inner">
-        <a class="site-title" href="../index.html"
-          >Into the Distro-Verse Wiki</a
-        >
+        <a class="site-title" href="../index.html">Into the Distro-Verse Wiki</a>
         <nav aria-label="Main navigation">
           <ul class="top-links">
             <li><a href="../index.html">Main page</a></li>
@@ -76,11 +67,9 @@
 <p>Before installing packages, make <code>pacman</code> faster and more visual.
 1.  Edit the config: <code>sudo nano /etc/pacman.conf</code>
 2.  Uncomment or add these lines under <code>[options]</code> (ILoveCandy adds a Pac-Man eating pellets to your progress bars):</p>
-<pre class="codehilite"><code>```
-Color
+<pre class="codehilite"><code>Color
 ILoveCandy
 ParallelDownloads = 10
-```
 </code></pre>
 
 <!-- Quick sub-note for this part -->
@@ -167,7 +156,6 @@ sudo pacman -Rns $(pacman -Qtdq)
 -->
       </article>
     </main>
-
     <script src="../script.js"></script>
     <script type="text/plain" id="md-content">
 <!-- 
@@ -191,11 +179,9 @@ Before installing packages, make `pacman` faster and more visual.
 1.  Edit the config: `sudo nano /etc/pacman.conf`
 2.  Uncomment or add these lines under `[options]` (ILoveCandy adds a Pac-Man eating pellets to your progress bars):
 
-    ```
     Color
     ILoveCandy
     ParallelDownloads = 10
-    ```
 
 <!-- Quick sub-note for this part -->
 ### Mirror Management (Reflector)
