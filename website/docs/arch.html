@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - arch</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
+        <div class="toc">
+<ul>
+<li><a href="#1-essential-setup">1. Essential Setup</a><ul>
+<li><a href="#pacman-optimizations-quality-of-life">Pacman Optimizations (Quality of Life)</a></li>
+<li><a href="#mirror-management-reflector">Mirror Management (Reflector)</a></li>
+<li><a href="#install-aur-helper-paru">Install AUR Helper (paru)</a></li>
+<li><a href="#wayland-screen-sharing-xwayland-video-bridge">Wayland Screen Sharing (Xwayland Video Bridge)</a></li>
+</ul>
+</li>
+<li><a href="#2-snapshots-maintenance">2. Snapshots &amp; Maintenance</a></li>
+<li><a href="#3-package-management">3. Package Management</a><ul>
+<li><a href="#restore-your-system">Restore your system:</a></li>
+<li><a href="#universal-packages-flatpak">Universal Packages (Flatpak)</a></li>
+</ul>
+</li>
+<li><a href="#3-maintenance">3. Maintenance</a><ul>
+<li><a href="#clear-pacman-cache">Clear Pacman Cache</a></li>
+<li><a href="#find-and-remove-orphans">Find and Remove Orphans</a></li>
+</ul>
+</li>
+<li><a href="#related-guides">Related Guides</a></li>
+</ul>
+</div>
+
+      </aside>
+      <article class="wiki-article">
+        <!-- 
+    WIKI GUIDE: arch.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+<h1 id="arch-linux-setup-maintenance-guide">Arch Linux Setup &amp; Maintenance Guide</h1>
+<p>This guide covers the specific steps to set up and maintain an Arch Linux environment.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="1-essential-setup">1. Essential Setup</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="pacman-optimizations-quality-of-life">Pacman Optimizations (Quality of Life)</h3>
+<p>Before installing packages, make <code>pacman</code> faster and more visual.
+1.  Edit the config: <code>sudo nano /etc/pacman.conf</code>
+2.  Uncomment or add these lines under <code>[options]</code>:
+    <code>text
+    Color
+    ILoveCandy
+    ParallelDownloads = 10</code></p>
+<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><code>*(ILoveCandy adds a Pac-Man eating pellets to your progress bars!)*
+</code></pre></div>
+
+<!-- Quick sub-note for this part -->
+<h3 id="mirror-management-reflector">Mirror Management (Reflector)</h3>
+<p>Arch mirrors can get slow or outdated. <code>reflector</code> automatically finds the fastest ones for you.</p>
+<p>```bash
+sudo pacman -S reflector</p>
+<h1 id="update-mirrors-to-the-10-fastest-https-ones-in-your-region">Update mirrors to the 10 fastest HTTPS ones in your region</h1>
+<p>sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="install-aur-helper-paru">Install AUR Helper (<code>paru</code>)</h3>
+<p>Paru is a modern AUR helper written in Rust. It's the primary way to access the vast library of community packages.</p>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash
+sudo pacman -S --needed base-devel git &amp;&amp; \
+git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makepkg -si &amp;&amp; cd .. &amp;&amp; rm -rf paru</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="wayland-screen-sharing-xwayland-video-bridge">Wayland Screen Sharing (Xwayland Video Bridge)</h3>
+<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
+<p>```bash</p>
+<h1 id="install-from-aur">Install from AUR</h1>
+<p>paru -S xwaylandvideobridge</p>
+<h1 id="or-search-for-it">Or search for it</h1>
+<p>paru -Ss xwayland video bridge</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="2-snapshots-maintenance">2. Snapshots &amp; Maintenance</h2>
+<p>BTRFS snapshots are an essential "safety net" for system stability. For a comprehensive guide on setting up <strong>TimeShift</strong>, <strong>Snapper</strong>, and bootloader integration, see the universal guide:</p>
+<ul>
+<li><strong><a href="snapshots.md">docs/snapshots.md</a></strong></li>
+</ul>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="3-package-management">3. Package Management</h2>
+<p>| List | Content |
+| :--- | :--- |
+| <strong><code>arch_pkglist.txt</code></strong> | Official native packages. |
+| <strong><code>arch_aur_list.txt</code></strong> | AUR packages (via <code>paru</code>). |</p>
+<!-- Quick sub-note for this part -->
+<h3 id="restore-your-system">Restore your system:</h3>
+<p>```bash</p>
+<h1 id="official-packages">Official packages</h1>
+<p>sudo pacman -S --needed - &lt; packages/arch_pkglist.txt</p>
+<h1 id="aur-packages">AUR packages</h1>
+<p>paru -S --needed - &lt; packages/arch_aur_list.txt</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="universal-packages-flatpak">Universal Packages (Flatpak)</h3>
+<p>For a comprehensive guide on managing Flatpaks, permissions, and Flathub, see the universal guide:</p>
+<ul>
+<li><strong><a href="flatpak.md">docs/flatpak.md</a></strong></li>
+</ul>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="3-maintenance">3. Maintenance</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="clear-pacman-cache">Clear Pacman Cache</h3>
+<p>```bash
+sudo pacman -Sc</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="find-and-remove-orphans">Find and Remove Orphans</h3>
+<p>```bash
+pacman -Qtdq
+sudo pacman -Rns $(pacman -Qtdq)</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="related-guides">Related Guides</h2>
+<ul>
+<li><strong><a href="fedora.md">Fedora Guide</a></strong> - Setup and optimizations for Fedora Workstation.</li>
+<li><strong><a href="debian.md">Debian Guide</a></strong> - Stable-release management and external repos.</li>
+<li><strong><a href="nix.md">Nix Guide</a></strong> - Using the universal Nix package manager on Arch.</li>
+<li><strong><a href="security.md">Security Guide</a></strong> - Hardening your Arch system.</li>
+</ul>
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+    <script type="text/plain" id="md-content">
+<!-- 
+    WIKI GUIDE: arch.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+# Arch Linux Setup & Maintenance Guide 
+
+This guide covers the specific steps to set up and maintain an Arch Linux environment.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  1. Essential Setup
+
+<!-- Quick sub-note for this part -->
+### Pacman Optimizations (Quality of Life)
+Before installing packages, make `pacman` faster and more visual.
+1.  Edit the config: `sudo nano /etc/pacman.conf`
+2.  Uncomment or add these lines under `[options]`:
+    ```text
+    Color
+    ILoveCandy
+    ParallelDownloads = 10
+    ```
+
+    *(ILoveCandy adds a Pac-Man eating pellets to your progress bars!)*
+
+<!-- Quick sub-note for this part -->
+### Mirror Management (Reflector)
+Arch mirrors can get slow or outdated. `reflector` automatically finds the fastest ones for you.
+
+```bash
+sudo pacman -S reflector
+# Update mirrors to the 10 fastest HTTPS ones in your region
+sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
+```
+
+<!-- Quick sub-note for this part -->
+### Install AUR Helper (`paru`)
+Paru is a modern AUR helper written in Rust. It's the primary way to access the vast library of community packages.
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+sudo pacman -S --needed base-devel git && \
+git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. && rm -rf paru
+
+```
+
+<!-- Quick sub-note for this part -->
+### Wayland Screen Sharing (Xwayland Video Bridge)
+
+**Essential for Wayland users:** Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.
+
+```bash
+# Install from AUR
+paru -S xwaylandvideobridge
+
+# Or search for it
+paru -Ss xwayland video bridge
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  2. Snapshots & Maintenance
+
+BTRFS snapshots are an essential "safety net" for system stability. For a comprehensive guide on setting up **TimeShift**, **Snapper**, and bootloader integration, see the universal guide:
+
+*    **[docs/snapshots.md](snapshots.md)**
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  3. Package Management
+
+| List | Content |
+| :--- | :--- |
+| **`arch_pkglist.txt`** | Official native packages. |
+| **`arch_aur_list.txt`** | AUR packages (via `paru`). |
+
+<!-- Quick sub-note for this part -->
+### Restore your system:
+
+```bash
+# Official packages
+sudo pacman -S --needed - < packages/arch_pkglist.txt
+
+# AUR packages
+paru -S --needed - < packages/arch_aur_list.txt
+
+```
+
+<!-- Quick sub-note for this part -->
+### Universal Packages (Flatpak)
+For a comprehensive guide on managing Flatpaks, permissions, and Flathub, see the universal guide:
+
+*    **[docs/flatpak.md](flatpak.md)**
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  3. Maintenance
+
+<!-- Quick sub-note for this part -->
+### Clear Pacman Cache
+
+```bash
+sudo pacman -Sc
+
+```
+
+<!-- Quick sub-note for this part -->
+### Find and Remove Orphans
+
+```bash
+pacman -Qtdq
+sudo pacman -Rns $(pacman -Qtdq)
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Related Guides
+*    **[Fedora Guide](fedora.md)** - Setup and optimizations for Fedora Workstation.
+*    **[Debian Guide](debian.md)** - Stable-release management and external repos.
+*    **[Nix Guide](nix.md)** - Using the universal Nix package manager on Arch.
+*    **[Security Guide](security.md)** - Hardening your Arch system.
+
+
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+    </script>
+  </body>
+</html>

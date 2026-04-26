@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - security</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
+        <div class="toc">
+<ul>
+<li><a href="#apparmor-mac">AppArmor (MAC)</a><ul>
+<li><a href="#1-installation">1. Installation</a></li>
+<li><a href="#2-enable-in-kernel">2. Enable in Kernel</a></li>
+<li><a href="#3-service">3. Service</a></li>
+<li><a href="#4-performance-logging-fixing-slowness">4. Performance &amp; Logging (Fixing "Slowness")</a></li>
+</ul>
+</li>
+<li><a href="#firewall-ufw-vs-firewalld">Firewall: UFW vs. Firewalld</a><ul>
+<li><a href="#option-a-ufw-simple-static-current-choice">Option A: UFW (Simple &amp; Static - Current Choice)</a></li>
+<li><a href="#option-b-firewalld-dynamic-zones">Option B: Firewalld (Dynamic &amp; Zones)</a></li>
+</ul>
+</li>
+<li><a href="#antivirus-rootkit-detection">Antivirus &amp; Rootkit Detection</a><ul>
+<li><a href="#clamav-antivirus">ClamAV (Antivirus)</a></li>
+<li><a href="#rkhunter-rootkit-hunter">rkhunter (Rootkit Hunter)</a></li>
+</ul>
+</li>
+<li><a href="#application-sandboxing-firejail">Application Sandboxing: Firejail</a><ul>
+<li><a href="#what-is-firejail">What is Firejail?</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#basic-usage">Basic Usage</a></li>
+<li><a href="#default-integration-automatic-sandboxing">Default Integration (Automatic Sandboxing)</a></li>
+<li><a href="#common-profiles">Common Profiles</a></li>
+<li><a href="#custom-profiles">Custom Profiles</a></li>
+<li><a href="#security-vs-usability-trade-offs">Security vs Usability Trade-offs</a></li>
+<li><a href="#gui-firetools">GUI: Firetools</a></li>
+<li><a href="#when-to-use-firejail">When to Use Firejail</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li><a href="#application-firewall-opensnitch">Application Firewall: OpenSnitch</a><ul>
+<li><a href="#what-is-opensnitch">What is OpenSnitch?</a></li>
+<li><a href="#installation_1">Installation</a></li>
+<li><a href="#starting-opensnitch">Starting OpenSnitch</a></li>
+<li><a href="#first-time-setup">First-Time Setup</a></li>
+<li><a href="#creating-rules">Creating Rules</a></li>
+<li><a href="#gui-overview">GUI Overview</a></li>
+<li><a href="#example-rules">Example Rules</a></li>
+<li><a href="#configuration-tips">Configuration Tips</a></li>
+<li><a href="#advanced-cli-rules">Advanced: CLI Rules</a></li>
+<li><a href="#performance-impact">Performance Impact</a></li>
+<li><a href="#comparison-opensnitch-vs-ufw">Comparison: OpenSnitch vs UFW</a></li>
+<li><a href="#troubleshooting_1">Troubleshooting</a></li>
+</ul>
+</li>
+<li><a href="#network-privacy-dns-over-tls-dot">Network Privacy: DNS-over-TLS (DoT)</a><ul>
+<li><a href="#recommended-provider-adguard-dns">Recommended Provider: AdGuard DNS</a></li>
+</ul>
+</li>
+<li><a href="#selinux-reference-for-fedora">SELinux (Reference for Fedora)</a></li>
+<li><a href="#related-guides">Related Guides</a></li>
+</ul>
+</div>
+
+      </aside>
+      <article class="wiki-article">
+        <!-- 
+    WIKI GUIDE: security.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+<h1 id="linux-security-hardening-protection">Linux Security: Hardening &amp; Protection</h1>
+<p>Security is about layers. This guide covers the "Defense in Depth" strategy for Linux systems, including Mandatory Access Control (AppArmor), Application Sandboxing (Firejail), Application Firewall (OpenSnitch), Network Firewall (UFW), Antivirus (ClamAV), and Network Privacy (DNS-over-TLS).</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="apparmor-mac">AppArmor (MAC)</h2>
+<p>AppArmor is a Mandatory Access Control (MAC) system that restricts programs' capabilities.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="1-installation">1. Installation</h3>
+<p>```bash
+sudo pacman -S apparmor</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="2-enable-in-kernel">2. Enable in Kernel</h3>
+<p>Add to <code>GRUB_CMDLINE_LINUX_DEFAULT</code> in <code>/etc/default/grub</code>:</p>
+<p>```text
+apparmor=1 lsm=landlock,lockdown,yama,integrity,apparmor,bpf</p>
+<p>```</p>
+<p>Then run: <code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+<!-- Quick sub-note for this part -->
+<h3 id="3-service">3. Service</h3>
+<p>```bash
+sudo systemctl enable --now apparmor.service</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="4-performance-logging-fixing-slowness">4. Performance &amp; Logging (Fixing "Slowness")</h3>
+<p>AppArmor can severely slow down your system if it logs too many "ALLOWED" actions. This typically happens when profiles are in <strong>Complain</strong> mode.</p>
+<p><strong>The Fix:</strong> Move profiles to <strong>Enforce</strong> mode. This allows the actions but stops the noisy logging to your disk.</p>
+<ol>
+<li><strong>Resolve Profile Conflicts:</strong>
+   Duplicate profiles (e.g., <code>brave</code> and <code>brave.apparmor.d</code>) will cause errors. Backup and remove duplicates.</li>
+</ol>
+<p><strong>Shell (Bash/Zsh/Fish):</strong>
+   <code>bash
+   sudo mkdir -p /etc/apparmor.d/backup
+   sudo mv /etc/apparmor.d/*.apparmor.d /etc/apparmor.d/backup/</code></p>
+<ol>
+<li><strong>Switch to Enforce Mode:</strong></li>
+</ol>
+<p><strong>Shell (Bash/Zsh/Fish):</strong>
+   <code>bash
+   sudo find /etc/apparmor.d/ -maxdepth 1 -type f -exec aa-enforce {} +</code></p>
+<ol>
+<li><strong>Silence Audit Logging (If needed):</strong>
+   If the system is still slow due to kernel auditing, you can temporarily silence it:</li>
+</ol>
+<p><strong>Shell (Bash/Zsh/Fish):</strong>
+   <code>bash
+   sudo auditctl -e 0</code></p>
+<p>Or permanently by adding <code>audit=0</code> to your GRUB kernel parameters.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="firewall-ufw-vs-firewalld">Firewall: UFW vs. Firewalld</h2>
+<p>A firewall controls network traffic. This system uses <strong>UFW</strong> for its simplicity, but <strong>firewalld</strong> is a great alternative for mobile users.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="option-a-ufw-simple-static-current-choice">Option A: UFW (Simple &amp; Static - Current Choice)</h3>
+<p>Best for desktops that stay on one network.</p>
+<p>```bash</p>
+<h1 id="install-and-enable">Install and Enable</h1>
+<p>sudo pacman -S ufw
+sudo systemctl enable --now ufw.service</p>
+<h1 id="standard-gaming-policy">Standard "Gaming" Policy</h1>
+<p>sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw enable</p>
+<p>```</p>
+<ul>
+<li><strong>KDE Integration:</strong> Managed via <strong>System Settings &gt; Firewall</strong>.</li>
+</ul>
+<!-- Quick sub-note for this part -->
+<h3 id="option-b-firewalld-dynamic-zones">Option B: Firewalld (Dynamic &amp; Zones)</h3>
+<p>Best for laptops or users who need different rules for "Home" vs "Public" Wi-Fi.</p>
+<p>```bash</p>
+<h1 id="install-and-enable_1">Install and Enable</h1>
+<p>sudo pacman -S firewalld
+sudo systemctl enable --now firewalld.service</p>
+<h1 id="change-zones-based-on-network-trust">Change zones based on network trust</h1>
+<p>sudo firewall-cmd --set-default-zone=home
+sudo firewall-cmd --reload</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="antivirus-rootkit-detection">Antivirus &amp; Rootkit Detection</h2>
+<p>Linux malware exists, but it's often aimed at servers or used for data theft.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="clamav-antivirus">ClamAV (Antivirus)</h3>
+<p>Standard FOSS antivirus. Used for on-demand scanning.
+*   <strong>Install:</strong> <code>sudo pacman -S clamav clamtk</code>
+*   <strong>Database Updates:</strong> <code>sudo systemctl enable --now clamav-freshclam.service</code>
+*   <strong>GUI:</strong> Open <strong>ClamTk</strong> from the application menu.
+*   <strong>CLI Scan:</strong> <code>clamscan -r ~/Downloads</code></p>
+<!-- Quick sub-note for this part -->
+<h3 id="rkhunter-rootkit-hunter">rkhunter (Rootkit Hunter)</h3>
+<p>Scans for "rootkits" (hidden backdoors) and suspicious system changes.
+*   <strong>Install:</strong> <code>sudo pacman -S rkhunter</code>
+*   <strong>Baseline:</strong> <code>sudo rkhunter --propupd</code> (Run this after every major system update).
+*   <strong>Check:</strong> <code>sudo rkhunter --check</code></p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="application-sandboxing-firejail">Application Sandboxing: Firejail</h2>
+<p><strong>Firejail</strong> is a SUID sandbox that restricts applications using Linux namespaces and seccomp-bpf. It's a lightweight way to isolate untrusted applications from your system.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="what-is-firejail">What is Firejail?</h3>
+<p>Firejail creates isolated environments for applications, restricting:
+- <strong>File system access</strong> - Apps can't access your entire home directory
+- <strong>Network access</strong> - Optionally disable networking entirely
+- <strong>System resources</strong> - Limit CPU, memory, and capabilities
+- <strong>X11/Wayland</strong> - Isolate GUI applications</p>
+<!-- Quick sub-note for this part -->
+<h3 id="installation">Installation</h3>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="arch">Arch</h1>
+<p>sudo pacman -S firejail</p>
+<h1 id="fedora">Fedora</h1>
+<p>sudo dnf install firejail</p>
+<h1 id="debianubuntu">Debian/Ubuntu</h1>
+<p>sudo apt install firejail</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="basic-usage">Basic Usage</h3>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="run-any-application-in-a-sandbox">Run any application in a sandbox</h1>
+<p>firejail firefox</p>
+<h1 id="disable-network-access">Disable network access</h1>
+<p>firejail --net=none firefox</p>
+<h1 id="private-tmp-and-home-directory">Private /tmp and home directory</h1>
+<p>firejail --private firefox</p>
+<h1 id="combine-restrictions">Combine restrictions</h1>
+<p>firejail --net=none --private --noroot chromium</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="default-integration-automatic-sandboxing">Default Integration (Automatic Sandboxing)</h3>
+<p>Make Firejail the default for all supported applications:</p>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="create-symlinks-for-all-supported-apps">Create symlinks for all supported apps</h1>
+<p>sudo firecfg</p>
+<h1 id="now-when-you-launch-firefox-chromium-etc-they-automatically-run-sandboxed">Now when you launch Firefox, Chromium, etc., they automatically run sandboxed</h1>
+<p>```</p>
+<p><strong>To undo:</strong></p>
+<p>```bash
+sudo firecfg --clean</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="common-profiles">Common Profiles</h3>
+<p>Firejail includes pre-made security profiles for hundreds of applications:</p>
+<p>```bash</p>
+<h1 id="list-available-profiles">List available profiles</h1>
+<p>ls /etc/firejail/*.profile | wc -l</p>
+<h1 id="view-a-specific-profile">View a specific profile</h1>
+<p>less /etc/firejail/firefox.profile</p>
+<h1 id="override-a-profile">Override a profile</h1>
+<p>cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
+nano ~/.config/firejail/firefox.local</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="custom-profiles">Custom Profiles</h3>
+<p>Create custom sandboxes for applications:</p>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="create-a-custom-profile">Create a custom profile</h1>
+<p>nano ~/.config/firejail/myapp.profile</p>
+<p>```</p>
+<p><strong>Example profile:</strong></p>
+<p>```conf</p>
+<h1 id="include-the-default-template">Include the default template</h1>
+<p>include /etc/firejail/default.profile</p>
+<h1 id="restrict-filesystem-access">Restrict filesystem access</h1>
+<p>private-bin myapp
+private-tmp
+private-dev</p>
+<h1 id="disable-network">Disable network</h1>
+<p>net none</p>
+<h1 id="whitelist-only-specific-directories">Whitelist only specific directories</h1>
+<p>whitelist ~/Documents
+whitelist ~/Downloads</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="security-vs-usability-trade-offs">Security vs Usability Trade-offs</h3>
+<p>| Level | Description | Command Example |
+|-------|-------------|-----------------|
+| <strong>Minimal</strong> | Basic isolation, full home access | <code>firejail app</code> |
+| <strong>Standard</strong> | Most apps work, good protection | <code>firejail --private=~/app-data app</code> |
+| <strong>Strict</strong> | High security, may break features | <code>firejail --net=none --private app</code> |
+| <strong>Paranoid</strong> | Maximum isolation, limited function | <code>firejail --net=none --private --nosound --no3d app</code> |</p>
+<!-- Quick sub-note for this part -->
+<h3 id="gui-firetools">GUI: Firetools</h3>
+<p><strong>Firetools</strong> provides a graphical interface for Firejail.</p>
+<p>```bash</p>
+<h1 id="arch_1">Arch</h1>
+<p>sudo pacman -S firetools</p>
+<h1 id="launch">Launch</h1>
+<p>firetools &amp;</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="when-to-use-firejail">When to Use Firejail</h3>
+<p><strong>Good for:</strong>
+- Web browsers (Firefox, Chromium, Brave)
+- Media players (VLC, mpv)
+- PDF readers (Evince, Okular)
+- Torrent clients (Transmission, qBittorrent)
+- Office applications (LibreOffice)
+- Running untrusted binaries</p>
+<p><strong>Not recommended for:</strong>
+- System utilities (terminal, file manager)
+- Development tools (IDE, compilers) - can break functionality
+- Applications that need full system access</p>
+<!-- Quick sub-note for this part -->
+<h3 id="troubleshooting">Troubleshooting</h3>
+<p><strong>Application won't start:</strong></p>
+<p>```bash</p>
+<h1 id="run-with-debugging">Run with debugging</h1>
+<p>firejail --debug app</p>
+<h1 id="disable-specific-restrictions">Disable specific restrictions</h1>
+<p>firejail --noprofile app</p>
+<p>```</p>
+<p><strong>Sound doesn't work:</strong></p>
+<p>```bash</p>
+<h1 id="allow-pulseaudiopipewire">Allow PulseAudio/PipeWire</h1>
+<p>firejail --keep-config-pulse app</p>
+<p>```</p>
+<p><strong>Can't access files:</strong></p>
+<p>```bash</p>
+<h1 id="whitelist-specific-directories">Whitelist specific directories</h1>
+<p>firejail --whitelist=~/Documents app</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="application-firewall-opensnitch">Application Firewall: OpenSnitch</h2>
+<p><strong>OpenSnitch</strong> is a GNU/Linux port of the Little Snitch application firewall. It provides <strong>per-application network control</strong> with a user-friendly GUI.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="what-is-opensnitch">What is OpenSnitch?</h3>
+<p>OpenSnitch monitors every network connection attempt and lets you:
+- <strong>Block/allow per application</strong> - Control which apps can access the network
+- <strong>Domain-based filtering</strong> - Allow/block specific websites or IPs
+- <strong>Real-time alerts</strong> - Get notified when apps try to connect
+- <strong>Rule persistence</strong> - Save decisions permanently
+- <strong>System-wide visibility</strong> - See exactly what's connecting where</p>
+<!-- Quick sub-note for this part -->
+<h3 id="installation_1">Installation</h3>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="arch-aur">Arch (AUR)</h1>
+<p>paru -S opensnitch</p>
+<h1 id="fedora_1">Fedora</h1>
+<p>sudo dnf copr enable @opensnitch/opensnitch
+sudo dnf install opensnitch opensnitch-ui</p>
+<h1 id="debianubuntu_1">Debian/Ubuntu</h1>
+<h1 id="add-repository-from-httpsgithubcomevilsocketopensnitch">Add repository from: https://github.com/evilsocket/opensnitch</h1>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="starting-opensnitch">Starting OpenSnitch</h3>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="enable-and-start-the-daemon">Enable and start the daemon</h1>
+<p>sudo systemctl enable --now opensnitch</p>
+<h1 id="launch-the-gui-runs-in-system-tray">Launch the GUI (runs in system tray)</h1>
+<p>opensnitch-ui</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="first-time-setup">First-Time Setup</h3>
+<ol>
+<li><strong>Launch opensnitch-ui</strong> - Icon appears in system tray</li>
+<li><strong>Click the icon</strong> - Opens the control panel</li>
+<li><strong>Set default action:</strong></li>
+<li><strong>Allow (monitor mode)</strong> - Learn what apps normally do</li>
+<li><strong>Deny (lockdown mode)</strong> - Block everything by default</li>
+</ol>
+<!-- Quick sub-note for this part -->
+<h3 id="creating-rules">Creating Rules</h3>
+<p>When an application tries to connect, OpenSnitch shows a popup:</p>
+<p><strong>Options:</strong>
+- <strong>Allow once</strong> - Temporary permission for this connection
+- <strong>Deny once</strong> - Block this connection only
+- <strong>Allow always</strong> - Create permanent rule
+- <strong>Deny always</strong> - Permanently block</p>
+<p><strong>Rule criteria:</strong>
+- By process (e.g., <code>/usr/bin/firefox</code>)
+- By domain (e.g., <code>google.com</code>)
+- By IP address
+- By port</p>
+<!-- Quick sub-note for this part -->
+<h3 id="gui-overview">GUI Overview</h3>
+<p><strong>Statistics Tab:</strong>
+- See which apps are connecting
+- View connection history
+- Monitor active connections</p>
+<p><strong>Rules Tab:</strong>
+- View/edit all rules
+- Enable/disable rules
+- Delete rules
+- Import/export rules</p>
+<p><strong>Events Tab:</strong>
+- Real-time connection log
+- Filter by app, domain, or action
+- Search connection history</p>
+<!-- Quick sub-note for this part -->
+<h3 id="example-rules">Example Rules</h3>
+<p><strong>Allow Firefox to access everything:</strong></p>
+<p>```</p>
+<p>Process: firefox
+Action: allow
+Duration: always</p>
+<p>```</p>
+<p><strong>Block a specific domain for all apps:</strong></p>
+<p>```</p>
+<p>Process: *
+Domain: telemetry.mozilla.org
+Action: deny
+Duration: always</p>
+<p>```</p>
+<p><strong>Allow Steam only to Steam servers:</strong></p>
+<p>```</p>
+<p>Process: steam
+Domain: *.steampowered.com
+Action: allow
+Duration: always</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="configuration-tips">Configuration Tips</h3>
+<p><strong>Recommended setup:</strong>
+1. <strong>Start in "Allow" mode</strong> for 1-2 days to learn normal behavior
+2. <strong>Review the Statistics</strong> to see what's connecting
+3. <strong>Switch to "Deny" mode</strong> and whitelist known-good applications
+4. <strong>Create domain rules</strong> for telemetry/tracking domains</p>
+<p><strong>Essential whitelists:</strong>
+- Web browsers (Firefox, Chromium, Brave)
+- Package managers (pacman, dnf, apt)
+- System services (systemd-resolved, NetworkManager)
+- Update services (your distribution's update daemon)</p>
+<!-- Quick sub-note for this part -->
+<h3 id="advanced-cli-rules">Advanced: CLI Rules</h3>
+<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
+<p>```bash</p>
+<h1 id="list-all-rules">List all rules</h1>
+<p>opensnitchd-rulesctl list</p>
+<h1 id="export-rules-to-json">Export rules to JSON</h1>
+<p>opensnitchd-rulesctl export &gt; my-rules.json</p>
+<h1 id="import-rules">Import rules</h1>
+<p>opensnitchd-rulesctl import my-rules.json</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="performance-impact">Performance Impact</h3>
+<p>OpenSnitch uses eBPF and netfilter, so performance impact is <strong>minimal</strong>:
+- <strong>CPU:</strong> ~1-2% under normal use
+- <strong>RAM:</strong> ~50-100 MB
+- <strong>Latency:</strong> &lt;1ms per connection</p>
+<!-- Quick sub-note for this part -->
+<h3 id="comparison-opensnitch-vs-ufw">Comparison: OpenSnitch vs UFW</h3>
+<p>| Feature | OpenSnitch | UFW |
+|---------|-----------|-----|
+| <strong>Level</strong> | Per-application | System-wide |
+| <strong>Granularity</strong> | Process, domain, IP, port | IP, port only |
+| <strong>GUI</strong> | Yes (real-time popups) | Yes (settings panel) |
+| <strong>Complexity</strong> | Medium | Low |
+| <strong>Use case</strong> | Application control | Network perimeter |</p>
+<p><strong>Best practice:</strong> Use <strong>both</strong> - UFW for perimeter defense, OpenSnitch for application control.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="troubleshooting_1">Troubleshooting</h3>
+<p><strong>Daemon won't start:</strong></p>
+<p>```bash</p>
+<h1 id="check-status">Check status</h1>
+<p>sudo systemctl status opensnitch</p>
+<h1 id="view-logs">View logs</h1>
+<p>sudo journalctl -u opensnitch -f</p>
+<p>```</p>
+<p><strong>GUI not showing popups:</strong></p>
+<p>```bash</p>
+<h1 id="restart-the-ui">Restart the UI</h1>
+<p>pkill opensnitch-ui
+opensnitch-ui &amp;</p>
+<h1 id="check-notification-settings-in-your-desktop-environment">Check notification settings in your desktop environment</h1>
+<p>```</p>
+<p><strong>Too many popups:</strong></p>
+<p>```bash</p>
+<h1 id="switch-to-allow-by-default-temporarily">Switch to "Allow by default" temporarily</h1>
+<h1 id="create-broad-rules-for-common-apps-browser-email-etc">Create broad rules for common apps (browser, email, etc.)</h1>
+<h1 id="then-switch-back-to-deny-by-default">Then switch back to "Deny by default"</h1>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="network-privacy-dns-over-tls-dot">Network Privacy: DNS-over-TLS (DoT)</h2>
+<p>Encrypt your DNS queries to prevent your ISP from tracking your browsing habits.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="recommended-provider-adguard-dns">Recommended Provider: AdGuard DNS</h3>
+<p>Provides both privacy (encryption) and network-level ad blocking.</p>
+<p><strong>KDE GUI Setup:</strong>
+1.  <strong>System Settings &gt; Network &gt; Connections</strong>.
+2.  Select your connection (<code>wlan0</code>/<code>Ethernet</code>).
+3.  <strong>IPv4 Tab:</strong> Set DNS to <code>94.140.14.14, 94.140.15.15</code>.
+4.  <strong>IPv6 Tab:</strong> Set DNS to <code>2a10:50c0::ad1:ff, 2a10:50c0::ad2:ff</code>.
+5.  <strong>DNS-over-TLS:</strong> Set to <strong>Required</strong>.
+6.  <strong>Hostname:</strong> <code>dns.adguard-dns.com</code>.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="selinux-reference-for-fedora">SELinux (Reference for Fedora)</h2>
+<p>SELinux is the default on Fedora. <strong>Do not attempt on Arch.</strong>
+*   <strong>Check status:</strong> <code>sestatus</code>
+*   <strong>Relabel system:</strong> <code>sudo touch /.autorelabel &amp;&amp; reboot</code></p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="related-guides">Related Guides</h2>
+<ul>
+<li><strong><a href="arch.md">Arch Linux Guide</a></strong> - Package management and Arch-specific security.</li>
+<li><strong><a href="fedora.md">Fedora Guide</a></strong> - SELinux and Fedora Workstation hardening.</li>
+<li><strong><a href="debian.md">Debian Guide</a></strong> - Stable-release security and safe repo management.</li>
+<li><strong><a href="snapshots.md">Snapshots Guide</a></strong> - Essential for system recovery.</li>
+</ul>
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+    <script type="text/plain" id="md-content">
+<!-- 
+    WIKI GUIDE: security.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+# Linux Security: Hardening & Protection
+
+Security is about layers. This guide covers the "Defense in Depth" strategy for Linux systems, including Mandatory Access Control (AppArmor), Application Sandboxing (Firejail), Application Firewall (OpenSnitch), Network Firewall (UFW), Antivirus (ClamAV), and Network Privacy (DNS-over-TLS).
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  AppArmor (MAC)
+
+AppArmor is a Mandatory Access Control (MAC) system that restricts programs' capabilities.
+
+<!-- Quick sub-note for this part -->
+### 1. Installation
+
+```bash
+sudo pacman -S apparmor
+
+```
+
+<!-- Quick sub-note for this part -->
+### 2. Enable in Kernel
+Add to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`:
+
+```text
+apparmor=1 lsm=landlock,lockdown,yama,integrity,apparmor,bpf
+
+```
+
+Then run: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
+
+<!-- Quick sub-note for this part -->
+### 3. Service
+
+```bash
+sudo systemctl enable --now apparmor.service
+
+```
+
+<!-- Quick sub-note for this part -->
+### 4. Performance & Logging (Fixing "Slowness")
+AppArmor can severely slow down your system if it logs too many "ALLOWED" actions. This typically happens when profiles are in **Complain** mode.
+
+**The Fix:** Move profiles to **Enforce** mode. This allows the actions but stops the noisy logging to your disk.
+
+1. **Resolve Profile Conflicts:**
+   Duplicate profiles (e.g., `brave` and `brave.apparmor.d`) will cause errors. Backup and remove duplicates.
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo mkdir -p /etc/apparmor.d/backup
+   sudo mv /etc/apparmor.d/*.apparmor.d /etc/apparmor.d/backup/
+   ```
+
+2. **Switch to Enforce Mode:**
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo find /etc/apparmor.d/ -maxdepth 1 -type f -exec aa-enforce {} +
+   ```
+
+3. **Silence Audit Logging (If needed):**
+   If the system is still slow due to kernel auditing, you can temporarily silence it:
+   
+   **Shell (Bash/Zsh/Fish):**
+   ```bash
+   sudo auditctl -e 0
+   ```
+
+   Or permanently by adding `audit=0` to your GRUB kernel parameters.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Firewall: UFW vs. Firewalld
+
+A firewall controls network traffic. This system uses **UFW** for its simplicity, but **firewalld** is a great alternative for mobile users.
+
+<!-- Quick sub-note for this part -->
+### Option A: UFW (Simple & Static - Current Choice)
+Best for desktops that stay on one network.
+
+```bash
+# Install and Enable
+sudo pacman -S ufw
+sudo systemctl enable --now ufw.service
+
+# Standard "Gaming" Policy
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw enable
+
+```
+
+*   **KDE Integration:** Managed via **System Settings > Firewall**.
+
+<!-- Quick sub-note for this part -->
+### Option B: Firewalld (Dynamic & Zones)
+Best for laptops or users who need different rules for "Home" vs "Public" Wi-Fi.
+
+```bash
+# Install and Enable
+sudo pacman -S firewalld
+sudo systemctl enable --now firewalld.service
+
+# Change zones based on network trust
+sudo firewall-cmd --set-default-zone=home
+sudo firewall-cmd --reload
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Antivirus & Rootkit Detection
+
+Linux malware exists, but it's often aimed at servers or used for data theft.
+
+<!-- Quick sub-note for this part -->
+### ClamAV (Antivirus)
+Standard FOSS antivirus. Used for on-demand scanning.
+*   **Install:** `sudo pacman -S clamav clamtk`
+*   **Database Updates:** `sudo systemctl enable --now clamav-freshclam.service`
+*   **GUI:** Open **ClamTk** from the application menu.
+*   **CLI Scan:** `clamscan -r ~/Downloads`
+
+<!-- Quick sub-note for this part -->
+### rkhunter (Rootkit Hunter)
+Scans for "rootkits" (hidden backdoors) and suspicious system changes.
+*   **Install:** `sudo pacman -S rkhunter`
+*   **Baseline:** `sudo rkhunter --propupd` (Run this after every major system update).
+*   **Check:** `sudo rkhunter --check`
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Application Sandboxing: Firejail
+
+**Firejail** is a SUID sandbox that restricts applications using Linux namespaces and seccomp-bpf. It's a lightweight way to isolate untrusted applications from your system.
+
+<!-- Quick sub-note for this part -->
+### What is Firejail?
+
+Firejail creates isolated environments for applications, restricting:
+- **File system access** - Apps can't access your entire home directory
+- **Network access** - Optionally disable networking entirely
+- **System resources** - Limit CPU, memory, and capabilities
+- **X11/Wayland** - Isolate GUI applications
+
+<!-- Quick sub-note for this part -->
+### Installation
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Arch
+sudo pacman -S firejail
+
+# Fedora
+sudo dnf install firejail
+
+# Debian/Ubuntu
+sudo apt install firejail
+
+```
+
+<!-- Quick sub-note for this part -->
+### Basic Usage
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Run any application in a sandbox
+firejail firefox
+
+# Disable network access
+firejail --net=none firefox
+
+# Private /tmp and home directory
+firejail --private firefox
+
+# Combine restrictions
+firejail --net=none --private --noroot chromium
+
+```
+
+<!-- Quick sub-note for this part -->
+### Default Integration (Automatic Sandboxing)
+
+Make Firejail the default for all supported applications:
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Create symlinks for all supported apps
+sudo firecfg
+
+# Now when you launch Firefox, Chromium, etc., they automatically run sandboxed
+
+```
+
+**To undo:**
+
+```bash
+sudo firecfg --clean
+
+```
+
+<!-- Quick sub-note for this part -->
+### Common Profiles
+
+Firejail includes pre-made security profiles for hundreds of applications:
+
+```bash
+# List available profiles
+ls /etc/firejail/*.profile | wc -l
+
+# View a specific profile
+less /etc/firejail/firefox.profile
+
+# Override a profile
+cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
+nano ~/.config/firejail/firefox.local
+
+```
+
+<!-- Quick sub-note for this part -->
+### Custom Profiles
+
+Create custom sandboxes for applications:
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Create a custom profile
+nano ~/.config/firejail/myapp.profile
+
+```
+
+**Example profile:**
+
+```conf
+# Include the default template
+include /etc/firejail/default.profile
+
+# Restrict filesystem access
+private-bin myapp
+private-tmp
+private-dev
+
+# Disable network
+net none
+
+# Whitelist only specific directories
+whitelist ~/Documents
+whitelist ~/Downloads
+
+```
+
+<!-- Quick sub-note for this part -->
+### Security vs Usability Trade-offs
+
+| Level | Description | Command Example |
+|-------|-------------|-----------------|
+| **Minimal** | Basic isolation, full home access | `firejail app` |
+| **Standard** | Most apps work, good protection | `firejail --private=~/app-data app` |
+| **Strict** | High security, may break features | `firejail --net=none --private app` |
+| **Paranoid** | Maximum isolation, limited function | `firejail --net=none --private --nosound --no3d app` |
+
+<!-- Quick sub-note for this part -->
+### GUI: Firetools
+
+**Firetools** provides a graphical interface for Firejail.
+
+```bash
+# Arch
+sudo pacman -S firetools
+
+# Launch
+firetools &
+
+```
+
+<!-- Quick sub-note for this part -->
+### When to Use Firejail
+
+ **Good for:**
+- Web browsers (Firefox, Chromium, Brave)
+- Media players (VLC, mpv)
+- PDF readers (Evince, Okular)
+- Torrent clients (Transmission, qBittorrent)
+- Office applications (LibreOffice)
+- Running untrusted binaries
+
+ **Not recommended for:**
+- System utilities (terminal, file manager)
+- Development tools (IDE, compilers) - can break functionality
+- Applications that need full system access
+
+<!-- Quick sub-note for this part -->
+### Troubleshooting
+
+**Application won't start:**
+
+```bash
+# Run with debugging
+firejail --debug app
+
+# Disable specific restrictions
+firejail --noprofile app
+
+```
+
+**Sound doesn't work:**
+
+```bash
+# Allow PulseAudio/PipeWire
+firejail --keep-config-pulse app
+
+```
+
+**Can't access files:**
+
+```bash
+# Whitelist specific directories
+firejail --whitelist=~/Documents app
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Application Firewall: OpenSnitch
+
+**OpenSnitch** is a GNU/Linux port of the Little Snitch application firewall. It provides **per-application network control** with a user-friendly GUI.
+
+<!-- Quick sub-note for this part -->
+### What is OpenSnitch?
+
+OpenSnitch monitors every network connection attempt and lets you:
+- **Block/allow per application** - Control which apps can access the network
+- **Domain-based filtering** - Allow/block specific websites or IPs
+- **Real-time alerts** - Get notified when apps try to connect
+- **Rule persistence** - Save decisions permanently
+- **System-wide visibility** - See exactly what's connecting where
+
+<!-- Quick sub-note for this part -->
+### Installation
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Arch (AUR)
+paru -S opensnitch
+
+# Fedora
+sudo dnf copr enable @opensnitch/opensnitch
+sudo dnf install opensnitch opensnitch-ui
+
+# Debian/Ubuntu
+# Add repository from: https://github.com/evilsocket/opensnitch
+
+```
+
+<!-- Quick sub-note for this part -->
+### Starting OpenSnitch
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# Enable and start the daemon
+sudo systemctl enable --now opensnitch
+
+# Launch the GUI (runs in system tray)
+opensnitch-ui
+
+```
+
+<!-- Quick sub-note for this part -->
+### First-Time Setup
+
+1. **Launch opensnitch-ui** - Icon appears in system tray
+2. **Click the icon** - Opens the control panel
+3. **Set default action:**
+   - **Allow (monitor mode)** - Learn what apps normally do
+   - **Deny (lockdown mode)** - Block everything by default
+
+<!-- Quick sub-note for this part -->
+### Creating Rules
+
+When an application tries to connect, OpenSnitch shows a popup:
+
+**Options:**
+- **Allow once** - Temporary permission for this connection
+- **Deny once** - Block this connection only
+- **Allow always** - Create permanent rule
+- **Deny always** - Permanently block
+
+**Rule criteria:**
+- By process (e.g., `/usr/bin/firefox`)
+- By domain (e.g., `google.com`)
+- By IP address
+- By port
+
+<!-- Quick sub-note for this part -->
+### GUI Overview
+
+**Statistics Tab:**
+- See which apps are connecting
+- View connection history
+- Monitor active connections
+
+**Rules Tab:**
+- View/edit all rules
+- Enable/disable rules
+- Delete rules
+- Import/export rules
+
+**Events Tab:**
+- Real-time connection log
+- Filter by app, domain, or action
+- Search connection history
+
+<!-- Quick sub-note for this part -->
+### Example Rules
+
+**Allow Firefox to access everything:**
+
+```
+
+Process: firefox
+Action: allow
+Duration: always
+
+```
+
+**Block a specific domain for all apps:**
+
+```
+
+Process: *
+Domain: telemetry.mozilla.org
+Action: deny
+Duration: always
+
+```
+
+**Allow Steam only to Steam servers:**
+
+```
+
+Process: steam
+Domain: *.steampowered.com
+Action: allow
+Duration: always
+
+```
+
+<!-- Quick sub-note for this part -->
+### Configuration Tips
+
+**Recommended setup:**
+1. **Start in "Allow" mode** for 1-2 days to learn normal behavior
+2. **Review the Statistics** to see what's connecting
+3. **Switch to "Deny" mode** and whitelist known-good applications
+4. **Create domain rules** for telemetry/tracking domains
+
+**Essential whitelists:**
+- Web browsers (Firefox, Chromium, Brave)
+- Package managers (pacman, dnf, apt)
+- System services (systemd-resolved, NetworkManager)
+- Update services (your distribution's update daemon)
+
+<!-- Quick sub-note for this part -->
+### Advanced: CLI Rules
+
+**Shell (Bash/Zsh/Fish):**
+
+```bash
+# List all rules
+opensnitchd-rulesctl list
+
+# Export rules to JSON
+opensnitchd-rulesctl export > my-rules.json
+
+# Import rules
+opensnitchd-rulesctl import my-rules.json
+
+```
+
+<!-- Quick sub-note for this part -->
+### Performance Impact
+
+OpenSnitch uses eBPF and netfilter, so performance impact is **minimal**:
+- **CPU:** ~1-2% under normal use
+- **RAM:** ~50-100 MB
+- **Latency:** <1ms per connection
+
+<!-- Quick sub-note for this part -->
+### Comparison: OpenSnitch vs UFW
+
+| Feature | OpenSnitch | UFW |
+|---------|-----------|-----|
+| **Level** | Per-application | System-wide |
+| **Granularity** | Process, domain, IP, port | IP, port only |
+| **GUI** | Yes (real-time popups) | Yes (settings panel) |
+| **Complexity** | Medium | Low |
+| **Use case** | Application control | Network perimeter |
+
+**Best practice:** Use **both** - UFW for perimeter defense, OpenSnitch for application control.
+
+<!-- Quick sub-note for this part -->
+### Troubleshooting
+
+**Daemon won't start:**
+
+```bash
+# Check status
+sudo systemctl status opensnitch
+
+# View logs
+sudo journalctl -u opensnitch -f
+
+```
+
+**GUI not showing popups:**
+
+```bash
+# Restart the UI
+pkill opensnitch-ui
+opensnitch-ui &
+
+# Check notification settings in your desktop environment
+
+```
+
+**Too many popups:**
+
+```bash
+# Switch to "Allow by default" temporarily
+# Create broad rules for common apps (browser, email, etc.)
+# Then switch back to "Deny by default"
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Network Privacy: DNS-over-TLS (DoT)
+
+Encrypt your DNS queries to prevent your ISP from tracking your browsing habits.
+
+<!-- Quick sub-note for this part -->
+### Recommended Provider: AdGuard DNS
+Provides both privacy (encryption) and network-level ad blocking.
+
+**KDE GUI Setup:**
+1.  **System Settings > Network > Connections**.
+2.  Select your connection (`wlan0`/`Ethernet`).
+3.  **IPv4 Tab:** Set DNS to `94.140.14.14, 94.140.15.15`.
+4.  **IPv6 Tab:** Set DNS to `2a10:50c0::ad1:ff, 2a10:50c0::ad2:ff`.
+5.  **DNS-over-TLS:** Set to **Required**.
+6.  **Hostname:** `dns.adguard-dns.com`.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  SELinux (Reference for Fedora)
+SELinux is the default on Fedora. **Do not attempt on Arch.**
+*   **Check status:** `sestatus`
+*   **Relabel system:** `sudo touch /.autorelabel && reboot`
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Related Guides
+*    **[Arch Linux Guide](arch.md)** - Package management and Arch-specific security.
+*    **[Fedora Guide](fedora.md)** - SELinux and Fedora Workstation hardening.
+*    **[Debian Guide](debian.md)** - Stable-release security and safe repo management.
+*    **[Snapshots Guide](snapshots.md)** - Essential for system recovery.
+
+
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+    </script>
+  </body>
+</html>

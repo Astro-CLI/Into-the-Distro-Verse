@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - snaps</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
+        <div class="toc">
+<ul>
+<li><a href="#why-snap">Why Snap?</a></li>
+<li><a href="#1-installation">1. Installation</a><ul>
+<li><a href="#on-arch-linux">On Arch Linux</a></li>
+<li><a href="#on-fedora">On Fedora</a></li>
+</ul>
+</li>
+<li><a href="#2-basic-commands">2. Basic Commands</a></li>
+<li><a href="#3-confinement-levels">3. Confinement Levels</a></li>
+<li><a href="#4-maintenance">4. Maintenance</a></li>
+<li><a href="#snap-vs-flatpak">Snap vs. Flatpak</a></li>
+<li><a href="#related-guides">Related Guides</a></li>
+</ul>
+</div>
+
+      </aside>
+      <article class="wiki-article">
+        <!-- 
+    WIKI GUIDE: snaps.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+<h1 id="snap-the-universal-app-store-canonical">Snap: The Universal App Store (Canonical)</h1>
+<p>Snap is a software packaging and deployment system developed by Canonical. Like Flatpak, it is designed to be universal across distributions, but it also handles CLI tools and system services particularly well.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="why-snap">Why Snap?</h2>
+<ol>
+<li><strong>Direct from Developers:</strong> Many major apps (like VS Code, Spotify, and Slack) are officially maintained as Snaps by their developers.</li>
+<li><strong>Classic Confinement:</strong> Unlike Flatpak, Snaps can have "classic" confinement, giving them full access to your system—useful for compilers and deep system tools.</li>
+<li><strong>Automatic Updates:</strong> Snaps update automatically in the background by default.</li>
+<li><strong>Rollbacks:</strong> You can easily revert to a previous version of a Snap if an update breaks something.</li>
+</ol>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="1-installation">1. Installation</h2>
+<p>Snap requires a background service called <code>snapd</code> to be running.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="on-arch-linux">On Arch Linux</h3>
+<p>```bash</p>
+<h1 id="1-install-from-the-aur">1. Install from the AUR</h1>
+<p>paru -S snapd</p>
+<h1 id="2-enable-the-socket-handles-the-daemon-automatically">2. Enable the socket (handles the daemon automatically)</h1>
+<p>sudo systemctl enable --now snapd.socket</p>
+<h1 id="3-enable-classic-snap-support-symlink">3. Enable classic snap support (symlink)</h1>
+<p>sudo ln -s /var/lib/snapd/snap /snap</p>
+<p>```</p>
+<p><em>Note: You may need to restart your session for the binary paths to be updated.</em></p>
+<!-- Quick sub-note for this part -->
+<h3 id="on-fedora">On Fedora</h3>
+<p>```bash
+sudo dnf install snapd
+sudo ln -s /var/lib/snapd/snap /snap</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="2-basic-commands">2. Basic Commands</h2>
+<p>| Task | Command |
+| :--- | :--- |
+| <strong>Search</strong> | <code>snap find app_name</code> |
+| <strong>Install</strong> | <code>sudo snap install app_id</code> |
+| <strong>Install Classic</strong> | <code>sudo snap install app_id --classic</code> |
+| <strong>List Installed</strong> | <code>snap list</code> |
+| <strong>Update All</strong> | <code>sudo snap refresh</code> |
+| <strong>Revert Update</strong> | <code>sudo snap revert app_id</code> |
+| <strong>Uninstall</strong> | <code>sudo snap remove app_id</code> |</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="3-confinement-levels">3. Confinement Levels</h2>
+<ul>
+<li><strong>Strict:</strong> The default. The app is sandboxed and cannot access your files without specific "interfaces" (connections).</li>
+<li><strong>Classic:</strong> The app has full access to your system (like a standard <code>.deb</code> or <code>.rpm</code>). Required for tools like VS Code or compilers.</li>
+<li><strong>Devmode:</strong> For developers. The app has full access but logs what it <em>would</em> have been blocked from doing.</li>
+</ul>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="4-maintenance">4. Maintenance</h2>
+<p>Snaps keep old versions of packages on your disk by default, which can take up significant space.</p>
+<p><strong>To limit the number of old versions kept (e.g., to 2):</strong></p>
+<p>```bash
+sudo snap set system refresh.retain=2</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="snap-vs-flatpak">Snap vs. Flatpak</h2>
+<p>| Feature | Snap | Flatpak |
+| :--- | :--- | :--- |
+| <strong>Creator</strong> | Canonical (Ubuntu) | Community (Freedesktop) |
+| <strong>Best For</strong> | CLI tools, Servers, Proprietary Apps | Desktop Apps, GUI-heavy tools |
+| <strong>Backend</strong> | Proprietary (Snap Store) | Open Source (Flathub, etc.) |
+| <strong>Mounting</strong> | Uses Loop Devices (visible in <code>lsblk</code>) | Does not use Loop Devices |</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="related-guides">Related Guides</h2>
+<ul>
+<li><strong><a href="flatpak.md">Flatpak Guide</a></strong> - The community-driven alternative to Snap.</li>
+<li><strong><a href="nix.md">Nix Guide</a></strong> - Universal and functional package management.</li>
+<li><strong><a href="homebrew.md">Homebrew Guide</a></strong> - CLI-focused package manager for Linux.</li>
+</ul>
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+    <script type="text/plain" id="md-content">
+<!-- 
+    WIKI GUIDE: snaps.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+# Snap: The Universal App Store (Canonical) 
+
+Snap is a software packaging and deployment system developed by Canonical. Like Flatpak, it is designed to be universal across distributions, but it also handles CLI tools and system services particularly well.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Why Snap?
+
+1.  **Direct from Developers:** Many major apps (like VS Code, Spotify, and Slack) are officially maintained as Snaps by their developers.
+2.  **Classic Confinement:** Unlike Flatpak, Snaps can have "classic" confinement, giving them full access to your system—useful for compilers and deep system tools.
+3.  **Automatic Updates:** Snaps update automatically in the background by default.
+4.  **Rollbacks:** You can easily revert to a previous version of a Snap if an update breaks something.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  1. Installation
+
+Snap requires a background service called `snapd` to be running.
+
+<!-- Quick sub-note for this part -->
+### On Arch Linux
+
+```bash
+# 1. Install from the AUR
+paru -S snapd
+
+# 2. Enable the socket (handles the daemon automatically)
+sudo systemctl enable --now snapd.socket
+
+# 3. Enable classic snap support (symlink)
+sudo ln -s /var/lib/snapd/snap /snap
+
+```
+
+*Note: You may need to restart your session for the binary paths to be updated.*
+
+<!-- Quick sub-note for this part -->
+### On Fedora
+
+```bash
+sudo dnf install snapd
+sudo ln -s /var/lib/snapd/snap /snap
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  2. Basic Commands
+
+| Task | Command |
+| :--- | :--- |
+| **Search** | `snap find app_name` |
+| **Install** | `sudo snap install app_id` |
+| **Install Classic** | `sudo snap install app_id --classic` |
+| **List Installed** | `snap list` |
+| **Update All** | `sudo snap refresh` |
+| **Revert Update** | `sudo snap revert app_id` |
+| **Uninstall** | `sudo snap remove app_id` |
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  3. Confinement Levels
+
+-   **Strict:** The default. The app is sandboxed and cannot access your files without specific "interfaces" (connections).
+-   **Classic:** The app has full access to your system (like a standard `.deb` or `.rpm`). Required for tools like VS Code or compilers.
+-   **Devmode:** For developers. The app has full access but logs what it *would* have been blocked from doing.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  4. Maintenance
+
+Snaps keep old versions of packages on your disk by default, which can take up significant space.
+
+**To limit the number of old versions kept (e.g., to 2):**
+
+```bash
+sudo snap set system refresh.retain=2
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Snap vs. Flatpak
+
+| Feature | Snap | Flatpak |
+| :--- | :--- | :--- |
+| **Creator** | Canonical (Ubuntu) | Community (Freedesktop) |
+| **Best For** | CLI tools, Servers, Proprietary Apps | Desktop Apps, GUI-heavy tools |
+| **Backend** | Proprietary (Snap Store) | Open Source (Flathub, etc.) |
+| **Mounting** | Uses Loop Devices (visible in `lsblk`) | Does not use Loop Devices |
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Related Guides
+*    **[Flatpak Guide](flatpak.md)** - The community-driven alternative to Snap.
+*    **[Nix Guide](nix.md)** - Universal and functional package management.
+*    **[Homebrew Guide](homebrew.md)** - CLI-focused package manager for Linux.
+
+
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+    </script>
+  </body>
+</html>

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - debian</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
+        <div class="toc">
+<ul>
+<li><a href="#1-basic-repository-management">1. Basic Repository Management</a><ul>
+<li><a href="#adding-a-standard-repository">Adding a Standard Repository</a></li>
+<li><a href="#backports-the-safe-way-to-get-newer-apps">Backports (The "Safe" Way to get newer apps)</a></li>
+</ul>
+</li>
+<li><a href="#2-adding-external-repositories-ubuntu-kali">2. Adding External Repositories (Ubuntu &amp; Kali)</a><ul>
+<li><a href="#adding-ubuntu-repositories">Adding Ubuntu Repositories</a></li>
+<li><a href="#adding-kali-linux-repositories">Adding Kali Linux Repositories</a></li>
+</ul>
+</li>
+<li><a href="#3-safe-management-apt-pinning">3. Safe Management: APT Pinning</a></li>
+<li><a href="#4-multimedia-wayland-utilities">4. Multimedia &amp; Wayland Utilities</a><ul>
+<li><a href="#wayland-screen-sharing-support">Wayland Screen Sharing Support</a></li>
+</ul>
+</li>
+<li><a href="#5-essential-commands">5. Essential Commands</a></li>
+<li><a href="#related-guides">Related Guides</a></li>
+</ul>
+</div>
+
+      </aside>
+      <article class="wiki-article">
+        <!-- 
+    WIKI GUIDE: debian.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+<h1 id="debian-the-stable-foundation">Debian: The Stable Foundation</h1>
+<p>Debian is the "Universal Operating System" that serves as the base for Ubuntu, Kali, and many others. While it prizes stability, you may sometimes need newer or more specialized packages.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="1-basic-repository-management">1. Basic Repository Management</h2>
+<p>Standard repositories are defined in <code>/etc/apt/sources.list</code>.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="adding-a-standard-repository">Adding a Standard Repository</h3>
+<p>To add a new source manually:</p>
+<p>```bash
+echo "deb http://deb.debian.org/debian bookworm-backports main" | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="backports-the-safe-way-to-get-newer-apps">Backports (The "Safe" Way to get newer apps)</h3>
+<p>If you need a newer kernel or app version on Debian Stable, always check <strong>Backports</strong> first before adding external distros.</p>
+<p>```bash
+sudo apt install -t bookworm-backports package_name</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="2-adding-external-repositories-ubuntu-kali">2. Adding External Repositories (Ubuntu &amp; Kali)</h2>
+<p><strong>WARNING: THE "FRANKENDEBIAN" RISK</strong>
+Adding repositories from different distributions (like Ubuntu or Kali) into a standard Debian system is dangerous. It can cause dependency conflicts that make your system un-updatable. <strong>Proceed with caution.</strong></p>
+<!-- Quick sub-note for this part -->
+<h3 id="adding-ubuntu-repositories">Adding Ubuntu Repositories</h3>
+<p>You might want this for specific PPAs or newer libraries.
+1.  <strong>Add the repository:</strong>
+    <code>bash
+    echo "deb http://archive.ubuntu.com/ubuntu/ noble main universe" | sudo tee /etc/apt/sources.list.d/ubuntu.list</code></p>
+<ol>
+<li><strong>Add the GPG Key:</strong> (You must find the specific key for the repo you are adding).</li>
+</ol>
+<!-- Quick sub-note for this part -->
+<h3 id="adding-kali-linux-repositories">Adding Kali Linux Repositories</h3>
+<p>Useful if you want access to Kali's massive suite of security tools without a full Kali install.
+1.  <strong>Add the Kali repo:</strong>
+    <code>bash
+    echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/kali.list</code></p>
+<ol>
+<li><strong>Import the Kali GPG key:</strong>
+    <code>bash
+    wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg</code></li>
+</ol>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="3-safe-management-apt-pinning">3. Safe Management: APT Pinning</h2>
+<p>To prevent Ubuntu or Kali from accidentally overwriting your core Debian system files, you should use <strong>APT Pinning</strong>. This tells Debian to only use the external repo for specific packages you ask for.</p>
+<ol>
+<li>Create a pin file: <code>sudo nano /etc/apt/preferences.d/external-repo</code></li>
+<li>
+<p>Add this configuration:
+    ```text
+    Package: *
+    Pin: release o=Kali
+    Pin-Priority: 100</p>
+<p>Package: *
+Pin: release o=Ubuntu
+Pin-Priority: 100
+```</p>
+<p><em>A priority of 100 ensures Debian will always prefer its own packages unless you manually force the install from the external repo.</em></p>
+</li>
+</ol>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="4-multimedia-wayland-utilities">4. Multimedia &amp; Wayland Utilities</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="wayland-screen-sharing-support">Wayland Screen Sharing Support</h3>
+<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
+<p>```bash</p>
+<h1 id="install-xwayland-video-bridge">Install Xwayland Video Bridge</h1>
+<p>sudo apt install xwaylandvideobridge</p>
+<h1 id="if-not-available-in-main-repos-try-from-backports">If not available in main repos, try from backports:</h1>
+<h1 id="sudo-apt-t-bookworm-backports-install-xwaylandvideobridge">sudo apt -t bookworm-backports install xwaylandvideobridge</h1>
+<p>```</p>
+<p><em>Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.</em></p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="5-essential-commands">5. Essential Commands</h2>
+<p>| Task | Command |
+| :--- | :--- |
+| <strong>Update Lists</strong> | <code>sudo apt update</code> |
+| <strong>Upgrade System</strong> | <code>sudo apt upgrade</code> |
+| <strong>Install from Specific Repo</strong> | <code>sudo apt install -t kali-rolling package_name</code> |
+| <strong>Fix Broken Deps</strong> | <code>sudo apt install -f</code> |
+| <strong>Clean Cache</strong> | <code>sudo apt clean</code> |</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="related-guides">Related Guides</h2>
+<ul>
+<li><strong><a href="arch.md">Arch Linux Guide</a></strong> - Rolling-release setup and AUR management.</li>
+<li><strong><a href="fedora.md">Fedora Guide</a></strong> - Setup and optimizations for Fedora Workstation.</li>
+<li><strong><a href="security.md">Security Guide</a></strong> - Hardening your Debian system.</li>
+</ul>
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+    <script type="text/plain" id="md-content">
+<!-- 
+    WIKI GUIDE: debian.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+# Debian: The Stable Foundation 
+
+Debian is the "Universal Operating System" that serves as the base for Ubuntu, Kali, and many others. While it prizes stability, you may sometimes need newer or more specialized packages.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  1. Basic Repository Management
+
+Standard repositories are defined in `/etc/apt/sources.list`.
+
+<!-- Quick sub-note for this part -->
+### Adding a Standard Repository
+To add a new source manually:
+
+```bash
+echo "deb http://deb.debian.org/debian bookworm-backports main" | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update
+
+```
+
+<!-- Quick sub-note for this part -->
+### Backports (The "Safe" Way to get newer apps)
+If you need a newer kernel or app version on Debian Stable, always check **Backports** first before adding external distros.
+
+```bash
+sudo apt install -t bookworm-backports package_name
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  2. Adding External Repositories (Ubuntu & Kali)
+
+ **WARNING: THE "FRANKENDEBIAN" RISK**
+Adding repositories from different distributions (like Ubuntu or Kali) into a standard Debian system is dangerous. It can cause dependency conflicts that make your system un-updatable. **Proceed with caution.**
+
+<!-- Quick sub-note for this part -->
+### Adding Ubuntu Repositories
+You might want this for specific PPAs or newer libraries.
+1.  **Add the repository:**
+    ```bash
+    echo "deb http://archive.ubuntu.com/ubuntu/ noble main universe" | sudo tee /etc/apt/sources.list.d/ubuntu.list
+    ```
+
+2.  **Add the GPG Key:** (You must find the specific key for the repo you are adding).
+
+<!-- Quick sub-note for this part -->
+### Adding Kali Linux Repositories
+Useful if you want access to Kali's massive suite of security tools without a full Kali install.
+1.  **Add the Kali repo:**
+    ```bash
+    echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/kali.list
+    ```
+
+2.  **Import the Kali GPG key:**
+    ```bash
+    wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg
+    ```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  3. Safe Management: APT Pinning
+
+To prevent Ubuntu or Kali from accidentally overwriting your core Debian system files, you should use **APT Pinning**. This tells Debian to only use the external repo for specific packages you ask for.
+
+1.  Create a pin file: `sudo nano /etc/apt/preferences.d/external-repo`
+2.  Add this configuration:
+    ```text
+    Package: *
+    Pin: release o=Kali
+    Pin-Priority: 100
+
+    Package: *
+    Pin: release o=Ubuntu
+    Pin-Priority: 100
+    ```
+
+    *A priority of 100 ensures Debian will always prefer its own packages unless you manually force the install from the external repo.*
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  4. Multimedia & Wayland Utilities
+
+<!-- Quick sub-note for this part -->
+### Wayland Screen Sharing Support
+
+**Essential for Wayland users:** Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.
+
+```bash
+# Install Xwayland Video Bridge
+sudo apt install xwaylandvideobridge
+
+# If not available in main repos, try from backports:
+# sudo apt -t bookworm-backports install xwaylandvideobridge
+
+```
+
+ *Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.*
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  5. Essential Commands
+
+| Task | Command |
+| :--- | :--- |
+| **Update Lists** | `sudo apt update` |
+| **Upgrade System** | `sudo apt upgrade` |
+| **Install from Specific Repo** | `sudo apt install -t kali-rolling package_name` |
+| **Fix Broken Deps** | `sudo apt install -f` |
+| **Clean Cache** | `sudo apt clean` |
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Related Guides
+*    **[Arch Linux Guide](arch.md)** - Rolling-release setup and AUR management.
+*    **[Fedora Guide](fedora.md)** - Setup and optimizations for Fedora Workstation.
+*    **[Security Guide](security.md)** - Hardening your Debian system.
+
+
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+    </script>
+  </body>
+</html>

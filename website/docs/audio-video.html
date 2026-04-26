@@ -1,0 +1,1838 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Into the Distro-Verse - audio-video</title>
+    <link
+      rel="icon"
+      href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Anonymous_emblem.svg/250px-Anonymous_emblem.svg.png"
+      type="image/svg+xml"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Audiowide&family=Bangers&family=Exo+2:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="site-title" href="../index.html"
+          >Into the Distro-Verse Wiki</a
+        >
+        <nav aria-label="Main navigation">
+          <ul class="top-links">
+            <li><a href="../index.html">Main page</a></li>
+            <li><a href="../history.html">History</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main class="wiki-layout">
+      <aside class="wiki-toc" aria-label="Page contents">
+        <h2>Contents</h2>
+        <div class="toc">
+<ul>
+<li><a href="#audio-server-comparison-pipewire-vs-pulseaudio">Audio Server Comparison: PipeWire vs PulseAudio</a><ul>
+<li><a href="#pipewire-modern-recommended">PipeWire (Modern, Recommended)</a></li>
+<li><a href="#pulseaudio-legacy-still-widely-used">PulseAudio (Legacy, Still Widely Used)</a></li>
+<li><a href="#checking-your-current-audio-server">Checking Your Current Audio Server</a></li>
+</ul>
+</li>
+<li><a href="#pipewire-setup-tools">PipeWire Setup &amp; Tools</a><ul>
+<li><a href="#installing-pipewire-arch">Installing PipeWire (Arch)</a></li>
+<li><a href="#installing-pipewire-fedora">Installing PipeWire (Fedora)</a></li>
+<li><a href="#installing-pipewire-debianubuntu">Installing PipeWire (Debian/Ubuntu)</a></li>
+<li><a href="#pipewire-control-tools">PipeWire Control Tools</a></li>
+<li><a href="#low-latency-configuration">Low-Latency Configuration</a></li>
+</ul>
+</li>
+<li><a href="#pulseaudio-tools-legacy">PulseAudio Tools (Legacy)</a><ul>
+<li><a href="#installing-pulseaudio">Installing PulseAudio</a></li>
+<li><a href="#pulseaudio-control-tools">PulseAudio Control Tools</a></li>
+</ul>
+</li>
+<li><a href="#easyeffects-audio-enhancement">EasyEffects (Audio Enhancement)</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#essential-plugins">Essential Plugins</a></li>
+<li><a href="#popular-presets">Popular Presets</a></li>
+<li><a href="#pro-tips">Pro Tips</a></li>
+</ul>
+</li>
+<li><a href="#pro-audio-production">Pro-Audio Production</a><ul>
+<li><a href="#linux-audio-real-time-setup">Linux Audio Real-Time Setup</a></li>
+<li><a href="#jack-audio-connection-kit">JACK Audio Connection Kit</a></li>
+</ul>
+</li>
+<li><a href="#digital-audio-workstations-daws">Digital Audio Workstations (DAWs)</a><ul>
+<li><a href="#ardour-professional-open-source">Ardour (Professional, Open Source)</a></li>
+<li><a href="#reaper-commercial-linux-friendly">Reaper (Commercial, Linux-friendly)</a></li>
+<li><a href="#lmms-beginner-friendly">LMMS (Beginner-Friendly)</a></li>
+<li><a href="#bitwig-studio-commercial">Bitwig Studio (Commercial)</a></li>
+<li><a href="#rosegarden-midi-focused">Rosegarden (MIDI-focused)</a></li>
+<li><a href="#audacity-audio-editing">Audacity (Audio Editing)</a></li>
+</ul>
+</li>
+<li><a href="#audio-plugins-virtual-instruments">Audio Plugins &amp; Virtual Instruments</a><ul>
+<li><a href="#plugin-formats">Plugin Formats</a></li>
+<li><a href="#essential-plugin-collections">Essential Plugin Collections</a></li>
+<li><a href="#virtual-instruments">Virtual Instruments</a></li>
+<li><a href="#vst-support-winelinvst">VST Support (Wine/LinVST)</a></li>
+</ul>
+</li>
+<li><a href="#video-production-streaming">Video Production &amp; Streaming</a><ul>
+<li><a href="#obs-studio-streaming-recording">OBS Studio (Streaming &amp; Recording)</a></li>
+<li><a href="#kdenlive-video-editing">Kdenlive (Video Editing)</a></li>
+<li><a href="#davinci-resolve-professional-commercial">DaVinci Resolve (Professional, Commercial)</a></li>
+<li><a href="#blender-3d-video-editing">Blender (3D &amp; Video Editing)</a></li>
+<li><a href="#shotcut-beginner-friendly">Shotcut (Beginner-Friendly)</a></li>
+</ul>
+</li>
+<li><a href="#screen-recording-capture">Screen Recording &amp; Capture</a><ul>
+<li><a href="#simplescreenrecorder">SimpleScreenRecorder</a></li>
+<li><a href="#gpu-screen-record">GPU Screen Record</a></li>
+<li><a href="#kooha-wayland-native">Kooha (Wayland-native)</a></li>
+</ul>
+</li>
+<li><a href="#additional-tools">Additional Tools</a><ul>
+<li><a href="#video-converters">Video Converters</a></li>
+<li><a href="#audio-converters">Audio Converters</a></li>
+<li><a href="#noise-reduction">Noise Reduction</a></li>
+</ul>
+</li>
+<li><a href="#quick-start-guide">Quick Start Guide</a><ul>
+<li><a href="#for-music-production">For Music Production</a></li>
+<li><a href="#for-streamingrecording">For Streaming/Recording</a></li>
+<li><a href="#for-podcast-production">For Podcast Production</a></li>
+</ul>
+</li>
+<li><a href="#troubleshooting">Troubleshooting</a><ul>
+<li><a href="#no-sound-after-installing-pipewire">No Sound After Installing PipeWire</a></li>
+<li><a href="#high-latency-in-daw">High Latency in DAW</a></li>
+<li><a href="#obs-wont-capture-screen-wayland">OBS Won't Capture Screen (Wayland)</a></li>
+<li><a href="#bluetooth-audio-quality-poor">Bluetooth Audio Quality Poor</a></li>
+</ul>
+</li>
+<li><a href="#text-to-speech-tts-systems">Text-to-Speech (TTS) Systems</a><ul>
+<li><a href="#comparison-of-tts-engines">Comparison of TTS Engines</a></li>
+<li><a href="#piper-recommended">Piper (Recommended)</a></li>
+<li><a href="#espeak-ng-lightweight-alternative">eSpeak-NG (Lightweight Alternative)</a></li>
+<li><a href="#festival-legacy">Festival (Legacy)</a></li>
+<li><a href="#mimic-3-cloudself-hosted">Mimic 3 (Cloud/Self-Hosted)</a></li>
+</ul>
+</li>
+<li><a href="#screen-readers-accessibility">Screen Readers &amp; Accessibility</a><ul>
+<li><a href="#orca-screen-reader">Orca Screen Reader</a></li>
+<li><a href="#speech-dispatcher-tools">Speech-Dispatcher Tools</a></li>
+</ul>
+</li>
+<li><a href="#additional-resources">Additional Resources</a></li>
+</ul>
+</div>
+
+      </aside>
+      <article class="wiki-article">
+        <!-- 
+    WIKI GUIDE: audio-video.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+<h1 id="audio-video-production-setup">Audio &amp; Video Production Setup</h1>
+<p>A comprehensive guide for setting up professional audio and video workflows on Linux, covering audio servers, effects, recording, and content creation tools.</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="audio-server-comparison-pipewire-vs-pulseaudio">Audio Server Comparison: PipeWire vs PulseAudio</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="pipewire-modern-recommended">PipeWire (Modern, Recommended)</h3>
+<p><strong>PipeWire</strong> is the modern audio/video server for Linux, designed to replace both PulseAudio and JACK. It's now the default on most major distributions.</p>
+<p><strong>Advantages:</strong>
+- <strong>Low Latency:</strong> Professional-grade audio latency comparable to JACK
+- <strong>Universal Routing:</strong> Handles audio AND video streams
+- <strong>Compatibility:</strong> Works with both PulseAudio and JACK applications
+- <strong>Screen Sharing:</strong> Better Wayland support for screen capture
+- <strong>Bluetooth:</strong> Superior Bluetooth codec support (LDAC, aptX HD)</p>
+<p><strong>When to Use PipeWire:</strong>
+- Modern systems (Fedora 34+, Ubuntu 22.10+, Arch Linux)
+- Pro-audio work requiring low latency
+- Wayland desktop environments
+- Modern Bluetooth devices</p>
+<!-- Quick sub-note for this part -->
+<h3 id="pulseaudio-legacy-still-widely-used">PulseAudio (Legacy, Still Widely Used)</h3>
+<p><strong>PulseAudio</strong> is the traditional audio server, stable and well-tested.</p>
+<p><strong>Advantages:</strong>
+- <strong>Maturity:</strong> Years of refinement and stability
+- <strong>Compatibility:</strong> Works out-of-the-box on older systems
+- <strong>Documentation:</strong> Extensive troubleshooting resources</p>
+<p><strong>When to Use PulseAudio:</strong>
+- Older distributions or LTS releases
+- Maximum stability over features
+- Legacy hardware compatibility issues</p>
+<!-- Quick sub-note for this part -->
+<h3 id="checking-your-current-audio-server">Checking Your Current Audio Server</h3>
+<p>```bash</p>
+<h1 id="check-if-pipewire-is-running">Check if PipeWire is running</h1>
+<p>pactl info | grep "Server Name"</p>
+<h1 id="or-check-processes">Or check processes</h1>
+<p>ps aux | grep -E "pipewire|pulseaudio"</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="pipewire-setup-tools">PipeWire Setup &amp; Tools</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="installing-pipewire-arch">Installing PipeWire (Arch)</h3>
+<p>```bash</p>
+<h1 id="core-pipewire-packages">Core PipeWire packages</h1>
+<p>sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber</p>
+<h1 id="optional-but-recommended">Optional but recommended</h1>
+<p>sudo pacman -S pipewire-audio pipewire-v4l2 pipewire-x11-bell</p>
+<h1 id="real-time-priority-for-pro-audio">Real-time priority (for pro-audio)</h1>
+<p>sudo pacman -S realtime-privileges
+sudo usermod -aG realtime $USER</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="installing-pipewire-fedora">Installing PipeWire (Fedora)</h3>
+<p>```bash</p>
+<h1 id="usually-pre-installed-but-to-ensure-everything">Usually pre-installed, but to ensure everything:</h1>
+<p>sudo dnf install pipewire pipewire-alsa pipewire-pulseaudio wireplumber</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="installing-pipewire-debianubuntu">Installing PipeWire (Debian/Ubuntu)</h3>
+<p>```bash</p>
+<h1 id="ubuntu-2210-and-debian-12">Ubuntu 22.10+ and Debian 12+</h1>
+<p>sudo apt install pipewire pipewire-audio-client-libraries wireplumber</p>
+<h1 id="replace-pulseaudio-with-pipewire">Replace PulseAudio with PipeWire</h1>
+<p>sudo apt install pipewire-pulse</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="pipewire-control-tools">PipeWire Control Tools</h3>
+<h4 id="helvum-visual-patchbay">Helvum (Visual Patchbay)</h4>
+<p>A beautiful GTK patchbay for routing audio/video streams graphically.</p>
+<p>```bash</p>
+<h1 id="arch">Arch</h1>
+<p>sudo pacman -S helvum</p>
+<h1 id="fedora">Fedora</h1>
+<p>sudo dnf install helvum</p>
+<h1 id="flatpak-all-distros">Flatpak (all distros)</h1>
+<p>flatpak install flathub org.pipewire.Helvum</p>
+<p>```</p>
+<h4 id="qpwgraph-qt-alternative">qpwgraph (Qt Alternative)</h4>
+<p>Similar to Helvum but using Qt, inspired by QjackCtl.</p>
+<p>```bash</p>
+<h1 id="arch_1">Arch</h1>
+<p>sudo pacman -S qpwgraph</p>
+<h1 id="flatpak">Flatpak</h1>
+<p>flatpak install flathub org.rncbc.qpwgraph</p>
+<p>```</p>
+<h4 id="wireplumber-configuration">WirePlumber Configuration</h4>
+<p>WirePlumber is the session/policy manager for PipeWire.</p>
+<p>```bash</p>
+<h1 id="view-current-configuration">View current configuration</h1>
+<p>wpctl status</p>
+<h1 id="set-default-sink-output">Set default sink (output)</h1>
+<p>wpctl set-default <SINK_ID></p>
+<h1 id="adjust-volume">Adjust volume</h1>
+<p>wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="low-latency-configuration">Low-Latency Configuration</h3>
+<p>Create or edit <code>~/.config/pipewire/pipewire.conf.d/10-low-latency.conf</code>:</p>
+<p>```conf
+context.properties = {
+    default.clock.rate = 48000
+    default.clock.quantum = 256
+    default.clock.min-quantum = 128
+    default.clock.max-quantum = 512
+}</p>
+<p>```</p>
+<p>Restart PipeWire:</p>
+<p>```bash
+systemctl --user restart pipewire pipewire-pulse wireplumber</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="pulseaudio-tools-legacy">PulseAudio Tools (Legacy)</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="installing-pulseaudio">Installing PulseAudio</h3>
+<p>```bash</p>
+<h1 id="arch_2">Arch</h1>
+<p>sudo pacman -S pulseaudio pulseaudio-alsa</p>
+<h1 id="fedora_1">Fedora</h1>
+<p>sudo dnf install pulseaudio pulseaudio-utils</p>
+<h1 id="debianubuntu">Debian/Ubuntu</h1>
+<p>sudo apt install pulseaudio pavucontrol</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="pulseaudio-control-tools">PulseAudio Control Tools</h3>
+<h4 id="pavucontrol-essential-gui">pavucontrol (Essential GUI)</h4>
+<p>The standard volume and device manager for PulseAudio.</p>
+<p>```bash</p>
+<h1 id="arch_3">Arch</h1>
+<p>sudo pacman -S pavucontrol</p>
+<h1 id="debianubuntu_1">Debian/Ubuntu</h1>
+<p>sudo apt install pavucontrol</p>
+<p>```</p>
+<h4 id="command-line-controls">Command-Line Controls</h4>
+<p>```bash</p>
+<h1 id="list-sinks-outputs">List sinks (outputs)</h1>
+<p>pactl list sinks short</p>
+<h1 id="set-default-sink">Set default sink</h1>
+<p>pactl set-default-sink <SINK_NAME></p>
+<h1 id="adjust-volume_1">Adjust volume</h1>
+<p>pactl set-sink-volume @DEFAULT_SINK@ 50%</p>
+<h1 id="muteunmute">Mute/unmute</h1>
+<p>pactl set-sink-mute @DEFAULT_SINK@ toggle</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="easyeffects-audio-enhancement">EasyEffects (Audio Enhancement)</h2>
+<p><strong>EasyEffects</strong> (formerly PulseEffects) provides professional audio effects for your desktop: equalization, compression, reverb, and more.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="installation">Installation</h3>
+<p>```bash</p>
+<h1 id="arch_4">Arch</h1>
+<p>sudo pacman -S easyeffects</p>
+<h1 id="fedora_2">Fedora</h1>
+<p>sudo dnf install easyeffects</p>
+<h1 id="debianubuntu_2">Debian/Ubuntu</h1>
+<p>sudo apt install easyeffects</p>
+<h1 id="flatpak-all-distros_1">Flatpak (all distros)</h1>
+<p>flatpak install flathub com.github.wwmm.easyeffects</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="essential-plugins">Essential Plugins</h3>
+<p>```bash</p>
+<h1 id="arch-lsp-linux-studio-plugins">Arch - LSP (Linux Studio Plugins)</h1>
+<p>sudo pacman -S lsp-plugins lv2 calf</p>
+<h1 id="additional-effects">Additional effects</h1>
+<p>sudo pacman -S zam-plugins</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="popular-presets">Popular Presets</h3>
+<ul>
+<li><strong>AutoEQ:</strong> Headphone equalization based on measurements</li>
+<li>GitHub: <a href="https://github.com/jaakkopasanen/AutoEq">AutoEQ Presets</a></li>
+<li><strong>Bass Boost:</strong> Enhanced low-frequency response</li>
+<li><strong>Voice Clarity:</strong> Noise reduction and compression for calls</li>
+</ul>
+<!-- Quick sub-note for this part -->
+<h3 id="pro-tips">Pro Tips</h3>
+<ul>
+<li>Enable <strong>Crystal Gate</strong> to reduce background noise during calls</li>
+<li>Use <strong>Bass Enhancer</strong> for music without distortion</li>
+<li>Create separate presets for music, gaming, and communication</li>
+</ul>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="pro-audio-production">Pro-Audio Production</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="linux-audio-real-time-setup">Linux Audio Real-Time Setup</h3>
+<p>```bash</p>
+<h1 id="arch-install-realtime-privileges">Arch - Install realtime-privileges</h1>
+<p>sudo pacman -S realtime-privileges
+sudo usermod -aG realtime $USER</p>
+<h1 id="edit-limits">Edit limits</h1>
+<p>sudo nano /etc/security/limits.d/audio.conf</p>
+<p>```</p>
+<p>Add:</p>
+<p>```conf
+@realtime   -  rtprio     95
+@realtime   -  memlock    unlimited</p>
+<p>```</p>
+<p>Reboot to apply changes.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="jack-audio-connection-kit">JACK Audio Connection Kit</h3>
+<p>While PipeWire replaces JACK for most users, pure JACK may still be preferred for specialized studio work.</p>
+<p>```bash</p>
+<h1 id="arch_5">Arch</h1>
+<p>sudo pacman -S jack2 qjackctl</p>
+<h1 id="fedora_3">Fedora</h1>
+<p>sudo dnf install jack-audio-connection-kit qjackctl</p>
+<h1 id="using-jack-with-pipewire-recommended">Using JACK with PipeWire (recommended)</h1>
+<h1 id="pipewires-jack-compatibility-is-usually-sufficient">PipeWire's JACK compatibility is usually sufficient</h1>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="digital-audio-workstations-daws">Digital Audio Workstations (DAWs)</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="ardour-professional-open-source">Ardour (Professional, Open Source)</h3>
+<p>Full-featured DAW for recording, editing, and mixing.</p>
+<p>```bash</p>
+<h1 id="arch_6">Arch</h1>
+<p>sudo pacman -S ardour</p>
+<h1 id="flatpak_1">Flatpak</h1>
+<p>flatpak install flathub org.ardour.Ardour</p>
+<p>```</p>
+<p><strong>Best for:</strong> Multi-track recording, professional mixing, post-production</p>
+<!-- Quick sub-note for this part -->
+<h3 id="reaper-commercial-linux-friendly">Reaper (Commercial, Linux-friendly)</h3>
+<p>Industry-standard DAW with excellent Linux support.</p>
+<p>```bash</p>
+<h1 id="download-from-reaperfm">Download from reaper.fm</h1>
+<h1 id="extract-and-run-the-installer">Extract and run the installer</h1>
+<p>./install-reaper.sh</p>
+<p>```</p>
+<p><strong>Best for:</strong> Professional production, extensive plugin support, customization</p>
+<!-- Quick sub-note for this part -->
+<h3 id="lmms-beginner-friendly">LMMS (Beginner-Friendly)</h3>
+<p>Free DAW focused on electronic music production.</p>
+<p>```bash</p>
+<h1 id="arch_7">Arch</h1>
+<p>sudo pacman -S lmms</p>
+<h1 id="flatpak_2">Flatpak</h1>
+<p>flatpak install flathub io.lmms.LMMS</p>
+<p>```</p>
+<p><strong>Best for:</strong> Beat making, EDM production, beginners</p>
+<!-- Quick sub-note for this part -->
+<h3 id="bitwig-studio-commercial">Bitwig Studio (Commercial)</h3>
+<p>Modern DAW with innovative features and excellent Linux support.</p>
+<p>```bash</p>
+<h1 id="download-from-bitwigcom">Download from bitwig.com</h1>
+<h1 id="deb-package-for-debianubuntu">.deb package for Debian/Ubuntu</h1>
+<h1 id="flatpak-also-available">Flatpak also available</h1>
+<p>flatpak install flathub com.bitwig.BitwigStudio</p>
+<p>```</p>
+<p><strong>Best for:</strong> Electronic music, modular synthesis, live performance</p>
+<!-- Quick sub-note for this part -->
+<h3 id="rosegarden-midi-focused">Rosegarden (MIDI-focused)</h3>
+<p>MIDI sequencer and music composition tool.</p>
+<p>```bash</p>
+<h1 id="arch_8">Arch</h1>
+<p>sudo pacman -S rosegarden</p>
+<h1 id="debianubuntu_3">Debian/Ubuntu</h1>
+<p>sudo apt install rosegarden</p>
+<p>```</p>
+<p><strong>Best for:</strong> MIDI composition, notation, traditional scoring</p>
+<!-- Quick sub-note for this part -->
+<h3 id="audacity-audio-editing">Audacity (Audio Editing)</h3>
+<p>The classic audio editor for quick edits and recording.</p>
+<p>```bash</p>
+<h1 id="arch_9">Arch</h1>
+<p>sudo pacman -S audacity</p>
+<h1 id="flatpak_3">Flatpak</h1>
+<p>flatpak install flathub org.audacityteam.Audacity</p>
+<p>```</p>
+<p><strong>Best for:</strong> Podcast editing, simple recording, audio cleanup</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="audio-plugins-virtual-instruments">Audio Plugins &amp; Virtual Instruments</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="plugin-formats">Plugin Formats</h3>
+<ul>
+<li><strong>LV2:</strong> Linux-native plugin standard (recommended)</li>
+<li><strong>VST2/VST3:</strong> Proprietary but widely supported</li>
+<li><strong>LADSPA:</strong> Legacy Linux plugin format</li>
+</ul>
+<!-- Quick sub-note for this part -->
+<h3 id="essential-plugin-collections">Essential Plugin Collections</h3>
+<p>```bash</p>
+<h1 id="arch-comprehensive-plugin-packages">Arch - Comprehensive plugin packages</h1>
+<p>sudo pacman -S lsp-plugins # Professional effects
+sudo pacman -S calf        # Vintage-style effects
+sudo pacman -S zam-plugins # Mastering tools
+sudo pacman -S x42-plugins # Utility plugins
+sudo pacman -S mda.lv2     # Classic synths and effects</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="virtual-instruments">Virtual Instruments</h3>
+<p>```bash</p>
+<h1 id="zynaddsubfx-powerful-synthesizer">ZynAddSubFX - Powerful synthesizer</h1>
+<p>sudo pacman -S zynaddsubfx</p>
+<h1 id="yoshimi-real-time-software-synthesizer">Yoshimi - Real-time software synthesizer</h1>
+<p>sudo pacman -S yoshimi</p>
+<h1 id="helm-polyphonic-synthesizer">Helm - Polyphonic synthesizer</h1>
+<p>paru -S helm-synth-git</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="vst-support-winelinvst">VST Support (Wine/LinVST)</h3>
+<p>For Windows VST plugins:</p>
+<p>```bash</p>
+<h1 id="yabridge-windows-vst-bridge">Yabridge - Windows VST bridge</h1>
+<p>paru -S yabridge</p>
+<h1 id="configure-yabridge">Configure yabridge</h1>
+<p>yabridgectl add "$HOME/.wine/drive_c/Program Files/VSTPlugins"
+yabridgectl sync</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="video-production-streaming">Video Production &amp; Streaming</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="obs-studio-streaming-recording">OBS Studio (Streaming &amp; Recording)</h3>
+<p>The industry-standard for streaming and screen recording.</p>
+<h4 id="installation_1">Installation</h4>
+<p>```bash</p>
+<h1 id="arch_10">Arch</h1>
+<p>sudo pacman -S obs-studio</p>
+<h1 id="fedora_4">Fedora</h1>
+<p>sudo dnf install obs-studio</p>
+<h1 id="debianubuntu-official-ppa">Debian/Ubuntu (official PPA)</h1>
+<p>sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt update
+sudo apt install obs-studio</p>
+<h1 id="flatpak-all-distros_2">Flatpak (all distros)</h1>
+<p>flatpak install flathub com.obsproject.Studio</p>
+<p>```</p>
+<h4 id="essential-plugins_1">Essential Plugins</h4>
+<p>```bash</p>
+<h1 id="arch-popular-obs-plugins">Arch - Popular OBS plugins</h1>
+<p>paru -S obs-plugin-input-overlay  # Show keyboard/mouse input
+paru -S obs-plugin-looking-glass  # VM capture
+paru -S obs-vkcapture             # Vulkan game capture
+paru -S obs-backgroundremoval     # AI background removal</p>
+<h1 id="obs-websocket-remote-control">obs-websocket (remote control)</h1>
+<p>sudo pacman -S obs-websocket</p>
+<p>```</p>
+<h4 id="wayland-screen-capture">Wayland Screen Capture</h4>
+<p>```bash</p>
+<h1 id="install-pipewire-screen-capture-support">Install PipeWire screen capture support</h1>
+<p>sudo pacman -S xdg-desktop-portal xdg-desktop-portal-gtk</p>
+<h1 id="for-kde-plasma">For KDE Plasma</h1>
+<p>sudo pacman -S xdg-desktop-portal-kde</p>
+<h1 id="for-gnome">For GNOME</h1>
+<p>sudo pacman -S xdg-desktop-portal-gnome</p>
+<p>```</p>
+<h4 id="obs-configuration-tips">OBS Configuration Tips</h4>
+<ol>
+<li><strong>Settings → Output → Recording:</strong></li>
+<li>Format: <code>mkv</code> or <code>mp4</code></li>
+<li>Encoder: <code>x264</code> (CPU) or <code>NVENC/VAAPI</code> (GPU)</li>
+<li>
+<p>Quality: <code>High</code> or <code>Indistinguishable</code></p>
+</li>
+<li>
+<p><strong>Settings → Video:</strong></p>
+</li>
+<li>Base Resolution: Your monitor resolution</li>
+<li>Output Resolution: <code>1920x1080</code> for most use cases</li>
+<li>
+<p>FPS: <code>30</code> (talking head) or <code>60</code> (gaming)</p>
+</li>
+<li>
+<p><strong>Settings → Audio:</strong></p>
+</li>
+<li>Sample Rate: <code>48000 Hz</code></li>
+<li>Channels: <code>Stereo</code></li>
+</ol>
+<!-- Quick sub-note for this part -->
+<h3 id="kdenlive-video-editing">Kdenlive (Video Editing)</h3>
+<p>Professional non-linear video editor, KDE project.</p>
+<p>```bash</p>
+<h1 id="arch_11">Arch</h1>
+<p>sudo pacman -S kdenlive</p>
+<h1 id="flatpak_4">Flatpak</h1>
+<p>flatpak install flathub org.kde.kdenlive</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="davinci-resolve-professional-commercial">DaVinci Resolve (Professional, Commercial)</h3>
+<p>Industry-standard color grading and editing suite.</p>
+<p>```bash</p>
+<h1 id="download-from-blackmagicdesigncom">Download from blackmagicdesign.com</h1>
+<h1 id="requires-manual-installation">Requires manual installation</h1>
+<h1 id="works-best-on-nvidia-gpus">Works best on NVIDIA GPUs</h1>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="blender-3d-video-editing">Blender (3D &amp; Video Editing)</h3>
+<p>Excellent video sequence editor in addition to 3D capabilities.</p>
+<p>```bash</p>
+<h1 id="arch_12">Arch</h1>
+<p>sudo pacman -S blender</p>
+<h1 id="flatpak_5">Flatpak</h1>
+<p>flatpak install flathub org.blender.Blender</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="shotcut-beginner-friendly">Shotcut (Beginner-Friendly)</h3>
+<p>Simple, cross-platform video editor.</p>
+<p>```bash</p>
+<h1 id="arch_13">Arch</h1>
+<p>sudo pacman -S shotcut</p>
+<h1 id="flatpak_6">Flatpak</h1>
+<p>flatpak install flathub org.shotcut.Shotcut</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="screen-recording-capture">Screen Recording &amp; Capture</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="simplescreenrecorder">SimpleScreenRecorder</h3>
+<p>Lightweight, efficient screen recorder.</p>
+<p>```bash</p>
+<h1 id="arch_14">Arch</h1>
+<p>sudo pacman -S simplescreenrecorder</p>
+<h1 id="debianubuntu_4">Debian/Ubuntu</h1>
+<p>sudo apt install simplescreenrecorder</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="gpu-screen-record">GPU Screen Record</h3>
+<p>Minimal GPU-accelerated screen recorder.</p>
+<p>```bash</p>
+<h1 id="arch-aur">Arch (AUR)</h1>
+<p>paru -S gpu-screen-recorder-git</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="kooha-wayland-native">Kooha (Wayland-native)</h3>
+<p>GNOME-style screen recorder for Wayland.</p>
+<p>```bash</p>
+<h1 id="flatpak_7">Flatpak</h1>
+<p>flatpak install flathub io.github.seadve.Kooha</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="additional-tools">Additional Tools</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="video-converters">Video Converters</h3>
+<p>```bash</p>
+<h1 id="ffmpeg-essential">FFmpeg (essential)</h1>
+<p>sudo pacman -S ffmpeg</p>
+<h1 id="handbrake-gui-converter">HandBrake (GUI converter)</h1>
+<p>sudo pacman -S handbrake</p>
+<h1 id="flatpak-handbrake">Flatpak HandBrake</h1>
+<p>flatpak install flathub fr.handbrake.ghb</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="audio-converters">Audio Converters</h3>
+<p>```bash</p>
+<h1 id="soundconverter">SoundConverter</h1>
+<p>sudo pacman -S soundconverter</p>
+<h1 id="freac-comprehensive">fre:ac (comprehensive)</h1>
+<p>flatpak install flathub org.freac.freac</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="noise-reduction">Noise Reduction</h3>
+<p>```bash</p>
+<h1 id="noisetorch-real-time-noise-suppression">NoiseTorch (real-time noise suppression)</h1>
+<p>paru -S noisetorch</p>
+<h1 id="run-noisetorch">Run NoiseTorch</h1>
+<p>noisetorch -i</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="quick-start-guide">Quick Start Guide</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="for-music-production">For Music Production</h3>
+<ol>
+<li>Install <strong>PipeWire</strong> + <strong>EasyEffects</strong></li>
+<li>Configure <strong>real-time privileges</strong></li>
+<li>Install <strong>Ardour</strong> or <strong>Reaper</strong></li>
+<li>Add <strong>LSP plugins</strong> and <strong>Calf</strong></li>
+<li>Use <strong>Helvum</strong> for routing</li>
+</ol>
+<!-- Quick sub-note for this part -->
+<h3 id="for-streamingrecording">For Streaming/Recording</h3>
+<ol>
+<li>Install <strong>OBS Studio</strong></li>
+<li>Configure <strong>PipeWire</strong> for screen sharing</li>
+<li>Install <strong>EasyEffects</strong> for mic processing</li>
+<li>Add <strong>OBS plugins</strong> (input-overlay, etc.)</li>
+<li>Test with <strong>SimpleScreenRecorder</strong> first</li>
+</ol>
+<!-- Quick sub-note for this part -->
+<h3 id="for-podcast-production">For Podcast Production</h3>
+<ol>
+<li>Install <strong>Audacity</strong></li>
+<li>Set up <strong>EasyEffects</strong> with noise gate and compression</li>
+<li>Use <strong>PipeWire</strong> loopback for recording system audio</li>
+<li>Export with <strong>FFmpeg</strong> for final processing</li>
+</ol>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="troubleshooting">Troubleshooting</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="no-sound-after-installing-pipewire">No Sound After Installing PipeWire</h3>
+<p>```bash</p>
+<h1 id="restart-pipewire-services">Restart PipeWire services</h1>
+<p>systemctl --user restart pipewire pipewire-pulse wireplumber</p>
+<h1 id="check-status">Check status</h1>
+<p>systemctl --user status pipewire</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="high-latency-in-daw">High Latency in DAW</h3>
+<p>```bash</p>
+<h1 id="apply-low-latency-configuration-see-pipewire-section">Apply low-latency configuration (see PipeWire section)</h1>
+<h1 id="ensure-real-time-privileges-are-configured">Ensure real-time privileges are configured</h1>
+<p>groups | grep realtime</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="obs-wont-capture-screen-wayland">OBS Won't Capture Screen (Wayland)</h3>
+<p>```bash</p>
+<h1 id="ensure-portals-are-installed">Ensure portals are installed</h1>
+<p>sudo pacman -S xdg-desktop-portal-kde  # or -gnome, -wlr</p>
+<h1 id="restart-session-or-reboot">Restart session or reboot</h1>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="bluetooth-audio-quality-poor">Bluetooth Audio Quality Poor</h3>
+<p>```bash</p>
+<h1 id="check-codec-in-use">Check codec in use</h1>
+<p>pactl list | grep -A2 'Codec'</p>
+<h1 id="install-pipewire-bluetooth-support">Install PipeWire Bluetooth support</h1>
+<p>sudo pacman -S pipewire-pulse libldac</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="text-to-speech-tts-systems">Text-to-Speech (TTS) Systems</h2>
+<p>Linux offers several text-to-speech engines for accessibility, voice assistants, and screen readers.</p>
+<!-- Quick sub-note for this part -->
+<h3 id="comparison-of-tts-engines">Comparison of TTS Engines</h3>
+<p>| Engine | Quality | Speed | Resource Usage | Best For |
+|--------|---------|-------|----------------|----------|
+| <strong>Piper</strong> | Excellent | Fast | Medium | Modern neural TTS, best quality |
+| <strong>Festival</strong> | Basic | Slow | Low | Legacy compatibility |
+| <strong>eSpeak-NG</strong> | Good | Very Fast | Very Low | Speed and efficiency |
+| <strong>Mimic 3</strong> | Excellent | Medium | High | Cloud-based, high quality |</p>
+<!-- Quick sub-note for this part -->
+<h3 id="piper-recommended">Piper (Recommended)</h3>
+<p><strong>Piper</strong> is a fast, local neural text-to-speech system that produces high-quality, natural-sounding voices. It uses ONNX models and provides excellent results without requiring cloud services.</p>
+<h4 id="installation_2">Installation</h4>
+<p>```bash</p>
+<h1 id="arch-install-piper">Arch - Install Piper</h1>
+<p>sudo pacman -S piper-tts</p>
+<h1 id="install-voice-models-minimal-single-us-english-voice">Install voice models (minimal - single US English voice)</h1>
+<p>paru -S piper-voices-minimal</p>
+<h1 id="or-install-more-comprehensive-us-english-voices">Or install more comprehensive US English voices</h1>
+<p>paru -S piper-voices-en-us</p>
+<h1 id="other-languages-available">Other languages available:</h1>
+<h1 id="piper-voices-en-gb-piper-voices-de-de-piper-voices-es-es-etc">piper-voices-en-gb, piper-voices-de-de, piper-voices-es-es, etc.</h1>
+<p>```</p>
+<h4 id="standalone-usage">Standalone Usage</h4>
+<p>```bash</p>
+<h1 id="basic-text-to-speech">Basic text-to-speech</h1>
+<p>echo "Hello, this is Piper speaking" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file output.wav</p>
+<h1 id="play-directly-requires-aplay-or-paplay">Play directly (requires aplay or paplay)</h1>
+<p>echo "Welcome to Linux" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | aplay</p>
+<p>```</p>
+<h4 id="integrating-with-speech-dispatcher">Integrating with Speech-Dispatcher</h4>
+<p>Speech-Dispatcher is the standard interface for TTS on Linux, used by screen readers and accessibility tools.</p>
+<p><strong>Step 1: Create Piper configuration</strong></p>
+<p>```bash
+sudo nano /etc/speech-dispatcher/modules/piper-generic.conf</p>
+<p>```</p>
+<p>Add this configuration:</p>
+<p>```conf</p>
+<h1 id="piper-tts-module-configuration">Piper TTS module configuration</h1>
+<p>Debug 0</p>
+<p>GenericExecuteSynth \
+"printf %s '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | $PLAY_COMMAND"</p>
+<p>GenericCmdDependency "piper-tts"
+GenericSoundIconFolder "/usr/share/sounds/sound-icons/"</p>
+<p>GenericPunctNone ""
+GenericPunctSome ""
+GenericPunctMost ""
+GenericPunctAll ""</p>
+<p>AddVoice "en" "MALE1" "en_US-lessac-medium"
+AddVoice "en" "FEMALE1" "en_US-lessac-medium"</p>
+<p>DefaultVoice "en_US-lessac-medium"</p>
+<p>```</p>
+<p><strong>Step 2: Enable Piper in Speech-Dispatcher</strong></p>
+<p>```bash
+sudo nano /etc/speech-dispatcher/speechd.conf</p>
+<p>```</p>
+<p>Find and modify these lines (around line 273-301):</p>
+<p>```conf</p>
+<h1 id="comment-out-festival-or-other-default">Comment out Festival (or other default)</h1>
+<h1 id="addmodule-festival-sd_festival-festivalconf">AddModule "festival"                 "sd_festival"  "festival.conf"</h1>
+<h1 id="add-piper-module">Add Piper module</h1>
+<p>AddModule "piper-generic"            "sd_generic"   "piper-generic.conf"</p>
+<h1 id="set-piper-as-default">Set Piper as default</h1>
+<p>DefaultModule piper-generic</p>
+<p>```</p>
+<p><strong>Step 3: Restart Speech-Dispatcher</strong></p>
+<p>```bash
+systemctl --user restart speech-dispatcher</p>
+<p>```</p>
+<p><strong>Step 4: Test it</strong></p>
+<p>```bash</p>
+<h1 id="test-with-spd-say">Test with spd-say</h1>
+<p>spd-say "Hello, this is Piper speaking through speech dispatcher"</p>
+<h1 id="test-with-different-voice-types">Test with different voice types</h1>
+<p>spd-say -t MALE1 "This is a male voice"
+spd-say -t FEMALE1 "This is a female voice"</p>
+<p>```</p>
+<h4 id="available-voice-models">Available Voice Models</h4>
+<p>After installing voice packages, models are typically located in:</p>
+<p>```</p>
+<p>/usr/share/piper-voices/[language]/[locale]/[voice]/[quality]/</p>
+<p>```</p>
+<p>List available models:</p>
+<p>```bash
+find /usr/share/piper-voices -name "*.onnx"</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="espeak-ng-lightweight-alternative">eSpeak-NG (Lightweight Alternative)</h3>
+<p>Fast, lightweight TTS engine, great for low-resource systems.</p>
+<p>```bash</p>
+<h1 id="arch_15">Arch</h1>
+<p>sudo pacman -S espeak-ng</p>
+<h1 id="test-it">Test it</h1>
+<p>espeak-ng "Hello from eSpeak"</p>
+<h1 id="with-speech-dispatcher-usually-pre-configured">With speech-dispatcher (usually pre-configured)</h1>
+<p>spd-say -o espeak-ng "Testing espeak"</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="festival-legacy">Festival (Legacy)</h3>
+<p>Classic TTS engine, often the default but lower quality.</p>
+<p>```bash</p>
+<h1 id="arch_16">Arch</h1>
+<p>sudo pacman -S festival festival-us</p>
+<h1 id="test-it_1">Test it</h1>
+<p>echo "Hello from Festival" | festival --tts</p>
+<h1 id="usually-pre-configured-in-speech-dispatcher">Usually pre-configured in speech-dispatcher</h1>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="mimic-3-cloudself-hosted">Mimic 3 (Cloud/Self-Hosted)</h3>
+<p>High-quality neural TTS, can run locally or via remote server.</p>
+<p>```bash</p>
+<h1 id="install-as-server-requires-python">Install as server (requires Python)</h1>
+<p>pip install mycroft-mimic3-tts</p>
+<h1 id="run-local-server">Run local server</h1>
+<p>mimic3-server</p>
+<h1 id="configure-speech-dispatcher-to-use-mimic3-genericconf">Configure speech-dispatcher to use mimic3-generic.conf</h1>
+<h1 id="similar-process-to-piper-configuration-above">(Similar process to Piper configuration above)</h1>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="screen-readers-accessibility">Screen Readers &amp; Accessibility</h2>
+<!-- Quick sub-note for this part -->
+<h3 id="orca-screen-reader">Orca Screen Reader</h3>
+<p>GNOME's screen reader, integrates with speech-dispatcher.</p>
+<p>```bash</p>
+<h1 id="arch_17">Arch</h1>
+<p>sudo pacman -S orca</p>
+<h1 id="launch">Launch</h1>
+<p>orca --setup</p>
+<h1 id="enable-on-login">Enable on login</h1>
+<p>gsettings set org.gnome.desktop.a11y.applications screen-reader-enabled true</p>
+<p>```</p>
+<!-- Quick sub-note for this part -->
+<h3 id="speech-dispatcher-tools">Speech-Dispatcher Tools</h3>
+<p>```bash</p>
+<h1 id="list-available-output-modules">List available output modules</h1>
+<p>spd-say -O</p>
+<h1 id="set-volume">Set volume</h1>
+<p>spd-say -i 100 "Maximum volume"
+spd-say -i 50 "Half volume"</p>
+<h1 id="set-speaking-rate">Set speaking rate</h1>
+<p>spd-say -r 50 "Faster speech"
+spd-say -r -50 "Slower speech"</p>
+<h1 id="list-voices">List voices</h1>
+<p>spd-say -L</p>
+<p>```</p>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="additional-resources">Additional Resources</h2>
+<ul>
+<li><strong>Arch Wiki - PipeWire:</strong> <a href="https://wiki.archlinux.org/title/PipeWire">wiki.archlinux.org/title/PipeWire</a></li>
+<li><strong>Arch Wiki - Pro Audio:</strong> <a href="https://wiki.archlinux.org/title/Professional_audio">wiki.archlinux.org/title/Professional_audio</a></li>
+<li><strong>OBS Project:</strong> <a href="https://obsproject.com">obsproject.com</a></li>
+<li><strong>LinuxAudio.org:</strong> <a href="https://linuxaudio.org">linuxaudio.org</a></li>
+<li><strong>Linux Musicians Forum:</strong> <a href="https://linuxmusicians.com">linuxmusicians.com</a></li>
+<li><strong>Unfa on YouTube:</strong> Excellent Linux audio production tutorials</li>
+</ul>
+<hr />
+<p><strong>Pro Tip:</strong> Most modern distributions ship with PipeWire by default. If you're unsure, stick with PipeWire—it's the future of Linux audio/video handling and provides the best overall experience for both casual users and professionals.</p>
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+      </article>
+    </main>
+
+    <script src="../script.js"></script>
+    <script type="text/plain" id="md-content">
+<!-- 
+    WIKI GUIDE: audio-video.md
+    This file contains my notes and setup steps. 
+    Feel free to tweak it for your own distro! 
+-->
+
+# Audio & Video Production Setup 
+
+A comprehensive guide for setting up professional audio and video workflows on Linux, covering audio servers, effects, recording, and content creation tools.
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Audio Server Comparison: PipeWire vs PulseAudio
+
+<!-- Quick sub-note for this part -->
+### PipeWire (Modern, Recommended)
+**PipeWire** is the modern audio/video server for Linux, designed to replace both PulseAudio and JACK. It's now the default on most major distributions.
+
+**Advantages:**
+- **Low Latency:** Professional-grade audio latency comparable to JACK
+- **Universal Routing:** Handles audio AND video streams
+- **Compatibility:** Works with both PulseAudio and JACK applications
+- **Screen Sharing:** Better Wayland support for screen capture
+- **Bluetooth:** Superior Bluetooth codec support (LDAC, aptX HD)
+
+**When to Use PipeWire:**
+- Modern systems (Fedora 34+, Ubuntu 22.10+, Arch Linux)
+- Pro-audio work requiring low latency
+- Wayland desktop environments
+- Modern Bluetooth devices
+
+<!-- Quick sub-note for this part -->
+### PulseAudio (Legacy, Still Widely Used)
+**PulseAudio** is the traditional audio server, stable and well-tested.
+
+**Advantages:**
+- **Maturity:** Years of refinement and stability
+- **Compatibility:** Works out-of-the-box on older systems
+- **Documentation:** Extensive troubleshooting resources
+
+**When to Use PulseAudio:**
+- Older distributions or LTS releases
+- Maximum stability over features
+- Legacy hardware compatibility issues
+
+<!-- Quick sub-note for this part -->
+### Checking Your Current Audio Server
+
+```bash
+# Check if PipeWire is running
+pactl info | grep "Server Name"
+
+# Or check processes
+ps aux | grep -E "pipewire|pulseaudio"
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  PipeWire Setup & Tools
+
+<!-- Quick sub-note for this part -->
+### Installing PipeWire (Arch)
+
+```bash
+# Core PipeWire packages
+sudo pacman -S pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber
+
+# Optional but recommended
+sudo pacman -S pipewire-audio pipewire-v4l2 pipewire-x11-bell
+
+# Real-time priority (for pro-audio)
+sudo pacman -S realtime-privileges
+sudo usermod -aG realtime $USER
+
+```
+
+<!-- Quick sub-note for this part -->
+### Installing PipeWire (Fedora)
+
+```bash
+# Usually pre-installed, but to ensure everything:
+sudo dnf install pipewire pipewire-alsa pipewire-pulseaudio wireplumber
+
+```
+
+<!-- Quick sub-note for this part -->
+### Installing PipeWire (Debian/Ubuntu)
+
+```bash
+# Ubuntu 22.10+ and Debian 12+
+sudo apt install pipewire pipewire-audio-client-libraries wireplumber
+
+# Replace PulseAudio with PipeWire
+sudo apt install pipewire-pulse
+
+```
+
+<!-- Quick sub-note for this part -->
+### PipeWire Control Tools
+
+#### Helvum (Visual Patchbay)
+A beautiful GTK patchbay for routing audio/video streams graphically.
+
+```bash
+# Arch
+sudo pacman -S helvum
+
+# Fedora
+sudo dnf install helvum
+
+# Flatpak (all distros)
+flatpak install flathub org.pipewire.Helvum
+
+```
+
+#### qpwgraph (Qt Alternative)
+Similar to Helvum but using Qt, inspired by QjackCtl.
+
+```bash
+# Arch
+sudo pacman -S qpwgraph
+
+# Flatpak
+flatpak install flathub org.rncbc.qpwgraph
+
+```
+
+#### WirePlumber Configuration
+WirePlumber is the session/policy manager for PipeWire.
+
+```bash
+# View current configuration
+wpctl status
+
+# Set default sink (output)
+wpctl set-default <SINK_ID>
+
+# Adjust volume
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 50%
+
+```
+
+<!-- Quick sub-note for this part -->
+### Low-Latency Configuration
+Create or edit `~/.config/pipewire/pipewire.conf.d/10-low-latency.conf`:
+
+```conf
+context.properties = {
+    default.clock.rate = 48000
+    default.clock.quantum = 256
+    default.clock.min-quantum = 128
+    default.clock.max-quantum = 512
+}
+
+```
+
+Restart PipeWire:
+
+```bash
+systemctl --user restart pipewire pipewire-pulse wireplumber
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  PulseAudio Tools (Legacy)
+
+<!-- Quick sub-note for this part -->
+### Installing PulseAudio
+
+```bash
+# Arch
+sudo pacman -S pulseaudio pulseaudio-alsa
+
+# Fedora
+sudo dnf install pulseaudio pulseaudio-utils
+
+# Debian/Ubuntu
+sudo apt install pulseaudio pavucontrol
+
+```
+
+<!-- Quick sub-note for this part -->
+### PulseAudio Control Tools
+
+#### pavucontrol (Essential GUI)
+The standard volume and device manager for PulseAudio.
+
+```bash
+# Arch
+sudo pacman -S pavucontrol
+
+# Debian/Ubuntu
+sudo apt install pavucontrol
+
+```
+
+#### Command-Line Controls
+
+```bash
+# List sinks (outputs)
+pactl list sinks short
+
+# Set default sink
+pactl set-default-sink <SINK_NAME>
+
+# Adjust volume
+pactl set-sink-volume @DEFAULT_SINK@ 50%
+
+# Mute/unmute
+pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  EasyEffects (Audio Enhancement)
+
+**EasyEffects** (formerly PulseEffects) provides professional audio effects for your desktop: equalization, compression, reverb, and more.
+
+<!-- Quick sub-note for this part -->
+### Installation
+
+```bash
+# Arch
+sudo pacman -S easyeffects
+
+# Fedora
+sudo dnf install easyeffects
+
+# Debian/Ubuntu
+sudo apt install easyeffects
+
+# Flatpak (all distros)
+flatpak install flathub com.github.wwmm.easyeffects
+
+```
+
+<!-- Quick sub-note for this part -->
+### Essential Plugins
+
+```bash
+# Arch - LSP (Linux Studio Plugins)
+sudo pacman -S lsp-plugins lv2 calf
+
+# Additional effects
+sudo pacman -S zam-plugins
+
+```
+
+<!-- Quick sub-note for this part -->
+### Popular Presets
+- **AutoEQ:** Headphone equalization based on measurements
+  - GitHub: [AutoEQ Presets](https://github.com/jaakkopasanen/AutoEq)
+- **Bass Boost:** Enhanced low-frequency response
+- **Voice Clarity:** Noise reduction and compression for calls
+
+<!-- Quick sub-note for this part -->
+### Pro Tips
+- Enable **Crystal Gate** to reduce background noise during calls
+- Use **Bass Enhancer** for music without distortion
+- Create separate presets for music, gaming, and communication
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Pro-Audio Production
+
+<!-- Quick sub-note for this part -->
+### Linux Audio Real-Time Setup
+
+```bash
+# Arch - Install realtime-privileges
+sudo pacman -S realtime-privileges
+sudo usermod -aG realtime $USER
+
+# Edit limits
+sudo nano /etc/security/limits.d/audio.conf
+
+```
+
+Add:
+
+```conf
+@realtime   -  rtprio     95
+@realtime   -  memlock    unlimited
+
+```
+
+Reboot to apply changes.
+
+<!-- Quick sub-note for this part -->
+### JACK Audio Connection Kit
+While PipeWire replaces JACK for most users, pure JACK may still be preferred for specialized studio work.
+
+```bash
+# Arch
+sudo pacman -S jack2 qjackctl
+
+# Fedora
+sudo dnf install jack-audio-connection-kit qjackctl
+
+# Using JACK with PipeWire (recommended)
+# PipeWire's JACK compatibility is usually sufficient
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Digital Audio Workstations (DAWs)
+
+<!-- Quick sub-note for this part -->
+### Ardour (Professional, Open Source)
+Full-featured DAW for recording, editing, and mixing.
+
+```bash
+# Arch
+sudo pacman -S ardour
+
+# Flatpak
+flatpak install flathub org.ardour.Ardour
+
+```
+
+**Best for:** Multi-track recording, professional mixing, post-production
+
+<!-- Quick sub-note for this part -->
+### Reaper (Commercial, Linux-friendly)
+Industry-standard DAW with excellent Linux support.
+
+```bash
+# Download from reaper.fm
+# Extract and run the installer
+./install-reaper.sh
+
+```
+
+**Best for:** Professional production, extensive plugin support, customization
+
+<!-- Quick sub-note for this part -->
+### LMMS (Beginner-Friendly)
+Free DAW focused on electronic music production.
+
+```bash
+# Arch
+sudo pacman -S lmms
+
+# Flatpak
+flatpak install flathub io.lmms.LMMS
+
+```
+
+**Best for:** Beat making, EDM production, beginners
+
+<!-- Quick sub-note for this part -->
+### Bitwig Studio (Commercial)
+Modern DAW with innovative features and excellent Linux support.
+
+```bash
+# Download from bitwig.com
+# .deb package for Debian/Ubuntu
+# Flatpak also available
+flatpak install flathub com.bitwig.BitwigStudio
+
+```
+
+**Best for:** Electronic music, modular synthesis, live performance
+
+<!-- Quick sub-note for this part -->
+### Rosegarden (MIDI-focused)
+MIDI sequencer and music composition tool.
+
+```bash
+# Arch
+sudo pacman -S rosegarden
+
+# Debian/Ubuntu
+sudo apt install rosegarden
+
+```
+
+**Best for:** MIDI composition, notation, traditional scoring
+
+<!-- Quick sub-note for this part -->
+### Audacity (Audio Editing)
+The classic audio editor for quick edits and recording.
+
+```bash
+# Arch
+sudo pacman -S audacity
+
+# Flatpak
+flatpak install flathub org.audacityteam.Audacity
+
+```
+
+**Best for:** Podcast editing, simple recording, audio cleanup
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Audio Plugins & Virtual Instruments
+
+<!-- Quick sub-note for this part -->
+### Plugin Formats
+- **LV2:** Linux-native plugin standard (recommended)
+- **VST2/VST3:** Proprietary but widely supported
+- **LADSPA:** Legacy Linux plugin format
+
+<!-- Quick sub-note for this part -->
+### Essential Plugin Collections
+
+```bash
+# Arch - Comprehensive plugin packages
+sudo pacman -S lsp-plugins # Professional effects
+sudo pacman -S calf        # Vintage-style effects
+sudo pacman -S zam-plugins # Mastering tools
+sudo pacman -S x42-plugins # Utility plugins
+sudo pacman -S mda.lv2     # Classic synths and effects
+
+```
+
+<!-- Quick sub-note for this part -->
+### Virtual Instruments
+
+```bash
+# ZynAddSubFX - Powerful synthesizer
+sudo pacman -S zynaddsubfx
+
+# Yoshimi - Real-time software synthesizer
+sudo pacman -S yoshimi
+
+# Helm - Polyphonic synthesizer
+paru -S helm-synth-git
+
+```
+
+<!-- Quick sub-note for this part -->
+### VST Support (Wine/LinVST)
+For Windows VST plugins:
+
+```bash
+# Yabridge - Windows VST bridge
+paru -S yabridge
+
+# Configure yabridge
+yabridgectl add "$HOME/.wine/drive_c/Program Files/VSTPlugins"
+yabridgectl sync
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Video Production & Streaming
+
+<!-- Quick sub-note for this part -->
+### OBS Studio (Streaming & Recording)
+The industry-standard for streaming and screen recording.
+
+#### Installation
+
+```bash
+# Arch
+sudo pacman -S obs-studio
+
+# Fedora
+sudo dnf install obs-studio
+
+# Debian/Ubuntu (official PPA)
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt update
+sudo apt install obs-studio
+
+# Flatpak (all distros)
+flatpak install flathub com.obsproject.Studio
+
+```
+
+#### Essential Plugins
+
+```bash
+# Arch - Popular OBS plugins
+paru -S obs-plugin-input-overlay  # Show keyboard/mouse input
+paru -S obs-plugin-looking-glass  # VM capture
+paru -S obs-vkcapture             # Vulkan game capture
+paru -S obs-backgroundremoval     # AI background removal
+
+# obs-websocket (remote control)
+sudo pacman -S obs-websocket
+
+```
+
+#### Wayland Screen Capture
+
+```bash
+# Install PipeWire screen capture support
+sudo pacman -S xdg-desktop-portal xdg-desktop-portal-gtk
+
+# For KDE Plasma
+sudo pacman -S xdg-desktop-portal-kde
+
+# For GNOME
+sudo pacman -S xdg-desktop-portal-gnome
+
+```
+
+#### OBS Configuration Tips
+1. **Settings → Output → Recording:**
+   - Format: `mkv` or `mp4`
+   - Encoder: `x264` (CPU) or `NVENC/VAAPI` (GPU)
+   - Quality: `High` or `Indistinguishable`
+
+2. **Settings → Video:**
+   - Base Resolution: Your monitor resolution
+   - Output Resolution: `1920x1080` for most use cases
+   - FPS: `30` (talking head) or `60` (gaming)
+
+3. **Settings → Audio:**
+   - Sample Rate: `48000 Hz`
+   - Channels: `Stereo`
+
+<!-- Quick sub-note for this part -->
+### Kdenlive (Video Editing)
+Professional non-linear video editor, KDE project.
+
+```bash
+# Arch
+sudo pacman -S kdenlive
+
+# Flatpak
+flatpak install flathub org.kde.kdenlive
+
+```
+
+<!-- Quick sub-note for this part -->
+### DaVinci Resolve (Professional, Commercial)
+Industry-standard color grading and editing suite.
+
+```bash
+# Download from blackmagicdesign.com
+# Requires manual installation
+# Works best on NVIDIA GPUs
+
+```
+
+<!-- Quick sub-note for this part -->
+### Blender (3D & Video Editing)
+Excellent video sequence editor in addition to 3D capabilities.
+
+```bash
+# Arch
+sudo pacman -S blender
+
+# Flatpak
+flatpak install flathub org.blender.Blender
+
+```
+
+<!-- Quick sub-note for this part -->
+### Shotcut (Beginner-Friendly)
+Simple, cross-platform video editor.
+
+```bash
+# Arch
+sudo pacman -S shotcut
+
+# Flatpak
+flatpak install flathub org.shotcut.Shotcut
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Screen Recording & Capture
+
+<!-- Quick sub-note for this part -->
+### SimpleScreenRecorder
+Lightweight, efficient screen recorder.
+
+```bash
+# Arch
+sudo pacman -S simplescreenrecorder
+
+# Debian/Ubuntu
+sudo apt install simplescreenrecorder
+
+```
+
+<!-- Quick sub-note for this part -->
+### GPU Screen Record
+Minimal GPU-accelerated screen recorder.
+
+```bash
+# Arch (AUR)
+paru -S gpu-screen-recorder-git
+
+```
+
+<!-- Quick sub-note for this part -->
+### Kooha (Wayland-native)
+GNOME-style screen recorder for Wayland.
+
+```bash
+# Flatpak
+flatpak install flathub io.github.seadve.Kooha
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Additional Tools
+
+<!-- Quick sub-note for this part -->
+### Video Converters
+
+```bash
+# FFmpeg (essential)
+sudo pacman -S ffmpeg
+
+# HandBrake (GUI converter)
+sudo pacman -S handbrake
+
+# Flatpak HandBrake
+flatpak install flathub fr.handbrake.ghb
+
+```
+
+<!-- Quick sub-note for this part -->
+### Audio Converters
+
+```bash
+# SoundConverter
+sudo pacman -S soundconverter
+
+# fre:ac (comprehensive)
+flatpak install flathub org.freac.freac
+
+```
+
+<!-- Quick sub-note for this part -->
+### Noise Reduction
+
+```bash
+# NoiseTorch (real-time noise suppression)
+paru -S noisetorch
+
+# Run NoiseTorch
+noisetorch -i
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Quick Start Guide
+
+<!-- Quick sub-note for this part -->
+### For Music Production
+1. Install **PipeWire** + **EasyEffects**
+2. Configure **real-time privileges**
+3. Install **Ardour** or **Reaper**
+4. Add **LSP plugins** and **Calf**
+5. Use **Helvum** for routing
+
+<!-- Quick sub-note for this part -->
+### For Streaming/Recording
+1. Install **OBS Studio**
+2. Configure **PipeWire** for screen sharing
+3. Install **EasyEffects** for mic processing
+4. Add **OBS plugins** (input-overlay, etc.)
+5. Test with **SimpleScreenRecorder** first
+
+<!-- Quick sub-note for this part -->
+### For Podcast Production
+1. Install **Audacity**
+2. Set up **EasyEffects** with noise gate and compression
+3. Use **PipeWire** loopback for recording system audio
+4. Export with **FFmpeg** for final processing
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Troubleshooting
+
+<!-- Quick sub-note for this part -->
+### No Sound After Installing PipeWire
+
+```bash
+# Restart PipeWire services
+systemctl --user restart pipewire pipewire-pulse wireplumber
+
+# Check status
+systemctl --user status pipewire
+
+```
+
+<!-- Quick sub-note for this part -->
+### High Latency in DAW
+
+```bash
+# Apply low-latency configuration (see PipeWire section)
+# Ensure real-time privileges are configured
+groups | grep realtime
+
+```
+
+<!-- Quick sub-note for this part -->
+### OBS Won't Capture Screen (Wayland)
+
+```bash
+# Ensure portals are installed
+sudo pacman -S xdg-desktop-portal-kde  # or -gnome, -wlr
+
+# Restart session or reboot
+
+```
+
+<!-- Quick sub-note for this part -->
+### Bluetooth Audio Quality Poor
+
+```bash
+# Check codec in use
+pactl list | grep -A2 'Codec'
+
+# Install PipeWire Bluetooth support
+sudo pacman -S pipewire-pulse libldac
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Text-to-Speech (TTS) Systems
+
+Linux offers several text-to-speech engines for accessibility, voice assistants, and screen readers.
+
+<!-- Quick sub-note for this part -->
+### Comparison of TTS Engines
+
+| Engine | Quality | Speed | Resource Usage | Best For |
+|--------|---------|-------|----------------|----------|
+| **Piper** | Excellent | Fast | Medium | Modern neural TTS, best quality |
+| **Festival** | Basic | Slow | Low | Legacy compatibility |
+| **eSpeak-NG** | Good | Very Fast | Very Low | Speed and efficiency |
+| **Mimic 3** | Excellent | Medium | High | Cloud-based, high quality |
+
+<!-- Quick sub-note for this part -->
+### Piper (Recommended)
+
+**Piper** is a fast, local neural text-to-speech system that produces high-quality, natural-sounding voices. It uses ONNX models and provides excellent results without requiring cloud services.
+
+#### Installation
+
+```bash
+# Arch - Install Piper
+sudo pacman -S piper-tts
+
+# Install voice models (minimal - single US English voice)
+paru -S piper-voices-minimal
+
+# Or install more comprehensive US English voices
+paru -S piper-voices-en-us
+
+# Other languages available:
+# piper-voices-en-gb, piper-voices-de-de, piper-voices-es-es, etc.
+
+```
+
+#### Standalone Usage
+
+```bash
+# Basic text-to-speech
+echo "Hello, this is Piper speaking" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file output.wav
+
+# Play directly (requires aplay or paplay)
+echo "Welcome to Linux" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | aplay
+
+```
+
+#### Integrating with Speech-Dispatcher
+
+Speech-Dispatcher is the standard interface for TTS on Linux, used by screen readers and accessibility tools.
+
+**Step 1: Create Piper configuration**
+
+```bash
+sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
+
+```
+
+Add this configuration:
+
+```conf
+# Piper TTS module configuration
+
+Debug 0
+
+GenericExecuteSynth \
+"printf %s '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/medium/en_US-lessac-medium.onnx --output_file - | $PLAY_COMMAND"
+
+GenericCmdDependency "piper-tts"
+GenericSoundIconFolder "/usr/share/sounds/sound-icons/"
+
+GenericPunctNone ""
+GenericPunctSome ""
+GenericPunctMost ""
+GenericPunctAll ""
+
+AddVoice "en" "MALE1" "en_US-lessac-medium"
+AddVoice "en" "FEMALE1" "en_US-lessac-medium"
+
+DefaultVoice "en_US-lessac-medium"
+
+```
+
+**Step 2: Enable Piper in Speech-Dispatcher**
+
+```bash
+sudo nano /etc/speech-dispatcher/speechd.conf
+
+```
+
+Find and modify these lines (around line 273-301):
+
+```conf
+# Comment out Festival (or other default)
+#AddModule "festival"                 "sd_festival"  "festival.conf"
+
+# Add Piper module
+AddModule "piper-generic"            "sd_generic"   "piper-generic.conf"
+
+# Set Piper as default
+DefaultModule piper-generic
+
+```
+
+**Step 3: Restart Speech-Dispatcher**
+
+```bash
+systemctl --user restart speech-dispatcher
+
+```
+
+**Step 4: Test it**
+
+```bash
+# Test with spd-say
+spd-say "Hello, this is Piper speaking through speech dispatcher"
+
+# Test with different voice types
+spd-say -t MALE1 "This is a male voice"
+spd-say -t FEMALE1 "This is a female voice"
+
+```
+
+#### Available Voice Models
+
+After installing voice packages, models are typically located in:
+
+```
+
+/usr/share/piper-voices/[language]/[locale]/[voice]/[quality]/
+
+```
+
+List available models:
+
+```bash
+find /usr/share/piper-voices -name "*.onnx"
+
+```
+
+<!-- Quick sub-note for this part -->
+### eSpeak-NG (Lightweight Alternative)
+
+Fast, lightweight TTS engine, great for low-resource systems.
+
+```bash
+# Arch
+sudo pacman -S espeak-ng
+
+# Test it
+espeak-ng "Hello from eSpeak"
+
+# With speech-dispatcher (usually pre-configured)
+spd-say -o espeak-ng "Testing espeak"
+
+```
+
+<!-- Quick sub-note for this part -->
+### Festival (Legacy)
+
+Classic TTS engine, often the default but lower quality.
+
+```bash
+# Arch
+sudo pacman -S festival festival-us
+
+# Test it
+echo "Hello from Festival" | festival --tts
+
+# Usually pre-configured in speech-dispatcher
+
+```
+
+<!-- Quick sub-note for this part -->
+### Mimic 3 (Cloud/Self-Hosted)
+
+High-quality neural TTS, can run locally or via remote server.
+
+```bash
+# Install as server (requires Python)
+pip install mycroft-mimic3-tts
+
+# Run local server
+mimic3-server
+
+# Configure speech-dispatcher to use mimic3-generic.conf
+# (Similar process to Piper configuration above)
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Screen Readers & Accessibility
+
+<!-- Quick sub-note for this part -->
+### Orca Screen Reader
+
+GNOME's screen reader, integrates with speech-dispatcher.
+
+```bash
+# Arch
+sudo pacman -S orca
+
+# Launch
+orca --setup
+
+# Enable on login
+gsettings set org.gnome.desktop.a11y.applications screen-reader-enabled true
+
+```
+
+<!-- Quick sub-note for this part -->
+### Speech-Dispatcher Tools
+
+```bash
+# List available output modules
+spd-say -O
+
+# Set volume
+spd-say -i 100 "Maximum volume"
+spd-say -i 50 "Half volume"
+
+# Set speaking rate
+spd-say -r 50 "Faster speech"
+spd-say -r -50 "Slower speech"
+
+# List voices
+spd-say -L
+
+```
+
+---
+
+<!-- Section for specific setup/config steps -->
+##  Additional Resources
+
+- **Arch Wiki - PipeWire:** [wiki.archlinux.org/title/PipeWire](https://wiki.archlinux.org/title/PipeWire)
+- **Arch Wiki - Pro Audio:** [wiki.archlinux.org/title/Professional_audio](https://wiki.archlinux.org/title/Professional_audio)
+- **OBS Project:** [obsproject.com](https://obsproject.com)
+- **LinuxAudio.org:** [linuxaudio.org](https://linuxaudio.org)
+- **Linux Musicians Forum:** [linuxmusicians.com](https://linuxmusicians.com)
+- **Unfa on YouTube:** Excellent Linux audio production tutorials
+
+---
+
+**Pro Tip:** Most modern distributions ship with PipeWire by default. If you're unsure, stick with PipeWire—it's the future of Linux audio/video handling and provides the best overall experience for both casual users and professionals.
+
+
+<!-- 
+    TIP: If you're using Neovim, you can use 
+    :set wrap to make this easier to read! 
+-->
+    </script>
+  </body>
+</html>
