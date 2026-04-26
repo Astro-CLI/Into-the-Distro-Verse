@@ -125,74 +125,81 @@
 <h4 id="implementation-ionice-systemd-tuning-for-timeshift">Implementation: <code>ionice</code> + Systemd Tuning for Timeshift</h4>
 <p><strong>Method A: Simple - Throttle with <code>ionice</code></strong></p>
 <p>Run snapshots with lowest I/O priority:</p>
-<p>```bash</p>
-<h1 id="one-time-snapshot-with-throttling">One-time snapshot with throttling</h1>
-<p>sudo ionice -c 3 timeshift --create --comments "Throttled snapshot"</p>
-<h1 id="or-make-it-default-for-all-snapshots-add-to-cron-or-systemd-timer">Or make it default for all snapshots - add to cron or systemd timer</h1>
-<p>```</p>
+<pre><code class="language-bash"># One-time snapshot with throttling
+sudo ionice -c 3 timeshift --create --comments &quot;Throttled snapshot&quot;
+
+# Or make it default for all snapshots - add to cron or systemd timer
+
+</code></pre>
 <p><strong>Method B: Permanent - Systemd Service Throttling (Recommended)</strong></p>
 <p>Create an override for Timeshift's system service:</p>
-<p>```bash
-sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
-sudo nano /etc/systemd/system/timeshift-launcher.service.d/throttle.conf</p>
-<p>```</p>
+<pre><code class="language-bash">sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
+sudo nano /etc/systemd/system/timeshift-launcher.service.d/throttle.conf
+
+</code></pre>
 <p>Paste this:</p>
-<p>```ini
-[Service]</p>
-<h1 id="run-timeshift-at-lowest-io-priority-keeps-system-responsive">Run Timeshift at lowest I/O priority - keeps system responsive</h1>
-<p>CPUSchedulingPolicy=idle
+<pre><code class="language-ini">[Service]
+# Run Timeshift at lowest I/O priority - keeps system responsive
+CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 IOSchedulingPriority=7
-Nice=10</p>
-<h1 id="optional-cap-cpu-usage-if-snapshots-still-cause-lag">Optional: Cap CPU usage if snapshots still cause lag</h1>
-<p>CPUQuota=50%</p>
-<p>```</p>
+Nice=10
+
+# Optional: Cap CPU usage if snapshots still cause lag
+CPUQuota=50%
+
+</code></pre>
 <p>Then reload and restart:</p>
-<p>```bash
-sudo systemctl daemon-reload
-sudo systemctl restart timeshift-launcher</p>
-<p>```</p>
+<pre><code class="language-bash">sudo systemctl daemon-reload
+sudo systemctl restart timeshift-launcher
+
+</code></pre>
 <p><strong>Verify it's working:</strong></p>
-<p>```bash</p>
-<h1 id="next-snapshot-check-the-priority">Next snapshot, check the priority</h1>
-<p>ps aux | grep timeshift</p>
-<h1 id="should-show-lower-io-priority">Should show lower I/O priority</h1>
-<p>```</p>
+<pre><code class="language-bash"># Next snapshot, check the priority
+ps aux | grep timeshift
+# Should show lower I/O priority
+
+</code></pre>
 <p><strong>Method C: BFQ Scheduler (Most Effective - Kernel-level I/O Fairness)</strong></p>
 <p>Use the <strong>BFQ I/O scheduler</strong> which specifically prioritizes interactive processes:</p>
-<p>```bash</p>
-<h1 id="check-if-bfq-is-available">Check if BFQ is available</h1>
-<p>cat /sys/block/nvme0n1/queue/scheduler</p>
-<h1 id="if-you-see-bfq-its-enabled-if-not">If you see "[bfq]" it's enabled, if not:</h1>
-<p>echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler</p>
-<h1 id="make-persistent-across-reboots">Make persistent across reboots</h1>
-<p>echo "ACTION==\"add|change\", KERNEL==\"nvme*\", ATTR{queue/scheduler}=\"bfq\"" | \
-  sudo tee /etc/udev/rules.d/99-bfq-iosched.rules</p>
-<h1 id="reload">Reload</h1>
-<p>sudo udevadm control --reload-rules
-sudo udevadm trigger</p>
-<p>```</p>
+<pre><code class="language-bash"># Check if BFQ is available
+cat /sys/block/nvme0n1/queue/scheduler
+
+# If you see &quot;[bfq]&quot; it's enabled, if not:
+echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
+
+# Make persistent across reboots
+echo &quot;ACTION==\&quot;add|change\&quot;, KERNEL==\&quot;nvme*\&quot;, ATTR{queue/scheduler}=\&quot;bfq\&quot;&quot; | \
+  sudo tee /etc/udev/rules.d/99-bfq-iosched.rules
+
+# Reload
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+
+</code></pre>
 <p>Verify:</p>
-<p>```bash
-cat /sys/block/nvme0n1/queue/scheduler</p>
-<h1 id="should-show-bfq-selected">Should show [bfq] selected</h1>
-<p>```</p>
+<pre><code class="language-bash">cat /sys/block/nvme0n1/queue/scheduler
+# Should show [bfq] selected
+
+</code></pre>
 <p><strong>Method D: Combined Approach (Best Results)</strong></p>
 <p>Use <strong>both</strong> BFQ scheduler + Timeshift throttling:</p>
-<p>```bash</p>
-<h1 id="1-enable-bfq-from-method-c-above">1. Enable BFQ (from Method C above)</h1>
-<p>echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler</p>
-<h1 id="2-add-timeshift-throttling-from-method-b-above">2. Add Timeshift throttling (from Method B above)</h1>
-<p>sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
+<pre><code class="language-bash"># 1. Enable BFQ (from Method C above)
+echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
+
+# 2. Add Timeshift throttling (from Method B above)
+sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
 cat &lt;&lt; 'EOF' | sudo tee /etc/systemd/system/timeshift-launcher.service.d/throttle.conf
 [Service]
 CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 IOSchedulingPriority=7
 Nice=10
-EOF</p>
-<p>sudo systemctl daemon-reload</p>
-<p>```</p>
+EOF
+
+sudo systemctl daemon-reload
+
+</code></pre>
 <h4 id="tuning-guide">Tuning Guide</h4>
 <p>| Setting | Effect | Snapshot Speed | System Responsiveness |
 |---------|--------|-----------------|----------------------|
@@ -208,103 +215,113 @@ EOF</p>
 <h4 id="what-to-exclude-safe-to-skip-backups">What to Exclude (Safe to Skip Backups)</h4>
 <p>These folders rebuild automatically and don't need snapshot protection:</p>
 <h5 id="1-citrixremote-desktop-cache-critical-for-work">1. <strong>Citrix/Remote Desktop Cache</strong> (Critical for work)</h5>
-<p>```</p>
-<p>~/.ICAClient
-~/.cache/citrix<em>
-~/.local/share/citrix</em></p>
-<p>```</p>
+<pre><code>
+~/.ICAClient
+~/.cache/citrix*
+~/.local/share/citrix*
+
+</code></pre>
 <p><strong>Why:</strong> Citrix creates temporary cache files every second. Snapshot operations compete for I/O, causing freezes.</p>
 <h5 id="2-general-app-caches-rebuilt-automatically">2. <strong>General App Caches</strong> (Rebuilt automatically)</h5>
-<p>```</p>
-<p>~/.cache                     # All caches
-~/.cache/discord<em>            # Discord cache
-~/.cache/obs</em>                # OBS streaming cache
-~/.cache/proton<em>             # Proton/Wine cache
+<pre><code>
+~/.cache                     # All caches
+~/.cache/discord*            # Discord cache
+~/.cache/obs*                # OBS streaming cache
+~/.cache/proton*             # Proton/Wine cache
 ~/.cache/spotify             # Spotify cache
-~/.cache/wine</em>               # Wine cache
-~/.cache/heroic*             # Heroic Games Launcher</p>
-<p>```</p>
+~/.cache/wine*               # Wine cache
+~/.cache/heroic*             # Heroic Games Launcher
+
+</code></pre>
 <p><strong>Why:</strong> These rebuild when apps start. Excluding them saves massive I/O during snapshots.</p>
 <h5 id="3-game-files-optional-depends-on-setup">3. <strong>Game Files</strong> (Optional - depends on setup)</h5>
-<p>```</p>
-<p>~/.local/share/Steam/steamapps   # If games on NVME with separate backup</p>
-<p>```</p>
+<pre><code>
+~/.local/share/Steam/steamapps   # If games on NVME with separate backup
+
+</code></pre>
 <p><strong>Why:</strong> Game files are large but not critical to backup—Steam/Heroic manage their own versions.</p>
 <h4 id="implementation">Implementation</h4>
 <p><strong>Option A: Manual Configuration (Advanced)</strong></p>
 <p>Edit <code>/etc/timeshift/timeshift.json</code>:</p>
-<p>```bash
-sudo nano /etc/timeshift/timeshift.json</p>
-<p>```</p>
+<pre><code class="language-bash">sudo nano /etc/timeshift/timeshift.json
+
+</code></pre>
 <p>Find the <code>"exclude"</code> array and replace it with:</p>
-<p>```json
-"exclude": [
-  "/home/astro/.ICAClient",
-  "/home/astro/.cache/citrix<em>",
-  "/home/astro/.local/share/citrix</em>",
-  "/home/astro/.cache",
-  "/home/astro/.cache/discord<em>",
-  "/home/astro/.cache/obs</em>",
-  "/home/astro/.cache/proton<em>",
-  "/home/astro/.cache/spotify",
-  "/home/astro/.cache/wine</em>",
-  "/home/astro/.cache/heroic*",
-  "/home/astro/.local/share/Steam/steamapps"
-]</p>
-<p>```</p>
+<pre><code class="language-json">&quot;exclude&quot;: [
+  &quot;/home/astro/.ICAClient&quot;,
+  &quot;/home/astro/.cache/citrix*&quot;,
+  &quot;/home/astro/.local/share/citrix*&quot;,
+  &quot;/home/astro/.cache&quot;,
+  &quot;/home/astro/.cache/discord*&quot;,
+  &quot;/home/astro/.cache/obs*&quot;,
+  &quot;/home/astro/.cache/proton*&quot;,
+  &quot;/home/astro/.cache/spotify&quot;,
+  &quot;/home/astro/.cache/wine*&quot;,
+  &quot;/home/astro/.cache/heroic*&quot;,
+  &quot;/home/astro/.local/share/Steam/steamapps&quot;
+]
+
+</code></pre>
 <p>Then restart Timeshift:</p>
-<p>```bash
-sudo systemctl restart timeshift</p>
-<p>```</p>
+<pre><code class="language-bash">sudo systemctl restart timeshift
+
+</code></pre>
 <p><strong>Option B: Automated Script</strong></p>
-<p>```bash</p>
-<h1 id="binbash">!/bin/bash</h1>
-<p>sudo python3 &lt;&lt; 'PYTHON'
-import json</p>
-<p>config_path = '/etc/timeshift/timeshift.json'</p>
-<p>with open(config_path, 'r') as f:
-    config = json.load(f)</p>
-<p>excludes = [
-    "/home/astro/.ICAClient",
-    "/home/astro/.cache/citrix<em>",
-    "/home/astro/.local/share/citrix</em>",
-    "/home/astro/.cache",
-    "/home/astro/.cache/discord<em>",
-    "/home/astro/.cache/obs</em>",
-    "/home/astro/.cache/proton<em>",
-    "/home/astro/.cache/spotify",
-    "/home/astro/.cache/wine</em>",
-    "/home/astro/.cache/heroic*",
-    "/home/astro/.local/share/Steam/steamapps",
-]</p>
-<p>config['exclude'] = excludes</p>
-<p>with open(config_path, 'w') as f:
-    json.dump(config, f, indent=2)</p>
-<p>print(" Updated timeshift.json exclusions")
-PYTHON</p>
-<p>```</p>
+<pre><code class="language-bash">#!/bin/bash
+sudo python3 &lt;&lt; 'PYTHON'
+import json
+
+config_path = '/etc/timeshift/timeshift.json'
+
+with open(config_path, 'r') as f:
+    config = json.load(f)
+
+excludes = [
+    &quot;/home/astro/.ICAClient&quot;,
+    &quot;/home/astro/.cache/citrix*&quot;,
+    &quot;/home/astro/.local/share/citrix*&quot;,
+    &quot;/home/astro/.cache&quot;,
+    &quot;/home/astro/.cache/discord*&quot;,
+    &quot;/home/astro/.cache/obs*&quot;,
+    &quot;/home/astro/.cache/proton*&quot;,
+    &quot;/home/astro/.cache/spotify&quot;,
+    &quot;/home/astro/.cache/wine*&quot;,
+    &quot;/home/astro/.cache/heroic*&quot;,
+    &quot;/home/astro/.local/share/Steam/steamapps&quot;,
+]
+
+config['exclude'] = excludes
+
+with open(config_path, 'w') as f:
+    json.dump(config, f, indent=2)
+
+print(&quot; Updated timeshift.json exclusions&quot;)
+PYTHON
+
+</code></pre>
 <p>Save as <code>~/.config/timeshift-optimize.sh</code>, make executable, and run:</p>
-<p>```bash
-chmod +x ~/.config/timeshift-optimize.sh
-~/.config/timeshift-optimize.sh</p>
-<p>```</p>
+<pre><code class="language-bash">chmod +x ~/.config/timeshift-optimize.sh
+~/.config/timeshift-optimize.sh
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="verification">Verification</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="check-current-exclusions">Check Current Exclusions</h3>
-<p>```bash
-sudo python3 -c "import json; print(json.dumps(json.load(open('/etc/timeshift/timeshift.json'))['exclude'], indent=2))"</p>
-<p>```</p>
+<pre><code class="language-bash">sudo python3 -c &quot;import json; print(json.dumps(json.load(open('/etc/timeshift/timeshift.json'))['exclude'], indent=2))&quot;
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="monitor-snapshot-impact">Monitor Snapshot Impact</h3>
 <p>During the next hourly snapshot, monitor for freezes:</p>
-<p>```bash</p>
-<h1 id="terminal-1-watch-for-btrfs-qgroup-scans">Terminal 1: Watch for BTRFS qgroup scans</h1>
-<p>journalctl --grep="qgroup" --follow</p>
-<h1 id="terminal-2-run-a-test-citrix-game-or-streaming">Terminal 2: Run a test (Citrix, game, or streaming)</h1>
-<h1 id="verify-no-freezes-occur">Verify no freezes occur</h1>
-<p>```</p>
+<pre><code class="language-bash"># Terminal 1: Watch for BTRFS qgroup scans
+journalctl --grep=&quot;qgroup&quot; --follow
+
+# Terminal 2: Run a test (Citrix, game, or streaming)
+# Verify no freezes occur
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="confirm-freezes-are-gone">Confirm Freezes Are Gone</h3>
 <ol>
@@ -319,27 +336,27 @@ sudo python3 -c "import json; print(json.dumps(json.load(open('/etc/timeshift/ti
 <!-- Quick sub-note for this part -->
 <h3 id="option-1-disable-btrfs-quotas">Option 1: Disable BTRFS Quotas</h3>
 <p><strong>Impact:</strong> Complete freeze elimination, but no snapshot size estimates in GUI</p>
-<p>```bash
-btrfs quota disable /</p>
-<p>```</p>
+<pre><code class="language-bash">btrfs quota disable /
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="option-2-reduce-io-scheduler-aggressiveness">Option 2: Reduce I/O Scheduler Aggressiveness</h3>
 <p>Switch to <code>kyber</code> scheduler for fairness:</p>
-<p>```bash
-echo kyber | sudo tee /sys/block/nvme0n1/queue/scheduler</p>
-<p>```</p>
+<pre><code class="language-bash">echo kyber | sudo tee /sys/block/nvme0n1/queue/scheduler
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="option-3-tune-btrfs-metadata-allocation">Option 3: Tune BTRFS Metadata Allocation</h3>
 <p>Reduce metadata chunk allocations:</p>
-<p>```bash
-sudo btrfs filesystem tune -m 5 /</p>
-<p>```</p>
+<pre><code class="language-bash">sudo btrfs filesystem tune -m 5 /
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="option-4-disable-free-space-tree-legacy-v1">Option 4: Disable Free Space Tree (Legacy v1)</h3>
 <p>Reduces metadata overhead (one-time operation):</p>
-<p>```bash
-sudo btrfs filesystem feature disable quotagroup /</p>
-<p>```</p>
+<pre><code class="language-bash">sudo btrfs filesystem feature disable quotagroup /
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="troubleshooting">Troubleshooting</h2>
@@ -392,19 +409,19 @@ sudo btrfs filesystem feature disable quotagroup /</p>
 <h2 id="monitoring-snapshot-health">Monitoring Snapshot Health</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="list-all-snapshots">List All Snapshots</h3>
-<p>```bash
-sudo timeshift --list</p>
-<p>```</p>
+<pre><code class="language-bash">sudo timeshift --list
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="check-timeshift-logs">Check Timeshift Logs</h3>
-<p>```bash
-sudo journalctl -u timeshift-launcher -n 50 -f</p>
-<p>```</p>
+<pre><code class="language-bash">sudo journalctl -u timeshift-launcher -n 50 -f
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="manual-snapshot-test">Manual Snapshot Test</h3>
-<p>```bash
-sudo timeshift --create --comments "Test snapshot"</p>
-<p>```</p>
+<pre><code class="language-bash">sudo timeshift --create --comments &quot;Test snapshot&quot;
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>

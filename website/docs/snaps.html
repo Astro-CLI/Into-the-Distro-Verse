@@ -75,21 +75,23 @@
 <p>Snap requires a background service called <code>snapd</code> to be running.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="on-arch-linux">On Arch Linux</h3>
-<p>```bash</p>
-<h1 id="1-install-from-the-aur">1. Install from the AUR</h1>
-<p>paru -S snapd</p>
-<h1 id="2-enable-the-socket-handles-the-daemon-automatically">2. Enable the socket (handles the daemon automatically)</h1>
-<p>sudo systemctl enable --now snapd.socket</p>
-<h1 id="3-enable-classic-snap-support-symlink">3. Enable classic snap support (symlink)</h1>
-<p>sudo ln -s /var/lib/snapd/snap /snap</p>
-<p>```</p>
+<pre><code class="language-bash"># 1. Install from the AUR
+paru -S snapd
+
+# 2. Enable the socket (handles the daemon automatically)
+sudo systemctl enable --now snapd.socket
+
+# 3. Enable classic snap support (symlink)
+sudo ln -s /var/lib/snapd/snap /snap
+
+</code></pre>
 <p><em>Note: You may need to restart your session for the binary paths to be updated.</em></p>
 <!-- Quick sub-note for this part -->
 <h3 id="on-fedora">On Fedora</h3>
-<p>```bash
-sudo dnf install snapd
-sudo ln -s /var/lib/snapd/snap /snap</p>
-<p>```</p>
+<pre><code class="language-bash">sudo dnf install snapd
+sudo ln -s /var/lib/snapd/snap /snap
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-basic-commands">2. Basic Commands</h2>
@@ -115,9 +117,9 @@ sudo ln -s /var/lib/snapd/snap /snap</p>
 <h2 id="4-maintenance">4. Maintenance</h2>
 <p>Snaps keep old versions of packages on your disk by default, which can take up significant space.</p>
 <p><strong>To limit the number of old versions kept (e.g., to 2):</strong></p>
-<p>```bash
-sudo snap set system refresh.retain=2</p>
-<p>```</p>
+<pre><code class="language-bash">sudo snap set system refresh.retain=2
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="snap-vs-flatpak">Snap vs. Flatpak</h2>

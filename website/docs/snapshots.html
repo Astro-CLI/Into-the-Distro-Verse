@@ -134,12 +134,13 @@
 <!-- Section for specific setup/config steps -->
 <h2 id="4-maintenance-btrfs">4. Maintenance (BTRFS)</h2>
 <p>If you're using BTRFS, you should run these occasionally to keep the filesystem healthy.</p>
-<p>```bash</p>
-<h1 id="scrub-check-for-data-corruption">Scrub: Check for data corruption</h1>
-<p>sudo btrfs scrub start /</p>
-<h1 id="balance-free-up-unused-chunks">Balance: Free up unused chunks</h1>
-<p>sudo btrfs balance start -dusage=50 /</p>
-<p>```</p>
+<pre><code class="language-bash"># Scrub: Check for data corruption
+sudo btrfs scrub start /
+
+# Balance: Free up unused chunks
+sudo btrfs balance start -dusage=50 /
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="5-troubleshooting-performance">5. Troubleshooting &amp; Performance</h2>
@@ -148,17 +149,17 @@
 <p>A common issue on BTRFS systems using TimeShift or Snapper is a <strong>2-minute system-wide freeze</strong> whenever a snapshot is deleted. This is caused by Btrfs Quotas (<code>qgroups</code>) trying to rescan and calculate disk usage.</p>
 <p><strong>The Fix:</strong> Disable Btrfs quotas. TimeShift will still work, but it won't show the "Estimated Size" of snapshots in the GUI.</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash
-sudo btrfs quota disable /</p>
-<p>```</p>
+<pre><code class="language-bash">sudo btrfs quota disable /
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="efficient-boot-menu-updates">Efficient Boot Menu Updates</h3>
 <p>Instead of running <code>grub-mkconfig</code> manually or via heavy hooks (which can be slow), use the <code>grub-btrfsd</code> daemon. It only updates the menu when a snapshot change is detected.</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="archfedora">Arch/Fedora</h1>
-<p>sudo systemctl enable --now grub-btrfsd.service</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch/Fedora
+sudo systemctl enable --now grub-btrfsd.service
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>

@@ -148,84 +148,97 @@
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="local-setup">Local Setup</h3>
-<p>```bash</p>
-<h1 id="initialize-a-repository">Initialize a repository</h1>
-<p>git init my-project
-cd my-project</p>
-<h1 id="configure-user">Configure user</h1>
-<p>git config user.name "Your Name"
-git config user.email "you@example.com"</p>
-<h1 id="or-globally">Or globally</h1>
-<p>git config --global user.name "Your Name"
-git config --global user.email "you@example.com"</p>
-<p>```</p>
+<pre><code class="language-bash"># Initialize a repository
+git init my-project
+cd my-project
+
+# Configure user
+git config user.name &quot;Your Name&quot;
+git config user.email &quot;you@example.com&quot;
+
+# Or globally
+git config --global user.name &quot;Your Name&quot;
+git config --global user.email &quot;you@example.com&quot;
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="basic-workflow">Basic Workflow</h3>
-<p>```bash</p>
-<h1 id="make-changes">Make changes</h1>
-<p>echo "content" &gt; file.txt</p>
-<h1 id="stage-changes">Stage changes</h1>
-<p>git add file.txt</p>
-<h1 id="commit-with-message">Commit with message</h1>
-<p>git commit -m "Add file"</p>
-<h1 id="view-history">View history</h1>
-<p>git log --oneline</p>
-<h1 id="create-a-branch">Create a branch</h1>
-<p>git branch feature-x
-git checkout feature-x</p>
-<h1 id="or-git-switch-feature-x">or: git switch feature-x</h1>
-<h1 id="merge-back-to-main">Merge back to main</h1>
-<p>git checkout main
-git merge feature-x</p>
-<p>```</p>
+<pre><code class="language-bash"># Make changes
+echo &quot;content&quot; &gt; file.txt
+
+# Stage changes
+git add file.txt
+
+# Commit with message
+git commit -m &quot;Add file&quot;
+
+# View history
+git log --oneline
+
+# Create a branch
+git branch feature-x
+git checkout feature-x
+# or: git switch feature-x
+
+# Merge back to main
+git checkout main
+git merge feature-x
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="remote-repositories">Remote Repositories</h3>
-<p>```bash</p>
-<h1 id="add-remote-github-gitlab-gitea-etc">Add remote (GitHub, GitLab, Gitea, etc.)</h1>
-<p>git remote add origin https://github.com/user/repo.git</p>
-<h1 id="push-to-remote">Push to remote</h1>
-<p>git push -u origin main</p>
-<h1 id="pull-latest-changes">Pull latest changes</h1>
-<p>git pull origin main</p>
-<h1 id="fetch-without-merging">Fetch without merging</h1>
-<p>git fetch origin</p>
-<p>```</p>
+<pre><code class="language-bash"># Add remote (GitHub, GitLab, Gitea, etc.)
+git remote add origin https://github.com/user/repo.git
+
+# Push to remote
+git push -u origin main
+
+# Pull latest changes
+git pull origin main
+
+# Fetch without merging
+git fetch origin
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="multi-machine-setup">Multi-Machine Setup</h3>
 <p><strong>Clone on other machines:</strong></p>
-<p>```bash
-git clone https://github.com/user/repo.git
-cd repo</p>
-<p>```</p>
+<pre><code class="language-bash">git clone https://github.com/user/repo.git
+cd repo
+
+</code></pre>
 <p><strong>Keep in sync:</strong></p>
-<p>```bash</p>
-<h1 id="before-work-pull-latest">Before work: pull latest</h1>
-<p>git pull origin main</p>
-<h1 id="after-work-push-changes">After work: push changes</h1>
-<p>git push origin main</p>
-<p>```</p>
+<pre><code class="language-bash"># Before work: pull latest
+git pull origin main
+
+# After work: push changes
+git push origin main
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="ssh-keys-passwordless-access">SSH Keys (Passwordless Access)</h3>
-<p>```bash</p>
-<h1 id="generate-key">Generate key</h1>
-<p>ssh-keygen -t ed25519 -C "your@email.com"</p>
-<h1 id="add-to-ssh-agent">Add to SSH agent</h1>
-<p>eval "$(ssh-agent -s)"
-ssh-add ~/.ssh/id_ed25519</p>
-<h1 id="add-public-key-to-githubgitlab">Add public key to GitHub/GitLab</h1>
-<p>cat ~/.ssh/id_ed25519.pub</p>
-<h1 id="paste-in-settings-ssh-keys">Paste in Settings &gt; SSH Keys</h1>
-<h1 id="test-connection">Test connection</h1>
-<p>ssh -T git@github.com</p>
-<p>```</p>
+<pre><code class="language-bash"># Generate key
+ssh-keygen -t ed25519 -C &quot;your@email.com&quot;
+
+# Add to SSH agent
+eval &quot;$(ssh-agent -s)&quot;
+ssh-add ~/.ssh/id_ed25519
+
+# Add public key to GitHub/GitLab
+cat ~/.ssh/id_ed25519.pub
+# Paste in Settings &gt; SSH Keys
+
+# Test connection
+ssh -T git@github.com
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="gitignore-best-practices">.gitignore Best Practices</h3>
-<p>```bash</p>
-<h1 id="common-patterns-to-ignore">Common patterns to ignore</h1>
-<p>echo "
+<pre><code class="language-bash"># Common patterns to ignore
+echo &quot;
 .DS_Store
-<em>.log
-</em>.tmp
+*.log
+*.tmp
 node_modules/
 dist/
 build/
@@ -233,10 +246,12 @@ build/
 .vscode/
 .env
 secrets/
-" &gt; .gitignore</p>
-<p>git add .gitignore
-git commit -m "Add gitignore"</p>
-<p>```</p>
+&quot; &gt; .gitignore
+
+git add .gitignore
+git commit -m &quot;Add gitignore&quot;
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="syncthing-real-time-file-sync">Syncthing: Real-Time File Sync</h2>
@@ -252,26 +267,31 @@ git commit -m "Add gitignore"</p>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="installation">Installation</h3>
-<p>```bash</p>
-<h1 id="arch-linux">Arch Linux</h1>
-<p>sudo pacman -S syncthing</p>
-<h1 id="ubuntudebian">Ubuntu/Debian</h1>
-<p>sudo apt install syncthing</p>
-<h1 id="fedora">Fedora</h1>
-<p>sudo dnf install syncthing</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch Linux
+sudo pacman -S syncthing
+
+# Ubuntu/Debian
+sudo apt install syncthing
+
+# Fedora
+sudo dnf install syncthing
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="start-enable">Start &amp; Enable</h3>
-<p>```bash</p>
-<h1 id="start-manually">Start manually</h1>
-<p>syncthing</p>
-<h1 id="or-as-systemd-service-user">Or as systemd service (user)</h1>
-<p>systemctl --user enable --now syncthing.service</p>
-<h1 id="check-status">Check status</h1>
-<p>systemctl --user status syncthing.service</p>
-<h1 id="view-logs">View logs</h1>
-<p>journalctl --user -u syncthing.service -f</p>
-<p>```</p>
+<pre><code class="language-bash"># Start manually
+syncthing
+
+# Or as systemd service (user)
+systemctl --user enable --now syncthing.service
+
+# Check status
+systemctl --user status syncthing.service
+
+# View logs
+journalctl --user -u syncthing.service -f
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="web-ui-configuration">Web UI Configuration</h3>
 <ol>
@@ -283,50 +303,56 @@ git commit -m "Add gitignore"</p>
 </ol>
 <!-- Quick sub-note for this part -->
 <h3 id="common-folders-to-sync">Common Folders to Sync</h3>
-<p>```bash</p>
-<h1 id="personal-documents">Personal documents</h1>
-<p>~/Documents</p>
-<h1 id="configuration-backups">Configuration backups</h1>
-<p>~/.config</p>
-<h1 id="projects-faster-than-git-for-huge-files">Projects (faster than Git for huge files)</h1>
-<p>~/Projects</p>
-<h1 id="shared-media">Shared media</h1>
-<p>~/Media</p>
-<p>```</p>
+<pre><code class="language-bash"># Personal documents
+~/Documents
+
+# Configuration backups
+~/.config
+
+# Projects (faster than Git for huge files)
+~/Projects
+
+# Shared media
+~/Media
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="conflict-resolution">Conflict Resolution</h3>
 <p>When both machines edit the same file:</p>
-<p>```bash</p>
-<h1 id="syncthing-keeps-both-versions">Syncthing keeps both versions</h1>
-<p>file.txt
-file.txt.sync-conflict-20240423-123456</p>
-<h1 id="manually-choose-which-one-to-keep">Manually choose which one to keep</h1>
-<h1 id="or-merge-them-then-delete-the-conflict-file">Or merge them, then delete the conflict file</h1>
-<p>```</p>
+<pre><code class="language-bash"># Syncthing keeps both versions
+file.txt
+file.txt.sync-conflict-20240423-123456
+
+# Manually choose which one to keep
+# Or merge them, then delete the conflict file
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="advanced-sync-filters">Advanced: Sync Filters</h3>
 <p>Exclude large/temporary files in folder settings:</p>
-<p>```</p>
-<p>(?d).git
+<pre><code>
+(?d)\.git
 (?d)node_modules
-(?d).venv
-<em>.tmp
-</em>.log
-*.swp</p>
-<p>```</p>
+(?d)\.venv
+*.tmp
+*.log
+*.swp
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="performance-ignore-patterns">Performance: Ignore Patterns</h3>
 <p>For large projects, tell Syncthing to skip:</p>
-<p>```</p>
-<h1 id="in-folder-advanced-settings-ignore-patterns">In folder Advanced settings &gt; Ignore Patterns</h1>
-<p>(?d).git
-(?d).<strong>pycache</strong>
+<pre><code>
+# In folder Advanced settings &gt; Ignore Patterns
+(?d).git
+(?d).__pycache__
 (?d)node_modules
 (?d)venv
-<em>.o
-</em>.pyc
-.DS_Store</p>
-<p>```</p>
+*.o
+*.pyc
+.DS_Store
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="rsync-one-way-file-sync">rsync: One-Way File Sync</h2>
@@ -342,44 +368,50 @@ file.txt.sync-conflict-20240423-123456</p>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="basic-usage">Basic Usage</h3>
-<p>```bash</p>
-<h1 id="backup-local-folder-to-external-drive">Backup local folder to external drive</h1>
-<p>rsync -av ~/Documents /media/backup/</p>
-<h1 id="backup-to-remote-server">Backup to remote server</h1>
-<p>rsync -av ~/Documents user@remote.host:/backups/</p>
-<h1 id="with-compression-over-slow-networks">With compression (over slow networks)</h1>
-<p>rsync -avz ~/Documents user@remote.host:/backups/</p>
-<h1 id="dry-run-see-what-would-be-synced">Dry-run (see what would be synced)</h1>
-<p>rsync -av --dry-run ~/Documents /media/backup/</p>
-<p>```</p>
+<pre><code class="language-bash"># Backup local folder to external drive
+rsync -av ~/Documents /media/backup/
+
+# Backup to remote server
+rsync -av ~/Documents user@remote.host:/backups/
+
+# With compression (over slow networks)
+rsync -avz ~/Documents user@remote.host:/backups/
+
+# Dry-run (see what would be synced)
+rsync -av --dry-run ~/Documents /media/backup/
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="useful-flags">Useful Flags</h3>
-<p>```bash
--a      # Archive mode (preserves permissions, timestamps)
+<pre><code class="language-bash">-a      # Archive mode (preserves permissions, timestamps)
 -v      # Verbose
 -z      # Compress during transfer
 --delete # Remove files from dest if deleted in source
 --exclude '*.log' # Skip matching files
---progress # Show transfer progress</p>
-<p>```</p>
+--progress # Show transfer progress
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="automated-backup-with-cron">Automated Backup with Cron</h3>
-<p>```bash</p>
-<h1 id="edit-crontab">Edit crontab</h1>
-<p>crontab -e</p>
-<h1 id="daily-backup-at-2-am">Daily backup at 2 AM</h1>
-<p>0 2 * * * rsync -av ~/Documents /media/backup/ &gt;&gt; ~/backup.log 2&gt;&amp;1</p>
-<h1 id="weekly-backup">Weekly backup</h1>
-<p>0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/</p>
-<p>```</p>
+<pre><code class="language-bash"># Edit crontab
+crontab -e
+
+# Daily backup at 2 AM
+0 2 * * * rsync -av ~/Documents /media/backup/ &gt;&gt; ~/backup.log 2&gt;&amp;1
+
+# Weekly backup
+0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="remote-backup-over-ssh">Remote Backup Over SSH</h3>
-<p>```bash</p>
-<h1 id="ensure-ssh-key-auth-is-set-up-first">Ensure SSH key auth is set up first</h1>
-<p>ssh-copy-id user@remote.host</p>
-<h1 id="then-use-rsync-over-ssh">Then use rsync over SSH</h1>
-<p>rsync -avz -e ssh ~/Documents user@remote.host:/backups/</p>
-<p>```</p>
+<pre><code class="language-bash"># Ensure SSH key auth is set up first
+ssh-copy-id user@remote.host
+
+# Then use rsync over SSH
+rsync -avz -e ssh ~/Documents user@remote.host:/backups/
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="rclone-cloud-storage-sync">rclone: Cloud Storage Sync</h2>
@@ -394,40 +426,49 @@ file.txt.sync-conflict-20240423-123456</p>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="installation_1">Installation</h3>
-<p>```bash</p>
-<h1 id="arch-linux_1">Arch Linux</h1>
-<p>sudo pacman -S rclone</p>
-<h1 id="ubuntudebian_1">Ubuntu/Debian</h1>
-<p>sudo apt install rclone</p>
-<h1 id="or-universal-installer">Or universal installer</h1>
-<p>curl https://rclone.org/install.sh | sudo bash</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch Linux
+sudo pacman -S rclone
+
+# Ubuntu/Debian
+sudo apt install rclone
+
+# Or universal installer
+curl https://rclone.org/install.sh | sudo bash
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="configure-cloud-storage">Configure Cloud Storage</h3>
-<p>```bash</p>
-<h1 id="interactive-setup">Interactive setup</h1>
-<p>rclone config</p>
-<h1 id="follow-prompts-to-authenticate-with-cloud-provider">Follow prompts to authenticate with cloud provider</h1>
-<h1 id="google-drive-dropbox-aws-s3-etc">(Google Drive, Dropbox, AWS S3, etc.)</h1>
-<h1 id="list-configured-remotes">List configured remotes</h1>
-<p>rclone listremotes</p>
-<p>```</p>
+<pre><code class="language-bash"># Interactive setup
+rclone config
+
+# Follow prompts to authenticate with cloud provider
+# (Google Drive, Dropbox, AWS S3, etc.)
+
+# List configured remotes
+rclone listremotes
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="common-operations">Common Operations</h3>
-<p>```bash</p>
-<h1 id="list-files-on-cloud">List files on cloud</h1>
-<p>rclone ls mycloud:</p>
-<h1 id="upload-local-folder-to-cloud">Upload local folder to cloud</h1>
-<p>rclone copy ~/Documents mycloud:/backups/</p>
-<h1 id="download-from-cloud">Download from cloud</h1>
-<p>rclone copy mycloud:/backups/ ~/Documents/</p>
-<h1 id="bidirectional-sync-careful">Bidirectional sync (careful!)</h1>
-<p>rclone bisync ~/Documents mycloud:/backups/</p>
-<h1 id="with-encryption-crypt">With encryption (crypt)</h1>
-<p>rclone copy ~/Documents myencrypted:/ --crypt-key mysecretkey</p>
-<h1 id="bandwidth-limit-eg-1mbs">Bandwidth limit (e.g., 1MB/s)</h1>
-<p>rclone copy --bwlimit 1M ~/Documents mycloud:/backups/</p>
-<p>```</p>
+<pre><code class="language-bash"># List files on cloud
+rclone ls mycloud:
+
+# Upload local folder to cloud
+rclone copy ~/Documents mycloud:/backups/
+
+# Download from cloud
+rclone copy mycloud:/backups/ ~/Documents/
+
+# Bidirectional sync (careful!)
+rclone bisync ~/Documents mycloud:/backups/
+
+# With encryption (crypt)
+rclone copy ~/Documents myencrypted:/ --crypt-key mysecretkey
+
+# Bandwidth limit (e.g., 1MB/s)
+rclone copy --bwlimit 1M ~/Documents mycloud:/backups/
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="restic-encrypted-backup">Restic: Encrypted Backup</h2>
@@ -442,53 +483,62 @@ file.txt.sync-conflict-20240423-123456</p>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="installation_2">Installation</h3>
-<p>```bash</p>
-<h1 id="arch-linux_2">Arch Linux</h1>
-<p>sudo pacman -S restic</p>
-<h1 id="ubuntudebian_2">Ubuntu/Debian</h1>
-<p>sudo apt install restic</p>
-<h1 id="homebrew">Homebrew</h1>
-<p>brew install restic</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch Linux
+sudo pacman -S restic
+
+# Ubuntu/Debian
+sudo apt install restic
+
+# Homebrew
+brew install restic
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="local-backup">Local Backup</h3>
-<p>```bash</p>
-<h1 id="initialize-repository">Initialize repository</h1>
-<p>restic init -r /mnt/backup</p>
-<h1 id="first-backup">First backup</h1>
-<p>restic -r /mnt/backup backup ~/Documents</p>
-<h1 id="restore-files">Restore files</h1>
-<p>restic -r /mnt/backup restore latest --target ~/restore-location</p>
-<h1 id="view-backup-history">View backup history</h1>
-<p>restic -r /mnt/backup snapshots</p>
-<p>```</p>
+<pre><code class="language-bash"># Initialize repository
+restic init -r /mnt/backup
+
+# First backup
+restic -r /mnt/backup backup ~/Documents
+
+# Restore files
+restic -r /mnt/backup restore latest --target ~/restore-location
+
+# View backup history
+restic -r /mnt/backup snapshots
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="cloud-backup-s3-example">Cloud Backup (S3 example)</h3>
-<p>```bash</p>
-<h1 id="set-environment-variables">Set environment variables</h1>
-<p>export AWS_ACCESS_KEY_ID="your-key"
-export AWS_SECRET_ACCESS_KEY="your-secret"</p>
-<h1 id="initialize-on-s3">Initialize on S3</h1>
-<p>restic init -r s3:s3.amazonaws.com/bucket-name</p>
-<h1 id="backup-to-s3">Backup to S3</h1>
-<p>restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents</p>
-<p>```</p>
+<pre><code class="language-bash"># Set environment variables
+export AWS_ACCESS_KEY_ID=&quot;your-key&quot;
+export AWS_SECRET_ACCESS_KEY=&quot;your-secret&quot;
+
+# Initialize on S3
+restic init -r s3:s3.amazonaws.com/bucket-name
+
+# Backup to S3
+restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="scheduled-backups">Scheduled Backups</h3>
-<p>```bash</p>
-<h1 id="create-backup-script">Create backup script</h1>
-<p>cat &gt; ~/backup.sh &lt;&lt; 'EOF'</p>
-<h1 id="binbash">!/bin/bash</h1>
-<p>export RESTIC_REPOSITORY=/mnt/backup
-export RESTIC_PASSWORD="your-secure-password"
+<pre><code class="language-bash"># Create backup script
+cat &gt; ~/backup.sh &lt;&lt; 'EOF'
+#!/bin/bash
+export RESTIC_REPOSITORY=/mnt/backup
+export RESTIC_PASSWORD=&quot;your-secure-password&quot;
 restic backup ~/Documents ~/Projects
 restic forget --keep-daily 7 --keep-monthly 12
-EOF</p>
-<p>chmod +x ~/backup.sh</p>
-<h1 id="add-to-crontab">Add to crontab</h1>
-<p>crontab -e</p>
-<h1 id="0-3-backupsh-backuplog-21">0 3 * * * ~/backup.sh &gt;&gt; ~/backup.log 2&gt;&amp;1</h1>
-<p>```</p>
+EOF
+
+chmod +x ~/backup.sh
+
+# Add to crontab
+crontab -e
+# 0 3 * * * ~/backup.sh &gt;&gt; ~/backup.log 2&gt;&amp;1
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="nextcloud-team-collaboration-sync">Nextcloud: Team Collaboration + Sync</h2>
@@ -504,86 +554,96 @@ EOF</p>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="installation-self-hosted">Installation (Self-Hosted)</h3>
-<p>```bash</p>
-<h1 id="docker-easiest">Docker (easiest)</h1>
-<p>docker run -d \
+<pre><code class="language-bash"># Docker (easiest)
+docker run -d \
   -p 8080:80 \
   -v nextcloud-data:/var/www/html \
   --name nextcloud \
-  nextcloud</p>
-<h1 id="then-access-httplocalhost8080">Then access http://localhost:8080</h1>
-<p>```</p>
+  nextcloud
+
+# Then access http://localhost:8080
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="desktop-sync">Desktop Sync</h3>
-<p>```bash</p>
-<h1 id="install-nextcloud-desktop-client">Install Nextcloud Desktop Client</h1>
-<p>sudo pacman -S nextcloud-client</p>
-<h1 id="open-app-and-configure-server">Open app and configure server</h1>
-<h1 id="choose-local-folder-to-sync">Choose local folder to sync</h1>
-<p>```</p>
+<pre><code class="language-bash"># Install Nextcloud Desktop Client
+sudo pacman -S nextcloud-client
+
+# Open app and configure server
+# Choose local folder to sync
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="recommended-setups-by-use-case">Recommended Setups by Use Case</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="single-machine-local-backups">Single Machine: Local Backups</h3>
-<p>```</p>
-<p>rsync (daily) → External SSD
-+ Restic (weekly) → Cloud</p>
-<p>```</p>
+<pre><code>
+rsync (daily) → External SSD
++ Restic (weekly) → Cloud
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="personal-multi-machine">Personal Multi-Machine</h3>
-<p>```</p>
-<p>Git (code/docs) → GitHub
-+ Syncthing (large files) → P2P between machines</p>
-<p>```</p>
+<pre><code>
+Git (code/docs) → GitHub
++ Syncthing (large files) → P2P between machines
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="team-collaboration">Team Collaboration</h3>
-<p>```</p>
-<p>Git (code) → GitHub/GitLab
+<pre><code>
+Git (code) → GitHub/GitLab
 + Nextcloud (shared files) → Server
-+ rclone (archives) → Cloud backup</p>
-<p>```</p>
++ rclone (archives) → Cloud backup
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="backup-strategy-3-2-1-rule">Backup Strategy (3-2-1 Rule)</h3>
-<p>```</p>
-<p>3 copies:
+<pre><code>
+3 copies:
   - Original (local SSD)
   - Backup 1 (rsync → external drive)
-  - Backup 2 (Restic → cloud)</p>
-<p>2 different media types:
+  - Backup 2 (Restic → cloud)
+
+2 different media types:
   - SSD (fast access)
-  - HDD or cloud (archival)</p>
-<p>1 offsite:
-  - Cloud backup (disaster recovery)</p>
-<p>```</p>
+  - HDD or cloud (archival)
+
+1 offsite:
+  - Cloud backup (disaster recovery)
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="quick-start-popular-combinations">Quick Start: Popular Combinations</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="git-syncthing-developers">Git + Syncthing (Developers)</h3>
-<p>```bash</p>
-<h1 id="code-in-git">Code in Git</h1>
-<p>git clone https://github.com/user/project.git</p>
-<h1 id="large-files-media-in-syncthing">Large files / media in Syncthing</h1>
-<h1 id="configure-syncthing-to-sync-projects">Configure Syncthing to sync ~/Projects</h1>
-<h1 id="add-folder-on-secondary-machine">Add folder on secondary machine</h1>
-<p>```</p>
+<pre><code class="language-bash"># Code in Git
+git clone https://github.com/user/project.git
+
+# Large files / media in Syncthing
+# Configure Syncthing to sync ~/Projects
+# Add folder on secondary machine
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="rsync-cron-system-admins">rsync + Cron (System Admins)</h3>
-<p>```bash</p>
-<h1 id="daily-incremental-backup">Daily incremental backup</h1>
-<p>0 2 * * * rsync -av ~/important /backup/</p>
-<h1 id="monthly-cloud-backup">Monthly cloud backup</h1>
-<p>0 3 1 * * rsync -av /backup user@cloud:/archives/</p>
-<p>```</p>
+<pre><code class="language-bash"># Daily incremental backup
+0 2 * * * rsync -av ~/important /backup/
+
+# Monthly cloud backup
+0 3 1 * * rsync -av /backup user@cloud:/archives/
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="restic-s3-security-conscious">Restic + S3 (Security-Conscious)</h3>
-<p>```bash</p>
-<h1 id="encrypted-cloud-backups">Encrypted cloud backups</h1>
-<p>restic init -r s3:bucket
-restic backup ~/sensitive-data</p>
-<h1 id="automatic-pruning-keeps-space-efficient">Automatic pruning keeps space efficient</h1>
-<p>```</p>
+<pre><code class="language-bash"># Encrypted cloud backups
+restic init -r s3:bucket
+restic backup ~/sensitive-data
+# Automatic pruning keeps space efficient
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="security-best-practices">Security Best Practices</h2>
@@ -601,36 +661,40 @@ restic backup ~/sensitive-data</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="git-permission-denied-on-push">Git: "Permission denied" on push</h3>
-<p>```bash</p>
-<h1 id="verify-ssh-key-is-set-up">Verify SSH key is set up</h1>
-<p>ssh -T git@github.com</p>
-<h1 id="or-use-https-with-personal-access-token">Or use HTTPS with personal access token</h1>
-<p>git remote set-url origin https://github.com/user/repo.git</p>
-<p>```</p>
+<pre><code class="language-bash"># Verify SSH key is set up
+ssh -T git@github.com
+
+# Or use HTTPS with personal access token
+git remote set-url origin https://github.com/user/repo.git
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="syncthing-folder-not-syncing">Syncthing: Folder not syncing</h3>
-<p>```bash</p>
-<h1 id="check-logs">Check logs</h1>
-<p>journalctl --user -u syncthing.service -n 50</p>
-<h1 id="verify-firewall-allows-connections">Verify firewall allows connections</h1>
-<p>sudo ufw allow syncthing</p>
-<p>```</p>
+<pre><code class="language-bash"># Check logs
+journalctl --user -u syncthing.service -n 50
+
+# Verify firewall allows connections
+sudo ufw allow syncthing
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="rsync-files-not-updating">rsync: Files not updating</h3>
-<p>```bash</p>
-<h1 id="use-dry-run-to-debug">Use dry-run to debug</h1>
-<p>rsync -av --dry-run ~/source /dest</p>
-<h1 id="check-destination-permissions">Check destination permissions</h1>
-<p>ls -la /dest</p>
-<p>```</p>
+<pre><code class="language-bash"># Use dry-run to debug
+rsync -av --dry-run ~/source /dest
+
+# Check destination permissions
+ls -la /dest
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="rclone-connection-timeout">rclone: Connection timeout</h3>
-<p>```bash</p>
-<h1 id="increase-timeout">Increase timeout</h1>
-<p>rclone --timeout 30s copy ~/Documents mycloud:/</p>
-<h1 id="check-authentication">Check authentication</h1>
-<p>rclone config</p>
-<p>```</p>
+<pre><code class="language-bash"># Increase timeout
+rclone --timeout 30s copy ~/Documents mycloud:/
+
+# Check authentication
+rclone config
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="references">References</h2>

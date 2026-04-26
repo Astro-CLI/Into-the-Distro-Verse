@@ -79,9 +79,9 @@
 <h2 id="1-installation">1. Installation</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="on-arch-linux">On Arch Linux</h3>
-<p>```bash
-sudo pacman -S flatpak</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -S flatpak
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="on-fedora">On Fedora</h3>
 <p>Flatpak is installed by default.</p>
@@ -91,9 +91,9 @@ sudo pacman -S flatpak</p>
 <p>Flathub is the central repository for most Flatpak applications.</p>
 <p><strong>Enable the Full Flathub Repo:</strong>
 Fedora often includes a "filtered" version of Flathub. To get access to everything (including proprietary apps like Discord, Steam, or Spotify), run:</p>
-<p>```bash
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo</p>
-<p>```</p>
+<pre><code class="language-bash">flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="3-basic-commands">3. Basic Commands</h2>
@@ -112,9 +112,9 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 <!-- Quick sub-note for this part -->
 <h3 id="option-a-flatseal-gui">Option A: Flatseal (GUI)</h3>
 <p>The most user-friendly way to manage permissions.</p>
-<p>```bash
-flatpak install flathub com.github.tchx84.Flatseal</p>
-<p>```</p>
+<pre><code class="language-bash">flatpak install flathub com.github.tchx84.Flatseal
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="option-b-cli-overrides">Option B: CLI Overrides</h3>
 <p>You can manage permissions directly from the terminal.</p>
@@ -151,25 +151,25 @@ flatpak install flathub com.github.tchx84.Flatseal</p>
 <p>Flatpaks sometimes look "out of place" because they don't always pick up your system theme automatically.</p>
 <p><strong>Applying GTK Themes:</strong>
 Most popular themes (like Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.</p>
-<p>```bash</p>
-<h1 id="example-search-for-your-theme">Example: Search for your theme</h1>
-<p>flatpak search org.gtk.Gtk3theme.Breeze</p>
-<p>```</p>
+<pre><code class="language-bash"># Example: Search for your theme
+flatpak search org.gtk.Gtk3theme.Breeze
+
+</code></pre>
 <p><strong>Granting Access to Theme Folders:</strong>
 If your theme isn't on Flathub, you can give Flatpaks access to your local theme folders:</p>
-<p>```bash
-flatpak override --user --filesystem=$HOME/.themes
-flatpak override --user --filesystem=$HOME/.icons</p>
-<p>```</p>
+<pre><code class="language-bash">flatpak override --user --filesystem=$HOME/.themes
+flatpak override --user --filesystem=$HOME/.icons
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="6-maintenance">6. Maintenance</h2>
 <p>Flatpaks can take up a lot of space because they keep old runtimes.</p>
 <p><strong>To free up space:</strong></p>
-<p>```bash</p>
-<h1 id="removes-runtimes-that-are-no-longer-used-by-any-installed-app">Removes runtimes that are no longer used by any installed app</h1>
-<p>flatpak uninstall --unused</p>
-<p>```</p>
+<pre><code class="language-bash"># Removes runtimes that are no longer used by any installed app
+flatpak uninstall --unused
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>

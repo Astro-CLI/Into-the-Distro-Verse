@@ -82,10 +82,11 @@
 <!-- Section for specific setup/config steps -->
 <h2 id="the-problem">The Problem</h2>
 <p>On Wayland, <code>pkexec application</code> fails with GUI errors:</p>
-<p>```</p>
-<p>** could not connect to display
-** Couldn't run dumpcap in child process: Permission denied</p>
-<p>```</p>
+<pre><code>
+** could not connect to display
+** Couldn't run dumpcap in child process: Permission denied
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="why-x11-approach-doesnt-work">Why X11 Approach Doesn't Work</h3>
 <p><strong>On X11:</strong> Only <code>DISPLAY</code> variable needed (e.g., <code>:0</code>)</p>
@@ -103,24 +104,26 @@
 <p><strong>How it works:</strong> The GUI app runs as your user; only the privileged tool (e.g., <code>dumpcap</code>) runs elevated.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="setup-wireshark-example">Setup (Wireshark Example)</h3>
-<p>```bash</p>
-<h1 id="add-your-user-to-the-wireshark-group">Add your user to the wireshark group</h1>
-<p>sudo usermod -a -G wireshark $USER</p>
-<h1 id="make-dumpcap-executable-by-the-group">Make dumpcap executable by the group</h1>
-<p>sudo chmod g+x /usr/bin/dumpcap</p>
-<h1 id="set-the-setgid-bit-so-dumpcap-runs-as-the-wireshark-group">Set the setgid bit so dumpcap runs as the wireshark group</h1>
-<p>sudo chmod g+s /usr/bin/dumpcap</p>
-<p>```</p>
+<pre><code class="language-bash"># Add your user to the wireshark group
+sudo usermod -a -G wireshark $USER
+
+# Make dumpcap executable by the group
+sudo chmod g+x /usr/bin/dumpcap
+
+# Set the setgid bit so dumpcap runs as the wireshark group
+sudo chmod g+s /usr/bin/dumpcap
+
+</code></pre>
 <p>Then <strong>log out and back in</strong>, or use:</p>
-<p>```bash
-newgrp wireshark</p>
-<p>```</p>
+<pre><code class="language-bash">newgrp wireshark
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="usage">Usage</h3>
-<p>```bash
-wireshark</p>
-<h1 id="no-sudopkexec-needed-runs-as-your-user-with-capture-privileges">No sudo/pkexec needed — runs as your user with capture privileges</h1>
-<p>```</p>
+<pre><code class="language-bash">wireshark
+# No sudo/pkexec needed — runs as your user with capture privileges
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="advantages">Advantages</h3>
 <ul>
@@ -144,24 +147,26 @@ wireshark</p>
 <p><strong>How it works:</strong> Pass Wayland variables directly to <code>pkexec</code> via <code>env</code>.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="usage_1">Usage</h3>
-<p>```bash</p>
-<h1 id="edit-system-file-with-theme-intact">Edit system file with theme intact</h1>
-<p>pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab</p>
-<h1 id="or-any-other-app">Or any other app</h1>
-<p>pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR kate /etc/fstab</p>
-<p>```</p>
+<pre><code class="language-bash"># Edit system file with theme intact
+pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab
+
+# Or any other app
+pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR kate /etc/fstab
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="add-an-alias-optional">Add an Alias (Optional)</h3>
-<p>```bash</p>
-<h1 id="for-fish-shell-configfishconfigfish">For Fish shell (~/.config/fish/config.fish)</h1>
-<p>alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'</p>
-<h1 id="for-bashzsh-bashrc-or-zshrc">For Bash/Zsh (~/.bashrc or ~/.zshrc)</h1>
-<p>alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'</p>
-<p>```</p>
+<pre><code class="language-bash"># For Fish shell (~/.config/fish/config.fish)
+alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'
+
+# For Bash/Zsh (~/.bashrc or ~/.zshrc)
+alias pkexec-gui='pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde'
+
+</code></pre>
 <p>Then use:</p>
-<p>```bash
-pkexec-gui kate /etc/fstab</p>
-<p>```</p>
+<pre><code class="language-bash">pkexec-gui kate /etc/fstab
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="advantages_1">Advantages</h3>
 <ul>
@@ -184,38 +189,39 @@ pkexec-gui kate /etc/fstab</p>
 <!-- Quick sub-note for this part -->
 <h3 id="setup">Setup</h3>
 <p>Create <code>/usr/local/bin/run-as-root</code>:</p>
-<p>```bash
-sudo bash &lt;&lt; 'SCRIPT'
-cat &gt; /usr/local/bin/run-as-root &lt;&lt; 'EOF'</p>
-<h1 id="binbash">!/bin/bash</h1>
-<p>export WAYLAND_DISPLAY=$WAYLAND_DISPLAY
+<pre><code class="language-bash">sudo bash &lt;&lt; 'SCRIPT'
+cat &gt; /usr/local/bin/run-as-root &lt;&lt; 'EOF'
+#!/bin/bash
+export WAYLAND_DISPLAY=$WAYLAND_DISPLAY
 export XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
 export QT_STYLE_OVERRIDE=breeze
 export QT_QPA_PLATFORMTHEME=kde
-exec "$@"
+exec &quot;$@&quot;
 EOF
 chmod +x /usr/local/bin/run-as-root
-SCRIPT</p>
-<p>```</p>
+SCRIPT
+
+</code></pre>
 <p>Or manually with nano/vim:</p>
-<p>```bash
-sudo nano /usr/local/bin/run-as-root</p>
-<h1 id="paste-the-content-above">Paste the content above</h1>
-<h1 id="save-exit">Save &amp; exit</h1>
-<p>sudo chmod +x /usr/local/bin/run-as-root</p>
-<p>```</p>
+<pre><code class="language-bash">sudo nano /usr/local/bin/run-as-root
+# Paste the content above
+# Save &amp; exit
+sudo chmod +x /usr/local/bin/run-as-root
+
+</code></pre>
 <p>Then add an alias to your shell config (<code>~/.config/fish/config.fish</code>, <code>~/.bashrc</code>, etc.):</p>
-<p>```bash
-alias pkrun='pkexec /usr/local/bin/run-as-root'</p>
-<p>```</p>
+<pre><code class="language-bash">alias pkrun='pkexec /usr/local/bin/run-as-root'
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="usage_2">Usage</h3>
-<p>```bash</p>
-<h1 id="edit-system-file-with-theme-intact_1">Edit system file with theme intact</h1>
-<p>pkrun kate /etc/fstab</p>
-<h1 id="or-without-alias">Or without alias:</h1>
-<p>pkexec /usr/local/bin/run-as-root kate /etc/fstab</p>
-<p>```</p>
+<pre><code class="language-bash"># Edit system file with theme intact
+pkrun kate /etc/fstab
+
+# Or without alias:
+pkexec /usr/local/bin/run-as-root kate /etc/fstab
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="advantages_2">Advantages</h3>
 <ul>

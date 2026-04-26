@@ -76,39 +76,39 @@
 <p>Homebrew requires some build essentials before it can be installed.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="on-arch-linux">On Arch Linux</h3>
-<p>```bash
-sudo pacman -S --needed base-devel</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -S --needed base-devel
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="on-fedora">On Fedora</h3>
-<p>```bash
-sudo dnf groupinstall "Development Tools"
-sudo dnf install procps-ng curl file git</p>
-<p>```</p>
+<pre><code class="language-bash">sudo dnf groupinstall &quot;Development Tools&quot;
+sudo dnf install procps-ng curl file git
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="install-command">Install Command</h3>
 <p>Run the official installer script:</p>
-<p>```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</p>
-<p>```</p>
+<pre><code class="language-bash">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-post-installation-crucial">2. Post-Installation (Crucial)</h2>
 <p>After the script finishes, it will give you a few lines to add to your shell profile. <strong>Don't skip this!</strong></p>
 <p><strong>Shell (Bash/Zsh):</strong></p>
-<p>```bash</p>
-<h1 id="add-this-to-your-bashrc-or-zshrc">Add this to your ~/.bashrc or ~/.zshrc</h1>
-<p>eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"</p>
-<p>```</p>
+<pre><code class="language-bash"># Add this to your ~/.bashrc or ~/.zshrc
+eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;
+
+</code></pre>
 <p><strong>Shell (Fish):</strong></p>
-<p>```fish</p>
-<h1 id="add-this-to-your-configfishconfigfish">Add this to your ~/.config/fish/config.fish</h1>
-<p>eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)</p>
-<p>```</p>
+<pre><code class="language-fish"># Add this to your ~/.config/fish/config.fish
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
+</code></pre>
 <p>Then, verify the installation:</p>
-<p>```bash
-brew doctor</p>
-<p>```</p>
+<pre><code class="language-bash">brew doctor
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="3-basic-usage">3. Basic Usage</h2>
@@ -125,9 +125,9 @@ brew doctor</p>
 <h2 id="4-maintenance">4. Maintenance</h2>
 <p>Homebrew doesn't delete old versions of packages automatically. Over time, this can eat up a lot of space in your home directory.</p>
 <p><strong>Clean up old versions and cache:</strong></p>
-<p>```bash
-brew cleanup</p>
-<p>```</p>
+<pre><code class="language-bash">brew cleanup
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="homebrew-vs-nix-vs-aur">Homebrew vs. Nix vs. AUR</h2>

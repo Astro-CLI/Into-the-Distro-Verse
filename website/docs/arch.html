@@ -80,34 +80,35 @@
     Color
     ILoveCandy
     ParallelDownloads = 10</code></p>
-<div class="codehilite" style="background: #f8f8f8"><pre style="line-height: 125%;"><span></span><code>*(ILoveCandy adds a Pac-Man eating pellets to your progress bars!)*
-</code></pre></div>
+<pre class="codehilite"><code>*(ILoveCandy adds a Pac-Man eating pellets to your progress bars!)*
+</code></pre>
 
 <!-- Quick sub-note for this part -->
 <h3 id="mirror-management-reflector">Mirror Management (Reflector)</h3>
 <p>Arch mirrors can get slow or outdated. <code>reflector</code> automatically finds the fastest ones for you.</p>
-<p>```bash
-sudo pacman -S reflector</p>
-<h1 id="update-mirrors-to-the-10-fastest-https-ones-in-your-region">Update mirrors to the 10 fastest HTTPS ones in your region</h1>
-<p>sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -S reflector
+# Update mirrors to the 10 fastest HTTPS ones in your region
+sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="install-aur-helper-paru">Install AUR Helper (<code>paru</code>)</h3>
 <p>Paru is a modern AUR helper written in Rust. It's the primary way to access the vast library of community packages.</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash
-sudo pacman -S --needed base-devel git &amp;&amp; \
-git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makepkg -si &amp;&amp; cd .. &amp;&amp; rm -rf paru</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -S --needed base-devel git &amp;&amp; \
+git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makepkg -si &amp;&amp; cd .. &amp;&amp; rm -rf paru
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="wayland-screen-sharing-xwayland-video-bridge">Wayland Screen Sharing (Xwayland Video Bridge)</h3>
 <p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
-<p>```bash</p>
-<h1 id="install-from-aur">Install from AUR</h1>
-<p>paru -S xwaylandvideobridge</p>
-<h1 id="or-search-for-it">Or search for it</h1>
-<p>paru -Ss xwayland video bridge</p>
-<p>```</p>
+<pre><code class="language-bash"># Install from AUR
+paru -S xwaylandvideobridge
+
+# Or search for it
+paru -Ss xwayland video bridge
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-snapshots-maintenance">2. Snapshots &amp; Maintenance</h2>
@@ -124,12 +125,13 @@ git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makep
 | <strong><code>arch_aur_list.txt</code></strong> | AUR packages (via <code>paru</code>). |</p>
 <!-- Quick sub-note for this part -->
 <h3 id="restore-your-system">Restore your system:</h3>
-<p>```bash</p>
-<h1 id="official-packages">Official packages</h1>
-<p>sudo pacman -S --needed - &lt; packages/arch_pkglist.txt</p>
-<h1 id="aur-packages">AUR packages</h1>
-<p>paru -S --needed - &lt; packages/arch_aur_list.txt</p>
-<p>```</p>
+<pre><code class="language-bash"># Official packages
+sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
+
+# AUR packages
+paru -S --needed - &lt; packages/arch_aur_list.txt
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="universal-packages-flatpak">Universal Packages (Flatpak)</h3>
 <p>For a comprehensive guide on managing Flatpaks, permissions, and Flathub, see the universal guide:</p>
@@ -141,15 +143,15 @@ git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makep
 <h2 id="3-maintenance">3. Maintenance</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="clear-pacman-cache">Clear Pacman Cache</h3>
-<p>```bash
-sudo pacman -Sc</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -Sc
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="find-and-remove-orphans">Find and Remove Orphans</h3>
-<p>```bash
-pacman -Qtdq
-sudo pacman -Rns $(pacman -Qtdq)</p>
-<p>```</p>
+<pre><code class="language-bash">pacman -Qtdq
+sudo pacman -Rns $(pacman -Qtdq)
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>

@@ -106,21 +106,21 @@
 <p>AppArmor is a Mandatory Access Control (MAC) system that restricts programs' capabilities.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="1-installation">1. Installation</h3>
-<p>```bash
-sudo pacman -S apparmor</p>
-<p>```</p>
+<pre><code class="language-bash">sudo pacman -S apparmor
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="2-enable-in-kernel">2. Enable in Kernel</h3>
 <p>Add to <code>GRUB_CMDLINE_LINUX_DEFAULT</code> in <code>/etc/default/grub</code>:</p>
-<p>```text
-apparmor=1 lsm=landlock,lockdown,yama,integrity,apparmor,bpf</p>
-<p>```</p>
+<pre><code class="language-text">apparmor=1 lsm=landlock,lockdown,yama,integrity,apparmor,bpf
+
+</code></pre>
 <p>Then run: <code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code></p>
 <!-- Quick sub-note for this part -->
 <h3 id="3-service">3. Service</h3>
-<p>```bash
-sudo systemctl enable --now apparmor.service</p>
-<p>```</p>
+<pre><code class="language-bash">sudo systemctl enable --now apparmor.service
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="4-performance-logging-fixing-slowness">4. Performance &amp; Logging (Fixing "Slowness")</h3>
 <p>AppArmor can severely slow down your system if it logs too many "ALLOWED" actions. This typically happens when profiles are in <strong>Complain</strong> mode.</p>
@@ -154,29 +154,31 @@ sudo systemctl enable --now apparmor.service</p>
 <!-- Quick sub-note for this part -->
 <h3 id="option-a-ufw-simple-static-current-choice">Option A: UFW (Simple &amp; Static - Current Choice)</h3>
 <p>Best for desktops that stay on one network.</p>
-<p>```bash</p>
-<h1 id="install-and-enable">Install and Enable</h1>
-<p>sudo pacman -S ufw
-sudo systemctl enable --now ufw.service</p>
-<h1 id="standard-gaming-policy">Standard "Gaming" Policy</h1>
-<p>sudo ufw default deny incoming
+<pre><code class="language-bash"># Install and Enable
+sudo pacman -S ufw
+sudo systemctl enable --now ufw.service
+
+# Standard &quot;Gaming&quot; Policy
+sudo ufw default deny incoming
 sudo ufw default allow outgoing
-sudo ufw enable</p>
-<p>```</p>
+sudo ufw enable
+
+</code></pre>
 <ul>
 <li><strong>KDE Integration:</strong> Managed via <strong>System Settings &gt; Firewall</strong>.</li>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="option-b-firewalld-dynamic-zones">Option B: Firewalld (Dynamic &amp; Zones)</h3>
 <p>Best for laptops or users who need different rules for "Home" vs "Public" Wi-Fi.</p>
-<p>```bash</p>
-<h1 id="install-and-enable_1">Install and Enable</h1>
-<p>sudo pacman -S firewalld
-sudo systemctl enable --now firewalld.service</p>
-<h1 id="change-zones-based-on-network-trust">Change zones based on network trust</h1>
-<p>sudo firewall-cmd --set-default-zone=home
-sudo firewall-cmd --reload</p>
-<p>```</p>
+<pre><code class="language-bash"># Install and Enable
+sudo pacman -S firewalld
+sudo systemctl enable --now firewalld.service
+
+# Change zones based on network trust
+sudo firewall-cmd --set-default-zone=home
+sudo firewall-cmd --reload
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="antivirus-rootkit-detection">Antivirus &amp; Rootkit Detection</h2>
@@ -208,74 +210,85 @@ sudo firewall-cmd --reload</p>
 <!-- Quick sub-note for this part -->
 <h3 id="installation">Installation</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="arch">Arch</h1>
-<p>sudo pacman -S firejail</p>
-<h1 id="fedora">Fedora</h1>
-<p>sudo dnf install firejail</p>
-<h1 id="debianubuntu">Debian/Ubuntu</h1>
-<p>sudo apt install firejail</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch
+sudo pacman -S firejail
+
+# Fedora
+sudo dnf install firejail
+
+# Debian/Ubuntu
+sudo apt install firejail
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="basic-usage">Basic Usage</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="run-any-application-in-a-sandbox">Run any application in a sandbox</h1>
-<p>firejail firefox</p>
-<h1 id="disable-network-access">Disable network access</h1>
-<p>firejail --net=none firefox</p>
-<h1 id="private-tmp-and-home-directory">Private /tmp and home directory</h1>
-<p>firejail --private firefox</p>
-<h1 id="combine-restrictions">Combine restrictions</h1>
-<p>firejail --net=none --private --noroot chromium</p>
-<p>```</p>
+<pre><code class="language-bash"># Run any application in a sandbox
+firejail firefox
+
+# Disable network access
+firejail --net=none firefox
+
+# Private /tmp and home directory
+firejail --private firefox
+
+# Combine restrictions
+firejail --net=none --private --noroot chromium
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="default-integration-automatic-sandboxing">Default Integration (Automatic Sandboxing)</h3>
 <p>Make Firejail the default for all supported applications:</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="create-symlinks-for-all-supported-apps">Create symlinks for all supported apps</h1>
-<p>sudo firecfg</p>
-<h1 id="now-when-you-launch-firefox-chromium-etc-they-automatically-run-sandboxed">Now when you launch Firefox, Chromium, etc., they automatically run sandboxed</h1>
-<p>```</p>
+<pre><code class="language-bash"># Create symlinks for all supported apps
+sudo firecfg
+
+# Now when you launch Firefox, Chromium, etc., they automatically run sandboxed
+
+</code></pre>
 <p><strong>To undo:</strong></p>
-<p>```bash
-sudo firecfg --clean</p>
-<p>```</p>
+<pre><code class="language-bash">sudo firecfg --clean
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="common-profiles">Common Profiles</h3>
 <p>Firejail includes pre-made security profiles for hundreds of applications:</p>
-<p>```bash</p>
-<h1 id="list-available-profiles">List available profiles</h1>
-<p>ls /etc/firejail/*.profile | wc -l</p>
-<h1 id="view-a-specific-profile">View a specific profile</h1>
-<p>less /etc/firejail/firefox.profile</p>
-<h1 id="override-a-profile">Override a profile</h1>
-<p>cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
-nano ~/.config/firejail/firefox.local</p>
-<p>```</p>
+<pre><code class="language-bash"># List available profiles
+ls /etc/firejail/*.profile | wc -l
+
+# View a specific profile
+less /etc/firejail/firefox.profile
+
+# Override a profile
+cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
+nano ~/.config/firejail/firefox.local
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="custom-profiles">Custom Profiles</h3>
 <p>Create custom sandboxes for applications:</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="create-a-custom-profile">Create a custom profile</h1>
-<p>nano ~/.config/firejail/myapp.profile</p>
-<p>```</p>
+<pre><code class="language-bash"># Create a custom profile
+nano ~/.config/firejail/myapp.profile
+
+</code></pre>
 <p><strong>Example profile:</strong></p>
-<p>```conf</p>
-<h1 id="include-the-default-template">Include the default template</h1>
-<p>include /etc/firejail/default.profile</p>
-<h1 id="restrict-filesystem-access">Restrict filesystem access</h1>
-<p>private-bin myapp
+<pre><code class="language-conf"># Include the default template
+include /etc/firejail/default.profile
+
+# Restrict filesystem access
+private-bin myapp
 private-tmp
-private-dev</p>
-<h1 id="disable-network">Disable network</h1>
-<p>net none</p>
-<h1 id="whitelist-only-specific-directories">Whitelist only specific directories</h1>
-<p>whitelist ~/Documents
-whitelist ~/Downloads</p>
-<p>```</p>
+private-dev
+
+# Disable network
+net none
+
+# Whitelist only specific directories
+whitelist ~/Documents
+whitelist ~/Downloads
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="security-vs-usability-trade-offs">Security vs Usability Trade-offs</h3>
 <p>| Level | Description | Command Example |
@@ -287,12 +300,13 @@ whitelist ~/Downloads</p>
 <!-- Quick sub-note for this part -->
 <h3 id="gui-firetools">GUI: Firetools</h3>
 <p><strong>Firetools</strong> provides a graphical interface for Firejail.</p>
-<p>```bash</p>
-<h1 id="arch_1">Arch</h1>
-<p>sudo pacman -S firetools</p>
-<h1 id="launch">Launch</h1>
-<p>firetools &amp;</p>
-<p>```</p>
+<pre><code class="language-bash"># Arch
+sudo pacman -S firetools
+
+# Launch
+firetools &amp;
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="when-to-use-firejail">When to Use Firejail</h3>
 <p><strong>Good for:</strong>
@@ -309,22 +323,23 @@ whitelist ~/Downloads</p>
 <!-- Quick sub-note for this part -->
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p><strong>Application won't start:</strong></p>
-<p>```bash</p>
-<h1 id="run-with-debugging">Run with debugging</h1>
-<p>firejail --debug app</p>
-<h1 id="disable-specific-restrictions">Disable specific restrictions</h1>
-<p>firejail --noprofile app</p>
-<p>```</p>
+<pre><code class="language-bash"># Run with debugging
+firejail --debug app
+
+# Disable specific restrictions
+firejail --noprofile app
+
+</code></pre>
 <p><strong>Sound doesn't work:</strong></p>
-<p>```bash</p>
-<h1 id="allow-pulseaudiopipewire">Allow PulseAudio/PipeWire</h1>
-<p>firejail --keep-config-pulse app</p>
-<p>```</p>
+<pre><code class="language-bash"># Allow PulseAudio/PipeWire
+firejail --keep-config-pulse app
+
+</code></pre>
 <p><strong>Can't access files:</strong></p>
-<p>```bash</p>
-<h1 id="whitelist-specific-directories">Whitelist specific directories</h1>
-<p>firejail --whitelist=~/Documents app</p>
-<p>```</p>
+<pre><code class="language-bash"># Whitelist specific directories
+firejail --whitelist=~/Documents app
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="application-firewall-opensnitch">Application Firewall: OpenSnitch</h2>
@@ -340,24 +355,27 @@ whitelist ~/Downloads</p>
 <!-- Quick sub-note for this part -->
 <h3 id="installation_1">Installation</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="arch-aur">Arch (AUR)</h1>
-<p>paru -S opensnitch</p>
-<h1 id="fedora_1">Fedora</h1>
-<p>sudo dnf copr enable @opensnitch/opensnitch
-sudo dnf install opensnitch opensnitch-ui</p>
-<h1 id="debianubuntu_1">Debian/Ubuntu</h1>
-<h1 id="add-repository-from-httpsgithubcomevilsocketopensnitch">Add repository from: https://github.com/evilsocket/opensnitch</h1>
-<p>```</p>
+<pre><code class="language-bash"># Arch (AUR)
+paru -S opensnitch
+
+# Fedora
+sudo dnf copr enable @opensnitch/opensnitch
+sudo dnf install opensnitch opensnitch-ui
+
+# Debian/Ubuntu
+# Add repository from: https://github.com/evilsocket/opensnitch
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="starting-opensnitch">Starting OpenSnitch</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="enable-and-start-the-daemon">Enable and start the daemon</h1>
-<p>sudo systemctl enable --now opensnitch</p>
-<h1 id="launch-the-gui-runs-in-system-tray">Launch the GUI (runs in system tray)</h1>
-<p>opensnitch-ui</p>
-<p>```</p>
+<pre><code class="language-bash"># Enable and start the daemon
+sudo systemctl enable --now opensnitch
+
+# Launch the GUI (runs in system tray)
+opensnitch-ui
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="first-time-setup">First-Time Setup</h3>
 <ol>
@@ -398,25 +416,28 @@ sudo dnf install opensnitch opensnitch-ui</p>
 <!-- Quick sub-note for this part -->
 <h3 id="example-rules">Example Rules</h3>
 <p><strong>Allow Firefox to access everything:</strong></p>
-<p>```</p>
-<p>Process: firefox
+<pre><code>
+Process: firefox
 Action: allow
-Duration: always</p>
-<p>```</p>
+Duration: always
+
+</code></pre>
 <p><strong>Block a specific domain for all apps:</strong></p>
-<p>```</p>
-<p>Process: *
+<pre><code>
+Process: *
 Domain: telemetry.mozilla.org
 Action: deny
-Duration: always</p>
-<p>```</p>
+Duration: always
+
+</code></pre>
 <p><strong>Allow Steam only to Steam servers:</strong></p>
-<p>```</p>
-<p>Process: steam
+<pre><code>
+Process: steam
 Domain: *.steampowered.com
 Action: allow
-Duration: always</p>
-<p>```</p>
+Duration: always
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="configuration-tips">Configuration Tips</h3>
 <p><strong>Recommended setup:</strong>
@@ -432,14 +453,16 @@ Duration: always</p>
 <!-- Quick sub-note for this part -->
 <h3 id="advanced-cli-rules">Advanced: CLI Rules</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<p>```bash</p>
-<h1 id="list-all-rules">List all rules</h1>
-<p>opensnitchd-rulesctl list</p>
-<h1 id="export-rules-to-json">Export rules to JSON</h1>
-<p>opensnitchd-rulesctl export &gt; my-rules.json</p>
-<h1 id="import-rules">Import rules</h1>
-<p>opensnitchd-rulesctl import my-rules.json</p>
-<p>```</p>
+<pre><code class="language-bash"># List all rules
+opensnitchd-rulesctl list
+
+# Export rules to JSON
+opensnitchd-rulesctl export &gt; my-rules.json
+
+# Import rules
+opensnitchd-rulesctl import my-rules.json
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="performance-impact">Performance Impact</h3>
 <p>OpenSnitch uses eBPF and netfilter, so performance impact is <strong>minimal</strong>:
@@ -459,25 +482,27 @@ Duration: always</p>
 <!-- Quick sub-note for this part -->
 <h3 id="troubleshooting_1">Troubleshooting</h3>
 <p><strong>Daemon won't start:</strong></p>
-<p>```bash</p>
-<h1 id="check-status">Check status</h1>
-<p>sudo systemctl status opensnitch</p>
-<h1 id="view-logs">View logs</h1>
-<p>sudo journalctl -u opensnitch -f</p>
-<p>```</p>
+<pre><code class="language-bash"># Check status
+sudo systemctl status opensnitch
+
+# View logs
+sudo journalctl -u opensnitch -f
+
+</code></pre>
 <p><strong>GUI not showing popups:</strong></p>
-<p>```bash</p>
-<h1 id="restart-the-ui">Restart the UI</h1>
-<p>pkill opensnitch-ui
-opensnitch-ui &amp;</p>
-<h1 id="check-notification-settings-in-your-desktop-environment">Check notification settings in your desktop environment</h1>
-<p>```</p>
+<pre><code class="language-bash"># Restart the UI
+pkill opensnitch-ui
+opensnitch-ui &amp;
+
+# Check notification settings in your desktop environment
+
+</code></pre>
 <p><strong>Too many popups:</strong></p>
-<p>```bash</p>
-<h1 id="switch-to-allow-by-default-temporarily">Switch to "Allow by default" temporarily</h1>
-<h1 id="create-broad-rules-for-common-apps-browser-email-etc">Create broad rules for common apps (browser, email, etc.)</h1>
-<h1 id="then-switch-back-to-deny-by-default">Then switch back to "Deny by default"</h1>
-<p>```</p>
+<pre><code class="language-bash"># Switch to &quot;Allow by default&quot; temporarily
+# Create broad rules for common apps (browser, email, etc.)
+# Then switch back to &quot;Deny by default&quot;
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="network-privacy-dns-over-tls-dot">Network Privacy: DNS-over-TLS (DoT)</h2>

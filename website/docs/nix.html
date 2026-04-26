@@ -82,24 +82,27 @@
 <!-- Quick sub-note for this part -->
 <h3 id="on-arch-linux">On Arch Linux</h3>
 <p>Arch has Nix in the official repositories, but it requires a bit of manual setup for the daemon.</p>
-<p>```bash</p>
-<h1 id="1-install-the-package">1. Install the package</h1>
-<p>sudo pacman -S nix</p>
-<h1 id="2-enable-the-nix-daemon">2. Enable the Nix daemon</h1>
-<p>sudo systemctl enable --now nix-daemon.service</p>
-<h1 id="3-add-your-user-to-the-nix-users-group">3. Add your user to the nix-users group</h1>
-<p>sudo usermod -aG nix-users $USER</p>
-<h1 id="log-out-and-back-in-for-this-to-take-effect">(Log out and back in for this to take effect)</h1>
-<h1 id="4-add-the-standard-channel">4. Add the standard channel</h1>
-<p>nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-nix-channel --update</p>
-<p>```</p>
+<pre><code class="language-bash"># 1. Install the package
+sudo pacman -S nix
+
+# 2. Enable the Nix daemon
+sudo systemctl enable --now nix-daemon.service
+
+# 3. Add your user to the nix-users group
+sudo usermod -aG nix-users $USER
+# (Log out and back in for this to take effect)
+
+# 4. Add the standard channel
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+nix-channel --update
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="on-fedora-recommended-method">On Fedora (Recommended Method)</h3>
 <p>For Fedora (and any non-NixOS system), the <strong>Determinate Systems Installer</strong> is widely considered the best and safest way to set up Nix with proper uninstall support and modern features enabled.</p>
-<p>```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install</p>
-<p>```</p>
+<pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-how-to-use-nix">2. How to Use Nix</h2>
@@ -107,51 +110,54 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix 
 <!-- Quick sub-note for this part -->
 <h3 id="a-the-temporary-way-nix-shell">A. The Temporary Way (nix-shell)</h3>
 <p>This is perfect for developers. Need <code>nodejs</code> just for one project?</p>
-<p>```bash
-nix-shell -p nodejs_20</p>
-<p>```</p>
+<pre><code class="language-bash">nix-shell -p nodejs_20
+
+</code></pre>
 <p>This drops you into a shell where <code>node</code> is available. Once you type <code>exit</code>, it's gone from your path (though still in your store for next time).</p>
 <!-- Quick sub-note for this part -->
 <h3 id="b-the-permanent-way-nix-profile">B. The Permanent Way (nix profile)</h3>
 <p>This is the modern way to "install" an app permanently for your user.</p>
-<p>```bash</p>
-<h1 id="search-for-a-package">Search for a package</h1>
-<p>nix search nixpkgs discord</p>
-<h1 id="install-a-package">Install a package</h1>
-<p>nix profile install nixpkgs#discord</p>
-<h1 id="list-installed-nix-packages">List installed Nix packages</h1>
-<p>nix profile list</p>
-<h1 id="upgrade-all-nix-packages">Upgrade all Nix packages</h1>
-<p>nix profile upgrade '.*'</p>
-<p>```</p>
+<pre><code class="language-bash"># Search for a package
+nix search nixpkgs discord
+
+# Install a package
+nix profile install nixpkgs#discord
+
+# List installed Nix packages
+nix profile list
+
+# Upgrade all Nix packages
+nix profile upgrade '.*'
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="c-the-legacy-way-nix-env">C. The Legacy Way (nix-env)</h3>
 <p>You will see many guides using <code>nix-env</code>. It's older but still works:</p>
-<p>```bash
-nix-env -iA nixpkgs.hello</p>
-<p>```</p>
+<pre><code class="language-bash">nix-env -iA nixpkgs.hello
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="3-maintenance">3. Maintenance</h2>
 <p>Since Nix keeps old versions of packages to allow for rollbacks, the <code>/nix</code> folder can grow large over time.</p>
 <p><strong>Clean up old versions and unused packages:</strong></p>
-<p>```bash
-nix-collect-garbage -d</p>
-<p>```</p>
+<pre><code class="language-bash">nix-collect-garbage -d
+
+</code></pre>
 <hr />
 <!-- Quick sub-note for this part -->
 <h3 id="important-note">Important Note</h3>
 <p>Nix packages are usually located in <code>/nix/store</code> and linked to your profile. If you are using a GUI app installed via Nix on KDE, you may need to add the Nix desktop files to your path so they show up in your application menu:</p>
 <p><strong>Shell (Bash/Zsh):</strong></p>
-<p>```bash</p>
-<h1 id="add-this-to-your-zshrc-or-bashrc-if-apps-dont-show-in-menu">Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu</h1>
-<p>export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"</p>
-<p>```</p>
+<pre><code class="language-bash"># Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu
+export XDG_DATA_DIRS=&quot;$HOME/.nix-profile/share:$XDG_DATA_DIRS&quot;
+
+</code></pre>
 <p><strong>Shell (Fish):</strong></p>
-<p>```fish</p>
-<h1 id="add-this-to-your-configfishconfigfish-if-apps-dont-show-in-menu">Add this to your ~/.config/fish/config.fish if apps don't show in menu</h1>
-<p>set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS</p>
-<p>```</p>
+<pre><code class="language-fish"># Add this to your ~/.config/fish/config.fish if apps don't show in menu
+set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>

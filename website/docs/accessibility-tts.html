@@ -65,59 +65,70 @@
 <p>This guide covers setting up high-quality neural TTS using Piper instead of the default espeak/festival voices.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="prerequisites">Prerequisites</h3>
-<p>```bash</p>
-<h1 id="install-required-packages-archaur">Install required packages (Arch/AUR)</h1>
-<p>paru -S piper-tts-bin speech-dispatcher</p>
-<h1 id="optional-install-additional-voice-packages">Optional: Install additional voice packages</h1>
-<p>paru -S piper-voices-en-us</p>
-<p>```</p>
+<pre><code class="language-bash"># Install required packages (Arch/AUR)
+paru -S piper-tts-bin speech-dispatcher
+
+# Optional: Install additional voice packages
+paru -S piper-voices-en-us
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="installing-a-voice">Installing a Voice</h3>
 <p>Download a Piper voice (or use the voice packages):</p>
-<p>```bash</p>
-<h1 id="voices-are-stored-in">Voices are stored in</h1>
-<p>~/.local/share/piper-voices/</p>
-<h1 id="example-en_us-amy-mediumonnx-and-en_us-amy-mediumonnxjson">Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json</h1>
-<p>```</p>
+<pre><code class="language-bash"># Voices are stored in
+~/.local/share/piper-voices/
+
+# Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="configuration">Configuration</h3>
 <h4 id="1-enable-the-piper-module">1. Enable the Piper Module</h4>
 <p>Edit <code>/etc/speech-dispatcher/speechd.conf</code>:</p>
-<p>```bash
-sudo nano /etc/speech-dispatcher/speechd.conf</p>
-<p>```</p>
+<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/speechd.conf
+
+</code></pre>
 <p>Add this line in the <code>AddModule</code> section (around line 290):</p>
-<p>```</p>
-<p>AddModule "piper-generic" "sd_generic" "piper-generic.conf"</p>
-<p>```</p>
+<pre><code>
+AddModule &quot;piper-generic&quot; &quot;sd_generic&quot; &quot;piper-generic.conf&quot;
+
+</code></pre>
 <p>Set it as the default module:</p>
-<p>```</p>
-<p>DefaultModule piper-generic</p>
-<p>```</p>
+<pre><code>
+DefaultModule piper-generic
+
+</code></pre>
 <h4 id="2-create-piper-module-configuration">2. Create Piper Module Configuration</h4>
 <p>Create <code>/etc/speech-dispatcher/modules/piper-generic.conf</code>:</p>
-<p>```bash
-sudo nano /etc/speech-dispatcher/modules/piper-generic.conf</p>
-<p>```</p>
+<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
+
+</code></pre>
 <p>Add this configuration (using Ryan high-quality male voice - recommended):</p>
-<p>```conf
-Debug 0</p>
-<p>GenericExecuteSynth "echo '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768"</p>
-<p>GenericCmdDependency "piper-tts"
-GenericSoundIconFolder "/usr/share/sounds/sound-icons/"</p>
-<p>GenericPunctNone ""
-GenericPunctSome "--punct=\"()[]{};:\""
-GenericPunctAll "--punct"</p>
-<p>GenericRateAdd 0
+<pre><code class="language-conf">Debug 0
+
+GenericExecuteSynth &quot;echo '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768&quot;
+
+GenericCmdDependency &quot;piper-tts&quot;
+GenericSoundIconFolder &quot;/usr/share/sounds/sound-icons/&quot;
+
+GenericPunctNone &quot;&quot;
+GenericPunctSome &quot;--punct=\&quot;()[]{};:\&quot;&quot;
+GenericPunctAll &quot;--punct&quot;
+
+GenericRateAdd 0
 GenericPitchAdd 0
-GenericVolumeAdd 1</p>
-<p>GenericRateMultiply 1
+GenericVolumeAdd 1
+
+GenericRateMultiply 1
 GenericPitchMultiply 1
-GenericVolumeMultiply 1</p>
-<p>AddVoice "en" "MALE1" "ryan-high"
-AddVoice "en-us" "MALE1" "ryan-high"</p>
-<p>DefaultVoice "ryan-high"</p>
-<p>```</p>
+GenericVolumeMultiply 1
+
+AddVoice &quot;en&quot; &quot;MALE1&quot; &quot;ryan-high&quot;
+AddVoice &quot;en-us&quot; &quot;MALE1&quot; &quot;ryan-high&quot;
+
+DefaultVoice &quot;ryan-high&quot;
+
+</code></pre>
 <p><strong>Volume Settings (complete reference - 1% to 100%):</strong></p>
 <details>
 <summary>Click to expand full volume table</summary>
@@ -227,30 +238,30 @@ AddVoice "en-us" "MALE1" "ryan-high"</p>
 
 <p><strong>Note:</strong> This assumes you installed <code>piper-voices-en-us</code> package which places voices in <code>/usr/share/piper-voices/</code>.</p>
 <h4 id="3-restart-speech-dispatcher">3. Restart Speech Dispatcher</h4>
-<p>```bash
-systemctl --user restart speech-dispatcher</p>
-<p>```</p>
+<pre><code class="language-bash">systemctl --user restart speech-dispatcher
+
+</code></pre>
 <h4 id="4-test">4. Test</h4>
-<p>```bash
-spd-say "Testing Piper voice"</p>
-<p>```</p>
+<pre><code class="language-bash">spd-say &quot;Testing Piper voice&quot;
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p><strong>Issue: Module not loading</strong></p>
 <p>Check the debug logs:</p>
-<p>```bash
-systemctl --user stop speech-dispatcher.socket
+<pre><code class="language-bash">systemctl --user stop speech-dispatcher.socket
 systemctl --user stop speech-dispatcher
 rm -rf /tmp/speechd-debug
-speech-dispatcher -D</p>
-<p>```</p>
+speech-dispatcher -D
+
+</code></pre>
 <p>Then check <code>/tmp/speechd-debug/speech-dispatcher.log</code> for errors.</p>
 <p><strong>Issue: Wrong piper binary</strong></p>
 <p>Make sure you're using <code>piper-tts</code> (the TTS engine) not <code>piper</code> (a GTK app for gaming mice):</p>
-<p>```bash
-which piper-tts  # Should show /usr/bin/piper-tts
-piper-tts --version  # Should show version like 1.2.0</p>
-<p>```</p>
+<pre><code class="language-bash">which piper-tts  # Should show /usr/bin/piper-tts
+piper-tts --version  # Should show version like 1.2.0
+
+</code></pre>
 <p><strong>Issue: No audio output</strong></p>
 <ul>
 <li>Ensure <code>paplay</code> is installed (part of pulseaudio utilities)</li>
@@ -305,12 +316,13 @@ piper-tts --version  # Should show version like 1.2.0</p>
 <!-- Quick sub-note for this part -->
 <h3 id="testing-voices">Testing Voices</h3>
 <p>Test any voice before switching:</p>
-<p>```bash</p>
-<h1 id="test-ryan-high-at-50-volume">Test ryan-high at 50% volume</h1>
-<p>echo "Hello, I am Ryan" | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768</p>
-<h1 id="test-lessac-high-female-voice">Test lessac-high female voice</h1>
-<p>echo "Hello, I am Lessac" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768</p>
-<p>```</p>
+<pre><code class="language-bash"># Test ryan-high at 50% volume
+echo &quot;Hello, I am Ryan&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
+
+# Test lessac-high female voice
+echo &quot;Hello, I am Lessac&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="notes">Notes</h3>
 <ul>

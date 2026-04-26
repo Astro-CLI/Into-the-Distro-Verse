@@ -73,16 +73,16 @@
 <!-- Quick sub-note for this part -->
 <h3 id="adding-a-standard-repository">Adding a Standard Repository</h3>
 <p>To add a new source manually:</p>
-<p>```bash
-echo "deb http://deb.debian.org/debian bookworm-backports main" | sudo tee /etc/apt/sources.list.d/backports.list
-sudo apt update</p>
-<p>```</p>
+<pre><code class="language-bash">echo &quot;deb http://deb.debian.org/debian bookworm-backports main&quot; | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update
+
+</code></pre>
 <!-- Quick sub-note for this part -->
 <h3 id="backports-the-safe-way-to-get-newer-apps">Backports (The "Safe" Way to get newer apps)</h3>
 <p>If you need a newer kernel or app version on Debian Stable, always check <strong>Backports</strong> first before adding external distros.</p>
-<p>```bash
-sudo apt install -t bookworm-backports package_name</p>
-<p>```</p>
+<pre><code class="language-bash">sudo apt install -t bookworm-backports package_name
+
+</code></pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-adding-external-repositories-ubuntu-kali">2. Adding External Repositories (Ubuntu &amp; Kali)</h2>
@@ -133,12 +133,13 @@ Pin-Priority: 100
 <!-- Quick sub-note for this part -->
 <h3 id="wayland-screen-sharing-support">Wayland Screen Sharing Support</h3>
 <p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
-<p>```bash</p>
-<h1 id="install-xwayland-video-bridge">Install Xwayland Video Bridge</h1>
-<p>sudo apt install xwaylandvideobridge</p>
-<h1 id="if-not-available-in-main-repos-try-from-backports">If not available in main repos, try from backports:</h1>
-<h1 id="sudo-apt-t-bookworm-backports-install-xwaylandvideobridge">sudo apt -t bookworm-backports install xwaylandvideobridge</h1>
-<p>```</p>
+<pre><code class="language-bash"># Install Xwayland Video Bridge
+sudo apt install xwaylandvideobridge
+
+# If not available in main repos, try from backports:
+# sudo apt -t bookworm-backports install xwaylandvideobridge
+
+</code></pre>
 <p><em>Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.</em></p>
 <hr />
 <!-- Section for specific setup/config steps -->
