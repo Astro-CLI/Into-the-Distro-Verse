@@ -1,0 +1,271 @@
+<h1>Text-to-Speech (TTS) Setup</h1>
+<h2>Configuring Piper TTS with Speech Dispatcher</h2>
+<p>This guide covers setting up high-quality neural TTS using Piper instead of the default espeak/festival voices.</p>
+<h3>Prerequisites</h3>
+<pre><code class="language-bash"># Install required packages (Arch/AUR)
+paru -S piper-tts-bin speech-dispatcher
+
+# Optional: Install additional voice packages
+paru -S piper-voices-en-us
+</code></pre>
+<h3>Installing a Voice</h3>
+<p>Download a Piper voice (or use the voice packages):</p>
+<pre><code class="language-bash"># Voices are stored in
+~/.local/share/piper-voices/
+
+# Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json
+</code></pre>
+<h3>Configuration</h3>
+<h4>1. Enable the Piper Module</h4>
+<p>Edit <code>/etc/speech-dispatcher/speechd.conf</code>:</p>
+<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/speechd.conf
+</code></pre>
+<p>Add this line in the <code>AddModule</code> section (around line 290):</p>
+<pre><code>AddModule &quot;piper-generic&quot; &quot;sd_generic&quot; &quot;piper-generic.conf&quot;
+</code></pre>
+<p>Set it as the default module:</p>
+<pre><code>DefaultModule piper-generic
+</code></pre>
+<h4>2. Create Piper Module Configuration</h4>
+<p>Create <code>/etc/speech-dispatcher/modules/piper-generic.conf</code>:</p>
+<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
+</code></pre>
+<p>Add this configuration (using Ryan high-quality male voice - recommended):</p>
+<pre><code class="language-conf">Debug 0
+
+GenericExecuteSynth &quot;echo &#39;$DATA&#39; | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768&quot;
+
+GenericCmdDependency &quot;piper-tts&quot;
+GenericSoundIconFolder &quot;/usr/share/sounds/sound-icons/&quot;
+
+GenericPunctNone &quot;&quot;
+GenericPunctSome &quot;--punct=\&quot;()[]{};:\&quot;&quot;
+GenericPunctAll &quot;--punct&quot;
+
+GenericRateAdd 0
+GenericPitchAdd 0
+GenericVolumeAdd 1
+
+GenericRateMultiply 1
+GenericPitchMultiply 1
+GenericVolumeMultiply 1
+
+AddVoice &quot;en&quot; &quot;MALE1&quot; &quot;ryan-high&quot;
+AddVoice &quot;en-us&quot; &quot;MALE1&quot; &quot;ryan-high&quot;
+
+DefaultVoice &quot;ryan-high&quot;
+</code></pre>
+<p><strong>Volume Settings (complete reference - 1% to 100%):</strong></p>
+<details>
+<summary>Click to expand full volume table</summary><ul>
+<li><code>--volume=655</code> = 1%</li>
+<li><code>--volume=1310</code> = 2%</li>
+<li><code>--volume=1966</code> = 3%</li>
+<li><code>--volume=2621</code> = 4%</li>
+<li><code>--volume=3276</code> = 5%</li>
+<li><code>--volume=3932</code> = 6%</li>
+<li><code>--volume=4587</code> = 7%</li>
+<li><code>--volume=5242</code> = 8%</li>
+<li><code>--volume=5898</code> = 9%</li>
+<li><code>--volume=6553</code> = 10%</li>
+<li><code>--volume=7208</code> = 11%</li>
+<li><code>--volume=7864</code> = 12%</li>
+<li><code>--volume=8519</code> = 13%</li>
+<li><code>--volume=9175</code> = 14%</li>
+<li><code>--volume=9830</code> = 15%</li>
+<li><code>--volume=10485</code> = 16%</li>
+<li><code>--volume=11141</code> = 17%</li>
+<li><code>--volume=11796</code> = 18%</li>
+<li><code>--volume=12451</code> = 19%</li>
+<li><code>--volume=13107</code> = 20%</li>
+<li><code>--volume=13762</code> = 21%</li>
+<li><code>--volume=14417</code> = 22%</li>
+<li><code>--volume=15073</code> = 23%</li>
+<li><code>--volume=15728</code> = 24%</li>
+<li><code>--volume=16384</code> = 25%</li>
+<li><code>--volume=17039</code> = 26%</li>
+<li><code>--volume=17694</code> = 27%</li>
+<li><code>--volume=18350</code> = 28%</li>
+<li><code>--volume=19005</code> = 29%</li>
+<li><code>--volume=19660</code> = 30%</li>
+<li><code>--volume=20316</code> = 31%</li>
+<li><code>--volume=20971</code> = 32%</li>
+<li><code>--volume=21626</code> = 33%</li>
+<li><code>--volume=22282</code> = 34%</li>
+<li><code>--volume=22937</code> = 35%</li>
+<li><code>--volume=23592</code> = 36%</li>
+<li><code>--volume=24248</code> = 37%</li>
+<li><code>--volume=24903</code> = 38%</li>
+<li><code>--volume=25559</code> = 39%</li>
+<li><code>--volume=26214</code> = 40%</li>
+<li><code>--volume=26869</code> = 41%</li>
+<li><code>--volume=27525</code> = 42%</li>
+<li><code>--volume=28180</code> = 43%</li>
+<li><code>--volume=28835</code> = 44%</li>
+<li><code>--volume=29491</code> = 45%</li>
+<li><code>--volume=30146</code> = 46%</li>
+<li><code>--volume=30801</code> = 47%</li>
+<li><code>--volume=31457</code> = 48%</li>
+<li><code>--volume=32112</code> = 49%</li>
+<li><code>--volume=32768</code> = 50% ⭐ (recommended - comfortable listening level)</li>
+<li><code>--volume=33423</code> = 51%</li>
+<li><code>--volume=34078</code> = 52%</li>
+<li><code>--volume=34734</code> = 53%</li>
+<li><code>--volume=35389</code> = 54%</li>
+<li><code>--volume=36044</code> = 55%</li>
+<li><code>--volume=36700</code> = 56%</li>
+<li><code>--volume=37355</code> = 57%</li>
+<li><code>--volume=38010</code> = 58%</li>
+<li><code>--volume=38666</code> = 59%</li>
+<li><code>--volume=39321</code> = 60%</li>
+<li><code>--volume=39976</code> = 61%</li>
+<li><code>--volume=40632</code> = 62%</li>
+<li><code>--volume=41287</code> = 63%</li>
+<li><code>--volume=41943</code> = 64%</li>
+<li><code>--volume=42598</code> = 65%</li>
+<li><code>--volume=43253</code> = 66%</li>
+<li><code>--volume=43909</code> = 67%</li>
+<li><code>--volume=44564</code> = 68%</li>
+<li><code>--volume=45219</code> = 69%</li>
+<li><code>--volume=45875</code> = 70%</li>
+<li><code>--volume=46530</code> = 71%</li>
+<li><code>--volume=47185</code> = 72%</li>
+<li><code>--volume=47841</code> = 73%</li>
+<li><code>--volume=48496</code> = 74%</li>
+<li><code>--volume=49152</code> = 75%</li>
+<li><code>--volume=49807</code> = 76%</li>
+<li><code>--volume=50462</code> = 77%</li>
+<li><code>--volume=51118</code> = 78%</li>
+<li><code>--volume=51773</code> = 79%</li>
+<li><code>--volume=52428</code> = 80%</li>
+<li><code>--volume=53084</code> = 81%</li>
+<li><code>--volume=53739</code> = 82%</li>
+<li><code>--volume=54394</code> = 83%</li>
+<li><code>--volume=55050</code> = 84%</li>
+<li><code>--volume=55705</code> = 85%</li>
+<li><code>--volume=56360</code> = 86%</li>
+<li><code>--volume=57016</code> = 87%</li>
+<li><code>--volume=57671</code> = 88%</li>
+<li><code>--volume=58327</code> = 89%</li>
+<li><code>--volume=58982</code> = 90%</li>
+<li><code>--volume=59637</code> = 91%</li>
+<li><code>--volume=60293</code> = 92%</li>
+<li><code>--volume=60948</code> = 93%</li>
+<li><code>--volume=61603</code> = 94%</li>
+<li><code>--volume=62259</code> = 95%</li>
+<li><code>--volume=62914</code> = 96%</li>
+<li><code>--volume=63569</code> = 97%</li>
+<li><code>--volume=64225</code> = 98%</li>
+<li><code>--volume=64880</code> = 99%</li>
+<li><code>--volume=65536</code> = 100% (full/default)</li>
+</ul>
+</details><p><strong>Note:</strong> This assumes you installed <code>piper-voices-en-us</code> package which places voices in <code>/usr/share/piper-voices/</code>.</p>
+<h4>3. Restart Speech Dispatcher</h4>
+<pre><code class="language-bash">systemctl --user restart speech-dispatcher
+</code></pre>
+<h4>4. Test</h4>
+<pre><code class="language-bash">spd-say &quot;Testing Piper voice&quot;
+</code></pre>
+<h3>Troubleshooting</h3>
+<p><strong>Issue: Module not loading</strong></p>
+<p>Check the debug logs:</p>
+<pre><code class="language-bash">systemctl --user stop speech-dispatcher.socket
+systemctl --user stop speech-dispatcher
+rm -rf /tmp/speechd-debug
+speech-dispatcher -D
+</code></pre>
+<p>Then check <code>/tmp/speechd-debug/speech-dispatcher.log</code> for errors.</p>
+<p><strong>Issue: Wrong piper binary</strong></p>
+<p>Make sure you&#39;re using <code>piper-tts</code> (the TTS engine) not <code>piper</code> (a GTK app for gaming mice):</p>
+<pre><code class="language-bash">which piper-tts  # Should show /usr/bin/piper-tts
+piper-tts --version  # Should show version like 1.2.0
+</code></pre>
+<p><strong>Issue: No audio output</strong></p>
+<ul>
+<li>Ensure <code>paplay</code> is installed (part of pulseaudio utilities)</li>
+<li>Test piper directly:<pre><code class="language-bash">echo &quot;test&quot; | piper-tts --model ~/.local/share/piper-voices/en_US-amy-medium.onnx --output-file /tmp/test.wav
+paplay /tmp/test.wav
+</code></pre>
+</li>
+</ul>
+<h3>Adding More Voices</h3>
+<ol>
+<li>Download additional voice models from <a href="https://github.com/rhasspy/piper/releases">Piper releases</a></li>
+<li>Place <code>.onnx</code> and <code>.onnx.json</code> files in <code>~/.local/share/piper-voices/</code></li>
+<li>Add corresponding <code>AddVoice</code> entries to the config</li>
+<li>Update the <code>GenericExecuteSynth</code> line to use the new model path, or create separate module configs for different voices</li>
+</ol>
+<h3>Voice Quality Levels</h3>
+<p>Piper voices come in different quality levels:</p>
+<ul>
+<li><strong>low</strong> - Fastest, lower quality (good for lower-end hardware)</li>
+<li><strong>medium</strong> - Good balance of quality and speed</li>
+<li><strong>high</strong> - Best quality, requires more CPU (recommended for modern systems)</li>
+</ul>
+<h3>Recommended Voices</h3>
+<p><strong>Best Male Voices (High to Low Quality):</strong></p>
+<p><strong>High Quality (requires modern CPU - Ryzen 7 7800X3D or equivalent recommended):</strong></p>
+<ol>
+<li><strong>ryan-high</strong> ⭐ - Most natural male voice, excellent clarity (116MB)<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx</code></li>
+</ul>
+</li>
+<li><strong>hfc_male-medium</strong> - Natural high-fidelity male voice<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/hfc_male/medium/en_US-hfc_male-medium.onnx</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Medium Quality (good balance):</strong></p>
+<ol>
+<li><strong>ryan-medium</strong> - Good quality, faster than high<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/ryan/medium/en_US-ryan-medium.onnx</code></li>
+</ul>
+</li>
+<li><strong>joe-medium</strong> - Clear male voice<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/joe/medium/en_US-joe-medium.onnx</code></li>
+</ul>
+</li>
+<li><strong>john-medium</strong> - Professional male voice<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/john/medium/en_US-john-medium.onnx</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Low Quality (fastest, lowest CPU usage):</strong></p>
+<ol>
+<li><strong>ryan-low</strong> - Still decent quality, very fast<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/ryan/low/en_US-ryan-low.onnx</code></li>
+</ul>
+</li>
+<li><strong>danny-low</strong> - Fast and lightweight<ul>
+<li>Path: <code>/usr/share/piper-voices/en/en_US/danny/low/en_US-danny-low.onnx</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>Best Female Voices:</strong></p>
+<p><strong>High Quality:</strong></p>
+<ol>
+<li><strong>lessac-high</strong> - Professional, natural female voice (109MB)</li>
+<li><strong>ljspeech-high</strong> - Classic, clear female voice (109MB)</li>
+<li><strong>libritts-high</strong> - Multi-speaker, highest quality (131MB)</li>
+</ol>
+<p><strong>Medium Quality:</strong></p>
+<ol>
+<li><strong>lessac-medium</strong> - Good balance</li>
+<li><strong>kristin-medium</strong> - Natural female voice</li>
+<li><strong>hfc_female-medium</strong> - High-fidelity female voice</li>
+</ol>
+<h3>Testing Voices</h3>
+<p>Test any voice before switching:</p>
+<pre><code class="language-bash"># Test ryan-high at 50% volume
+echo &quot;Hello, I am Ryan&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
+
+# Test lessac-high female voice
+echo &quot;Hello, I am Lessac&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
+</code></pre>
+<h3>Notes</h3>
+<ul>
+<li>The <code>sd_generic</code> module requires <code>AddVoice</code> declarations to load properly</li>
+<li>Each voice needs both the <code>.onnx</code> model file and <code>.onnx.json</code> metadata file</li>
+<li>Piper TTS is much higher quality than espeak/festival but requires more CPU</li>
+</ul>
+

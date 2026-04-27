@@ -1,0 +1,99 @@
+<h1>Debian: The Stable Foundation 🌀</h1>
+<p>Debian is the &quot;Universal Operating System&quot; that serves as the base for Ubuntu, Kali, and many others. While it prizes stability, you may sometimes need newer or more specialized packages.</p>
+<hr>
+<h2>🚀 1. Basic Repository Management</h2>
+<p>Standard repositories are defined in <code>/etc/apt/sources.list</code>.</p>
+<h3>Adding a Standard Repository</h3>
+<p>To add a new source manually:</p>
+<pre><code class="language-bash">echo &quot;deb http://deb.debian.org/debian bookworm-backports main&quot; | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update
+</code></pre>
+<h3>Backports (The &quot;Safe&quot; Way to get newer apps)</h3>
+<p>If you need a newer kernel or app version on Debian Stable, always check <strong>Backports</strong> first before adding external distros.</p>
+<pre><code class="language-bash">sudo apt install -t bookworm-backports package_name
+</code></pre>
+<hr>
+<h2>🏗️ 2. Adding External Repositories (Ubuntu &amp; Kali)</h2>
+<p>⚠️ <strong>WARNING: THE &quot;FRANKENDEBIAN&quot; RISK</strong><br>Adding repositories from different distributions (like Ubuntu or Kali) into a standard Debian system is dangerous. It can cause dependency conflicts that make your system un-updatable. <strong>Proceed with caution.</strong></p>
+<h3>Adding Ubuntu Repositories</h3>
+<p>You might want this for specific PPAs or newer libraries.</p>
+<ol>
+<li><strong>Add the repository:</strong><pre><code class="language-bash">echo &quot;deb http://archive.ubuntu.com/ubuntu/ noble main universe&quot; | sudo tee /etc/apt/sources.list.d/ubuntu.list
+</code></pre>
+</li>
+<li><strong>Add the GPG Key:</strong> (You must find the specific key for the repo you are adding).</li>
+</ol>
+<h3>Adding Kali Linux Repositories</h3>
+<p>Useful if you want access to Kali&#39;s massive suite of security tools without a full Kali install.</p>
+<ol>
+<li><strong>Add the Kali repo:</strong><pre><code class="language-bash">echo &quot;deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware&quot; | sudo tee /etc/apt/sources.list.d/kali.list
+</code></pre>
+</li>
+<li><strong>Import the Kali GPG key:</strong><pre><code class="language-bash">wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg
+</code></pre>
+</li>
+</ol>
+<hr>
+<h2>⚖️ 3. Safe Management: APT Pinning</h2>
+<p>To prevent Ubuntu or Kali from accidentally overwriting your core Debian system files, you should use <strong>APT Pinning</strong>. This tells Debian to only use the external repo for specific packages you ask for.</p>
+<ol>
+<li>Create a pin file: <code>sudo nano /etc/apt/preferences.d/external-repo</code></li>
+<li>Add this configuration:<pre><code class="language-text">Package: *
+Pin: release o=Kali
+Pin-Priority: 100
+
+Package: *
+Pin: release o=Ubuntu
+Pin-Priority: 100
+</code></pre>
+<em>A priority of 100 ensures Debian will always prefer its own packages unless you manually force the install from the external repo.</em></li>
+</ol>
+<hr>
+<h2>🎬 4. Multimedia &amp; Wayland Utilities</h2>
+<h3>Wayland Screen Sharing Support</h3>
+<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
+<pre><code class="language-bash"># Install Xwayland Video Bridge
+sudo apt install xwaylandvideobridge
+
+# If not available in main repos, try from backports:
+# sudo apt -t bookworm-backports install xwaylandvideobridge
+</code></pre>
+<p>💡 <em>Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.</em></p>
+<hr>
+<h2>🛠️ 5. Essential Commands</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Task</th>
+<th align="left">Command</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Update Lists</strong></td>
+<td align="left"><code>sudo apt update</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Upgrade System</strong></td>
+<td align="left"><code>sudo apt upgrade</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Install from Specific Repo</strong></td>
+<td align="left"><code>sudo apt install -t kali-rolling package_name</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Fix Broken Deps</strong></td>
+<td align="left"><code>sudo apt install -f</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Clean Cache</strong></td>
+<td align="left"><code>sudo apt clean</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Rolling-release setup and AUR management.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Setup and optimizations for Fedora Workstation.</li>
+<li>📖 <strong><a href="security.md">Security Guide</a></strong> - Hardening your Debian system.</li>
+</ul>
+

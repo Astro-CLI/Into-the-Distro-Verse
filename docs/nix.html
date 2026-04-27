@@ -1,0 +1,85 @@
+<h1>Nix: The &quot;Universal&quot; Package Manager</h1>
+<p>Nix is a powerful, functional package manager that can run on top of any Linux distribution (like Arch or Fedora). It provides access to <strong>Nixpkgs</strong>, the largest and most up-to-date software repository in the Linux world (over 80,000 packages).</p>
+<hr>
+<h2>🤔 Why use Nix on Arch or Fedora?</h2>
+<ol>
+<li><strong>Massive Selection:</strong> Often has packages that aren&#39;t even in the AUR or COPR.</li>
+<li><strong>No &quot;Dependency Hell&quot;:</strong> Every package is installed in its own unique directory in <code>/nix/store</code>. They never conflict with your system libraries (Pacman/DNF).</li>
+<li><strong>Atomic Rollbacks:</strong> If an update breaks a Nix-installed app, you can roll back to the previous working version instantly.</li>
+<li><strong>Reproducible Shells:</strong> Create a temporary environment with specific tools without actually &quot;installing&quot; them to your system.</li>
+<li><strong>Multi-User:</strong> Users can install software without <code>sudo</code> once Nix is set up.</li>
+</ol>
+<hr>
+<h2>🚀 1. Installation</h2>
+<h3>On Arch Linux</h3>
+<p>Arch has Nix in the official repositories, but it requires a bit of manual setup for the daemon.</p>
+<pre><code class="language-bash"># 1. Install the package
+sudo pacman -S nix
+
+# 2. Enable the Nix daemon
+sudo systemctl enable --now nix-daemon.service
+
+# 3. Add your user to the nix-users group
+sudo usermod -aG nix-users $USER
+# (Log out and back in for this to take effect)
+
+# 4. Add the standard channel
+nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+nix-channel --update
+</code></pre>
+<h3>On Fedora (Recommended Method)</h3>
+<p>For Fedora (and any non-NixOS system), the <strong>Determinate Systems Installer</strong> is widely considered the best and safest way to set up Nix with proper uninstall support and modern features enabled.</p>
+<pre><code class="language-bash">curl --proto &#39;=https&#39; --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+</code></pre>
+<hr>
+<h2>🛠️ 2. How to Use Nix</h2>
+<p>Nix has two main ways of being used: <strong>Imperative</strong> (like pacman) and <strong>Declarative/Temporary</strong> (the Nix way).</p>
+<h3>A. The Temporary Way (nix-shell)</h3>
+<p>This is perfect for developers. Need <code>nodejs</code> just for one project?</p>
+<pre><code class="language-bash">nix-shell -p nodejs_20
+</code></pre>
+<p>This drops you into a shell where <code>node</code> is available. Once you type <code>exit</code>, it&#39;s gone from your path (though still in your store for next time).</p>
+<h3>B. The Permanent Way (nix profile)</h3>
+<p>This is the modern way to &quot;install&quot; an app permanently for your user.</p>
+<pre><code class="language-bash"># Search for a package
+nix search nixpkgs discord
+
+# Install a package
+nix profile install nixpkgs#discord
+
+# List installed Nix packages
+nix profile list
+
+# Upgrade all Nix packages
+nix profile upgrade &#39;.*&#39;
+</code></pre>
+<h3>C. The Legacy Way (nix-env)</h3>
+<p>You will see many guides using <code>nix-env</code>. It&#39;s older but still works:</p>
+<pre><code class="language-bash">nix-env -iA nixpkgs.hello
+</code></pre>
+<hr>
+<h2>🧹 3. Maintenance</h2>
+<p>Since Nix keeps old versions of packages to allow for rollbacks, the <code>/nix</code> folder can grow large over time.</p>
+<p><strong>Clean up old versions and unused packages:</strong></p>
+<pre><code class="language-bash">nix-collect-garbage -d
+</code></pre>
+<hr>
+<h3>⚠️ Important Note</h3>
+<p>Nix packages are usually located in <code>/nix/store</code> and linked to your profile. If you are using a GUI app installed via Nix on KDE, you may need to add the Nix desktop files to your path so they show up in your application menu:</p>
+<p><strong>Shell (Bash/Zsh):</strong></p>
+<pre><code class="language-bash"># Add this to your ~/.zshrc or ~/.bashrc if apps don&#39;t show in menu
+export XDG_DATA_DIRS=&quot;$HOME/.nix-profile/share:$XDG_DATA_DIRS&quot;
+</code></pre>
+<p><strong>Shell (Fish):</strong></p>
+<pre><code class="language-fish"># Add this to your ~/.config/fish/config.fish if apps don&#39;t show in menu
+set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
+</code></pre>
+<hr>
+<h2>🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Native package management on Arch.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Native package management on Fedora.</li>
+<li>📖 <strong><a href="flatpak.md">Flatpak Guide</a></strong> - Another universal app solution.</li>
+<li>📖 <strong><a href="homebrew.md">Homebrew Guide</a></strong> - CLI-focused universal package manager.</li>
+</ul>
+

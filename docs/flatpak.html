@@ -1,0 +1,110 @@
+<h1>Flatpak: The Universal App Store 📦</h1>
+<p>Flatpak is a next-generation technology for building and distributing desktop applications on Linux. It allows apps to run in an isolated &quot;sandbox,&quot; making them more secure and compatible across any distribution.</p>
+<hr>
+<h2>🤔 Why Flatpak?</h2>
+<ol>
+<li><strong>Universal Compatibility:</strong> The same app runs exactly the same on Arch, Fedora, Debian, or NixOS.</li>
+<li><strong>Sandbox Security:</strong> Apps are isolated from your system files unless you specifically grant them access.</li>
+<li><strong>Latest Versions:</strong> Apps on Flathub are often updated faster than those in your distro&#39;s official repositories.</li>
+<li><strong>Runtime Independence:</strong> Apps bundle their own dependencies, avoiding &quot;dependency hell.&quot;</li>
+</ol>
+<hr>
+<h2>🚀 1. Installation</h2>
+<h3>On Arch Linux</h3>
+<pre><code class="language-bash">sudo pacman -S flatpak
+</code></pre>
+<h3>On Fedora</h3>
+<p>Flatpak is installed by default.</p>
+<hr>
+<h2>📦 2. Setting Up Flathub (The Software Goldmine)</h2>
+<p>Flathub is the central repository for most Flatpak applications.</p>
+<p><strong>Enable the Full Flathub Repo:</strong><br>Fedora often includes a &quot;filtered&quot; version of Flathub. To get access to everything (including proprietary apps like Discord, Steam, or Spotify), run:</p>
+<pre><code class="language-bash">flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+</code></pre>
+<hr>
+<h2>🛠️ 3. Basic Commands</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Task</th>
+<th align="left">Command</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Search</strong></td>
+<td align="left"><code>flatpak search app_name</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Install</strong></td>
+<td align="left"><code>flatpak install flathub app_id</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Update All</strong></td>
+<td align="left"><code>flatpak update</code></td>
+</tr>
+<tr>
+<td align="left"><strong>List Installed</strong></td>
+<td align="left"><code>flatpak list --app</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Uninstall</strong></td>
+<td align="left"><code>flatpak uninstall app_id</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Clean Unused</strong></td>
+<td align="left"><code>flatpak uninstall --unused</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🔒 4. Permissions &amp; Flatseal</h2>
+<p>Because Flatpaks are sandboxed, they sometimes need extra permissions (like access to your <code>~/Documents</code> or a USB drive).</p>
+<h3>Option A: Flatseal (GUI)</h3>
+<p>The most user-friendly way to manage permissions.</p>
+<pre><code class="language-bash">flatpak install flathub com.github.tchx84.Flatseal
+</code></pre>
+<h3>Option B: CLI Overrides</h3>
+<p>You can manage permissions directly from the terminal.</p>
+<ul>
+<li><strong>Grant folder access:</strong><pre><code class="language-bash">flatpak override com.example.App --filesystem=/path/to/folder
+</code></pre>
+</li>
+<li><strong>Grant home directory access:</strong><pre><code class="language-bash">flatpak override com.example.App --filesystem=home
+</code></pre>
+</li>
+<li><strong>Grant hardware/USB access:</strong><pre><code class="language-bash">flatpak override com.example.App --device=all
+</code></pre>
+</li>
+<li><strong>Show current overrides:</strong><pre><code class="language-bash">flatpak override com.example.App --show
+</code></pre>
+</li>
+<li><strong>Reset to defaults:</strong><pre><code class="language-bash">flatpak override com.example.App --reset
+</code></pre>
+</li>
+</ul>
+<hr>
+<h2>🎨 5. Theming &amp; Aesthetics</h2>
+<p>Flatpaks sometimes look &quot;out of place&quot; because they don&#39;t always pick up your system theme automatically.</p>
+<p><strong>Applying GTK Themes:</strong><br>Most popular themes (like Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.</p>
+<pre><code class="language-bash"># Example: Search for your theme
+flatpak search org.gtk.Gtk3theme.Breeze
+</code></pre>
+<p><strong>Granting Access to Theme Folders:</strong><br>If your theme isn&#39;t on Flathub, you can give Flatpaks access to your local theme folders:</p>
+<pre><code class="language-bash">flatpak override --user --filesystem=$HOME/.themes
+flatpak override --user --filesystem=$HOME/.icons
+</code></pre>
+<hr>
+<h2>🧹 6. Maintenance</h2>
+<p>Flatpaks can take up a lot of space because they keep old runtimes.</p>
+<p><strong>To free up space:</strong></p>
+<pre><code class="language-bash"># Removes runtimes that are no longer used by any installed app
+flatpak uninstall --unused
+</code></pre>
+<hr>
+<h2>🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="snaps.md">Snap Guide</a></strong> - Canonical&#39;s alternative to Flatpak.</li>
+<li>📖 <strong><a href="nix.md">Nix Guide</a></strong> - Declarative and universal package management.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Fedora&#39;s deep integration with Flatpak.</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Using Flatpak in the Arch ecosystem.</li>
+</ul>
+

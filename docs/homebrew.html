@@ -1,0 +1,94 @@
+<h1>Homebrew: The Linux &quot;Brew&quot;</h1>
+<p>Homebrew (originally for macOS) is a popular package manager for Linux that installs software into its own prefix (usually <code>/home/linuxbrew/.linuxbrew</code>). It&#39;s a great way to get the latest CLI tools without needing <code>sudo</code> or messing with your system&#39;s native package manager (Pacman/DNF).</p>
+<hr>
+<h2>🤔 Why use Homebrew on Linux?</h2>
+<ol>
+<li><strong>User-Space Installs:</strong> Everything lives in your home directory or <code>/home/linuxbrew</code>. No <code>sudo</code> required after initial setup.</li>
+<li><strong>Mac-Native CLI Tools:</strong> If you follow many web-dev or DevOps tutorials, they often assume you have <code>brew</code>.</li>
+<li><strong>Consistent Experience:</strong> If you switch between Arch and Fedora, your Homebrew packages and configurations remain exactly the same.</li>
+<li><strong>Cutting-Edge CLI:</strong> Often has the absolute latest versions of CLI tools (like <code>fzf</code>, <code>gh</code>, <code>exa</code>, etc.) before they hit stable repos.</li>
+</ol>
+<hr>
+<h2>🚀 1. Installation</h2>
+<p>Homebrew requires some build essentials before it can be installed.</p>
+<h3>On Arch Linux</h3>
+<pre><code class="language-bash">sudo pacman -S --needed base-devel
+</code></pre>
+<h3>On Fedora</h3>
+<pre><code class="language-bash">sudo dnf groupinstall &quot;Development Tools&quot;
+sudo dnf install procps-ng curl file git
+</code></pre>
+<h3>Install Command</h3>
+<p>Run the official installer script:</p>
+<pre><code class="language-bash">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
+</code></pre>
+<hr>
+<h2>⚙️ 2. Post-Installation (Crucial)</h2>
+<p>After the script finishes, it will give you a few lines to add to your shell profile. <strong>Don&#39;t skip this!</strong></p>
+<p><strong>Shell (Bash/Zsh):</strong></p>
+<pre><code class="language-bash"># Add this to your ~/.bashrc or ~/.zshrc
+eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;
+</code></pre>
+<p><strong>Shell (Fish):</strong></p>
+<pre><code class="language-fish"># Add this to your ~/.config/fish/config.fish
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+</code></pre>
+<p>Then, verify the installation:</p>
+<pre><code class="language-bash">brew doctor
+</code></pre>
+<hr>
+<h2>🛠️ 3. Basic Usage</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Task</th>
+<th align="left">Command</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>Search</strong></td>
+<td align="left"><code>brew search package_name</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Install</strong></td>
+<td align="left"><code>brew install package_name</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Update Brew</strong></td>
+<td align="left"><code>brew update</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Upgrade Apps</strong></td>
+<td align="left"><code>brew upgrade</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Uninstall</strong></td>
+<td align="left"><code>brew uninstall package_name</code></td>
+</tr>
+<tr>
+<td align="left"><strong>List Installed</strong></td>
+<td align="left"><code>brew list</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2>🧹 4. Maintenance</h2>
+<p>Homebrew doesn&#39;t delete old versions of packages automatically. Over time, this can eat up a lot of space in your home directory.</p>
+<p><strong>Clean up old versions and cache:</strong></p>
+<pre><code class="language-bash">brew cleanup
+</code></pre>
+<hr>
+<h2>⚖️ Homebrew vs. Nix vs. AUR</h2>
+<ul>
+<li><strong>AUR (Arch):</strong> Best for system-deep integration and desktop apps. Fast, but Arch-only.</li>
+<li><strong>Nix:</strong> The most powerful and safest, but has a steeper learning curve.</li>
+<li><strong>Homebrew:</strong> The easiest &quot;universal&quot; package manager for CLI tools. Very user-friendly and familiar to macOS users.</li>
+</ul>
+<hr>
+<h2>🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="nix.md">Nix Guide</a></strong> - The functional alternative to Homebrew.</li>
+<li>📖 <strong><a href="flatpak.md">Flatpak Guide</a></strong> - Universal graphical applications.</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Setting up build essentials for Brew on Arch.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Setting up build essentials for Brew on Fedora.</li>
+</ul>
+
