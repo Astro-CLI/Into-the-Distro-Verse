@@ -17,22 +17,22 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
+| **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
 | **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
-| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
+| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
 | **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
-| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
-| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
+| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
 | **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
+| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
+| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
+| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
 | **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
 | **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
-| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
-| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
-| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
-| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
-| **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
 | **Streaming Services** | Music & video streaming without ads | [**docs/streaming/**](docs/streaming/) |
+| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
+| **Tor + Apache & Docker** | Anonymous website hosting with Apache & Docker | [**docs/apache-tor-docker.md**](docs/apache-tor-docker.md) |
 | **Tor Hidden Service (Arch)** | Anonymous website hosting with Nginx (native) | [**docs/tor-hidden-service-arch.md**](docs/tor-hidden-service-arch.md) |
-| **Tor + Docker** | Anonymous website hosting with Apache & Docker | [**docs/apache-tor-docker.md**](docs/apache-tor-docker.md) |
+| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
 
 ---
 
@@ -69,8 +69,8 @@ Guides for securing and maintaining the integrity of a Linux system.
 
 Backups of user-specific settings and desktop configurations.
 
--   **Desktop Environment:** Restore KDE Plasma layout, shortcuts, and themes. [**configs/kde/README.md**](configs/kde/README.md)
 -   **Boot Configuration:** Visual customization for the GRUB bootloader. [**configs/grub/README.md**](configs/grub/README.md)
+-   **Desktop Environment:** Restore KDE Plasma layout, shortcuts, and themes. [**configs/kde/README.md**](configs/kde/README.md)
 
 ---
 
