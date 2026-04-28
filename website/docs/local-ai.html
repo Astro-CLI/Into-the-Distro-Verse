@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,33 +40,67 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#hardware-context">Hardware Context</a></li>
-<li><a href="#1-core-engine-ollama">1. Core Engine: Ollama</a><ul>
-<li><a href="#option-a-native-installation-recommended">Option A: Native Installation (Recommended)</a></li>
-<li><a href="#option-b-docker-based-setup">Option B: Docker-based Setup</a></li>
+<li>
+<a href="#hardware-context">Hardware Context</a>
+</li>
+<li>
+<a href="#1-core-engine-ollama">1. Core Engine: Ollama</a>
+<ul>
+<li>
+<a href="#option-a-native-installation-recommended">Option A: Native Installation (Recommended)</a>
+</li>
+<li>
+<a href="#option-b-docker-based-setup">Option B: Docker-based Setup</a>
+</li>
 </ul>
 </li>
-<li><a href="#2-manager-script-ai">2. Manager Script: ai</a><ul>
-<li><a href="#key-features">Key Features</a></li>
+<li>
+<a href="#2-manager-script-ai">2. Manager Script: ai</a>
+<ul>
+<li>
+<a href="#key-features">Key Features</a>
+</li>
 </ul>
 </li>
-<li><a href="#3-system-agent-open-interpreter">3. System Agent: Open Interpreter</a><ul>
-<li><a href="#setup-python-314-monkey-patch">Setup (Python 3.14+ "Monkey-Patch")</a></li>
-<li><a href="#command-examples">Command Examples</a></li>
+<li>
+<a href="#3-system-agent-open-interpreter">3. System Agent: Open Interpreter</a>
+<ul>
+<li>
+<a href="#setup-python-314-monkey-patch">Setup (Python 3.14+ "Monkey-Patch")</a>
+</li>
+<li>
+<a href="#command-examples">Command Examples</a>
+</li>
 </ul>
 </li>
-<li><a href="#4-security-the-internet-kill-switch">4. Security: The Internet Kill-Switch</a></li>
-<li><a href="#5-helper-scripts">5. Helper Scripts</a><ul>
-<li><a href="#the-ai-model-manager">The ai Model Manager</a></li>
-<li><a href="#the-interpreter-shortcut-portable-bash">The interpreter Shortcut (Portable Bash)</a></li>
+<li>
+<a href="#4-security-the-internet-kill-switch">4. Security: The Internet Kill-Switch</a>
+</li>
+<li>
+<a href="#5-helper-scripts">5. Helper Scripts</a>
+<ul>
+<li>
+<a href="#the-ai-model-manager">The ai Model Manager</a>
+</li>
+<li>
+<a href="#the-interpreter-shortcut-portable-bash">The interpreter Shortcut (Portable Bash)</a>
+</li>
 </ul>
 </li>
-<li><a href="#6-live-information-internet-access">6. Live Information &amp; Internet Access</a><ul>
-<li><a href="#how-to-use-internet">How to use Internet</a></li>
+<li>
+<a href="#6-live-information-internet-access">6. Live Information &amp; Internet Access</a>
+<ul>
+<li>
+<a href="#how-to-use-internet">How to use Internet</a>
+</li>
 </ul>
 </li>
-<li><a href="#7-recommended-models-for-16gb-vram">7. Recommended Models for 16GB VRAM</a></li>
-<li><a href="#8-maintenance-performance">8. Maintenance &amp; Performance</a></li>
+<li>
+<a href="#7-recommended-models-for-16gb-vram">7. Recommended Models for 16GB VRAM</a>
+</li>
+<li>
+<a href="#8-maintenance-performance">8. Maintenance &amp; Performance</a>
+</li>
 </ul>
 </div>
 
@@ -79,10 +117,14 @@
 <!-- Section for specific setup/config steps -->
 <h2 id="hardware-context">Hardware Context</h2>
 <ul>
-<li><strong>GPU:</strong> AMD Radeon RX 7600 XT (16GB VRAM)</li>
-<li><strong>CPU:</strong> AMD Ryzen 7 7800X3D</li>
-<li><strong>RAM:</strong> 32GB DDR5</li>
-<li><strong>Driver Stack:</strong> ROCm (Radeon Open Compute)</li>
+<li>
+<strong>GPU:</strong> AMD Radeon RX 7600 XT (16GB VRAM)</li>
+<li>
+<strong>CPU:</strong> AMD Ryzen 7 7800X3D</li>
+<li>
+<strong>RAM:</strong> 32GB DDR5</li>
+<li>
+<strong>Driver Stack:</strong> ROCm (Radeon Open Compute)</li>
 </ul>
 <p>The 16GB of VRAM allows for running models up to 14B-20B parameters entirely on the GPU at high speeds.</p>
 <hr />
@@ -92,33 +134,44 @@
 <!-- Quick sub-note for this part -->
 <h3 id="option-a-native-installation-recommended">Option A: Native Installation (Recommended)</h3>
 <p>Native installation provides the best performance and easiest integration with host-side tools.</p>
-<pre><code class="language-bash">sudo pacman -S ollama-rocm
+<pre>
+<code class="language-bash">sudo pacman -S ollama-rocm
 sudo systemctl enable --now ollama.service
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="option-b-docker-based-setup">Option B: Docker-based Setup</h3>
 <p>Useful for isolating the LLM environment or running multiple versions.</p>
-<pre><code class="language-bash">docker run -d \
+<pre>
+<code class="language-bash">docker run -d \
   --device /dev/kfd --device /dev/dri \
   -v ollama:/root/.ollama \
   -p 11434:11434 \
   --name ollama \
   ollama/ollama:rocm
 
-</code></pre>
-<p><em>Note: GPU access is enabled by mapping <code>/dev/kfd</code> and <code>/dev/dri</code> device files.</em></p>
+</code>
+</pre>
+<p>
+<em>Note: GPU access is enabled by mapping <code>/dev/kfd</code> and <code>/dev/dri</code> device files.</em>
+</p>
 <hr />
 <!-- Section for specific setup/config steps -->
-<h2 id="2-manager-script-ai">2. Manager Script: <code>ai</code></h2>
+<h2 id="2-manager-script-ai">2. Manager Script: <code>ai</code>
+</h2>
 <p>A portable Bash script located at <code>/usr/local/bin/ai</code> that provides an interactive menu to manage and launch models.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="key-features">Key Features</h3>
 <ul>
-<li><strong>Categorization:</strong> Models are sorted into Large (14B), Medium (7B-8B), and Small (3B).</li>
-<li><strong>Ranking:</strong> Prioritizes specialist models (like Qwen Coder) at the top of their categories.</li>
-<li><strong>Instant Unload:</strong> Press <code>0</code> to instantly clear VRAM (useful before launching heavy games).</li>
-<li><strong>Persistence:</strong> Remembers your last choice; just press <code>Enter</code> to resume the previous session.</li>
+<li>
+<strong>Categorization:</strong> Models are sorted into Large (14B), Medium (7B-8B), and Small (3B).</li>
+<li>
+<strong>Ranking:</strong> Prioritizes specialist models (like Qwen Coder) at the top of their categories.</li>
+<li>
+<strong>Instant Unload:</strong> Press <code>0</code> to instantly clear VRAM (useful before launching heavy games).</li>
+<li>
+<strong>Persistence:</strong> Remembers your last choice; just press <code>Enter</code> to resume the previous session.</li>
 </ul>
 <hr />
 <!-- Section for specific setup/config steps -->
@@ -129,48 +182,64 @@ sudo systemctl enable --now ollama.service
 <p>Newer Python versions (3.14+) have removed the legacy <code>pkg_resources</code> module. We install it in a virtual environment and apply a compatibility patch.</p>
 <ol>
 <li>
-<p><strong>Create Environment:</strong>
+<p>
+<strong>Create Environment:</strong>
    <code>bash
    python -m venv ~/interpreter_env
-   ~/interpreter_env/bin/pip install open-interpreter setuptools</code></p>
+   ~/interpreter_env/bin/pip install open-interpreter setuptools</code>
+</p>
 </li>
 <li>
-<p><strong>Apply Patch:</strong> Create <code>~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py</code>:
+<p>
+<strong>Apply Patch:</strong> Create <code>~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py</code>:
    <code>python
    import importlib.metadata
    def get_distribution(name):
-       return importlib.metadata.distribution(name)</code></p>
+       return importlib.metadata.distribution(name)</code>
+</p>
 </li>
 <li>
-<p><strong>Usage Command:</strong>
+<p>
+<strong>Usage Command:</strong>
    Point it to your local Ollama instance:
    <code>bash
-   ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --model ollama/qwen2.5-coder:14b</code></p>
+   ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --model ollama/qwen2.5-coder:14b</code>
+</p>
 </li>
 </ol>
 <!-- Quick sub-note for this part -->
 <h3 id="command-examples">Command Examples</h3>
 <ul>
-<li><em>"List the 5 largest files in my Downloads folder."</em></li>
-<li><em>"Help me find all my .pkt files and move them to a new folder."</em></li>
-<li><em>"Check my current GPU temperatures using rocm-smi."</em></li>
+<li>
+<em>"List the 5 largest files in my Downloads folder."</em>
+</li>
+<li>
+<em>"Help me find all my .pkt files and move them to a new folder."</em>
+</li>
+<li>
+<em>"Check my current GPU temperatures using rocm-smi."</em>
+</li>
 </ul>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="4-security-the-internet-kill-switch">4. Security: The Internet Kill-Switch</h2>
 <p>For sensitive tasks, you can run the AI in a fully offline sandbox using <code>firejail</code>. It will still be able to "talk" to your local Ollama brain, but cannot reach the internet.</p>
-<pre><code class="language-bash">firejail --net=none ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
+<pre>
+<code class="language-bash">firejail --net=none ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="5-helper-scripts">5. Helper Scripts</h2>
 <p>To make usage simple, the following scripts were created to automate model management and tool integration.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="the-ai-model-manager">The <code>ai</code> Model Manager</h3>
-<p><strong>Location:</strong> <code>/usr/local/bin/ai</code> (Executable)</p>
+<p>
+<strong>Location:</strong> <code>/usr/local/bin/ai</code> (Executable)</p>
 <p>This script provides an interactive menu for selecting and launching models, as well as clearing VRAM.</p>
-<pre><code class="language-bash">#!/usr/bin/env bash
+<pre>
+<code class="language-bash">#!/usr/bin/env bash
 
 # Paths for last used model
 CACHE_DIR=&quot;$HOME/.cache&quot;
@@ -299,12 +368,15 @@ if [ -n &quot;$selected_model&quot; ]; then
     ollama run &quot;$selected_model&quot;
 fi
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="the-interpreter-shortcut-portable-bash">The <code>interpreter</code> Shortcut (Portable Bash)</h3>
-<p><strong>Location:</strong> <code>/usr/local/bin/interpreter</code> (Executable)</p>
+<p>
+<strong>Location:</strong> <code>/usr/local/bin/interpreter</code> (Executable)</p>
 <p>This script simplifies launching Open Interpreter, handles Python 3.14 compatibility, and adds a privacy toggle.</p>
-<pre><code class="language-bash">#!/usr/bin/env bash
+<pre>
+<code class="language-bash">#!/usr/bin/env bash
 export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
 INTERPRETER_BIN=&quot;$HOME/interpreter_env/bin/interpreter&quot;
 CMD=&quot;$INTERPRETER_BIN --local --api_base http://localhost:11434&quot;
@@ -317,7 +389,8 @@ else
     bash -c &quot;$CMD $*&quot;
 fi
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="6-live-information-internet-access">6. Live Information &amp; Internet Access</h2>
@@ -327,8 +400,12 @@ fi
 <ol>
 <li>Run the command without the offline flag: <code>interpreter</code>.</li>
 <li>Ask the AI to perform a web-based task:</li>
-<li><em>"Find the current price of Bitcoin."</em></li>
-<li><em>"Search the web for the latest Arch Linux news."</em></li>
+<li>
+<em>"Find the current price of Bitcoin."</em>
+</li>
+<li>
+<em>"Search the web for the latest Arch Linux news."</em>
+</li>
 </ol>
 <p>The AI will write and execute Python code (using libraries like <code>requests</code> or <code>selenium</code>) to fetch the data and present it to you.</p>
 <hr />
@@ -349,9 +426,12 @@ fi
 <!-- Section for specific setup/config steps -->
 <h2 id="8-maintenance-performance">8. Maintenance &amp; Performance</h2>
 <ul>
-<li><strong>Monitor VRAM:</strong> Run <code>rocm-smi</code> to see real-time allocation.</li>
-<li><strong>Clear Memory:</strong> Use the <code>ai</code> command and select <code>0</code> to free up GPU space immediately.</li>
-<li><strong>Disk Usage:</strong> Models are stored in <code>/usr/share/ollama/.ollama</code> (Native) or Docker volumes.</li>
+<li>
+<strong>Monitor VRAM:</strong> Run <code>rocm-smi</code> to see real-time allocation.</li>
+<li>
+<strong>Clear Memory:</strong> Use the <code>ai</code> command and select <code>0</code> to free up GPU space immediately.</li>
+<li>
+<strong>Disk Usage:</strong> Models are stored in <code>/usr/share/ollama/.ollama</code> (Native) or Docker volumes.</li>
 </ul>
 <!-- 
     TIP: If you're using Neovim, you can use 
@@ -360,7 +440,8 @@ fi
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 <!-- 
     WIKI GUIDE: local-ai.md

@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,40 +40,100 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#what-youre-actually-doing">What You're Actually Doing</a></li>
-<li><a href="#what-you-need">What You Need</a></li>
-<li><a href="#installing-docker">Installing Docker</a><ul>
-<li><a href="#ubuntu-or-debian">Ubuntu or Debian</a></li>
-<li><a href="#arch-linux">Arch Linux</a></li>
-<li><a href="#fedora">Fedora</a></li>
-<li><a href="#other-distros">Other Distros</a></li>
+<li>
+<a href="#what-youre-actually-doing">What You're Actually Doing</a>
+</li>
+<li>
+<a href="#what-you-need">What You Need</a>
+</li>
+<li>
+<a href="#installing-docker">Installing Docker</a>
+<ul>
+<li>
+<a href="#ubuntu-or-debian">Ubuntu or Debian</a>
+</li>
+<li>
+<a href="#arch-linux">Arch Linux</a>
+</li>
+<li>
+<a href="#fedora">Fedora</a>
+</li>
+<li>
+<a href="#other-distros">Other Distros</a>
+</li>
 </ul>
 </li>
-<li><a href="#set-up-your-project">Set Up Your Project</a></li>
-<li><a href="#create-your-website">Create Your Website</a></li>
-<li><a href="#create-apache-settings">Create Apache Settings</a></li>
-<li><a href="#create-the-dockerfile">Create the Dockerfile</a></li>
-<li><a href="#create-tor-configuration">Create Tor Configuration</a></li>
-<li><a href="#create-docker-composeyml">Create docker-compose.yml</a></li>
-<li><a href="#start-everything">Start Everything</a></li>
-<li><a href="#get-your-onion-address">Get Your .onion Address</a></li>
-<li><a href="#access-your-site">Access Your Site</a></li>
-<li><a href="#common-problems">Common Problems</a><ul>
-<li><a href="#cant-connect-to-my-onion-address">Can't connect to my .onion address</a></li>
-<li><a href="#504-bad-gateway">504 Bad Gateway</a></li>
-<li><a href="#i-want-to-update-my-website">I want to update my website</a></li>
-<li><a href="#i-want-to-stop-my-site-but-keep-the-onion-address">I want to stop my site but keep the .onion address</a></li>
-<li><a href="#i-want-to-completely-start-over-and-get-a-new-onion-address">I want to completely start over and get a new .onion address</a></li>
+<li>
+<a href="#set-up-your-project">Set Up Your Project</a>
+</li>
+<li>
+<a href="#create-your-website">Create Your Website</a>
+</li>
+<li>
+<a href="#create-apache-settings">Create Apache Settings</a>
+</li>
+<li>
+<a href="#create-the-dockerfile">Create the Dockerfile</a>
+</li>
+<li>
+<a href="#create-tor-configuration">Create Tor Configuration</a>
+</li>
+<li>
+<a href="#create-docker-composeyml">Create docker-compose.yml</a>
+</li>
+<li>
+<a href="#start-everything">Start Everything</a>
+</li>
+<li>
+<a href="#get-your-onion-address">Get Your .onion Address</a>
+</li>
+<li>
+<a href="#access-your-site">Access Your Site</a>
+</li>
+<li>
+<a href="#common-problems">Common Problems</a>
+<ul>
+<li>
+<a href="#cant-connect-to-my-onion-address">Can't connect to my .onion address</a>
+</li>
+<li>
+<a href="#504-bad-gateway">504 Bad Gateway</a>
+</li>
+<li>
+<a href="#i-want-to-update-my-website">I want to update my website</a>
+</li>
+<li>
+<a href="#i-want-to-stop-my-site-but-keep-the-onion-address">I want to stop my site but keep the .onion address</a>
+</li>
+<li>
+<a href="#i-want-to-completely-start-over-and-get-a-new-onion-address">I want to completely start over and get a new .onion address</a>
+</li>
 </ul>
 </li>
-<li><a href="#basic-commands-youll-use">Basic Commands You'll Use</a></li>
-<li><a href="#keep-it-safe">Keep It Safe</a></li>
-<li><a href="#adding-more-pages">Adding More Pages</a></li>
-<li><a href="#check-your-visitor-stats">Check Your Visitor Stats</a></li>
-<li><a href="#whats-actually-happening">What's Actually Happening</a></li>
-<li><a href="#distro-notes">Distro Notes</a></li>
-<li><a href="#need-help">Need Help</a></li>
-<li><a href="#one-more-thing">One More Thing</a></li>
+<li>
+<a href="#basic-commands-youll-use">Basic Commands You'll Use</a>
+</li>
+<li>
+<a href="#keep-it-safe">Keep It Safe</a>
+</li>
+<li>
+<a href="#adding-more-pages">Adding More Pages</a>
+</li>
+<li>
+<a href="#check-your-visitor-stats">Check Your Visitor Stats</a>
+</li>
+<li>
+<a href="#whats-actually-happening">What's Actually Happening</a>
+</li>
+<li>
+<a href="#distro-notes">Distro Notes</a>
+</li>
+<li>
+<a href="#need-help">Need Help</a>
+</li>
+<li>
+<a href="#one-more-thing">One More Thing</a>
+</li>
 </ul>
 </div>
 
@@ -105,54 +169,71 @@
 <h2 id="installing-docker">Installing Docker</h2>
 <p>First we need Docker. The commands are different depending on which Linux distro you're using.</p>
 <h3 id="ubuntu-or-debian">Ubuntu or Debian</h3>
-<pre><code class="language-bash">sudo apt update
+<pre>
+<code class="language-bash">sudo apt update
 sudo apt install docker.io docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
-</code></pre>
+</code>
+</pre>
 <h3 id="arch-linux">Arch Linux</h3>
-<pre><code class="language-bash">sudo pacman -S docker docker-compose
+<pre>
+<code class="language-bash">sudo pacman -S docker docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
-</code></pre>
+</code>
+</pre>
 <h3 id="fedora">Fedora</h3>
-<pre><code class="language-bash">sudo dnf install docker docker-compose
+<pre>
+<code class="language-bash">sudo dnf install docker docker-compose
 sudo systemctl start docker
 sudo systemctl enable docker
-</code></pre>
+</code>
+</pre>
 <h3 id="other-distros">Other Distros</h3>
 <p>Go to docker.com and follow their installation guide.</p>
 <p>After installing, let Docker run without sudo:</p>
-<pre><code class="language-bash">sudo usermod -aG docker $USER
+<pre>
+<code class="language-bash">sudo usermod -aG docker $USER
 newgrp docker
-</code></pre>
+</code>
+</pre>
 <p>Test it works:</p>
-<pre><code class="language-bash">docker run hello-world
-</code></pre>
+<pre>
+<code class="language-bash">docker run hello-world
+</code>
+</pre>
 <p>If you see a message saying hello, you're good.</p>
 <hr />
 <h2 id="set-up-your-project">Set Up Your Project</h2>
 <p>Create a folder for everything and make the subdirectories:</p>
-<pre><code class="language-bash">mkdir -p ~/my-onion-site
+<pre>
+<code class="language-bash">mkdir -p ~/my-onion-site
 cd ~/my-onion-site
 mkdir -p tor/keys apache/html apache/config logs
-</code></pre>
+</code>
+</pre>
 <p>Now you have a structure like this:</p>
-<pre><code>my-onion-site/
+<pre>
+<code>my-onion-site/
  tor/
     keys/          (your .onion address will be here)
  apache/
     html/          (your website files)
     config/        (Apache settings)
  logs/              (where errors get written)
-</code></pre>
+</code>
+</pre>
 <hr />
 <h2 id="create-your-website">Create Your Website</h2>
 <p>Open a text editor and create your first HTML file:</p>
-<pre><code class="language-bash">nano apache/html/index.html
-</code></pre>
+<pre>
+<code class="language-bash">nano apache/html/index.html
+</code>
+</pre>
 <p>Paste this in:</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+<pre>
+<code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;meta charset=&quot;UTF-8&quot;&gt;
@@ -177,15 +258,19 @@ mkdir -p tor/keys apache/html apache/config logs
     &lt;p&gt;Your real location is protected.&lt;/p&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</code>
+</pre>
 <p>Save it: Ctrl+X, then Y, then Enter.</p>
 <hr />
 <h2 id="create-apache-settings">Create Apache Settings</h2>
 <p>Create another file for Apache configuration:</p>
-<pre><code class="language-bash">nano apache/config/custom.conf
-</code></pre>
+<pre>
+<code class="language-bash">nano apache/config/custom.conf
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-apache">ServerTokens ProductOnly
+<pre>
+<code class="language-apache">ServerTokens ProductOnly
 ServerSignature Off
 
 &lt;DirectoryMatch &quot;/\.&quot;&gt;
@@ -199,15 +284,19 @@ Header set Referrer-Policy &quot;no-referrer&quot;
 &lt;Directory /usr/local/apache2/htdocs&gt;
     Options -Indexes
 &lt;/Directory&gt;
-</code></pre>
+</code>
+</pre>
 <p>These are just safety rules. Save it the same way.</p>
 <hr />
 <h2 id="create-the-dockerfile">Create the Dockerfile</h2>
 <p>This tells Docker how to build the Apache container:</p>
-<pre><code class="language-bash">nano Dockerfile
-</code></pre>
+<pre>
+<code class="language-bash">nano Dockerfile
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-dockerfile">FROM httpd:2.4-alpine
+<pre>
+<code class="language-dockerfile">FROM httpd:2.4-alpine
 
 COPY apache/html/ /usr/local/apache2/htdocs/
 COPY apache/config/custom.conf /usr/local/apache2/conf.d/
@@ -221,15 +310,19 @@ HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
     CMD curl -f http://localhost/ || exit 1
 
 CMD [&quot;httpd-foreground&quot;]
-</code></pre>
+</code>
+</pre>
 <p>Save it.</p>
 <hr />
 <h2 id="create-tor-configuration">Create Tor Configuration</h2>
 <p>Tor needs its own config file:</p>
-<pre><code class="language-bash">nano tor/torrc
-</code></pre>
+<pre>
+<code class="language-bash">nano tor/torrc
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-conf">SocksPort 0
+<pre>
+<code class="language-conf">SocksPort 0
 ControlPort 9051
 CookieAuthentication 1
 
@@ -238,17 +331,21 @@ HiddenServicePort 80 apache:80
 HiddenServiceVersion 3
 
 Log notice file /var/log/tor/notices.log
-</code></pre>
+</code>
+</pre>
 <p>Save it. The key lines are:
 - HiddenServicePort tells Tor to listen on port 80 and forward to your Apache container
 - HiddenServiceVersion 3 means use the newer, more secure Tor addresses</p>
 <hr />
 <h2 id="create-docker-composeyml">Create docker-compose.yml</h2>
 <p>This is the file that orchestrates everything. It tells Docker to run both Tor and Apache and connect them:</p>
-<pre><code class="language-bash">nano docker-compose.yml
-</code></pre>
+<pre>
+<code class="language-bash">nano docker-compose.yml
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-yaml">version: '3.8'
+<pre>
+<code class="language-yaml">version: '3.8'
 
 services:
   tor:
@@ -294,110 +391,154 @@ networks:
     ipam:
       config:
         - subnet: 172.18.0.0/16
-</code></pre>
+</code>
+</pre>
 <p>Save it. That's all the files.</p>
 <hr />
 <h2 id="start-everything">Start Everything</h2>
 <p>Make sure you're in your project folder:</p>
-<pre><code class="language-bash">cd ~/my-onion-site
-</code></pre>
+<pre>
+<code class="language-bash">cd ~/my-onion-site
+</code>
+</pre>
 <p>Start both containers:</p>
-<pre><code class="language-bash">docker-compose up -d
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose up -d
+</code>
+</pre>
 <p>The -d means run in the background.</p>
 <p>Watch Tor start up:</p>
-<pre><code class="language-bash">docker-compose logs -f tor
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose logs -f tor
+</code>
+</pre>
 <p>Wait until you see "Bootstrapped 100%". This takes 30-60 seconds. When you see it, press Ctrl+C to stop watching.</p>
 <hr />
 <h2 id="get-your-onion-address">Get Your .onion Address</h2>
 <p>When Tor starts for the first time, it generates your .onion address and saves it:</p>
-<pre><code class="language-bash">cat tor/keys/hostname
-</code></pre>
+<pre>
+<code class="language-bash">cat tor/keys/hostname
+</code>
+</pre>
 <p>You'll see something like:</p>
-<pre><code>thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
-</code></pre>
+<pre>
+<code>thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
+</code>
+</pre>
 <p>Save this. This is your website's URL. Don't lose it.</p>
 <hr />
 <h2 id="access-your-site">Access Your Site</h2>
 <p>Download Tor Browser from torproject.org if you don't have it already.</p>
 <p>Open Tor Browser and wait for it to connect (takes a minute or two).</p>
 <p>In the address bar, paste your .onion address:</p>
-<pre><code>http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/
-</code></pre>
+<pre>
+<code>http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/
+</code>
+</pre>
 <p>You should see your website. Your location is hidden. You're totally anonymous. That's it.</p>
 <hr />
 <h2 id="common-problems">Common Problems</h2>
 <h3 id="cant-connect-to-my-onion-address">Can't connect to my .onion address</h3>
 <p>First, wait 60 seconds. Tor takes time.</p>
 <p>Check if Tor is bootstrapped:</p>
-<pre><code class="language-bash">docker-compose logs tor | grep &quot;Bootstrapped&quot;
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose logs tor | grep &quot;Bootstrapped&quot;
+</code>
+</pre>
 <p>If it says 100%, then Tor is ready.</p>
 <p>Check if Apache is running:</p>
-<pre><code class="language-bash">docker-compose logs apache
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose logs apache
+</code>
+</pre>
 <p>If there are errors, restart:</p>
-<pre><code class="language-bash">docker-compose down
+<pre>
+<code class="language-bash">docker-compose down
 docker-compose up -d
-</code></pre>
+</code>
+</pre>
 <h3 id="504-bad-gateway">504 Bad Gateway</h3>
 <p>Tor can't reach Apache. Try restarting:</p>
-<pre><code class="language-bash">docker-compose restart
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose restart
+</code>
+</pre>
 <h3 id="i-want-to-update-my-website">I want to update my website</h3>
 <p>Just edit your HTML file:</p>
-<pre><code class="language-bash">nano apache/html/index.html
-</code></pre>
+<pre>
+<code class="language-bash">nano apache/html/index.html
+</code>
+</pre>
 <p>Save it. It updates automatically. You don't need to restart anything.</p>
 <h3 id="i-want-to-stop-my-site-but-keep-the-onion-address">I want to stop my site but keep the .onion address</h3>
-<pre><code class="language-bash">docker-compose down
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose down
+</code>
+</pre>
 <p>The .onion address stays the same.</p>
 <h3 id="i-want-to-completely-start-over-and-get-a-new-onion-address">I want to completely start over and get a new .onion address</h3>
-<pre><code class="language-bash">docker-compose down -v
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose down -v
+</code>
+</pre>
 <p>Only do this if you actually want a new address. You can't get the old one back.</p>
 <hr />
 <h2 id="basic-commands-youll-use">Basic Commands You'll Use</h2>
 <p>Start your site:</p>
-<pre><code class="language-bash">docker-compose up -d
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose up -d
+</code>
+</pre>
 <p>Stop your site (keeps your .onion address):</p>
-<pre><code class="language-bash">docker-compose down
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose down
+</code>
+</pre>
 <p>See what's happening:</p>
-<pre><code class="language-bash">docker-compose logs -f
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose logs -f
+</code>
+</pre>
 <p>Check if everything is running:</p>
-<pre><code class="language-bash">docker-compose ps
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose ps
+</code>
+</pre>
 <p>Get your .onion address:</p>
-<pre><code class="language-bash">cat tor/keys/hostname
-</code></pre>
+<pre>
+<code class="language-bash">cat tor/keys/hostname
+</code>
+</pre>
 <hr />
 <h2 id="keep-it-safe">Keep It Safe</h2>
 <p>Don't upload photos that have GPS data in them. Strip the metadata first:</p>
-<pre><code class="language-bash"># Install exiftool
+<pre>
+<code class="language-bash"># Install exiftool
 sudo apt install exiftool          # Debian/Ubuntu
 sudo pacman -S perl-image-exiftool  # Arch
 
 # Strip all metadata from a photo
 exiftool -all= your-photo.jpg
-</code></pre>
+</code>
+</pre>
 <p>Don't link to your real website or real email address.</p>
 <p>Don't use PHP, Python, or Node.js unless you really have to. Just HTML and CSS. The simpler, the safer.</p>
 <p>Keep your .onion private key safe. It's in tor/keys/hs_ed25519_secret_key. If you lose it, you lose your address forever. Maybe copy it somewhere safe:</p>
-<pre><code class="language-bash">cp tor/keys/hs_ed25519_secret_key ~/backup-key.txt
-</code></pre>
+<pre>
+<code class="language-bash">cp tor/keys/hs_ed25519_secret_key ~/backup-key.txt
+</code>
+</pre>
 <p>Store it somewhere offline.</p>
 <hr />
 <h2 id="adding-more-pages">Adding More Pages</h2>
 <p>Create another HTML file:</p>
-<pre><code class="language-bash">nano apache/html/about.html
-</code></pre>
+<pre>
+<code class="language-bash">nano apache/html/about.html
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+<pre>
+<code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;About&lt;/title&gt;
@@ -408,15 +549,20 @@ exiftool -all= your-photo.jpg
     &lt;a href=&quot;index.html&quot;&gt;Back to home&lt;/a&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</code>
+</pre>
 <p>Link to it from your index.html:</p>
-<pre><code class="language-html">&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;
-</code></pre>
+<pre>
+<code class="language-html">&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;
+</code>
+</pre>
 <hr />
 <h2 id="check-your-visitor-stats">Check Your Visitor Stats</h2>
 <p>See who's visiting (without storing their IP):</p>
-<pre><code class="language-bash">tail -f logs/apache/access_log
-</code></pre>
+<pre>
+<code class="language-bash">tail -f logs/apache/access_log
+</code>
+</pre>
 <p>Press Ctrl+C to stop.</p>
 <hr />
 <h2 id="whats-actually-happening">What's Actually Happening</h2>
@@ -457,7 +603,8 @@ Others: usually apt or dnf, check their docs</p>
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 # How to Set Up a Hidden Website with Docker and Tor
 

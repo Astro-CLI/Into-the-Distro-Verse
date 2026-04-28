@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,25 +40,51 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#1-dnf-optimization-speed-up-updates">1. DNF Optimization (Speed up updates)</a></li>
-<li><a href="#2-software-repositories">2. Software Repositories</a><ul>
-<li><a href="#rpm-fusion-the-essential-aur-lite">RPM Fusion (The Essential "AUR-Lite")</a></li>
-<li><a href="#copr-fedoras-aur">COPR (Fedora's AUR)</a></li>
-<li><a href="#flatpak-flathub">Flatpak &amp; Flathub</a></li>
+<li>
+<a href="#1-dnf-optimization-speed-up-updates">1. DNF Optimization (Speed up updates)</a>
+</li>
+<li>
+<a href="#2-software-repositories">2. Software Repositories</a>
+<ul>
+<li>
+<a href="#rpm-fusion-the-essential-aur-lite">RPM Fusion (The Essential "AUR-Lite")</a>
+</li>
+<li>
+<a href="#copr-fedoras-aur">COPR (Fedora's AUR)</a>
+</li>
+<li>
+<a href="#flatpak-flathub">Flatpak &amp; Flathub</a>
+</li>
 </ul>
 </li>
-<li><a href="#3-multimedia-codecs">3. Multimedia Codecs</a><ul>
-<li><a href="#wayland-screen-sharing-support">Wayland Screen Sharing Support</a></li>
+<li>
+<a href="#3-multimedia-codecs">3. Multimedia Codecs</a>
+<ul>
+<li>
+<a href="#wayland-screen-sharing-support">Wayland Screen Sharing Support</a>
+</li>
 </ul>
 </li>
-<li><a href="#4-snapshots-maintenance">4. Snapshots &amp; Maintenance</a></li>
-<li><a href="#5-system-maintenance">5. System Maintenance</a><ul>
-<li><a href="#package-management-cheat-sheet">Package Management Cheat Sheet</a></li>
-<li><a href="#version-upgrades">Version Upgrades</a></li>
+<li>
+<a href="#4-snapshots-maintenance">4. Snapshots &amp; Maintenance</a>
+</li>
+<li>
+<a href="#5-system-maintenance">5. System Maintenance</a>
+<ul>
+<li>
+<a href="#package-management-cheat-sheet">Package Management Cheat Sheet</a>
+</li>
+<li>
+<a href="#version-upgrades">Version Upgrades</a>
+</li>
 </ul>
 </li>
-<li><a href="#6-selinux-vs-apparmor">6. SELinux vs. AppArmor</a></li>
-<li><a href="#related-guides">Related Guides</a></li>
+<li>
+<a href="#6-selinux-vs-apparmor">6. SELinux vs. AppArmor</a>
+</li>
+<li>
+<a href="#related-guides">Related Guides</a>
+</li>
 </ul>
 </div>
 
@@ -72,66 +102,94 @@
 <!-- Section for specific setup/config steps -->
 <h2 id="1-dnf-optimization-speed-up-updates">1. DNF Optimization (Speed up updates)</h2>
 <p>By default, DNF can be slow. Add these tweaks to <code>/etc/dnf/dnf.conf</code> to enable parallel downloads and faster mirror selection:</p>
-<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre><code class="language-bash">echo &quot;max_parallel_downloads=10&quot; | sudo tee -a /etc/dnf/dnf.conf
+<p>
+<strong>Shell (Bash/Zsh/Fish):</strong>
+</p>
+<pre>
+<code class="language-bash">echo &quot;max_parallel_downloads=10&quot; | sudo tee -a /etc/dnf/dnf.conf
 echo &quot;fastestmirror=True&quot; | sudo tee -a /etc/dnf/dnf.conf
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-software-repositories">2. Software Repositories</h2>
 <!-- Quick sub-note for this part -->
 <h3 id="rpm-fusion-the-essential-aur-lite">RPM Fusion (The Essential "AUR-Lite")</h3>
 <p>Fedora only ships FOSS software. <strong>RPM Fusion</strong> provides the proprietary codecs, NVIDIA drivers, and software that Fedora can't include.</p>
-<pre><code class="language-bash"># Enable Free and Non-Free repositories
+<pre>
+<code class="language-bash"># Enable Free and Non-Free repositories
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="copr-fedoras-aur">COPR (Fedora's AUR)</h3>
-<p><strong>COPR</strong> (Community Projects) is the Fedora equivalent of the AUR. It allows developers to host their own repositories.</p>
+<p>
+<strong>COPR</strong> (Community Projects) is the Fedora equivalent of the AUR. It allows developers to host their own repositories.</p>
 <ul>
-<li><strong>To search for a repo:</strong> Visit <a href="https://copr.fedorainfracloud.org/">copr.fedorainfracloud.org</a></li>
 <li>
-<p><strong>To enable a repo:</strong>
-    <code>bash
-    sudo dnf copr enable author/projectname</code></p>
+<strong>To search for a repo:</strong> Visit <a href="https://copr.fedorainfracloud.org/">copr.fedorainfracloud.org</a>
 </li>
 <li>
-<p><strong>Example (LazyGit):</strong>
+<p>
+<strong>To enable a repo:</strong>
+    <code>bash
+    sudo dnf copr enable author/projectname</code>
+</p>
+</li>
+<li>
+<p>
+<strong>Example (LazyGit):</strong>
     <code>bash
     sudo dnf copr enable atim/lazygit
-    sudo dnf install lazygit</code></p>
+    sudo dnf install lazygit</code>
+</p>
 </li>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="flatpak-flathub">Flatpak &amp; Flathub</h3>
 <p>Fedora is a first-class citizen for Flatpaks. For a comprehensive guide on enabling the full Flathub repository, managing permissions with Flatseal, and CLI overrides, see the universal guide:</p>
 <ul>
-<li><strong><a href="flatpak.md">docs/flatpak.md</a></strong></li>
+<li>
+<strong>
+<a href="flatpak.md">docs/flatpak.md</a>
+</strong>
+</li>
 </ul>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="3-multimedia-codecs">3. Multimedia Codecs</h2>
 <p>Fedora needs these to play H.264, MP3s, and other patented formats correctly:</p>
-<pre><code class="language-bash">sudo dnf groupupdate core
+<pre>
+<code class="language-bash">sudo dnf groupupdate core
 sudo dnf groupinstall &quot;Multimedia&quot; &quot;Sound and Video&quot;
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="wayland-screen-sharing-support">Wayland Screen Sharing Support</h3>
-<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
-<pre><code class="language-bash"># Install Xwayland Video Bridge
+<p>
+<strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
+<pre>
+<code class="language-bash"># Install Xwayland Video Bridge
 sudo dnf install xwaylandvideobridge
 
-</code></pre>
-<p><em>If not found, check if it's available from COPR or Flathub as an alternative.</em></p>
+</code>
+</pre>
+<p>
+<em>If not found, check if it's available from COPR or Flathub as an alternative.</em>
+</p>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="4-snapshots-maintenance">4. Snapshots &amp; Maintenance</h2>
 <p>Fedora uses BTRFS by default, making snapshots an incredibly powerful tool for system stability. For a guide on setting up <strong>Snapper</strong>, <strong>TimeShift</strong>, and BTRFS maintenance, see the universal guide:</p>
 <ul>
-<li><strong><a href="snapshots.md">docs/snapshots.md</a></strong></li>
+<li>
+<strong>
+<a href="snapshots.md">docs/snapshots.md</a>
+</strong>
+</li>
 </ul>
 <hr />
 <!-- Section for specific setup/config steps -->
@@ -149,26 +207,42 @@ sudo dnf install xwaylandvideobridge
 <!-- Quick sub-note for this part -->
 <h3 id="version-upgrades">Version Upgrades</h3>
 <p>Fedora releases a new version every 6 months. To upgrade to a new release:</p>
-<pre><code class="language-bash">sudo dnf install dnf-plugin-system-upgrade
+<pre>
+<code class="language-bash">sudo dnf install dnf-plugin-system-upgrade
 sudo dnf system-upgrade download --releasever=41  # Replace with target version
 sudo dnf system-upgrade reboot
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="6-selinux-vs-apparmor">6. SELinux vs. AppArmor</h2>
 <p>Fedora uses <strong>SELinux</strong> by default. Unlike Arch (where AppArmor is optional), SELinux is baked into the system. <strong>Do not disable it.</strong> If you have permission issues, use <code>restorecon</code> to fix file labeling:</p>
-<pre><code class="language-bash">sudo restorecon -Rv /home/user/my_folder
+<pre>
+<code class="language-bash">sudo restorecon -Rv /home/user/my_folder
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>
 <ul>
-<li><strong><a href="arch.md">Arch Linux Guide</a></strong> - Rolling-release setup and AUR management.</li>
-<li><strong><a href="debian.md">Debian Guide</a></strong> - Stable-release management and external repos.</li>
-<li><strong><a href="nix.md">Nix Guide</a></strong> - Using the universal Nix package manager on Fedora.</li>
-<li><strong><a href="security.md">Security Guide</a></strong> - Hardening your Fedora system.</li>
+<li>
+<strong>
+<a href="arch.md">Arch Linux Guide</a>
+</strong> - Rolling-release setup and AUR management.</li>
+<li>
+<strong>
+<a href="debian.md">Debian Guide</a>
+</strong> - Stable-release management and external repos.</li>
+<li>
+<strong>
+<a href="nix.md">Nix Guide</a>
+</strong> - Using the universal Nix package manager on Fedora.</li>
+<li>
+<strong>
+<a href="security.md">Security Guide</a>
+</strong> - Hardening your Fedora system.</li>
 </ul>
 <!-- 
     TIP: If you're using Neovim, you can use 
@@ -177,7 +251,8 @@ sudo dnf system-upgrade reboot
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 <!-- 
     WIKI GUIDE: fedora.md

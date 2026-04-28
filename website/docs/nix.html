@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,23 +40,45 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#why-use-nix-on-arch-or-fedora">Why use Nix on Arch or Fedora?</a></li>
-<li><a href="#1-installation">1. Installation</a><ul>
-<li><a href="#on-arch-linux">On Arch Linux</a></li>
-<li><a href="#on-fedora-recommended-method">On Fedora (Recommended Method)</a></li>
+<li>
+<a href="#why-use-nix-on-arch-or-fedora">Why use Nix on Arch or Fedora?</a>
+</li>
+<li>
+<a href="#1-installation">1. Installation</a>
+<ul>
+<li>
+<a href="#on-arch-linux">On Arch Linux</a>
+</li>
+<li>
+<a href="#on-fedora-recommended-method">On Fedora (Recommended Method)</a>
+</li>
 </ul>
 </li>
-<li><a href="#2-how-to-use-nix">2. How to Use Nix</a><ul>
-<li><a href="#a-the-temporary-way-nix-shell">A. The Temporary Way (nix-shell)</a></li>
-<li><a href="#b-the-permanent-way-nix-profile">B. The Permanent Way (nix profile)</a></li>
-<li><a href="#c-the-legacy-way-nix-env">C. The Legacy Way (nix-env)</a></li>
+<li>
+<a href="#2-how-to-use-nix">2. How to Use Nix</a>
+<ul>
+<li>
+<a href="#a-the-temporary-way-nix-shell">A. The Temporary Way (nix-shell)</a>
+</li>
+<li>
+<a href="#b-the-permanent-way-nix-profile">B. The Permanent Way (nix profile)</a>
+</li>
+<li>
+<a href="#c-the-legacy-way-nix-env">C. The Legacy Way (nix-env)</a>
+</li>
 </ul>
 </li>
-<li><a href="#3-maintenance">3. Maintenance</a><ul>
-<li><a href="#important-note">Important Note</a></li>
+<li>
+<a href="#3-maintenance">3. Maintenance</a>
+<ul>
+<li>
+<a href="#important-note">Important Note</a>
+</li>
 </ul>
 </li>
-<li><a href="#related-guides">Related Guides</a></li>
+<li>
+<a href="#related-guides">Related Guides</a>
+</li>
 </ul>
 </div>
 
@@ -70,11 +96,16 @@
 <!-- Section for specific setup/config steps -->
 <h2 id="why-use-nix-on-arch-or-fedora">Why use Nix on Arch or Fedora?</h2>
 <ol>
-<li><strong>Massive Selection:</strong> Often has packages that aren't even in the AUR or COPR.</li>
-<li><strong>No "Dependency Hell":</strong> Every package is installed in its own unique directory in <code>/nix/store</code>. They never conflict with your system libraries (Pacman/DNF).</li>
-<li><strong>Atomic Rollbacks:</strong> If an update breaks a Nix-installed app, you can roll back to the previous working version instantly.</li>
-<li><strong>Reproducible Shells:</strong> Create a temporary environment with specific tools without actually "installing" them to your system.</li>
-<li><strong>Multi-User:</strong> Users can install software without <code>sudo</code> once Nix is set up.</li>
+<li>
+<strong>Massive Selection:</strong> Often has packages that aren't even in the AUR or COPR.</li>
+<li>
+<strong>No "Dependency Hell":</strong> Every package is installed in its own unique directory in <code>/nix/store</code>. They never conflict with your system libraries (Pacman/DNF).</li>
+<li>
+<strong>Atomic Rollbacks:</strong> If an update breaks a Nix-installed app, you can roll back to the previous working version instantly.</li>
+<li>
+<strong>Reproducible Shells:</strong> Create a temporary environment with specific tools without actually "installing" them to your system.</li>
+<li>
+<strong>Multi-User:</strong> Users can install software without <code>sudo</code> once Nix is set up.</li>
 </ol>
 <hr />
 <!-- Section for specific setup/config steps -->
@@ -82,7 +113,8 @@
 <!-- Quick sub-note for this part -->
 <h3 id="on-arch-linux">On Arch Linux</h3>
 <p>Arch has Nix in the official repositories, but it requires a bit of manual setup for the daemon.</p>
-<pre><code class="language-bash"># 1. Install the package
+<pre>
+<code class="language-bash"># 1. Install the package
 sudo pacman -S nix
 
 # 2. Enable the Nix daemon
@@ -96,13 +128,16 @@ sudo usermod -aG nix-users $USER
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
 nix-channel --update
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="on-fedora-recommended-method">On Fedora (Recommended Method)</h3>
 <p>For Fedora (and any non-NixOS system), the <strong>Determinate Systems Installer</strong> is widely considered the best and safest way to set up Nix with proper uninstall support and modern features enabled.</p>
-<pre><code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+<pre>
+<code class="language-bash">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="2-how-to-use-nix">2. How to Use Nix</h2>
@@ -110,14 +145,17 @@ nix-channel --update
 <!-- Quick sub-note for this part -->
 <h3 id="a-the-temporary-way-nix-shell">A. The Temporary Way (nix-shell)</h3>
 <p>This is perfect for developers. Need <code>nodejs</code> just for one project?</p>
-<pre><code class="language-bash">nix-shell -p nodejs_20
+<pre>
+<code class="language-bash">nix-shell -p nodejs_20
 
-</code></pre>
+</code>
+</pre>
 <p>This drops you into a shell where <code>node</code> is available. Once you type <code>exit</code>, it's gone from your path (though still in your store for next time).</p>
 <!-- Quick sub-note for this part -->
 <h3 id="b-the-permanent-way-nix-profile">B. The Permanent Way (nix profile)</h3>
 <p>This is the modern way to "install" an app permanently for your user.</p>
-<pre><code class="language-bash"># Search for a package
+<pre>
+<code class="language-bash"># Search for a package
 nix search nixpkgs discord
 
 # Install a package
@@ -129,43 +167,70 @@ nix profile list
 # Upgrade all Nix packages
 nix profile upgrade '.*'
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="c-the-legacy-way-nix-env">C. The Legacy Way (nix-env)</h3>
 <p>You will see many guides using <code>nix-env</code>. It's older but still works:</p>
-<pre><code class="language-bash">nix-env -iA nixpkgs.hello
+<pre>
+<code class="language-bash">nix-env -iA nixpkgs.hello
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="3-maintenance">3. Maintenance</h2>
 <p>Since Nix keeps old versions of packages to allow for rollbacks, the <code>/nix</code> folder can grow large over time.</p>
-<p><strong>Clean up old versions and unused packages:</strong></p>
-<pre><code class="language-bash">nix-collect-garbage -d
+<p>
+<strong>Clean up old versions and unused packages:</strong>
+</p>
+<pre>
+<code class="language-bash">nix-collect-garbage -d
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Quick sub-note for this part -->
 <h3 id="important-note">Important Note</h3>
 <p>Nix packages are usually located in <code>/nix/store</code> and linked to your profile. If you are using a GUI app installed via Nix on KDE, you may need to add the Nix desktop files to your path so they show up in your application menu:</p>
-<p><strong>Shell (Bash/Zsh):</strong></p>
-<pre><code class="language-bash"># Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu
+<p>
+<strong>Shell (Bash/Zsh):</strong>
+</p>
+<pre>
+<code class="language-bash"># Add this to your ~/.zshrc or ~/.bashrc if apps don't show in menu
 export XDG_DATA_DIRS=&quot;$HOME/.nix-profile/share:$XDG_DATA_DIRS&quot;
 
-</code></pre>
-<p><strong>Shell (Fish):</strong></p>
-<pre><code class="language-fish"># Add this to your ~/.config/fish/config.fish if apps don't show in menu
+</code>
+</pre>
+<p>
+<strong>Shell (Fish):</strong>
+</p>
+<pre>
+<code class="language-fish"># Add this to your ~/.config/fish/config.fish if apps don't show in menu
 set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
 
-</code></pre>
+</code>
+</pre>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="related-guides">Related Guides</h2>
 <ul>
-<li><strong><a href="arch.md">Arch Linux Guide</a></strong> - Native package management on Arch.</li>
-<li><strong><a href="fedora.md">Fedora Guide</a></strong> - Native package management on Fedora.</li>
-<li><strong><a href="flatpak.md">Flatpak Guide</a></strong> - Another universal app solution.</li>
-<li><strong><a href="homebrew.md">Homebrew Guide</a></strong> - CLI-focused universal package manager.</li>
+<li>
+<strong>
+<a href="arch.md">Arch Linux Guide</a>
+</strong> - Native package management on Arch.</li>
+<li>
+<strong>
+<a href="fedora.md">Fedora Guide</a>
+</strong> - Native package management on Fedora.</li>
+<li>
+<strong>
+<a href="flatpak.md">Flatpak Guide</a>
+</strong> - Another universal app solution.</li>
+<li>
+<strong>
+<a href="homebrew.md">Homebrew Guide</a>
+</strong> - CLI-focused universal package manager.</li>
 </ul>
 <!-- 
     TIP: If you're using Neovim, you can use 
@@ -174,7 +239,8 @@ set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 <!-- 
     WIKI GUIDE: nix.md

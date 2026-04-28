@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,16 +40,36 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#configuring-piper-tts-with-speech-dispatcher">Configuring Piper TTS with Speech Dispatcher</a><ul>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#installing-a-voice">Installing a Voice</a></li>
-<li><a href="#configuration">Configuration</a></li>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#adding-more-voices">Adding More Voices</a></li>
-<li><a href="#voice-quality-levels">Voice Quality Levels</a></li>
-<li><a href="#recommended-voices">Recommended Voices</a></li>
-<li><a href="#testing-voices">Testing Voices</a></li>
-<li><a href="#notes">Notes</a></li>
+<li>
+<a href="#configuring-piper-tts-with-speech-dispatcher">Configuring Piper TTS with Speech Dispatcher</a>
+<ul>
+<li>
+<a href="#prerequisites">Prerequisites</a>
+</li>
+<li>
+<a href="#installing-a-voice">Installing a Voice</a>
+</li>
+<li>
+<a href="#configuration">Configuration</a>
+</li>
+<li>
+<a href="#troubleshooting">Troubleshooting</a>
+</li>
+<li>
+<a href="#adding-more-voices">Adding More Voices</a>
+</li>
+<li>
+<a href="#voice-quality-levels">Voice Quality Levels</a>
+</li>
+<li>
+<a href="#recommended-voices">Recommended Voices</a>
+</li>
+<li>
+<a href="#testing-voices">Testing Voices</a>
+</li>
+<li>
+<a href="#notes">Notes</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -65,46 +89,59 @@
 <p>This guide covers setting up high-quality neural TTS using Piper instead of the default espeak/festival voices.</p>
 <!-- Quick sub-note for this part -->
 <h3 id="prerequisites">Prerequisites</h3>
-<pre><code class="language-bash"># Install required packages (Arch/AUR)
+<pre>
+<code class="language-bash"># Install required packages (Arch/AUR)
 paru -S piper-tts-bin speech-dispatcher
 
 # Optional: Install additional voice packages
 paru -S piper-voices-en-us
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="installing-a-voice">Installing a Voice</h3>
 <p>Download a Piper voice (or use the voice packages):</p>
-<pre><code class="language-bash"># Voices are stored in
+<pre>
+<code class="language-bash"># Voices are stored in
 ~/.local/share/piper-voices/
 
 # Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="configuration">Configuration</h3>
 <h4 id="1-enable-the-piper-module">1. Enable the Piper Module</h4>
 <p>Edit <code>/etc/speech-dispatcher/speechd.conf</code>:</p>
-<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/speechd.conf
+<pre>
+<code class="language-bash">sudo nano /etc/speech-dispatcher/speechd.conf
 
-</code></pre>
+</code>
+</pre>
 <p>Add this line in the <code>AddModule</code> section (around line 290):</p>
-<pre><code>
+<pre>
+<code>
 AddModule &quot;piper-generic&quot; &quot;sd_generic&quot; &quot;piper-generic.conf&quot;
 
-</code></pre>
+</code>
+</pre>
 <p>Set it as the default module:</p>
-<pre><code>
+<pre>
+<code>
 DefaultModule piper-generic
 
-</code></pre>
+</code>
+</pre>
 <h4 id="2-create-piper-module-configuration">2. Create Piper Module Configuration</h4>
 <p>Create <code>/etc/speech-dispatcher/modules/piper-generic.conf</code>:</p>
-<pre><code class="language-bash">sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
+<pre>
+<code class="language-bash">sudo nano /etc/speech-dispatcher/modules/piper-generic.conf
 
-</code></pre>
+</code>
+</pre>
 <p>Add this configuration (using Ryan high-quality male voice - recommended):</p>
-<pre><code class="language-conf">Debug 0
+<pre>
+<code class="language-conf">Debug 0
 
 GenericExecuteSynth &quot;echo '$DATA' | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768&quot;
 
@@ -128,8 +165,11 @@ AddVoice &quot;en-us&quot; &quot;MALE1&quot; &quot;ryan-high&quot;
 
 DefaultVoice &quot;ryan-high&quot;
 
-</code></pre>
-<p><strong>Volume Settings (complete reference - 1% to 100%):</strong></p>
+</code>
+</pre>
+<p>
+<strong>Volume Settings (complete reference - 1% to 100%):</strong>
+</p>
 <details>
 <summary>Click to expand full volume table</summary>
 
@@ -236,45 +276,63 @@ DefaultVoice &quot;ryan-high&quot;
 
 </details>
 
-<p><strong>Note:</strong> This assumes you installed <code>piper-voices-en-us</code> package which places voices in <code>/usr/share/piper-voices/</code>.</p>
+<p>
+<strong>Note:</strong> This assumes you installed <code>piper-voices-en-us</code> package which places voices in <code>/usr/share/piper-voices/</code>.</p>
 <h4 id="3-restart-speech-dispatcher">3. Restart Speech Dispatcher</h4>
-<pre><code class="language-bash">systemctl --user restart speech-dispatcher
+<pre>
+<code class="language-bash">systemctl --user restart speech-dispatcher
 
-</code></pre>
+</code>
+</pre>
 <h4 id="4-test">4. Test</h4>
-<pre><code class="language-bash">spd-say &quot;Testing Piper voice&quot;
+<pre>
+<code class="language-bash">spd-say &quot;Testing Piper voice&quot;
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="troubleshooting">Troubleshooting</h3>
-<p><strong>Issue: Module not loading</strong></p>
+<p>
+<strong>Issue: Module not loading</strong>
+</p>
 <p>Check the debug logs:</p>
-<pre><code class="language-bash">systemctl --user stop speech-dispatcher.socket
+<pre>
+<code class="language-bash">systemctl --user stop speech-dispatcher.socket
 systemctl --user stop speech-dispatcher
 rm -rf /tmp/speechd-debug
 speech-dispatcher -D
 
-</code></pre>
+</code>
+</pre>
 <p>Then check <code>/tmp/speechd-debug/speech-dispatcher.log</code> for errors.</p>
-<p><strong>Issue: Wrong piper binary</strong></p>
+<p>
+<strong>Issue: Wrong piper binary</strong>
+</p>
 <p>Make sure you're using <code>piper-tts</code> (the TTS engine) not <code>piper</code> (a GTK app for gaming mice):</p>
-<pre><code class="language-bash">which piper-tts  # Should show /usr/bin/piper-tts
+<pre>
+<code class="language-bash">which piper-tts  # Should show /usr/bin/piper-tts
 piper-tts --version  # Should show version like 1.2.0
 
-</code></pre>
-<p><strong>Issue: No audio output</strong></p>
+</code>
+</pre>
+<p>
+<strong>Issue: No audio output</strong>
+</p>
 <ul>
 <li>Ensure <code>paplay</code> is installed (part of pulseaudio utilities)</li>
 <li>Test piper directly:
   <code>bash
   echo "test" | piper-tts --model ~/.local/share/piper-voices/en_US-amy-medium.onnx --output-file /tmp/test.wav
-  paplay /tmp/test.wav</code></li>
+  paplay /tmp/test.wav</code>
+</li>
 </ul>
 <!-- Quick sub-note for this part -->
 <h3 id="adding-more-voices">Adding More Voices</h3>
 <ol>
-<li>Download additional voice models from <a href="https://github.com/rhasspy/piper/releases">Piper releases</a></li>
-<li>Place <code>.onnx</code> and <code>.onnx.json</code> files in <code>~/.local/share/piper-voices/</code></li>
+<li>Download additional voice models from <a href="https://github.com/rhasspy/piper/releases">Piper releases</a>
+</li>
+<li>Place <code>.onnx</code> and <code>.onnx.json</code> files in <code>~/.local/share/piper-voices/</code>
+</li>
 <li>Add corresponding <code>AddVoice</code> entries to the config</li>
 <li>Update the <code>GenericExecuteSynth</code> line to use the new model path, or create separate module configs for different voices</li>
 </ol>
@@ -286,43 +344,57 @@ piper-tts --version  # Should show version like 1.2.0
 - <strong>high</strong> - Best quality, requires more CPU (recommended for modern systems)</p>
 <!-- Quick sub-note for this part -->
 <h3 id="recommended-voices">Recommended Voices</h3>
-<p><strong>Best Male Voices (High to Low Quality):</strong></p>
-<p><strong>High Quality (requires modern CPU - Ryzen 7 7800X3D or equivalent recommended):</strong>
+<p>
+<strong>Best Male Voices (High to Low Quality):</strong>
+</p>
+<p>
+<strong>High Quality (requires modern CPU - Ryzen 7 7800X3D or equivalent recommended):</strong>
 1. <strong>ryan-high</strong>  - Most natural male voice, excellent clarity (116MB)
    - Path: <code>/usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx</code>
 2. <strong>hfc_male-medium</strong> - Natural high-fidelity male voice
-   - Path: <code>/usr/share/piper-voices/en/en_US/hfc_male/medium/en_US-hfc_male-medium.onnx</code></p>
-<p><strong>Medium Quality (good balance):</strong>
+   - Path: <code>/usr/share/piper-voices/en/en_US/hfc_male/medium/en_US-hfc_male-medium.onnx</code>
+</p>
+<p>
+<strong>Medium Quality (good balance):</strong>
 1. <strong>ryan-medium</strong> - Good quality, faster than high
    - Path: <code>/usr/share/piper-voices/en/en_US/ryan/medium/en_US-ryan-medium.onnx</code>
 2. <strong>joe-medium</strong> - Clear male voice
    - Path: <code>/usr/share/piper-voices/en/en_US/joe/medium/en_US-joe-medium.onnx</code>
 3. <strong>john-medium</strong> - Professional male voice
-   - Path: <code>/usr/share/piper-voices/en/en_US/john/medium/en_US-john-medium.onnx</code></p>
-<p><strong>Low Quality (fastest, lowest CPU usage):</strong>
+   - Path: <code>/usr/share/piper-voices/en/en_US/john/medium/en_US-john-medium.onnx</code>
+</p>
+<p>
+<strong>Low Quality (fastest, lowest CPU usage):</strong>
 1. <strong>ryan-low</strong> - Still decent quality, very fast
    - Path: <code>/usr/share/piper-voices/en/en_US/ryan/low/en_US-ryan-low.onnx</code>
 2. <strong>danny-low</strong> - Fast and lightweight
-   - Path: <code>/usr/share/piper-voices/en/en_US/danny/low/en_US-danny-low.onnx</code></p>
-<p><strong>Best Female Voices:</strong></p>
-<p><strong>High Quality:</strong>
+   - Path: <code>/usr/share/piper-voices/en/en_US/danny/low/en_US-danny-low.onnx</code>
+</p>
+<p>
+<strong>Best Female Voices:</strong>
+</p>
+<p>
+<strong>High Quality:</strong>
 1. <strong>lessac-high</strong> - Professional, natural female voice (109MB)
 2. <strong>ljspeech-high</strong> - Classic, clear female voice (109MB)
 3. <strong>libritts-high</strong> - Multi-speaker, highest quality (131MB)</p>
-<p><strong>Medium Quality:</strong>
+<p>
+<strong>Medium Quality:</strong>
 1. <strong>lessac-medium</strong> - Good balance
 2. <strong>kristin-medium</strong> - Natural female voice
 3. <strong>hfc_female-medium</strong> - High-fidelity female voice</p>
 <!-- Quick sub-note for this part -->
 <h3 id="testing-voices">Testing Voices</h3>
 <p>Test any voice before switching:</p>
-<pre><code class="language-bash"># Test ryan-high at 50% volume
+<pre>
+<code class="language-bash"># Test ryan-high at 50% volume
 echo &quot;Hello, I am Ryan&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 
 # Test lessac-high female voice
 echo &quot;Hello, I am Lessac&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 
-</code></pre>
+</code>
+</pre>
 <!-- Quick sub-note for this part -->
 <h3 id="notes">Notes</h3>
 <ul>
@@ -337,7 +409,8 @@ echo &quot;Hello, I am Lessac&quot; | piper-tts --model /usr/share/piper-voices/
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 <!-- 
     WIKI GUIDE: accessibility-tts.md

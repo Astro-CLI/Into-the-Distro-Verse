@@ -25,8 +25,12 @@
         >
         <nav aria-label="Main navigation">
           <ul class="top-links">
-            <li><a href="../index.html">Main page</a></li>
-            <li><a href="../history.html">History</a></li>
+            <li>
+<a href="../index.html">Main page</a>
+</li>
+            <li>
+<a href="../history.html">History</a>
+</li>
           </ul>
         </nav>
       </div>
@@ -36,35 +40,89 @@
         <h2>Contents</h2>
         <div class="toc">
 <ul>
-<li><a href="#what-this-does">What This Does</a></li>
-<li><a href="#before-you-start">Before You Start</a></li>
-<li><a href="#step-1-update-your-system">Step 1: Update Your System</a></li>
-<li><a href="#step-2-install-required-packages">Step 2: Install Required Packages</a></li>
-<li><a href="#step-3-prepare-your-website-files">Step 3: Prepare Your Website Files</a></li>
-<li><a href="#step-4-configure-nginx">Step 4: Configure Nginx</a></li>
-<li><a href="#step-5-configure-tor">Step 5: Configure Tor</a></li>
-<li><a href="#step-6-get-your-onion-address">Step 6: Get Your .onion Address</a></li>
-<li><a href="#step-7-test-it-works-locally">Step 7: Test It Works Locally</a></li>
-<li><a href="#step-8-access-in-tor-browser">Step 8: Access in Tor Browser</a></li>
-<li><a href="#step-9-create-a-short-url-optional">Step 9: Create a Short URL (Optional)</a></li>
-<li><a href="#css-and-javascript-not-loading">CSS and JavaScript Not Loading?</a></li>
-<li><a href="#common-issues">Common Issues</a><ul>
-<li><a href="#nginx-shows-connection-refused">Nginx shows "Connection refused"</a></li>
-<li><a href="#tor-shows-error-about-port">Tor shows error about port</a></li>
-<li><a href="#cant-connect-to-onion-address-from-tor-browser">Can't connect to .onion address from Tor Browser</a></li>
-<li><a href="#the-page-loads-but-looks-broken">The page loads but looks broken</a></li>
-<li><a href="#port-already-in-use">Port already in use</a></li>
+<li>
+<a href="#what-this-does">What This Does</a>
+</li>
+<li>
+<a href="#before-you-start">Before You Start</a>
+</li>
+<li>
+<a href="#step-1-update-your-system">Step 1: Update Your System</a>
+</li>
+<li>
+<a href="#step-2-install-required-packages">Step 2: Install Required Packages</a>
+</li>
+<li>
+<a href="#step-3-prepare-your-website-files">Step 3: Prepare Your Website Files</a>
+</li>
+<li>
+<a href="#step-4-configure-nginx">Step 4: Configure Nginx</a>
+</li>
+<li>
+<a href="#step-5-configure-tor">Step 5: Configure Tor</a>
+</li>
+<li>
+<a href="#step-6-get-your-onion-address">Step 6: Get Your .onion Address</a>
+</li>
+<li>
+<a href="#step-7-test-it-works-locally">Step 7: Test It Works Locally</a>
+</li>
+<li>
+<a href="#step-8-access-in-tor-browser">Step 8: Access in Tor Browser</a>
+</li>
+<li>
+<a href="#step-9-create-a-short-url-optional">Step 9: Create a Short URL (Optional)</a>
+</li>
+<li>
+<a href="#css-and-javascript-not-loading">CSS and JavaScript Not Loading?</a>
+</li>
+<li>
+<a href="#common-issues">Common Issues</a>
+<ul>
+<li>
+<a href="#nginx-shows-connection-refused">Nginx shows "Connection refused"</a>
+</li>
+<li>
+<a href="#tor-shows-error-about-port">Tor shows error about port</a>
+</li>
+<li>
+<a href="#cant-connect-to-onion-address-from-tor-browser">Can't connect to .onion address from Tor Browser</a>
+</li>
+<li>
+<a href="#the-page-loads-but-looks-broken">The page loads but looks broken</a>
+</li>
+<li>
+<a href="#port-already-in-use">Port already in use</a>
+</li>
 </ul>
 </li>
-<li><a href="#common-commands">Common Commands</a></li>
-<li><a href="#keeping-your-site-safe">Keeping Your Site Safe</a></li>
-<li><a href="#updating-your-website">Updating Your Website</a></li>
-<li><a href="#adding-more-pages">Adding More Pages</a></li>
-<li><a href="#difference-from-docker-version">Difference from Docker Version</a></li>
-<li><a href="#key-files-and-locations">Key Files and Locations</a></li>
-<li><a href="#whats-actually-happening">What's Actually Happening</a></li>
-<li><a href="#still-having-problems">Still Having Problems?</a></li>
-<li><a href="#one-more-thing">One More Thing</a></li>
+<li>
+<a href="#common-commands">Common Commands</a>
+</li>
+<li>
+<a href="#keeping-your-site-safe">Keeping Your Site Safe</a>
+</li>
+<li>
+<a href="#updating-your-website">Updating Your Website</a>
+</li>
+<li>
+<a href="#adding-more-pages">Adding More Pages</a>
+</li>
+<li>
+<a href="#difference-from-docker-version">Difference from Docker Version</a>
+</li>
+<li>
+<a href="#key-files-and-locations">Key Files and Locations</a>
+</li>
+<li>
+<a href="#whats-actually-happening">What's Actually Happening</a>
+</li>
+<li>
+<a href="#still-having-problems">Still Having Problems?</a>
+</li>
+<li>
+<a href="#one-more-thing">One More Thing</a>
+</li>
 </ul>
 </div>
 
@@ -91,35 +149,48 @@
 <hr />
 <h2 id="step-1-update-your-system">Step 1: Update Your System</h2>
 <p>First update everything:</p>
-<pre><code class="language-bash">sudo pacman -Syu
-</code></pre>
+<pre>
+<code class="language-bash">sudo pacman -Syu
+</code>
+</pre>
 <p>Wait for it to finish.</p>
 <hr />
 <h2 id="step-2-install-required-packages">Step 2: Install Required Packages</h2>
 <p>Install Tor, Nginx, and curl:</p>
-<pre><code class="language-bash">sudo pacman -S tor nginx curl
-</code></pre>
+<pre>
+<code class="language-bash">sudo pacman -S tor nginx curl
+</code>
+</pre>
 <p>Press Y when it asks to confirm.</p>
 <hr />
 <h2 id="step-3-prepare-your-website-files">Step 3: Prepare Your Website Files</h2>
 <p>Create the web root directory:</p>
-<pre><code class="language-bash">sudo mkdir -p /srv/http
-</code></pre>
+<pre>
+<code class="language-bash">sudo mkdir -p /srv/http
+</code>
+</pre>
 <p>Copy your website files. If you're using a GitHub repo:</p>
-<pre><code class="language-bash">sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/
-</code></pre>
+<pre>
+<code class="language-bash">sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/
+</code>
+</pre>
 <p>Or if you have HTML files elsewhere, copy those instead.</p>
 <p>Set correct permissions:</p>
-<pre><code class="language-bash">sudo chown -R http:http /srv/http
+<pre>
+<code class="language-bash">sudo chown -R http:http /srv/http
 sudo chmod -R 755 /srv/http
-</code></pre>
+</code>
+</pre>
 <hr />
 <h2 id="step-4-configure-nginx">Step 4: Configure Nginx</h2>
 <p>Open the Nginx config:</p>
-<pre><code class="language-bash">sudo nano /etc/nginx/nginx.conf
-</code></pre>
+<pre>
+<code class="language-bash">sudo nano /etc/nginx/nginx.conf
+</code>
+</pre>
 <p>Look for the <code>http {</code> block. Inside it, find the <code>server {</code> block (or create one if it doesn't exist). Replace or update it to look like this:</p>
-<pre><code class="language-nginx">http {
+<pre>
+<code class="language-nginx">http {
     include mime.types;
     default_type application/octet-stream;
 
@@ -141,82 +212,114 @@ sudo chmod -R 755 /srv/http
         }
     }
 }
-</code></pre>
+</code>
+</pre>
 <p>The key parts:
 - <code>listen 80</code> - listens on port 80
 - <code>root /srv/http</code> - serves files from here
 - <code>include mime.types</code> - makes CSS and JS load properly</p>
 <p>Save it: Ctrl+X, Y, Enter.</p>
 <p>Start Nginx:</p>
-<pre><code class="language-bash">sudo systemctl enable --now nginx
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl enable --now nginx
+</code>
+</pre>
 <p>Test it works:</p>
-<pre><code class="language-bash">curl -I http://localhost/
-</code></pre>
-<p>You should see: <code>HTTP/1.1 200 OK</code></p>
+<pre>
+<code class="language-bash">curl -I http://localhost/
+</code>
+</pre>
+<p>You should see: <code>HTTP/1.1 200 OK</code>
+</p>
 <p>If you get an error about port 80 already in use, check if Docker is running:</p>
-<pre><code class="language-bash">docker ps
-</code></pre>
+<pre>
+<code class="language-bash">docker ps
+</code>
+</pre>
 <p>If containers are running:</p>
-<pre><code class="language-bash">docker-compose down
-</code></pre>
+<pre>
+<code class="language-bash">docker-compose down
+</code>
+</pre>
 <p>Then try Nginx again.</p>
 <hr />
 <h2 id="step-5-configure-tor">Step 5: Configure Tor</h2>
 <p>Open the Tor config:</p>
-<pre><code class="language-bash">sudo nano /etc/tor/torrc
-</code></pre>
+<pre>
+<code class="language-bash">sudo nano /etc/tor/torrc
+</code>
+</pre>
 <p>Scroll down and find the section with comments about hidden services. Look for lines that might say <code># HiddenServiceDir</code> or similar.</p>
 <p>Add these lines (order matters - HiddenServiceDir must come before HiddenServicePort):</p>
-<pre><code class="language-conf">HiddenServiceDir /var/lib/tor/hidden_service/
+<pre>
+<code class="language-conf">HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServicePort 80 127.0.0.1:80
-</code></pre>
+</code>
+</pre>
 <p>Just paste them in. They can go anywhere after the main config but before the end of the file.</p>
 <p>Save it: Ctrl+X, Y, Enter.</p>
 <p>Restart Tor:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl restart tor
+</code>
+</pre>
 <hr />
 <h2 id="step-6-get-your-onion-address">Step 6: Get Your .onion Address</h2>
 <p>Wait 3-5 seconds for Tor to start up, then:</p>
-<pre><code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
-</code></pre>
+<pre>
+<code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
+</code>
+</pre>
 <p>You'll see something like:</p>
-<pre><code>cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
-</code></pre>
+<pre>
+<code>cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
+</code>
+</pre>
 <p>Save this. This is your website's address.</p>
 <hr />
 <h2 id="step-7-test-it-works-locally">Step 7: Test It Works Locally</h2>
 <p>Make sure everything is responding:</p>
-<pre><code class="language-bash">curl -I http://localhost/
-</code></pre>
+<pre>
+<code class="language-bash">curl -I http://localhost/
+</code>
+</pre>
 <p>Should show <code>200 OK</code>.</p>
 <p>Check Tor is running:</p>
-<pre><code class="language-bash">sudo systemctl status tor
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl status tor
+</code>
+</pre>
 <p>Should say "active (running)".</p>
 <p>Check Nginx:</p>
-<pre><code class="language-bash">sudo systemctl status nginx
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl status nginx
+</code>
+</pre>
 <p>Should also say "active (running)".</p>
 <hr />
 <h2 id="step-8-access-in-tor-browser">Step 8: Access in Tor Browser</h2>
 <p>Download Tor Browser from torproject.org if you don't have it.</p>
 <p>Open Tor Browser and wait for it to connect (takes a minute).</p>
 <p>In the address bar, paste your .onion address:</p>
-<pre><code>http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
-</code></pre>
+<pre>
+<code>http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
+</code>
+</pre>
 <p>You should see your website.</p>
 <hr />
 <h2 id="step-9-create-a-short-url-optional">Step 9: Create a Short URL (Optional)</h2>
 <p>You can create a short link that redirects to your .onion address. This makes it easier to share.</p>
 <p>Using is.gd:</p>
-<pre><code class="language-bash">curl -s --data-urlencode &quot;url=http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion&quot; &quot;https://is.gd/create.php?format=simple&quot; | tr -d '\n' &amp;&amp; echo
-</code></pre>
+<pre>
+<code class="language-bash">curl -s --data-urlencode &quot;url=http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion&quot; &quot;https://is.gd/create.php?format=simple&quot; | tr -d '\n' &amp;&amp; echo
+</code>
+</pre>
 <p>Replace the .onion address with yours.</p>
 <p>You'll get something like:</p>
-<pre><code>https://is.gd/EkazLS
-</code></pre>
+<pre>
+<code>https://is.gd/EkazLS
+</code>
+</pre>
 <p>Anyone can click this link (in Tor Browser) and it redirects to your hidden site.</p>
 <hr />
 <h2 id="css-and-javascript-not-loading">CSS and JavaScript Not Loading?</h2>
@@ -228,86 +331,119 @@ HiddenServicePort 80 127.0.0.1:80
 <h2 id="common-issues">Common Issues</h2>
 <h3 id="nginx-shows-connection-refused">Nginx shows "Connection refused"</h3>
 <p>Nginx might not have started. Try:</p>
-<pre><code class="language-bash">sudo systemctl start nginx
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl start nginx
+</code>
+</pre>
 <p>If it fails, check the error:</p>
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
+<pre>
+<code class="language-bash">sudo nginx -t
+</code>
+</pre>
 <p>This will show what's wrong with the config.</p>
 <h3 id="tor-shows-error-about-port">Tor shows error about port</h3>
 <p>Make sure port 80 is free:</p>
-<pre><code class="language-bash">sudo lsof -i :80
-</code></pre>
+<pre>
+<code class="language-bash">sudo lsof -i :80
+</code>
+</pre>
 <p>If something else is using it, kill it or change the port in Nginx config.</p>
 <h3 id="cant-connect-to-onion-address-from-tor-browser">Can't connect to .onion address from Tor Browser</h3>
 <p>Wait 30 seconds. Tor needs time to build circuits.</p>
 <p>Check Tor logs:</p>
-<pre><code class="language-bash">sudo tail -f /var/log/tor/log
-</code></pre>
+<pre>
+<code class="language-bash">sudo tail -f /var/log/tor/log
+</code>
+</pre>
 <p>Look for "Bootstrapped 100%". When you see it, your hidden service is ready.</p>
 <h3 id="the-page-loads-but-looks-broken">The page loads but looks broken</h3>
 <p>Make sure Tor Browser security is on "Standard" (not "Safest").</p>
 <p>Check that files were copied:</p>
-<pre><code class="language-bash">ls -la /srv/http/
-</code></pre>
+<pre>
+<code class="language-bash">ls -la /srv/http/
+</code>
+</pre>
 <p>Should show your HTML, CSS, JS files.</p>
 <h3 id="port-already-in-use">Port already in use</h3>
 <p>If you see "Address already in use", something else is running on port 80.</p>
 <p>Check what:</p>
-<pre><code class="language-bash">sudo lsof -i :80
-</code></pre>
+<pre>
+<code class="language-bash">sudo lsof -i :80
+</code>
+</pre>
 <p>Stop it or reconfigure Nginx to use a different port (8080 instead of 80).</p>
 <hr />
 <h2 id="common-commands">Common Commands</h2>
 <p>Start your hidden service:</p>
-<pre><code class="language-bash">sudo systemctl start tor
+<pre>
+<code class="language-bash">sudo systemctl start tor
 sudo systemctl start nginx
-</code></pre>
+</code>
+</pre>
 <p>Stop it:</p>
-<pre><code class="language-bash">sudo systemctl stop tor
+<pre>
+<code class="language-bash">sudo systemctl stop tor
 sudo systemctl stop nginx
-</code></pre>
+</code>
+</pre>
 <p>Restart it:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
+<pre>
+<code class="language-bash">sudo systemctl restart tor
 sudo systemctl restart nginx
-</code></pre>
+</code>
+</pre>
 <p>See logs:</p>
-<pre><code class="language-bash">sudo journalctl -u tor -f
+<pre>
+<code class="language-bash">sudo journalctl -u tor -f
 sudo journalctl -u nginx -f
-</code></pre>
+</code>
+</pre>
 <p>Get your .onion address again:</p>
-<pre><code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
-</code></pre>
+<pre>
+<code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
+</code>
+</pre>
 <hr />
 <h2 id="keeping-your-site-safe">Keeping Your Site Safe</h2>
 <p>Don't upload files with metadata (like photos with location data):</p>
-<pre><code class="language-bash">sudo pacman -S exiftool
+<pre>
+<code class="language-bash">sudo pacman -S exiftool
 exiftool -all= your-photo.jpg
-</code></pre>
+</code>
+</pre>
 <p>Don't link to your real website or real email.</p>
 <p>Don't use fancy JavaScript - keep it simple.</p>
 <p>Backup your private key so you keep the same .onion address forever:</p>
-<pre><code class="language-bash">sudo cp /var/lib/tor/hidden_service/hs_ed25519_secret_key ~/backup-onion-key.txt
-</code></pre>
+<pre>
+<code class="language-bash">sudo cp /var/lib/tor/hidden_service/hs_ed25519_secret_key ~/backup-onion-key.txt
+</code>
+</pre>
 <p>Keep this file safe. If you lose it, you lose that .onion address forever.</p>
 <hr />
 <h2 id="updating-your-website">Updating Your Website</h2>
 <p>Edit files directly in /srv/http:</p>
-<pre><code class="language-bash">sudo nano /srv/http/index.html
-</code></pre>
+<pre>
+<code class="language-bash">sudo nano /srv/http/index.html
+</code>
+</pre>
 <p>Changes are live immediately. No restart needed.</p>
 <p>If you're copying files from GitHub:</p>
-<pre><code class="language-bash">sudo cp -r /path/to/repo/website/* /srv/http/
+<pre>
+<code class="language-bash">sudo cp -r /path/to/repo/website/* /srv/http/
 sudo chown -R http:http /srv/http
-</code></pre>
+</code>
+</pre>
 <p>Then refresh in Tor Browser.</p>
 <hr />
 <h2 id="adding-more-pages">Adding More Pages</h2>
 <p>Create a new HTML file:</p>
-<pre><code class="language-bash">sudo nano /srv/http/about.html
-</code></pre>
+<pre>
+<code class="language-bash">sudo nano /srv/http/about.html
+</code>
+</pre>
 <p>Paste this:</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+<pre>
+<code class="language-html">&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;About&lt;/title&gt;
@@ -318,10 +454,13 @@ sudo chown -R http:http /srv/http
     &lt;a href=&quot;index.html&quot;&gt;Back home&lt;/a&gt;
 &lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</code>
+</pre>
 <p>Save it. Link to it from index.html:</p>
-<pre><code class="language-html">&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;
-</code></pre>
+<pre>
+<code class="language-html">&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;
+</code>
+</pre>
 <hr />
 <h2 id="difference-from-docker-version">Difference from Docker Version</h2>
 <p>Docker version (apache-tor-docker.md):
@@ -337,12 +476,18 @@ sudo chown -R http:http /srv/http
 <hr />
 <h2 id="key-files-and-locations">Key Files and Locations</h2>
 <ul>
-<li>Nginx config: <code>/etc/nginx/nginx.conf</code></li>
-<li>Website files: <code>/srv/http/</code></li>
-<li>Tor config: <code>/etc/tor/torrc</code></li>
-<li>Tor hidden service: <code>/var/lib/tor/hidden_service/</code></li>
-<li>Tor logs: <code>/var/log/tor/log</code></li>
-<li>Private key (backup this): <code>/var/lib/tor/hidden_service/hs_ed25519_secret_key</code></li>
+<li>Nginx config: <code>/etc/nginx/nginx.conf</code>
+</li>
+<li>Website files: <code>/srv/http/</code>
+</li>
+<li>Tor config: <code>/etc/tor/torrc</code>
+</li>
+<li>Tor hidden service: <code>/var/lib/tor/hidden_service/</code>
+</li>
+<li>Tor logs: <code>/var/log/tor/log</code>
+</li>
+<li>Private key (backup this): <code>/var/lib/tor/hidden_service/hs_ed25519_secret_key</code>
+</li>
 </ul>
 <hr />
 <h2 id="whats-actually-happening">What's Actually Happening</h2>
@@ -361,28 +506,40 @@ sudo chown -R http:http /srv/http
 <hr />
 <h2 id="still-having-problems">Still Having Problems?</h2>
 <p>Check all three things are running:</p>
-<pre><code class="language-bash">sudo systemctl status tor
+<pre>
+<code class="language-bash">sudo systemctl status tor
 sudo systemctl status nginx
 curl -I http://localhost/
-</code></pre>
+</code>
+</pre>
 <p>All should show OK.</p>
 <p>Check Nginx config has no errors:</p>
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
+<pre>
+<code class="language-bash">sudo nginx -t
+</code>
+</pre>
 <p>Check Tor logs:</p>
-<pre><code class="language-bash">sudo tail -20 /var/log/tor/log
-</code></pre>
+<pre>
+<code class="language-bash">sudo tail -20 /var/log/tor/log
+</code>
+</pre>
 <p>Look for errors.</p>
 <p>Check permissions on files:</p>
-<pre><code class="language-bash">ls -la /srv/http/
-</code></pre>
+<pre>
+<code class="language-bash">ls -la /srv/http/
+</code>
+</pre>
 <p>Should show <code>http http</code> as owner (not root).</p>
 <p>If Tor says "Already in use", the service might already be running:</p>
-<pre><code class="language-bash">sudo systemctl is-active tor
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl is-active tor
+</code>
+</pre>
 <p>If yes, restart it:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
-</code></pre>
+<pre>
+<code class="language-bash">sudo systemctl restart tor
+</code>
+</pre>
 <hr />
 <h2 id="one-more-thing">One More Thing</h2>
 <p>The first time is confusing. The second time is straightforward. By the third time, you can do it in 5 minutes.</p>
@@ -391,7 +548,8 @@ curl -I http://localhost/
       </article>
     </main>
 
-    <script src="../script.js"></script>
+    <script src="../script.js">
+</script>
     <script type="text/plain" id="md-content">
 # Running a Tor Hidden Service on Arch Linux with Nginx
 
