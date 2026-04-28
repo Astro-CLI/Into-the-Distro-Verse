@@ -22,7 +22,6 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 | **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
 | **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
 | **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
-| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
 
 ### 📦 Package Managers & App Distribution
 
@@ -30,6 +29,7 @@ Detailed setup and maintenance guides for specific systems and toolsets.
 | :--- | :--- | :--- |
 | **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
 | **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
+| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
 | **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
 
 ### 🎮 Virtualization & Emulation
