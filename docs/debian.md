@@ -8,14 +8,17 @@ Debian is the "Universal Operating System" that serves as the base for Ubuntu, K
 
 Optimize APT for faster updates and colored output:
 
-**Shell (Bash/Zsh/Fish):**
+**Enable colored output:**
 ```bash
-echo "APT::Get::Assume-Yes \"true\";" | sudo tee /etc/apt/apt.conf.d/99custom-options
 echo "Apt::Color \"1\";" | sudo tee -a /etc/apt/apt.conf.d/99custom-options
-echo "Acquire::http::Pipeline-Depth \"0\";" | sudo tee -a /etc/apt/apt.conf.d/99custom-options
 ```
 
-Or manually edit `/etc/apt/apt.conf.d/99custom-options` and add:
+**Assume yes to all prompts (be careful with this one):**
+```bash
+echo "APT::Get::Assume-Yes \"true\";" | sudo tee -a /etc/apt/apt.conf.d/99custom-options
+```
+
+Or manually edit `/etc/apt/apt.conf.d/99custom-options` and add each on separate lines:
 ```text
 Apt::Color "1";
 APT::Get::Assume-Yes "true";

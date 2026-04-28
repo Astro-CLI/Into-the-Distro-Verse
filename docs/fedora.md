@@ -7,15 +7,24 @@ This guide is for those using or transitioning to Fedora. While Fedora is known 
 ## 🚀 1. DNF Optimization (Speed up updates)
 By default, DNF can be slow. Add these tweaks to `/etc/dnf/dnf.conf` to enable parallel downloads and faster mirror selection:
 
-**Shell (Bash/Zsh/Fish):**
+**Enable colored output:**
+```bash
+echo "Color=1" | sudo tee -a /etc/dnf/dnf.conf
+```
+
+**Enable parallel downloads (10 at a time):**
 ```bash
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
+```
+
+**Enable fastest mirror selection:**
+```bash
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
 ```
 
-Or manually edit `/etc/dnf/dnf.conf` and add:
+Or manually edit `/etc/dnf/dnf.conf` and add each on separate lines:
 ```text
-Color
+Color=1
 max_parallel_downloads=10
 fastestmirror=True
 ```
