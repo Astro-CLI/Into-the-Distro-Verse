@@ -15,24 +15,61 @@ My name is Ariel, and for the last few years, I've been the only Linux user in m
 
 Detailed setup and maintenance guides for specific systems and toolsets.
 
+### 🐧 Operating Systems
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
+| **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
+| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
+| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
+
+### 📦 Package Managers & App Distribution
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
+| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
+| **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
+
+### 🎮 Virtualization & Emulation
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
+
+### 🛡️ System Maintenance & Recovery
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
+| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
+
+### 🌐 Networking & Hosting
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Tor + Apache & Docker** | Anonymous website hosting with Apache & Docker | [**docs/apache-tor-docker.md**](docs/apache-tor-docker.md) |
+| **Tor Hidden Service (Arch)** | Anonymous website hosting with Nginx (native) | [**docs/tor-hidden-service-arch.md**](docs/tor-hidden-service-arch.md) |
+
+### 🎨 Creative & Media
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
+| **Streaming Services** | Music & video streaming without ads | [**docs/streaming/**](docs/streaming/) |
+
+### 🤖 AI & Intelligence
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
+
+### ♿ Accessibility & Usability
+
 | System | Description | Documentation |
 | :--- | :--- | :--- |
 | **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
-| **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
-| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
-| **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
-| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
-| **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
-| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
-| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
-| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
-| **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
-| **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
-| **Streaming Services** | Music & video streaming without ads | [**docs/streaming/**](docs/streaming/) |
-| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
-| **Tor + Apache & Docker** | Anonymous website hosting with Apache & Docker | [**docs/apache-tor-docker.md**](docs/apache-tor-docker.md) |
-| **Tor Hidden Service (Arch)** | Anonymous website hosting with Nginx (native) | [**docs/tor-hidden-service-arch.md**](docs/tor-hidden-service-arch.md) |
-| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
 
 ---
 
