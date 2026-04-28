@@ -1,60 +1,155 @@
-<h1>Package Management Guide</h1>
-<p>This directory contains the package lists and restoration scripts for various Linux distributions. Use these files to quickly replicate a software environment on a fresh installation.</p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Home</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="README.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">Home</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#package-management-guide"
+id="toc-package-management-guide">Package Management Guide</a>
+<ul>
+<li><a href="#package-lists" id="toc-package-lists">📂 Package
+Lists</a></li>
+<li><a href="#restoration-how-to-install-everything"
+id="toc-restoration-how-to-install-everything">🚀 Restoration (How to
+install everything)</a>
+<ul>
+<li><a href="#arch-linux" id="toc-arch-linux">Arch Linux</a></li>
+<li><a href="#universal-flatpaks" id="toc-universal-flatpaks">Universal
+(Flatpaks)</a></li>
+</ul></li>
+<li><a href="#maintenance-syncing" id="toc-maintenance-syncing">🔄
+Maintenance &amp; Syncing</a>
+<ul>
+<li><a href="#sync-arch-lists" id="toc-sync-arch-lists">Sync Arch
+Lists</a></li>
+<li><a href="#sync-universal-lists" id="toc-sync-universal-lists">Sync
+Universal Lists</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="package-management-guide">Package Management Guide</h1>
+<p>This directory contains the package lists and restoration scripts for
+various Linux distributions. Use these files to quickly replicate a
+software environment on a fresh installation.</p>
 <blockquote>
-<p>[!IMPORTANT]<br><strong>Naming Conventions:</strong> Most package names in these lists are based on <strong>Arch Linux</strong> or <strong>AUR</strong> naming conventions. Package names may vary slightly in other distributions or repositories (e.g., <code>python-pip</code> vs <code>python3-pip</code>). Always verify the exact name if using these lists on a non-Arch system.</p>
+<p>[!IMPORTANT] <strong>Naming Conventions:</strong> Most package names
+in these lists are based on <strong>Arch Linux</strong> or
+<strong>AUR</strong> naming conventions. Package names may vary slightly
+in other distributions or repositories (e.g., <code>python-pip</code> vs
+<code>python3-pip</code>). Always verify the exact name if using these
+lists on a non-Arch system.</p>
 </blockquote>
-<hr>
-<h2>📂 Package Lists</h2>
+<hr />
+<h2 id="package-lists">📂 Package Lists</h2>
 <table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
 <thead>
 <tr>
-<th align="left">List</th>
-<th align="left">Distribution</th>
-<th align="left">Source</th>
+<th style="text-align: left;">List</th>
+<th style="text-align: left;">Distribution</th>
+<th style="text-align: left;">Source</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong><code>arch_pkglist.txt</code></strong></td>
-<td align="left">Arch Linux</td>
-<td align="left">Official Repos (<code>core</code>, <code>extra</code>)</td>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><strong><code>arch_pkglist.txt</code></strong></td>
+<td style="text-align: left;">Arch Linux</td>
+<td style="text-align: left;">Official Repos (<code>core</code>,
+<code>extra</code>)</td>
 </tr>
 <tr>
-<td align="left"><strong><code>arch_aur_list.txt</code></strong></td>
-<td align="left">Arch Linux</td>
-<td align="left">AUR (via <code>paru</code>)</td>
+<td
+style="text-align: left;"><strong><code>arch_aur_list.txt</code></strong></td>
+<td style="text-align: left;">Arch Linux</td>
+<td style="text-align: left;">AUR (via <code>paru</code>)</td>
 </tr>
 <tr>
-<td align="left"><strong><code>fedora_pkglist.txt</code></strong></td>
-<td align="left">Fedora</td>
-<td align="left">Official DNF Repos</td>
+<td
+style="text-align: left;"><strong><code>fedora_pkglist.txt</code></strong></td>
+<td style="text-align: left;">Fedora</td>
+<td style="text-align: left;">Official DNF Repos</td>
 </tr>
 <tr>
-<td align="left"><strong><code>flatpak_list.txt</code></strong></td>
-<td align="left">Universal</td>
-<td align="left">Flathub</td>
+<td
+style="text-align: left;"><strong><code>flatpak_list.txt</code></strong></td>
+<td style="text-align: left;">Universal</td>
+<td style="text-align: left;">Flathub</td>
 </tr>
-</tbody></table>
-<hr>
-<h2>🚀 Restoration (How to install everything)</h2>
-<h3>Arch Linux</h3>
-<pre><code class="language-bash"># 1. Install Official Packages
+</tbody>
+</table>
+<hr />
+<h2 id="restoration-how-to-install-everything">🚀 Restoration (How to
+install everything)</h2>
+<h3 id="arch-linux">Arch Linux</h3>
+<pre class="bash"><code># 1. Install Official Packages
 sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
 
 # 2. Install AUR Packages
-paru -S --needed - &lt; packages/arch_aur_list.txt
-</code></pre>
-<h3>Universal (Flatpaks)</h3>
-<pre><code class="language-bash"># Install Flatpaks on any system
-xargs -a packages/flatpak_list.txt -r flatpak install -y
-</code></pre>
-<hr>
-<h2>🔄 Maintenance &amp; Syncing</h2>
-<p>To keep these lists updated with your current system configuration:</p>
-<h3>Sync Arch Lists</h3>
-<pre><code class="language-bash">pacman -Qqen &gt; packages/arch_pkglist.txt
-paru -Qqem &gt; packages/arch_aur_list.txt
-</code></pre>
-<h3>Sync Universal Lists</h3>
-<pre><code class="language-bash">flatpak list --app --columns=application &gt; packages/flatpak_list.txt
-</code></pre>
-
+paru -S --needed - &lt; packages/arch_aur_list.txt</code></pre>
+<h3 id="universal-flatpaks">Universal (Flatpaks)</h3>
+<pre class="bash"><code># Install Flatpaks on any system
+xargs -a packages/flatpak_list.txt -r flatpak install -y</code></pre>
+<hr />
+<h2 id="maintenance-syncing">🔄 Maintenance &amp; Syncing</h2>
+<p>To keep these lists updated with your current system
+configuration:</p>
+<h3 id="sync-arch-lists">Sync Arch Lists</h3>
+<pre class="bash"><code>pacman -Qqen &gt; packages/arch_pkglist.txt
+paru -Qqem &gt; packages/arch_aur_list.txt</code></pre>
+<h3 id="sync-universal-lists">Sync Universal Lists</h3>
+<pre class="bash"><code>flatpak list --app --columns=application &gt; packages/flatpak_list.txt</code></pre>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

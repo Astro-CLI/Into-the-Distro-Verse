@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: audio-video.md
+    Comprehensive guide to audio and video production setup on Linux,
+    covering PipeWire, JACK, DAWs, OBS, and related tools.
+-->
+
 # Audio & Video Production Setup 🎵🎬
 
 A comprehensive guide for setting up professional audio and video workflows on Linux, covering audio servers, effects, recording, and content creation tools.
@@ -799,3 +805,24 @@ spd-say -L
 ---
 
 **Pro Tip:** Most modern distributions ship with PipeWire by default. If you're unsure, stick with PipeWire—it's the future of Linux audio/video handling and provides the best overall experience for both casual users and professionals.
+
+---
+
+## 🎯 Why Would I Use This?
+
+- **Professional quality** - Record, edit, and produce like professionals use
+- **Privacy** - Everything runs locally, no cloud services
+- **Cost savings** - Free open-source tools instead of expensive software
+- **Learning** - Understand how audio and video really work
+- **Streaming** - Set up your own streaming setup with OBS
+- **Podcasting** - Record, edit, and publish audio content
+- **Game streaming** - Stream your gameplay to audiences
+
+---
+
+## 🔗 Related Guides
+
+- 📖 **[Accessibility & TTS](accessibility-tts.md)** - Adding voice to your projects
+- 📖 **[System Maintenance](system_maintenance.md)** - Keeping your system optimized
+- 📖 **[Arch Linux Guide](arch.md)** - Package management
+- 📖 **[Fedora Guide](fedora.md)** - Fedora-specific audio tools

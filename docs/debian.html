@@ -1,99 +1,261 @@
-<h1>Debian: The Stable Foundation 🌀</h1>
-<p>Debian is the &quot;Universal Operating System&quot; that serves as the base for Ubuntu, Kali, and many others. While it prizes stability, you may sometimes need newer or more specialized packages.</p>
-<hr>
-<h2>🚀 1. Basic Repository Management</h2>
-<p>Standard repositories are defined in <code>/etc/apt/sources.list</code>.</p>
-<h3>Adding a Standard Repository</h3>
-<p>To add a new source manually:</p>
-<pre><code class="language-bash">echo &quot;deb http://deb.debian.org/debian bookworm-backports main&quot; | sudo tee /etc/apt/sources.list.d/backports.list
-sudo apt update
-</code></pre>
-<h3>Backports (The &quot;Safe&quot; Way to get newer apps)</h3>
-<p>If you need a newer kernel or app version on Debian Stable, always check <strong>Backports</strong> first before adding external distros.</p>
-<pre><code class="language-bash">sudo apt install -t bookworm-backports package_name
-</code></pre>
-<hr>
-<h2>🏗️ 2. Adding External Repositories (Ubuntu &amp; Kali)</h2>
-<p>⚠️ <strong>WARNING: THE &quot;FRANKENDEBIAN&quot; RISK</strong><br>Adding repositories from different distributions (like Ubuntu or Kali) into a standard Debian system is dangerous. It can cause dependency conflicts that make your system un-updatable. <strong>Proceed with caution.</strong></p>
-<h3>Adding Ubuntu Repositories</h3>
-<p>You might want this for specific PPAs or newer libraries.</p>
-<ol>
-<li><strong>Add the repository:</strong><pre><code class="language-bash">echo &quot;deb http://archive.ubuntu.com/ubuntu/ noble main universe&quot; | sudo tee /etc/apt/sources.list.d/ubuntu.list
-</code></pre>
-</li>
-<li><strong>Add the GPG Key:</strong> (You must find the specific key for the repo you are adding).</li>
-</ol>
-<h3>Adding Kali Linux Repositories</h3>
-<p>Useful if you want access to Kali&#39;s massive suite of security tools without a full Kali install.</p>
-<ol>
-<li><strong>Add the Kali repo:</strong><pre><code class="language-bash">echo &quot;deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware&quot; | sudo tee /etc/apt/sources.list.d/kali.list
-</code></pre>
-</li>
-<li><strong>Import the Kali GPG key:</strong><pre><code class="language-bash">wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg
-</code></pre>
-</li>
-</ol>
-<hr>
-<h2>⚖️ 3. Safe Management: APT Pinning</h2>
-<p>To prevent Ubuntu or Kali from accidentally overwriting your core Debian system files, you should use <strong>APT Pinning</strong>. This tells Debian to only use the external repo for specific packages you ask for.</p>
-<ol>
-<li>Create a pin file: <code>sudo nano /etc/apt/preferences.d/external-repo</code></li>
-<li>Add this configuration:<pre><code class="language-text">Package: *
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>debian</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="debian.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">debian</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#debian-the-universal-foundation-for-stable-computing"
+id="toc-debian-the-universal-foundation-for-stable-computing">Debian:
+The Universal Foundation for Stable Computing</a>
+<ul>
+<li><a href="#package-manager-enhancement"
+id="toc-package-manager-enhancement">🚀 0. Package Manager
+Enhancement</a></li>
+<li><a href="#repository-architecture"
+id="toc-repository-architecture">🚀 1. Repository Architecture</a>
+<ul>
+<li><a href="#standard-repository-configuration"
+id="toc-standard-repository-configuration">Standard Repository
+Configuration</a></li>
+<li><a href="#backports-conservative-access-to-newer-software"
+id="toc-backports-conservative-access-to-newer-software">Backports:
+Conservative Access to Newer Software</a></li>
+</ul></li>
+<li><a href="#external-repository-integration"
+id="toc-external-repository-integration">🏗️ 2. External Repository
+Integration</a>
+<ul>
+<li><a href="#risk-assessment-the-frankendebian-phenomenon"
+id="toc-risk-assessment-the-frankendebian-phenomenon">Risk Assessment:
+The “Frankendebian” Phenomenon</a></li>
+<li><a href="#ubuntu-repository-integration"
+id="toc-ubuntu-repository-integration">Ubuntu Repository
+Integration</a></li>
+<li><a href="#kali-linux-repository-integration"
+id="toc-kali-linux-repository-integration">Kali Linux Repository
+Integration</a></li>
+</ul></li>
+<li><a href="#dependency-management-apt-pinning"
+id="toc-dependency-management-apt-pinning">⚖️ 3. Dependency Management:
+APT Pinning</a></li>
+<li><a href="#multimedia-display-protocol-support"
+id="toc-multimedia-display-protocol-support">🎬 4. Multimedia &amp;
+Display Protocol Support</a>
+<ul>
+<li><a href="#wayland-screen-capture-infrastructure"
+id="toc-wayland-screen-capture-infrastructure">Wayland Screen Capture
+Infrastructure</a></li>
+</ul></li>
+<li><a href="#core-apt-operations" id="toc-core-apt-operations">🛠️ 5.
+Core APT Operations</a></li>
+<li><a href="#related-documentation" id="toc-related-documentation">🔗
+Related Documentation</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: debian.md
+    This file contains comprehensive repository management and optimization procedures for Debian.
+    Adapt these configurations based on your stability requirements and use case.
+-->
+<h1 id="debian-the-universal-foundation-for-stable-computing">Debian:
+The Universal Foundation for Stable Computing</h1>
+<p>Debian embodies a fundamentally different philosophy than
+rolling-release alternatives: its deliberate release cycles and
+stringent stability testing make it the foundation for numerous
+derivatives including Ubuntu, Kali, and Pop!_OS. This conservative
+approach—while ensuring reliability—sometimes necessitates external
+repository integration for modern software. This guide explores safe
+practices for expanding Debian’s ecosystem while preserving system
+integrity.</p>
+<hr />
+<h2 id="package-manager-enhancement">🚀 0. Package Manager
+Enhancement</h2>
+<p>APT, Debian’s package management system, benefits from basic
+performance and usability optimizations:</p>
+<p><strong>Enable colored output for improved readability:</strong></p>
+<pre class="bash"><code>echo &quot;Apt::Color \&quot;1\&quot;;&quot; | sudo tee -a /etc/apt/apt.conf.d/99custom-options</code></pre>
+<p><strong>Configure automatic confirmation (use
+cautiously):</strong></p>
+<pre class="bash"><code>echo &quot;APT::Get::Assume-Yes \&quot;true\&quot;;&quot; | sudo tee -a /etc/apt/apt.conf.d/99custom-options</code></pre>
+<p>Alternatively, manually create
+<code>/etc/apt/apt.conf.d/99custom-options</code> with:</p>
+<pre class="text"><code>Apt::Color &quot;1&quot;;
+APT::Get::Assume-Yes &quot;true&quot;;</code></pre>
+<hr />
+<h2 id="repository-architecture">🚀 1. Repository Architecture</h2>
+<h3 id="standard-repository-configuration">Standard Repository
+Configuration</h3>
+<p>APT repository definitions reside in
+<code>/etc/apt/sources.list</code>. Adding supplementary sources follows
+a straightforward pattern:</p>
+<pre class="bash"><code>echo &quot;deb http://deb.debian.org/debian bookworm-backports main&quot; | sudo tee /etc/apt/sources.list.d/backports.list
+sudo apt update</code></pre>
+<h3 id="backports-conservative-access-to-newer-software">Backports:
+Conservative Access to Newer Software</h3>
+<p>Debian’s backports repository provides newer package versions
+specifically compiled for stable releases—an excellent compromise
+between stability and software currency:</p>
+<pre class="bash"><code>sudo apt install -t bookworm-backports package_name</code></pre>
+<p>Always consult backports as the first option before considering
+external repository integration.</p>
+<hr />
+<h2 id="external-repository-integration">🏗️ 2. External Repository
+Integration</h2>
+<h3 id="risk-assessment-the-frankendebian-phenomenon">Risk Assessment:
+The “Frankendebian” Phenomenon</h3>
+<p>While Debian’s ecosystem encourages interoperability, combining
+repositories from different distributions (Ubuntu, Kali, Debian itself)
+introduces substantial risk. Dependency resolution systems may encounter
+conflicting version requirements, potentially rendering the system
+unable to update. Proceed only with clear understanding of the
+consequences.</p>
+<h3 id="ubuntu-repository-integration">Ubuntu Repository
+Integration</h3>
+<p>Ubuntu-specific PPAs may provide packages unavailable through
+standard Debian channels:</p>
+<pre class="bash"><code># Add Ubuntu repository
+echo &quot;deb http://archive.ubuntu.com/ubuntu/ noble main universe&quot; | sudo tee /etc/apt/sources.list.d/ubuntu.list
+
+# Add the associated GPG signing key (repository-specific)</code></pre>
+<h3 id="kali-linux-repository-integration">Kali Linux Repository
+Integration</h3>
+<p>Kali’s specialized penetration testing tools may be valuable in
+security-focused environments:</p>
+<pre class="bash"><code># Add Kali repository
+echo &quot;deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware&quot; | sudo tee /etc/apt/sources.list.d/kali.list
+
+# Import Kali&#39;s package signing key
+wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg</code></pre>
+<hr />
+<h2 id="dependency-management-apt-pinning">⚖️ 3. Dependency Management:
+APT Pinning</h2>
+<p>APT pinning provides fine-grained control over package source
+prioritization, preventing external repositories from inadvertently
+overwriting core system files:</p>
+<p>Create <code>/etc/apt/preferences.d/external-repo</code>:</p>
+<pre class="text"><code>Package: *
 Pin: release o=Kali
 Pin-Priority: 100
 
 Package: *
 Pin: release o=Ubuntu
-Pin-Priority: 100
-</code></pre>
-<em>A priority of 100 ensures Debian will always prefer its own packages unless you manually force the install from the external repo.</em></li>
-</ol>
-<hr>
-<h2>🎬 4. Multimedia &amp; Wayland Utilities</h2>
-<h3>Wayland Screen Sharing Support</h3>
-<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
-<pre><code class="language-bash"># Install Xwayland Video Bridge
+Pin-Priority: 100</code></pre>
+<p>A priority of 100 ensures Debian’s native packages take precedence.
+External repositories are consulted only when packages are explicitly
+requested from them.</p>
+<hr />
+<h2 id="multimedia-display-protocol-support">🎬 4. Multimedia &amp;
+Display Protocol Support</h2>
+<h3 id="wayland-screen-capture-infrastructure">Wayland Screen Capture
+Infrastructure</h3>
+<p>Contemporary display protocols require explicit middleware for screen
+capture capabilities. Xwayland Video Bridge provides this bridging
+layer:</p>
+<pre class="bash"><code># Primary installation method
 sudo apt install xwaylandvideobridge
 
-# If not available in main repos, try from backports:
-# sudo apt -t bookworm-backports install xwaylandvideobridge
-</code></pre>
-<p>💡 <em>Ubuntu users may find this in the main repositories. Debian users might need backports or external PPAs.</em></p>
-<hr>
-<h2>🛠️ 5. Essential Commands</h2>
+# If unavailable in main repositories, check backports
+# sudo apt -t bookworm-backports install xwaylandvideobridge</code></pre>
+<p>Package availability varies between Debian and Ubuntu releases;
+backports or external PPAs may be necessary.</p>
+<hr />
+<h2 id="core-apt-operations">🛠️ 5. Core APT Operations</h2>
 <table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
 <thead>
 <tr>
-<th align="left">Task</th>
-<th align="left">Command</th>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Command</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Update Lists</strong></td>
-<td align="left"><code>sudo apt update</code></td>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Refresh package
+lists</strong></td>
+<td style="text-align: left;"><code>sudo apt update</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Upgrade System</strong></td>
-<td align="left"><code>sudo apt upgrade</code></td>
+<td style="text-align: left;"><strong>System upgrade</strong></td>
+<td style="text-align: left;"><code>sudo apt upgrade</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Install from Specific Repo</strong></td>
-<td align="left"><code>sudo apt install -t kali-rolling package_name</code></td>
+<td style="text-align: left;"><strong>Install from specific
+repository</strong></td>
+<td
+style="text-align: left;"><code>sudo apt install -t kali-rolling package_name</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Fix Broken Deps</strong></td>
-<td align="left"><code>sudo apt install -f</code></td>
+<td style="text-align: left;"><strong>Repair broken
+dependencies</strong></td>
+<td style="text-align: left;"><code>sudo apt install -f</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Clean Cache</strong></td>
-<td align="left"><code>sudo apt clean</code></td>
+<td style="text-align: left;"><strong>Cache cleanup</strong></td>
+<td style="text-align: left;"><code>sudo apt clean</code></td>
 </tr>
-</tbody></table>
-<hr>
-<h2>🔗 Related Guides</h2>
+</tbody>
+</table>
+<hr />
+<h2 id="related-documentation">🔗 Related Documentation</h2>
 <ul>
-<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Rolling-release setup and AUR management.</li>
-<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Setup and optimizations for Fedora Workstation.</li>
-<li>📖 <strong><a href="security.md">Security Guide</a></strong> - Hardening your Debian system.</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> —
+Rolling-release distribution philosophy and AUR integration</li>
+<li>📖 <strong><a href="fedora.md">Fedora Workstation Guide</a></strong>
+— Contemporary desktop environment and SELinux integration</li>
+<li>📖 <strong><a href="security.md">System Security
+Hardening</a></strong> — Comprehensive Debian security
+configuration</li>
 </ul>
-
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

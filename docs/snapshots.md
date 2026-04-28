@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: snapshots.md
+    Guide to system snapshots and backups using TimeShift and Snapper on Arch and Fedora.
+    Covers filesystem snapshots, backup strategies, and bootloader integration.
+-->
+
 # Snapshots & Backups: The Safety Net 🛡️
 
 Regardless of which distro you're using, snapshots and backups are essential for system recovery. This guide covers how to set up the perfect safety net for both Arch and Fedora users.

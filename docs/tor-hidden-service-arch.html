@@ -1,329 +1,343 @@
-<h1>Running a Tor Hidden Service on Arch Linux with Nginx</h1>
-<p>So you want to host a website as a Tor hidden service directly on Arch Linux without Docker. This guide walks through exactly what we did to make it work.</p>
-<hr>
-<h2>What This Does</h2>
-<p>You&#39;ll have:</p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>tor hidden service arch</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="tor-hidden-service-arch.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">tor hidden service arch</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li>A website running on Nginx (native Arch package)</li>
-<li>A .onion address that only works with Tor Browser</li>
-<li>Complete anonymity - nobody can see your real IP</li>
-<li>No Docker involved - just Arch Linux packages</li>
+<li><a href="#hosting-a-private-website-on-tor-native-arch-edition"
+id="toc-hosting-a-private-website-on-tor-native-arch-edition">Hosting a
+Private Website on Tor: Native Arch Edition</a>
+<ul>
+<li><a href="#why-this-over-docker" id="toc-why-this-over-docker">🤔 Why
+This Over Docker?</a></li>
+<li><a href="#what-you-need" id="toc-what-you-need">✅ What You
+Need</a></li>
+<li><a href="#update-your-system" id="toc-update-your-system">🚀 1.
+Update Your System</a></li>
+<li><a href="#install-packages" id="toc-install-packages">📦 2. Install
+Packages</a></li>
+<li><a href="#prepare-your-website" id="toc-prepare-your-website">📁 3.
+Prepare Your Website</a></li>
+<li><a href="#configure-nginx" id="toc-configure-nginx">⚙️ 4. Configure
+Nginx</a></li>
+<li><a href="#configure-tor" id="toc-configure-tor">🔧 5. Configure
+Tor</a></li>
+<li><a href="#start-services" id="toc-start-services">▶️ 6. Start
+Services</a></li>
+<li><a href="#get-your-.onion-address"
+id="toc-get-your-.onion-address">🧅 7. Get Your .onion Address</a></li>
+<li><a href="#access-your-site" id="toc-access-your-site">🌐 8. Access
+Your Site</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">🛠️
+Troubleshooting</a>
+<ul>
+<li><a href="#cant-access-the-.onion-address"
+id="toc-cant-access-the-.onion-address">Can’t access the .onion
+address</a></li>
+<li><a href="#page-shows-404-or-access-denied"
+id="toc-page-shows-404-or-access-denied">Page shows 404 or “Access
+Denied”</a></li>
+<li><a href="#want-to-update-your-website"
+id="toc-want-to-update-your-website">Want to update your
+website</a></li>
+<li><a href="#want-to-stop-hosting-temporarily"
+id="toc-want-to-stop-hosting-temporarily">Want to stop hosting
+temporarily</a></li>
+<li><a href="#want-a-brand-new-.onion-address"
+id="toc-want-a-brand-new-.onion-address">Want a brand new .onion
+address</a></li>
+</ul></li>
+<li><a href="#common-commands" id="toc-common-commands">📋 Common
+Commands</a></li>
+<li><a href="#security-tips" id="toc-security-tips">🔒 Security Tips</a>
+<ul>
+<li><a href="#dont-leak-your-real-ip"
+id="toc-dont-leak-your-real-ip">Don’t Leak Your Real IP</a></li>
+<li><a href="#backup-your-address" id="toc-backup-your-address">Backup
+Your Address</a></li>
+<li><a href="#protect-sensitive-files"
+id="toc-protect-sensitive-files">Protect Sensitive Files</a></li>
+</ul></li>
+<li><a href="#adding-more-pages" id="toc-adding-more-pages">➕ Adding
+More Pages</a></li>
+<li><a href="#why-would-i-do-this" id="toc-why-would-i-do-this">🎯 Why
+Would I Do This?</a></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 Related
+Guides</a></li>
+</ul></li>
 </ul>
-<p>This is simpler than Docker but less isolated. If Nginx gets compromised, someone could potentially access your system. For most use cases though, this is fine.</p>
-<hr>
-<h2>Before You Start</h2>
-<p>You need:</p>
+</nav>
+<!-- 
+    WIKI GUIDE: tor-hidden-service-arch.md
+    Guide for hosting a Tor hidden service directly on Arch Linux using Nginx.
+    No Docker required - native installation for maximum performance.
+-->
+<h1 id="hosting-a-private-website-on-tor-native-arch-edition">Hosting a
+Private Website on Tor: Native Arch Edition</h1>
+<p>Want to host a website that only works through Tor without using
+Docker? This native approach is simpler and faster. Your .onion address
+stays completely anonymous, and visitors can’t see your real IP.</p>
+<hr />
+<h2 id="why-this-over-docker">🤔 Why This Over Docker?</h2>
 <ul>
-<li>Arch Linux (with pacman)</li>
-<li>Terminal access</li>
-<li>Root/sudo privileges</li>
-<li>Website files (we&#39;ll use a local GitHub repo as an example)</li>
+<li><strong>Simpler</strong> - No Docker complexity, just Arch
+packages</li>
+<li><strong>Faster</strong> - Direct native execution, no container
+overhead</li>
+<li><strong>Less isolated</strong> - If that’s what you prefer for
+simplicity</li>
+</ul>
+<p><strong>Trade-off:</strong> Less isolation than Docker, so security
+depends on Nginx hardening.</p>
+<hr />
+<h2 id="what-you-need">✅ What You Need</h2>
+<ul>
+<li>Arch Linux</li>
+<li>Terminal access and sudo</li>
 <li>About 15 minutes</li>
+<li>Your website files (HTML/CSS)</li>
 </ul>
-<hr>
-<h2>Step 1: Update Your System</h2>
-<p>First update everything:</p>
-<pre><code class="language-bash">sudo pacman -Syu
-</code></pre>
-<p>Wait for it to finish.</p>
-<hr>
-<h2>Step 2: Install Required Packages</h2>
-<p>Install Tor, Nginx, and curl:</p>
-<pre><code class="language-bash">sudo pacman -S tor nginx curl
-</code></pre>
-<p>Press Y when it asks to confirm.</p>
-<hr>
-<h2>Step 3: Prepare Your Website Files</h2>
-<p>Create the web root directory:</p>
-<pre><code class="language-bash">sudo mkdir -p /srv/http
-</code></pre>
-<p>Copy your website files. If you&#39;re using a GitHub repo:</p>
-<pre><code class="language-bash">sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/
-</code></pre>
-<p>Or if you have HTML files elsewhere, copy those instead.</p>
-<p>Set correct permissions:</p>
-<pre><code class="language-bash">sudo chown -R http:http /srv/http
-sudo chmod -R 755 /srv/http
-</code></pre>
-<hr>
-<h2>Step 4: Configure Nginx</h2>
-<p>Open the Nginx config:</p>
-<pre><code class="language-bash">sudo nano /etc/nginx/nginx.conf
-</code></pre>
-<p>Look for the <code>http {</code> block. Inside it, find the <code>server {</code> block (or create one if it doesn&#39;t exist). Replace or update it to look like this:</p>
-<pre><code class="language-nginx">http {
-    include mime.types;
-    default_type application/octet-stream;
+<hr />
+<h2 id="update-your-system">🚀 1. Update Your System</h2>
+<pre class="bash"><code>sudo pacman -Syu</code></pre>
+<hr />
+<h2 id="install-packages">📦 2. Install Packages</h2>
+<pre class="bash"><code>sudo pacman -S tor nginx curl</code></pre>
+<p>Confirm with <code>Y</code>.</p>
+<hr />
+<h2 id="prepare-your-website">📁 3. Prepare Your Website</h2>
+<p>Create the web root:</p>
+<pre class="bash"><code>sudo mkdir -p /srv/http</code></pre>
+<p>Copy your website files:</p>
+<pre class="bash"><code># From a local folder
+sudo cp -r ~/my-website/* /srv/http/
 
-    sendfile on;
-    keepalive_timeout 65;
-    gzip on;
-
+# Or from GitHub
+sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/</code></pre>
+<p>Set correct ownership:</p>
+<pre class="bash"><code>sudo chown -R http:http /srv/http
+sudo chmod -R 755 /srv/http</code></pre>
+<hr />
+<h2 id="configure-nginx">⚙️ 4. Configure Nginx</h2>
+<p>Edit the Nginx config:</p>
+<pre class="bash"><code>sudo nano /etc/nginx/nginx.conf</code></pre>
+<p>Find or create the <code>server {</code> block with these
+settings:</p>
+<pre class="nginx"><code>http {
+    # ... existing config ...
+    
     server {
         listen 80 default_server;
         listen [::]:80 default_server;
-        
         server_name _;
         
         root /srv/http;
         index index.html;
         
+        # Security headers
+        add_header X-Content-Type-Options &quot;nosniff&quot;;
+        add_header X-Frame-Options &quot;DENY&quot;;
+        add_header Referrer-Policy &quot;no-referrer&quot;;
+        
+        # Hide server version
+        server_tokens off;
+        
+        # Deny access to dotfiles
+        location ~ /\. {
+            deny all;
+        }
+        
+        # Serve files
         location / {
             try_files $uri $uri/ =404;
         }
     }
-}
-</code></pre>
-<p>The key parts:</p>
-<ul>
-<li><code>listen 80</code> - listens on port 80</li>
-<li><code>root /srv/http</code> - serves files from here</li>
-<li><code>include mime.types</code> - makes CSS and JS load properly</li>
-</ul>
-<p>Save it: Ctrl+X, Y, Enter.</p>
-<p>Start Nginx:</p>
-<pre><code class="language-bash">sudo systemctl enable --now nginx
-</code></pre>
-<p>Test it works:</p>
-<pre><code class="language-bash">curl -I http://localhost/
-</code></pre>
-<p>You should see: <code>HTTP/1.1 200 OK</code></p>
-<p>If you get an error about port 80 already in use, check if Docker is running:</p>
-<pre><code class="language-bash">docker ps
-</code></pre>
-<p>If containers are running:</p>
-<pre><code class="language-bash">docker-compose down
-</code></pre>
-<p>Then try Nginx again.</p>
-<hr>
-<h2>Step 5: Configure Tor</h2>
-<p>Open the Tor config:</p>
-<pre><code class="language-bash">sudo nano /etc/tor/torrc
-</code></pre>
-<p>Scroll down and find the section with comments about hidden services. Look for lines that might say <code># HiddenServiceDir</code> or similar.</p>
-<p>Add these lines (order matters - HiddenServiceDir must come before HiddenServicePort):</p>
-<pre><code class="language-conf">HiddenServiceDir /var/lib/tor/hidden_service/
+}</code></pre>
+<p>Save with Ctrl+X, Y, Enter.</p>
+<hr />
+<h2 id="configure-tor">🔧 5. Configure Tor</h2>
+<p>Edit the Tor config:</p>
+<pre class="bash"><code>sudo nano /etc/tor/torrc</code></pre>
+<p>Find or add these lines:</p>
+<pre class="conf"><code>HiddenServiceDir /var/lib/tor/hidden_service/
 HiddenServicePort 80 127.0.0.1:80
-</code></pre>
-<p>Just paste them in. They can go anywhere after the main config but before the end of the file.</p>
-<p>Save it: Ctrl+X, Y, Enter.</p>
-<p>Restart Tor:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
-</code></pre>
-<hr>
-<h2>Step 6: Get Your .onion Address</h2>
-<p>Wait 3-5 seconds for Tor to start up, then:</p>
-<pre><code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
-</code></pre>
-<p>You&#39;ll see something like:</p>
-<pre><code>cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
-</code></pre>
-<p>Save this. This is your website&#39;s address.</p>
-<hr>
-<h2>Step 7: Test It Works Locally</h2>
-<p>Make sure everything is responding:</p>
-<pre><code class="language-bash">curl -I http://localhost/
-</code></pre>
-<p>Should show <code>200 OK</code>.</p>
+HiddenServiceVersion 3</code></pre>
+<p>This tells Tor to: - Store your .onion address in
+<code>/var/lib/tor/hidden_service/</code> - Listen on port 80 and
+forward to localhost:80 (where Nginx runs) - Use the modern v3 onion
+addresses</p>
+<hr />
+<h2 id="start-services">▶️ 6. Start Services</h2>
+<p>Enable and start Nginx:</p>
+<pre class="bash"><code>sudo systemctl enable --now nginx</code></pre>
+<p>Enable and start Tor:</p>
+<pre class="bash"><code>sudo systemctl enable --now tor</code></pre>
 <p>Check Tor is running:</p>
-<pre><code class="language-bash">sudo systemctl status tor
-</code></pre>
-<p>Should say &quot;active (running)&quot;.</p>
-<p>Check Nginx:</p>
-<pre><code class="language-bash">sudo systemctl status nginx
-</code></pre>
-<p>Should also say &quot;active (running)&quot;.</p>
-<hr>
-<h2>Step 8: Access in Tor Browser</h2>
-<p>Download Tor Browser from torproject.org if you don&#39;t have it.</p>
-<p>Open Tor Browser and wait for it to connect (takes a minute).</p>
-<p>In the address bar, paste your .onion address:</p>
-<pre><code>http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion
-</code></pre>
-<p>You should see your website.</p>
-<hr>
-<h2>Step 9: Create a Short URL (Optional)</h2>
-<p>You can create a short link that redirects to your .onion address. This makes it easier to share.</p>
-<p>Using is.gd:</p>
-<pre><code class="language-bash">curl -s --data-urlencode &quot;url=http://cgo7r2ivdj7rbg2gqc5hn2d7pdnp2yhsjtywage5dvsitjxwb7eiakyd.onion&quot; &quot;https://is.gd/create.php?format=simple&quot; | tr -d &#39;\n&#39; &amp;&amp; echo
-</code></pre>
-<p>Replace the .onion address with yours.</p>
-<p>You&#39;ll get something like:</p>
-<pre><code>https://is.gd/EkazLS
-</code></pre>
-<p>Anyone can click this link (in Tor Browser) and it redirects to your hidden site.</p>
-<hr>
-<h2>CSS and JavaScript Not Loading?</h2>
-<p>If your website displays but styling is broken, check Tor Browser&#39;s security level.</p>
-<p>Click the shield icon in the top right.</p>
-<p>Make sure it&#39;s set to &quot;Standard&quot; (not &quot;Safest&quot;).</p>
-<p>&quot;Safest&quot; blocks scripts and makes websites look broken. &quot;Standard&quot; is fine for most sites.</p>
-<hr>
-<h2>Common Issues</h2>
-<h3>Nginx shows &quot;Connection refused&quot;</h3>
-<p>Nginx might not have started. Try:</p>
-<pre><code class="language-bash">sudo systemctl start nginx
-</code></pre>
-<p>If it fails, check the error:</p>
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
-<p>This will show what&#39;s wrong with the config.</p>
-<h3>Tor shows error about port</h3>
-<p>Make sure port 80 is free:</p>
-<pre><code class="language-bash">sudo lsof -i :80
-</code></pre>
-<p>If something else is using it, kill it or change the port in Nginx config.</p>
-<h3>Can&#39;t connect to .onion address from Tor Browser</h3>
-<p>Wait 30 seconds. Tor needs time to build circuits.</p>
-<p>Check Tor logs:</p>
-<pre><code class="language-bash">sudo tail -f /var/log/tor/log
-</code></pre>
-<p>Look for &quot;Bootstrapped 100%&quot;. When you see it, your hidden service is ready.</p>
-<h3>The page loads but looks broken</h3>
-<p>Make sure Tor Browser security is on &quot;Standard&quot; (not &quot;Safest&quot;).</p>
-<p>Check that files were copied:</p>
-<pre><code class="language-bash">ls -la /srv/http/
-</code></pre>
-<p>Should show your HTML, CSS, JS files.</p>
-<h3>Port already in use</h3>
-<p>If you see &quot;Address already in use&quot;, something else is running on port 80.</p>
-<p>Check what:</p>
-<pre><code class="language-bash">sudo lsof -i :80
-</code></pre>
-<p>Stop it or reconfigure Nginx to use a different port (8080 instead of 80).</p>
-<hr>
-<h2>Common Commands</h2>
-<p>Start your hidden service:</p>
-<pre><code class="language-bash">sudo systemctl start tor
-sudo systemctl start nginx
-</code></pre>
-<p>Stop it:</p>
-<pre><code class="language-bash">sudo systemctl stop tor
-sudo systemctl stop nginx
-</code></pre>
-<p>Restart it:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
-sudo systemctl restart nginx
-</code></pre>
-<p>See logs:</p>
-<pre><code class="language-bash">sudo journalctl -u tor -f
-sudo journalctl -u nginx -f
-</code></pre>
-<p>Get your .onion address again:</p>
-<pre><code class="language-bash">sudo cat /var/lib/tor/hidden_service/hostname
-</code></pre>
-<hr>
-<h2>Keeping Your Site Safe</h2>
-<p>Don&#39;t upload files with metadata (like photos with location data):</p>
-<pre><code class="language-bash">sudo pacman -S exiftool
-exiftool -all= your-photo.jpg
-</code></pre>
-<p>Don&#39;t link to your real website or real email.</p>
-<p>Don&#39;t use fancy JavaScript - keep it simple.</p>
-<p>Backup your private key so you keep the same .onion address forever:</p>
-<pre><code class="language-bash">sudo cp /var/lib/tor/hidden_service/hs_ed25519_secret_key ~/backup-onion-key.txt
-</code></pre>
-<p>Keep this file safe. If you lose it, you lose that .onion address forever.</p>
-<hr>
-<h2>Updating Your Website</h2>
-<p>Edit files directly in /srv/http:</p>
-<pre><code class="language-bash">sudo nano /srv/http/index.html
-</code></pre>
-<p>Changes are live immediately. No restart needed.</p>
-<p>If you&#39;re copying files from GitHub:</p>
-<pre><code class="language-bash">sudo cp -r /path/to/repo/website/* /srv/http/
-sudo chown -R http:http /srv/http
-</code></pre>
-<p>Then refresh in Tor Browser.</p>
-<hr>
-<h2>Adding More Pages</h2>
-<p>Create a new HTML file:</p>
-<pre><code class="language-bash">sudo nano /srv/http/about.html
-</code></pre>
-<p>Paste this:</p>
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;About&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;h1&gt;About This Site&lt;/h1&gt;
-    &lt;p&gt;This is my hidden website.&lt;/p&gt;
-    &lt;a href=&quot;index.html&quot;&gt;Back home&lt;/a&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-<p>Save it. Link to it from index.html:</p>
-<pre><code class="language-html">&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;
-</code></pre>
-<hr>
-<h2>Difference from Docker Version</h2>
-<p>Docker version (apache-tor-docker.md):</p>
-<ul>
-<li>More isolated (if Nginx breaks, system is safer)</li>
-<li>More setup steps</li>
-<li>Better for production</li>
-</ul>
-<p>Native version (this guide):</p>
-<ul>
-<li>Simpler, faster</li>
-<li>Fewer moving parts</li>
-<li>Better for learning</li>
-<li>Slightly less isolated (Nginx has more access to system)</li>
-</ul>
-<p>For a personal site or learning, native is fine. For something critical, use Docker.</p>
-<hr>
-<h2>Key Files and Locations</h2>
-<ul>
-<li>Nginx config: <code>/etc/nginx/nginx.conf</code></li>
-<li>Website files: <code>/srv/http/</code></li>
-<li>Tor config: <code>/etc/tor/torrc</code></li>
-<li>Tor hidden service: <code>/var/lib/tor/hidden_service/</code></li>
-<li>Tor logs: <code>/var/log/tor/log</code></li>
-<li>Private key (backup this): <code>/var/lib/tor/hidden_service/hs_ed25519_secret_key</code></li>
-</ul>
-<hr>
-<h2>What&#39;s Actually Happening</h2>
-<ol>
-<li>Someone opens Tor Browser</li>
-<li>They type your .onion address</li>
-<li>Tor connects through multiple relays</li>
-<li>Connection reaches your computer&#39;s Tor daemon</li>
-<li>Your Tor daemon forwards to localhost:80</li>
-<li>Nginx listens on localhost:80</li>
-<li>Nginx serves your files</li>
-<li>Your visitor sees the website</li>
-<li>Their connection is completely anonymous</li>
+<pre class="bash"><code>sudo systemctl status tor</code></pre>
+<hr />
+<h2 id="get-your-.onion-address">🧅 7. Get Your .onion Address</h2>
+<p>When Tor starts for the first time, it generates your unique
+address:</p>
+<pre class="bash"><code>sudo cat /var/lib/tor/hidden_service/hostname</code></pre>
+<p>You’ll see something like:</p>
+<pre><code>thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion</code></pre>
+<p>Save this! This is your website’s URL.</p>
+<hr />
+<h2 id="access-your-site">🌐 8. Access Your Site</h2>
+<ol type="1">
+<li><p>Download Tor Browser from torproject.org</p></li>
+<li><p>Open it and let it connect</p></li>
+<li><p>In the address bar, paste your .onion address:</p>
+<pre><code>http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/</code></pre></li>
 </ol>
-<p>Nobody can see your real IP. Nobody can trace it back to you.</p>
-<hr>
-<h2>Still Having Problems?</h2>
-<p>Check all three things are running:</p>
-<pre><code class="language-bash">sudo systemctl status tor
+<p>You should see your website! Your location is completely hidden.</p>
+<hr />
+<h2 id="troubleshooting">🛠️ Troubleshooting</h2>
+<h3 id="cant-access-the-.onion-address">Can’t access the .onion
+address</h3>
+<p>Wait 60 seconds - Tor takes time.</p>
+<p>Check if Tor bootstrapped:</p>
+<pre class="bash"><code>sudo journalctl -u tor -n 20 | grep -i &quot;bootstrap&quot;</code></pre>
+<p>Should say “Bootstrapped 100%”.</p>
+<h3 id="page-shows-404-or-access-denied">Page shows 404 or “Access
+Denied”</h3>
+<p>Check Nginx is running:</p>
+<pre class="bash"><code>sudo systemctl status nginx
+sudo curl http://localhost/</code></pre>
+<p>Check permissions:</p>
+<pre class="bash"><code>sudo ls -la /srv/http/</code></pre>
+<p>Should show <code>http:http</code> ownership.</p>
+<h3 id="want-to-update-your-website">Want to update your website</h3>
+<p>Just edit the HTML:</p>
+<pre class="bash"><code>sudo nano /srv/http/index.html</code></pre>
+<p>Save it. It updates automatically—no restart needed!</p>
+<h3 id="want-to-stop-hosting-temporarily">Want to stop hosting
+temporarily</h3>
+<pre class="bash"><code>sudo systemctl stop nginx</code></pre>
+<p>Your .onion address stays the same. Later:</p>
+<pre class="bash"><code>sudo systemctl start nginx</code></pre>
+<h3 id="want-a-brand-new-.onion-address">Want a brand new .onion
+address</h3>
+<pre class="bash"><code>sudo systemctl stop tor
+sudo rm -rf /var/lib/tor/hidden_service/
+sudo systemctl start tor
+sleep 10
+sudo cat /var/lib/tor/hidden_service/hostname</code></pre>
+<p>Warning: You can’t get your old address back!</p>
+<hr />
+<h2 id="common-commands">📋 Common Commands</h2>
+<pre class="bash"><code># Check Nginx
 sudo systemctl status nginx
-curl -I http://localhost/
-</code></pre>
-<p>All should show OK.</p>
-<p>Check Nginx config has no errors:</p>
-<pre><code class="language-bash">sudo nginx -t
-</code></pre>
-<p>Check Tor logs:</p>
-<pre><code class="language-bash">sudo tail -20 /var/log/tor/log
-</code></pre>
-<p>Look for errors.</p>
-<p>Check permissions on files:</p>
-<pre><code class="language-bash">ls -la /srv/http/
-</code></pre>
-<p>Should show <code>http http</code> as owner (not root).</p>
-<p>If Tor says &quot;Already in use&quot;, the service might already be running:</p>
-<pre><code class="language-bash">sudo systemctl is-active tor
-</code></pre>
-<p>If yes, restart it:</p>
-<pre><code class="language-bash">sudo systemctl restart tor
-</code></pre>
-<hr>
-<h2>One More Thing</h2>
-<p>The first time is confusing. The second time is straightforward. By the third time, you can do it in 5 minutes.</p>
-<p>You now have a completely anonymous website that only Tor users can access. Your location is hidden. Your identity is hidden.</p>
-<p>Be smart about what you host on it.</p>
+sudo systemctl restart nginx
 
+# Check Tor
+sudo systemctl status tor
+sudo systemctl restart tor
+
+# View your address
+sudo cat /var/lib/tor/hidden_service/hostname
+
+# View Tor logs
+sudo journalctl -u tor -f
+
+# Check if it&#39;s working
+sudo curl http://localhost/</code></pre>
+<hr />
+<h2 id="security-tips">🔒 Security Tips</h2>
+<h3 id="dont-leak-your-real-ip">Don’t Leak Your Real IP</h3>
+<ul>
+<li>Don’t upload files with GPS data (use
+<code>exiftool -all= photo.jpg</code>)</li>
+<li>Don’t link to your public website or real email</li>
+<li>Don’t use PHP/Python/Node.js (just HTML/CSS = safer)</li>
+</ul>
+<h3 id="backup-your-address">Backup Your Address</h3>
+<p>Your .onion private key is at
+<code>/var/lib/tor/hidden_service/hs_ed25519_secret_key</code>. Back it
+up:</p>
+<pre class="bash"><code>sudo cp /var/lib/tor/hidden_service/hs_ed25519_secret_key ~/backup-onion-key.txt
+sudo chown $USER:$USER ~/backup-onion-key.txt</code></pre>
+<p>Store it somewhere safe, ideally offline.</p>
+<h3 id="protect-sensitive-files">Protect Sensitive Files</h3>
+<pre class="bash"><code># Don&#39;t track access logs (less evidence)
+# Already done - Tor hides visitor IPs
+
+# Keep web root minimal
+# Less code = fewer vulnerabilities</code></pre>
+<hr />
+<h2 id="adding-more-pages">➕ Adding More Pages</h2>
+<p>Create a new HTML file:</p>
+<pre class="bash"><code>sudo nano /srv/http/about.html</code></pre>
+<p>Then link to it from index.html:</p>
+<pre class="html"><code>&lt;a href=&quot;about.html&quot;&gt;About&lt;/a&gt;</code></pre>
+<hr />
+<h2 id="why-would-i-do-this">🎯 Why Would I Do This?</h2>
+<ul>
+<li><strong>Complete anonymity</strong> - Your real identity is
+protected</li>
+<li><strong>Censorship-resistant</strong> - Can’t be shut down by
+ISPs</li>
+<li><strong>Privacy protection</strong> - Visitors aren’t tracked</li>
+<li><strong>Whistleblowing</strong> - Safe channel for sensitive
+information</li>
+<li><strong>Learning</strong> - Understand how privacy tech works</li>
+</ul>
+<hr />
+<h2 id="related-guides">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="apache-tor-docker.md">Docker Tor
+Setup</a></strong> - More isolated container version</li>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Additional security layers</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - System
+package management</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

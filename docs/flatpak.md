@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: flatpak.md
+    Guide to Flatpak package management - universal app distribution for Linux.
+    Covers installation, usage, permissions, and comparison with alternatives.
+-->
+
 # Flatpak: The Universal App Store 📦
 
 Flatpak is a next-generation technology for building and distributing desktop applications on Linux. It allows apps to run in an isolated "sandbox," making them more secure and compatible across any distribution.

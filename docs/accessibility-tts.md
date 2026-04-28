@@ -1,10 +1,33 @@
-# Text-to-Speech (TTS) Setup
+<!-- 
+    WIKI GUIDE: accessibility-tts.md
+    This guide covers setting up high-quality neural text-to-speech (TTS) 
+    for accessibility and screen readers on Linux systems.
+    Adapt voice configurations to your preferences and system capabilities.
+-->
 
-## Configuring Piper TTS with Speech Dispatcher
+# Text-to-Speech & Accessibility: Natural Voices for Linux
 
-This guide covers setting up high-quality neural TTS using Piper instead of the default espeak/festival voices.
+Text-to-speech makes your system speak to you—perfect for accessibility, screen readers, or building voice interfaces. Modern neural TTS systems like Piper sound far better than the old robotic voices, and you can run everything locally without internet. This guide shows you how to set up professional-quality voices for real-world use.
 
-### Prerequisites
+---
+
+## 🎤 1. Understanding Your TTS Options
+
+Before diving in, understand the three main systems:
+
+| Engine | Best For | Quality | Speed |
+|--------|----------|---------|-------|
+| **Piper** | Modern neural voices, best sound quality | Excellent | Fast |
+| **eSpeak-NG** | Lightweight, low CPU | Basic | Very fast |
+| **Festival** | Legacy compatibility | Poor | Slow |
+
+We'll focus on **Piper** because it sounds natural and runs locally.
+
+---
+
+## 🚀 2. Installing Piper TTS
+
+First, install the packages:
 
 ```bash
 # Install required packages (Arch/AUR)
@@ -47,7 +70,7 @@ Set it as the default module:
 DefaultModule piper-generic
 ```
 
-#### 2. Create Piper Module Configuration
+### Step 2: Create Piper Module Configuration
 
 Create `/etc/speech-dispatcher/modules/piper-generic.conf`:
 
@@ -193,19 +216,21 @@ DefaultVoice "ryan-high"
 
 **Note:** This assumes you installed `piper-voices-en-us` package which places voices in `/usr/share/piper-voices/`.
 
-#### 3. Restart Speech Dispatcher
+### Step 3: Restart Speech Dispatcher
 
 ```bash
 systemctl --user restart speech-dispatcher
 ```
 
-#### 4. Test
+### Step 4: Test Your Setup
 
 ```bash
 spd-say "Testing Piper voice"
 ```
 
-### Troubleshooting
+You should hear a natural voice! If you don't hear anything, check the troubleshooting section.
+
+## 🛠️ 4. Troubleshooting & Common Issues
 
 **Issue: Module not loading**
 
@@ -238,25 +263,25 @@ piper-tts --version  # Should show version like 1.2.0
   paplay /tmp/test.wav
   ```
 
-### Adding More Voices
+## 🎙️ 5. Adding More Voices
 
 1. Download additional voice models from [Piper releases](https://github.com/rhasspy/piper/releases)
 2. Place `.onnx` and `.onnx.json` files in `~/.local/share/piper-voices/`
 3. Add corresponding `AddVoice` entries to the config
 4. Update the `GenericExecuteSynth` line to use the new model path, or create separate module configs for different voices
 
-### Voice Quality Levels
+## 📊 6. Voice Quality & Performance
 
 Piper voices come in different quality levels:
+
 - **low** - Fastest, lower quality (good for lower-end hardware)
 - **medium** - Good balance of quality and speed
 - **high** - Best quality, requires more CPU (recommended for modern systems)
 
-### Recommended Voices
+### Recommended Voices for Different Situations
 
-**Best Male Voices (High to Low Quality):**
+#### High Quality (Recommended for Modern Systems)
 
-**High Quality (requires modern CPU - Ryzen 7 7800X3D or equivalent recommended):**
 1. **ryan-high** ⭐ - Most natural male voice, excellent clarity (116MB)
    - Path: `/usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx`
 2. **hfc_male-medium** - Natural high-fidelity male voice
@@ -288,9 +313,9 @@ Piper voices come in different quality levels:
 2. **kristin-medium** - Natural female voice
 3. **hfc_female-medium** - High-fidelity female voice
 
-### Testing Voices
+## 🧪 7. Testing Your Voice Choices
 
-Test any voice before switching:
+Before committing to a voice, test it first:
 
 ```bash
 # Test ryan-high at 50% volume
@@ -300,8 +325,18 @@ echo "Hello, I am Ryan" | piper-tts --model /usr/share/piper-voices/en/en_US/rya
 echo "Hello, I am Lessac" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 ```
 
-### Notes
+## 🎯 Why Would I Use This?
 
-- The `sd_generic` module requires `AddVoice` declarations to load properly
-- Each voice needs both the `.onnx` model file and `.onnx.json` metadata file
-- Piper TTS is much higher quality than espeak/festival but requires more CPU
+- **Screen readers** - Make accessibility tools sound natural
+- **Voice assistants** - Build custom voice-controlled applications
+- **Announcements** - Add audio notifications to your desktop
+- **Accessibility** - Help people who are blind or have vision loss
+- **Language learning** - Hear proper pronunciation
+
+---
+
+## 🔗 Related Guides
+
+- 📖 **[Audio & Video Production](audio-video.md)** - More sound system configuration
+- 📖 **[System Maintenance](system_maintenance.md)** - Keeping your system healthy
+- 📖 **[Arch Linux Guide](arch.md)** - Package management on Arch

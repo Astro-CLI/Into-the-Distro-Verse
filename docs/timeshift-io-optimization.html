@@ -1,94 +1,271 @@
-<h1>Timeshift I/O Optimization: Fixing Snapshot-Related Freezes 🔧</h1>
-<h2>Problem: Random System Freezes During Work/Gaming</h2>
-<p>When using <strong>Timeshift with hourly snapshots on a full BTRFS disk with NVMe</strong>, you may experience:</p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>timeshift io optimization</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="timeshift-io-optimization.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">timeshift io optimization</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><strong>Periodic complete system freezes</strong> (every ~1 hour)</li>
-<li><strong>Latency-sensitive apps freezing</strong> (Citrix, remote work tools, streaming)</li>
-<li><strong>Gaming stutters</strong> during snapshot creation</li>
-<li><strong>Audio/video recording glitches</strong></li>
-</ul>
-<h3>Root Cause: NVMe I/O Scheduler Starvation</h3>
-<p>This issue is <strong>specific to NVMe SSDs</strong> on stock Arch kernels. Here&#39;s why:</p>
+<li><a href="#timeshift-io-optimization-fixing-snapshot-related-freezes"
+id="toc-timeshift-io-optimization-fixing-snapshot-related-freezes">Timeshift
+I/O Optimization: Fixing Snapshot-Related Freezes 🔧</a>
 <ul>
-<li><strong>HDDs/SSDs:</strong> Slow storage naturally throttles I/O, preventing starvation</li>
-<li><strong>NVMe:</strong> No built-in throttling, can queue 50,000+ IOPS instantly</li>
-<li><strong>Result:</strong> BTRFS qgroup rescans after snapshots starve user applications of CPU time</li>
-</ul>
-<p>BTRFS&#39;s hourly snapshots trigger aggressive <strong>metadata operations</strong> that create I/O latency:</p>
-<ol>
-<li><strong>BTRFS qgroup rescans</strong> after each snapshot (kernel-level operation)</li>
-<li><strong>I/O queue explosion</strong> on NVMe without fairness scheduler</li>
-<li><strong>User process starvation</strong> - Citrix/gaming/streaming get 0% CPU</li>
-<li><strong>Result:</strong> 2-3 second complete system freeze</li>
-</ol>
-<h3>Why This Doesn&#39;t Happen on Your Friends&#39; Systems</h3>
-<p>If your friends use <strong>CachyOS or Zen kernels</strong> (or HDDs/SSDs), they don&#39;t freeze because:</p>
+<li><a href="#problem-random-system-freezes-during-workgaming"
+id="toc-problem-random-system-freezes-during-workgaming">Problem: Random
+System Freezes During Work/Gaming</a>
 <ul>
-<li><strong>CachyOS/Zen kernels</strong> have optimized I/O schedulers that prevent starvation</li>
-<li><strong>HDDs/SSDs</strong> naturally serialize I/O, spreading operations over time</li>
-<li><strong>Better scheduler fairness</strong> ensures background work doesn&#39;t starve foreground apps</li>
-</ul>
-<hr>
-<h2>Solution Priority: Pick One</h2>
-<h3>🥇 <strong>Solution 1: I/O Throttling &amp; Latency Injection (Recommended - Keeps System Responsive)</strong></h3>
-<p><strong>The real fix:</strong> Slow down snapshot I/O operations so they don&#39;t starve your foreground processes. This is the <strong>only solution that lets you keep using your computer during snapshots</strong>.</p>
-<h4>Why This Works</h4>
-<p>Instead of fighting the I/O scheduler, we <strong>intentionally add latency</strong> to Timeshift operations:</p>
+<li><a href="#root-cause-nvme-io-scheduler-starvation"
+id="toc-root-cause-nvme-io-scheduler-starvation">Root Cause: NVMe I/O
+Scheduler Starvation</a></li>
+<li><a href="#why-this-doesnt-happen-on-your-friends-systems"
+id="toc-why-this-doesnt-happen-on-your-friends-systems">Why This Doesn’t
+Happen on Your Friends’ Systems</a></li>
+</ul></li>
+<li><a href="#solution-priority-pick-one"
+id="toc-solution-priority-pick-one">Solution Priority: Pick One</a>
 <ul>
-<li>Snapshots take slightly longer (usually ~15-30% slower)</li>
-<li>Your system <strong>stays completely responsive</strong> (no freezes)</li>
-<li>Background work doesn&#39;t starve user processes</li>
-<li>Works on <strong>any storage (NVMe, SSD, HDD)</strong></li>
+<li><a
+href="#solution-1-io-throttling-latency-injection-recommended---keeps-system-responsive"
+id="toc-solution-1-io-throttling-latency-injection-recommended---keeps-system-responsive">🥇
+<strong>Solution 1: I/O Throttling &amp; Latency Injection (Recommended
+- Keeps System Responsive)</strong></a></li>
+<li><a href="#solution-2-exclude-heavy-io-folders-reduces-snapshot-work"
+id="toc-solution-2-exclude-heavy-io-folders-reduces-snapshot-work">🥈
+<strong>Solution 2: Exclude Heavy I/O Folders (Reduces snapshot
+work)</strong></a></li>
+</ul></li>
+<li><a href="#verification" id="toc-verification">Verification</a>
+<ul>
+<li><a href="#check-current-exclusions"
+id="toc-check-current-exclusions">Check Current Exclusions</a></li>
+<li><a href="#monitor-snapshot-impact"
+id="toc-monitor-snapshot-impact">Monitor Snapshot Impact</a></li>
+<li><a href="#confirm-freezes-are-gone"
+id="toc-confirm-freezes-are-gone">Confirm Freezes Are Gone</a></li>
+</ul></li>
+<li><a href="#advanced-other-solutions-if-kernel-change-isnt-possible"
+id="toc-advanced-other-solutions-if-kernel-change-isnt-possible">Advanced:
+Other Solutions if Kernel Change Isn’t Possible</a>
+<ul>
+<li><a href="#option-1-disable-btrfs-quotas"
+id="toc-option-1-disable-btrfs-quotas">Option 1: Disable BTRFS
+Quotas</a></li>
+<li><a href="#option-2-reduce-io-scheduler-aggressiveness"
+id="toc-option-2-reduce-io-scheduler-aggressiveness">Option 2: Reduce
+I/O Scheduler Aggressiveness</a></li>
+<li><a href="#option-3-tune-btrfs-metadata-allocation"
+id="toc-option-3-tune-btrfs-metadata-allocation">Option 3: Tune BTRFS
+Metadata Allocation</a></li>
+<li><a href="#option-4-disable-free-space-tree-legacy-v1"
+id="toc-option-4-disable-free-space-tree-legacy-v1">Option 4: Disable
+Free Space Tree (Legacy v1)</a></li>
+</ul></li>
+<li><a href="#troubleshooting"
+id="toc-troubleshooting">Troubleshooting</a>
+<ul>
+<li><a href="#freezes-still-occurring-after-kernel-switch"
+id="toc-freezes-still-occurring-after-kernel-switch">Freezes Still
+Occurring After Kernel Switch?</a></li>
+<li><a href="#freezes-still-occurring-after-folder-exclusions"
+id="toc-freezes-still-occurring-after-folder-exclusions">Freezes Still
+Occurring After Folder Exclusions?</a></li>
+</ul></li>
+<li><a href="#monitoring-snapshot-health"
+id="toc-monitoring-snapshot-health">Monitoring Snapshot Health</a>
+<ul>
+<li><a href="#list-all-snapshots" id="toc-list-all-snapshots">List All
+Snapshots</a></li>
+<li><a href="#check-timeshift-logs" id="toc-check-timeshift-logs">Check
+Timeshift Logs</a></li>
+<li><a href="#manual-snapshot-test" id="toc-manual-snapshot-test">Manual
+Snapshot Test</a></li>
+</ul></li>
+<li><a href="#related-guides" id="toc-related-guides">Related
+Guides</a></li>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
+<li><a href="#why-would-i-do-this" id="toc-why-would-i-do-this">🎯 Why
+Would I Do This?</a></li>
+<li><a href="#related-guides-1" id="toc-related-guides-1">🔗 Related
+Guides</a></li>
+</ul></li>
 </ul>
-<h4>Implementation: <code>ionice</code> + Systemd Tuning for Timeshift</h4>
-<p><strong>Method A: Simple - Throttle with <code>ionice</code></strong></p>
+</nav>
+<!-- 
+    WIKI GUIDE: timeshift-io-optimization.md
+    Solutions for fixing system freezes caused by BTRFS snapshot operations
+    on NVMe SSDs, with detailed tuning guidelines.
+-->
+<h1
+id="timeshift-io-optimization-fixing-snapshot-related-freezes">Timeshift
+I/O Optimization: Fixing Snapshot-Related Freezes 🔧</h1>
+<h2 id="problem-random-system-freezes-during-workgaming">Problem: Random
+System Freezes During Work/Gaming</h2>
+<p>When using <strong>Timeshift with hourly snapshots on a full BTRFS
+disk with NVMe</strong>, you may experience: - <strong>Periodic complete
+system freezes</strong> (every ~1 hour) - <strong>Latency-sensitive apps
+freezing</strong> (Citrix, remote work tools, streaming) -
+<strong>Gaming stutters</strong> during snapshot creation -
+<strong>Audio/video recording glitches</strong></p>
+<h3 id="root-cause-nvme-io-scheduler-starvation">Root Cause: NVMe I/O
+Scheduler Starvation</h3>
+<p>This issue is <strong>specific to NVMe SSDs</strong> on stock Arch
+kernels. Here’s why:</p>
+<ul>
+<li><strong>HDDs/SSDs:</strong> Slow storage naturally throttles I/O,
+preventing starvation</li>
+<li><strong>NVMe:</strong> No built-in throttling, can queue 50,000+
+IOPS instantly</li>
+<li><strong>Result:</strong> BTRFS qgroup rescans after snapshots starve
+user applications of CPU time</li>
+</ul>
+<p>BTRFS’s hourly snapshots trigger aggressive <strong>metadata
+operations</strong> that create I/O latency: 1. <strong>BTRFS qgroup
+rescans</strong> after each snapshot (kernel-level operation) 2.
+<strong>I/O queue explosion</strong> on NVMe without fairness scheduler
+3. <strong>User process starvation</strong> - Citrix/gaming/streaming
+get 0% CPU 4. <strong>Result:</strong> 2-3 second complete system
+freeze</p>
+<h3 id="why-this-doesnt-happen-on-your-friends-systems">Why This Doesn’t
+Happen on Your Friends’ Systems</h3>
+<p>If your friends use <strong>CachyOS or Zen kernels</strong> (or
+HDDs/SSDs), they don’t freeze because: - <strong>CachyOS/Zen
+kernels</strong> have optimized I/O schedulers that prevent starvation -
+<strong>HDDs/SSDs</strong> naturally serialize I/O, spreading operations
+over time - <strong>Better scheduler fairness</strong> ensures
+background work doesn’t starve foreground apps</p>
+<hr />
+<h2 id="solution-priority-pick-one">Solution Priority: Pick One</h2>
+<h3
+id="solution-1-io-throttling-latency-injection-recommended---keeps-system-responsive">🥇
+<strong>Solution 1: I/O Throttling &amp; Latency Injection (Recommended
+- Keeps System Responsive)</strong></h3>
+<p><strong>The real fix:</strong> Slow down snapshot I/O operations so
+they don’t starve your foreground processes. This is the <strong>only
+solution that lets you keep using your computer during
+snapshots</strong>.</p>
+<h4 id="why-this-works">Why This Works</h4>
+<p>Instead of fighting the I/O scheduler, we <strong>intentionally add
+latency</strong> to Timeshift operations: - Snapshots take slightly
+longer (usually ~15-30% slower) - Your system <strong>stays completely
+responsive</strong> (no freezes) - Background work doesn’t starve user
+processes - Works on <strong>any storage (NVMe, SSD, HDD)</strong></p>
+<h4
+id="implementation-ionice-systemd-tuning-for-timeshift">Implementation:
+<code>ionice</code> + Systemd Tuning for Timeshift</h4>
+<p><strong>Method A: Simple - Throttle with
+<code>ionice</code></strong></p>
 <p>Run snapshots with lowest I/O priority:</p>
-<pre><code class="language-bash"># One-time snapshot with throttling
-sudo ionice -c 3 timeshift --create --comments &quot;Throttled snapshot&quot;<h1>Or make it default for all snapshots - add to cron or systemd timer</h1>
-<p></code></pre></p>
-<p><strong>Method B: Permanent - Systemd Service Throttling (Recommended)</strong></p>
-<p>Create an override for Timeshift&#39;s system service:</p>
-<pre><code class="language-bash">sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
-sudo nano /etc/systemd/system/timeshift-launcher.service.d/throttle.conf
-</code></pre>
+<pre class="bash"><code># One-time snapshot with throttling
+sudo ionice -c 3 timeshift --create --comments &quot;Throttled snapshot&quot;
+
+# Or make it default for all snapshots - add to cron or systemd timer</code></pre>
+<p><strong>Method B: Permanent - Systemd Service Throttling
+(Recommended)</strong></p>
+<p>Create an override for Timeshift’s system service:</p>
+<pre class="bash"><code>sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
+sudo nano /etc/systemd/system/timeshift-launcher.service.d/throttle.conf</code></pre>
 <p>Paste this:</p>
-<pre><code class="language-ini">[Service]
+<pre class="ini"><code>[Service]
 # Run Timeshift at lowest I/O priority - keeps system responsive
 CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 IOSchedulingPriority=7
-Nice=10<h1>Optional: Cap CPU usage if snapshots still cause lag</h1>
-<p>CPUQuota=50%<br></code></pre></p>
+Nice=10
+
+# Optional: Cap CPU usage if snapshots still cause lag
+CPUQuota=50%</code></pre>
 <p>Then reload and restart:</p>
-<pre><code class="language-bash">sudo systemctl daemon-reload
-sudo systemctl restart timeshift-launcher
-</code></pre>
-<p><strong>Verify it&#39;s working:</strong></p>
-<pre><code class="language-bash"># Next snapshot, check the priority
+<pre class="bash"><code>sudo systemctl daemon-reload
+sudo systemctl restart timeshift-launcher</code></pre>
+<p><strong>Verify it’s working:</strong></p>
+<pre class="bash"><code># Next snapshot, check the priority
 ps aux | grep timeshift
-# Should show lower I/O priority
-</code></pre>
-<p><strong>Method C: BFQ Scheduler (Most Effective - Kernel-level I/O Fairness)</strong></p>
-<p>Use the <strong>BFQ I/O scheduler</strong> which specifically prioritizes interactive processes:</p>
-<pre><code class="language-bash"># Check if BFQ is available
-cat /sys/block/nvme0n1/queue/scheduler<h1>If you see &quot;[bfq]&quot; it&#39;s enabled, if not:</h1>
-<p>echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler</p>
-<h1>Make persistent across reboots</h1>
-<p>echo &quot;ACTION==&amp;quot;add|change&amp;quot;, KERNEL==&amp;quot;nvme*&amp;quot;, ATTR{queue/scheduler}=&amp;quot;bfq&amp;quot;&quot; | <br>  sudo tee /etc/udev/rules.d/99-bfq-iosched.rules</p>
-<h1>Reload</h1>
-<p>sudo udevadm control --reload-rules<br>sudo udevadm trigger<br></code></pre></p>
+# Should show lower I/O priority</code></pre>
+<p><strong>Method C: BFQ Scheduler (Most Effective - Kernel-level I/O
+Fairness)</strong></p>
+<p>Use the <strong>BFQ I/O scheduler</strong> which specifically
+prioritizes interactive processes:</p>
+<pre class="bash"><code># Check if BFQ is available
+cat /sys/block/nvme0n1/queue/scheduler
+
+# If you see &quot;[bfq]&quot; it&#39;s enabled, if not:
+echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
+
+# Make persistent across reboots
+echo &quot;ACTION==\&quot;add|change\&quot;, KERNEL==\&quot;nvme*\&quot;, ATTR{queue/scheduler}=\&quot;bfq\&quot;&quot; | \
+  sudo tee /etc/udev/rules.d/99-bfq-iosched.rules
+
+# Reload
+sudo udevadm control --reload-rules
+sudo udevadm trigger</code></pre>
 <p>Verify:</p>
-<pre><code class="language-bash">cat /sys/block/nvme0n1/queue/scheduler
-# Should show [bfq] selected
-</code></pre>
+<pre class="bash"><code>cat /sys/block/nvme0n1/queue/scheduler
+# Should show [bfq] selected</code></pre>
 <p><strong>Method D: Combined Approach (Best Results)</strong></p>
 <p>Use <strong>both</strong> BFQ scheduler + Timeshift throttling:</p>
-<pre><code class="language-bash"># 1. Enable BFQ (from Method C above)
-echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler<h1>2. Add Timeshift throttling (from Method B above)</h1>
-<p>sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/<br>cat &lt;&lt; &#39;EOF&#39; | sudo tee /etc/systemd/system/timeshift-launcher.service.d/throttle.conf<br>[Service]<br>CPUSchedulingPolicy=idle<br>IOSchedulingClass=idle<br>IOSchedulingPriority=7<br>Nice=10<br>EOF</p>
-<p>sudo systemctl daemon-reload<br></code></pre></p>
-<h4>Tuning Guide</h4>
+<pre class="bash"><code># 1. Enable BFQ (from Method C above)
+echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
+
+# 2. Add Timeshift throttling (from Method B above)
+sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
+cat &lt;&lt; &#39;EOF&#39; | sudo tee /etc/systemd/system/timeshift-launcher.service.d/throttle.conf
+[Service]
+CPUSchedulingPolicy=idle
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+Nice=10
+EOF
+
+sudo systemctl daemon-reload</code></pre>
+<h4 id="tuning-guide">Tuning Guide</h4>
 <table>
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 14%" />
+<col style="width: 30%" />
+<col style="width: 39%" />
+</colgroup>
 <thead>
 <tr>
 <th>Setting</th>
@@ -97,7 +274,8 @@ echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler<h1>2. Add Timeshift throt
 <th>System Responsiveness</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>ionice -c 3</code></td>
 <td>Lowest I/O priority</td>
 <td>~20-30% slower</td>
@@ -121,40 +299,49 @@ echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler<h1>2. Add Timeshift throt
 <td>~30-50% slower</td>
 <td>✅✅ 100% no freezes</td>
 </tr>
-</tbody></table>
-<p><strong>Start with BFQ + Method B.</strong> If you still get tiny freezes, add <code>CPUQuota=50%</code>.</p>
-<hr>
-<h3>🥈 <strong>Solution 2: Exclude Heavy I/O Folders (Reduces snapshot work)</strong></h3>
-<p>If switching kernels isn&#39;t an option, use folder exclusions to reduce I/O load.</p>
-<h4>What to Exclude (Safe to Skip Backups)</h4>
-<p>These folders rebuild automatically and don&#39;t need snapshot protection:</p>
-<h5>1. <strong>Citrix/Remote Desktop Cache</strong> (Critical for work)</h5>
+</tbody>
+</table>
+<p><strong>Start with BFQ + Method B.</strong> If you still get tiny
+freezes, add <code>CPUQuota=50%</code>.</p>
+<hr />
+<h3 id="solution-2-exclude-heavy-io-folders-reduces-snapshot-work">🥈
+<strong>Solution 2: Exclude Heavy I/O Folders (Reduces snapshot
+work)</strong></h3>
+<p>If switching kernels isn’t an option, use folder exclusions to reduce
+I/O load.</p>
+<h4 id="what-to-exclude-safe-to-skip-backups">What to Exclude (Safe to
+Skip Backups)</h4>
+<p>These folders rebuild automatically and don’t need snapshot
+protection:</p>
+<h5 id="citrixremote-desktop-cache-critical-for-work">1.
+<strong>Citrix/Remote Desktop Cache</strong> (Critical for work)</h5>
 <pre><code>~/.ICAClient
 ~/.cache/citrix*
-~/.local/share/citrix*
-</code></pre>
-<p><strong>Why:</strong> Citrix creates temporary cache files every second. Snapshot operations compete for I/O, causing freezes.</p>
-<h5>2. <strong>General App Caches</strong> (Rebuilt automatically)</h5>
+~/.local/share/citrix*</code></pre>
+<p><strong>Why:</strong> Citrix creates temporary cache files every
+second. Snapshot operations compete for I/O, causing freezes.</p>
+<h5 id="general-app-caches-rebuilt-automatically">2. <strong>General App
+Caches</strong> (Rebuilt automatically)</h5>
 <pre><code>~/.cache                     # All caches
 ~/.cache/discord*            # Discord cache
 ~/.cache/obs*                # OBS streaming cache
 ~/.cache/proton*             # Proton/Wine cache
 ~/.cache/spotify             # Spotify cache
 ~/.cache/wine*               # Wine cache
-~/.cache/heroic*             # Heroic Games Launcher
-</code></pre>
-<p><strong>Why:</strong> These rebuild when apps start. Excluding them saves massive I/O during snapshots.</p>
-<h5>3. <strong>Game Files</strong> (Optional - depends on setup)</h5>
-<pre><code>~/.local/share/Steam/steamapps   # If games on NVME with separate backup
-</code></pre>
-<p><strong>Why:</strong> Game files are large but not critical to backup—Steam/Heroic manage their own versions.</p>
-<h4>Implementation</h4>
+~/.cache/heroic*             # Heroic Games Launcher</code></pre>
+<p><strong>Why:</strong> These rebuild when apps start. Excluding them
+saves massive I/O during snapshots.</p>
+<h5 id="game-files-optional---depends-on-setup">3. <strong>Game
+Files</strong> (Optional - depends on setup)</h5>
+<pre><code>~/.local/share/Steam/steamapps   # If games on NVME with separate backup</code></pre>
+<p><strong>Why:</strong> Game files are large but not critical to
+backup—Steam/Heroic manage their own versions.</p>
+<h4 id="implementation">Implementation</h4>
 <p><strong>Option A: Manual Configuration (Advanced)</strong></p>
 <p>Edit <code>/etc/timeshift/timeshift.json</code>:</p>
-<pre><code class="language-bash">sudo nano /etc/timeshift/timeshift.json
-</code></pre>
-<p>Find the <code>&quot;exclude&quot;</code> array and replace it with:</p>
-<pre><code class="language-json">&quot;exclude&quot;: [
+<pre class="bash"><code>sudo nano /etc/timeshift/timeshift.json</code></pre>
+<p>Find the <code>"exclude"</code> array and replace it with:</p>
+<pre class="json"><code>&quot;exclude&quot;: [
   &quot;/home/astro/.ICAClient&quot;,
   &quot;/home/astro/.cache/citrix*&quot;,
   &quot;/home/astro/.local/share/citrix*&quot;,
@@ -166,125 +353,151 @@ echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler<h1>2. Add Timeshift throt
   &quot;/home/astro/.cache/wine*&quot;,
   &quot;/home/astro/.cache/heroic*&quot;,
   &quot;/home/astro/.local/share/Steam/steamapps&quot;
-]
-</code></pre>
+]</code></pre>
 <p>Then restart Timeshift:</p>
-<pre><code class="language-bash">sudo systemctl restart timeshift
-</code></pre>
+<pre class="bash"><code>sudo systemctl restart timeshift</code></pre>
 <p><strong>Option B: Automated Script</strong></p>
-<pre><code class="language-bash">#!/bin/bash
+<pre class="bash"><code>#!/bin/bash
 sudo python3 &lt;&lt; &#39;PYTHON&#39;
-import json<p>config_path = &#39;/etc/timeshift/timeshift.json&#39;</p>
-<p>with open(config_path, &#39;r&#39;) as f:<br>    config = json.load(f)</p>
-<p>excludes = [<br>    &quot;/home/astro/.ICAClient&quot;,<br>    &quot;/home/astro/.cache/citrix*&quot;,<br>    &quot;/home/astro/.local/share/citrix*&quot;,<br>    &quot;/home/astro/.cache&quot;,<br>    &quot;/home/astro/.cache/discord*&quot;,<br>    &quot;/home/astro/.cache/obs*&quot;,<br>    &quot;/home/astro/.cache/proton*&quot;,<br>    &quot;/home/astro/.cache/spotify&quot;,<br>    &quot;/home/astro/.cache/wine*&quot;,<br>    &quot;/home/astro/.cache/heroic*&quot;,<br>    &quot;/home/astro/.local/share/Steam/steamapps&quot;,<br>]</p>
-<p>config[&#39;exclude&#39;] = excludes</p>
-<p>with open(config_path, &#39;w&#39;) as f:<br>    json.dump(config, f, indent=2)</p>
-<p>print(&quot;✅ Updated timeshift.json exclusions&quot;)<br>PYTHON<br></code></pre></p>
-<p>Save as <code>~/.config/timeshift-optimize.sh</code>, make executable, and run:</p>
-<pre><code class="language-bash">chmod +x ~/.config/timeshift-optimize.sh
-~/.config/timeshift-optimize.sh
-</code></pre>
-<hr>
-<h2>Verification</h2>
-<h3>Check Current Exclusions</h3>
-<pre><code class="language-bash">sudo python3 -c &quot;import json; print(json.dumps(json.load(open(&#39;/etc/timeshift/timeshift.json&#39;))[&#39;exclude&#39;], indent=2))&quot;
-</code></pre>
-<h3>Monitor Snapshot Impact</h3>
+import json
+
+config_path = &#39;/etc/timeshift/timeshift.json&#39;
+
+with open(config_path, &#39;r&#39;) as f:
+    config = json.load(f)
+
+excludes = [
+    &quot;/home/astro/.ICAClient&quot;,
+    &quot;/home/astro/.cache/citrix*&quot;,
+    &quot;/home/astro/.local/share/citrix*&quot;,
+    &quot;/home/astro/.cache&quot;,
+    &quot;/home/astro/.cache/discord*&quot;,
+    &quot;/home/astro/.cache/obs*&quot;,
+    &quot;/home/astro/.cache/proton*&quot;,
+    &quot;/home/astro/.cache/spotify&quot;,
+    &quot;/home/astro/.cache/wine*&quot;,
+    &quot;/home/astro/.cache/heroic*&quot;,
+    &quot;/home/astro/.local/share/Steam/steamapps&quot;,
+]
+
+config[&#39;exclude&#39;] = excludes
+
+with open(config_path, &#39;w&#39;) as f:
+    json.dump(config, f, indent=2)
+
+print(&quot;✅ Updated timeshift.json exclusions&quot;)
+PYTHON</code></pre>
+<p>Save as <code>~/.config/timeshift-optimize.sh</code>, make
+executable, and run:</p>
+<pre class="bash"><code>chmod +x ~/.config/timeshift-optimize.sh
+~/.config/timeshift-optimize.sh</code></pre>
+<hr />
+<h2 id="verification">Verification</h2>
+<h3 id="check-current-exclusions">Check Current Exclusions</h3>
+<pre class="bash"><code>sudo python3 -c &quot;import json; print(json.dumps(json.load(open(&#39;/etc/timeshift/timeshift.json&#39;))[&#39;exclude&#39;], indent=2))&quot;</code></pre>
+<h3 id="monitor-snapshot-impact">Monitor Snapshot Impact</h3>
 <p>During the next hourly snapshot, monitor for freezes:</p>
-<pre><code class="language-bash"># Terminal 1: Watch for BTRFS qgroup scans
-journalctl --grep=&quot;qgroup&quot; --follow<h1>Terminal 2: Run a test (Citrix, game, or streaming)</h1>
-<h1>Verify no freezes occur</h1>
-<p></code></pre></p>
-<h3>Confirm Freezes Are Gone</h3>
-<ol>
+<pre class="bash"><code># Terminal 1: Watch for BTRFS qgroup scans
+journalctl --grep=&quot;qgroup&quot; --follow
+
+# Terminal 2: Run a test (Citrix, game, or streaming)
+# Verify no freezes occur</code></pre>
+<h3 id="confirm-freezes-are-gone">Confirm Freezes Are Gone</h3>
+<ol type="1">
 <li>✅ <strong>Citrix/Remote Work</strong> - No more hourly freezes</li>
 <li>✅ <strong>Gaming</strong> - No stutters during snapshot times</li>
-<li>✅ <strong>Streaming/Recording</strong> - Smooth audio/video without drops</li>
+<li>✅ <strong>Streaming/Recording</strong> - Smooth audio/video without
+drops</li>
 </ol>
-<hr>
-<h2>Advanced: Other Solutions if Kernel Change Isn&#39;t Possible</h2>
-<p>If you can&#39;t or won&#39;t switch kernels, here are alternatives (in order of effectiveness):</p>
-<h3>Option 1: Disable BTRFS Quotas</h3>
-<p><strong>Impact:</strong> Complete freeze elimination, but no snapshot size estimates in GUI</p>
-<pre><code class="language-bash">btrfs quota disable /
-</code></pre>
-<h3>Option 2: Reduce I/O Scheduler Aggressiveness</h3>
+<hr />
+<h2
+id="advanced-other-solutions-if-kernel-change-isnt-possible">Advanced:
+Other Solutions if Kernel Change Isn’t Possible</h2>
+<p>If you can’t or won’t switch kernels, here are alternatives (in order
+of effectiveness):</p>
+<h3 id="option-1-disable-btrfs-quotas">Option 1: Disable BTRFS
+Quotas</h3>
+<p><strong>Impact:</strong> Complete freeze elimination, but no snapshot
+size estimates in GUI</p>
+<pre class="bash"><code>btrfs quota disable /</code></pre>
+<h3 id="option-2-reduce-io-scheduler-aggressiveness">Option 2: Reduce
+I/O Scheduler Aggressiveness</h3>
 <p>Switch to <code>kyber</code> scheduler for fairness:</p>
-<pre><code class="language-bash">echo kyber | sudo tee /sys/block/nvme0n1/queue/scheduler
-</code></pre>
-<h3>Option 3: Tune BTRFS Metadata Allocation</h3>
+<pre class="bash"><code>echo kyber | sudo tee /sys/block/nvme0n1/queue/scheduler</code></pre>
+<h3 id="option-3-tune-btrfs-metadata-allocation">Option 3: Tune BTRFS
+Metadata Allocation</h3>
 <p>Reduce metadata chunk allocations:</p>
-<pre><code class="language-bash">sudo btrfs filesystem tune -m 5 /
-</code></pre>
-<h3>Option 4: Disable Free Space Tree (Legacy v1)</h3>
+<pre class="bash"><code>sudo btrfs filesystem tune -m 5 /</code></pre>
+<h3 id="option-4-disable-free-space-tree-legacy-v1">Option 4: Disable
+Free Space Tree (Legacy v1)</h3>
 <p>Reduces metadata overhead (one-time operation):</p>
-<pre><code class="language-bash">sudo btrfs filesystem feature disable quotagroup /
-</code></pre>
-<hr>
-<h2>Troubleshooting</h2>
-<h3>Freezes Still Occurring After Kernel Switch?</h3>
-<ol>
+<pre class="bash"><code>sudo btrfs filesystem feature disable quotagroup /</code></pre>
+<hr />
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="freezes-still-occurring-after-kernel-switch">Freezes Still
+Occurring After Kernel Switch?</h3>
+<ol type="1">
 <li><p><strong>Verify the new kernel is running:</strong></p>
-<pre><code class="language-bash">uname -r
-</code></pre>
-<p>Should show <code>cachyos</code> or <code>zen</code></p>
-</li>
-<li><p><strong>Allow 2-3 hourly snapshot cycles</strong> - performance may improve gradually</p>
-</li>
-<li><p><strong>Try the next kernel option</strong> (if using zen, try cachyos)</p>
-</li>
-<li><p><strong>Fall back to folder exclusions</strong> (see Solution 2)</p>
-</li>
+<pre class="bash"><code>uname -r</code></pre>
+<p>Should show <code>cachyos</code> or <code>zen</code></p></li>
+<li><p><strong>Allow 2-3 hourly snapshot cycles</strong> - performance
+may improve gradually</p></li>
+<li><p><strong>Try the next kernel option</strong> (if using zen, try
+cachyos)</p></li>
+<li><p><strong>Fall back to folder exclusions</strong> (see Solution
+2)</p></li>
 </ol>
-<h3>Freezes Still Occurring After Folder Exclusions?</h3>
-<ol>
+<h3 id="freezes-still-occurring-after-folder-exclusions">Freezes Still
+Occurring After Folder Exclusions?</h3>
+<ol type="1">
 <li><p><strong>Check if exclusions were applied:</strong></p>
-<pre><code class="language-bash">sudo cat /etc/timeshift/timeshift.json | grep -A 20 &#39;&quot;exclude&quot;&#39;
-</code></pre>
-</li>
+<pre class="bash"><code>sudo cat /etc/timeshift/timeshift.json | grep -A 20 &#39;&quot;exclude&quot;&#39;</code></pre></li>
 <li><p><strong>Look for other heavy I/O sources:</strong></p>
-<pre><code class="language-bash">iotop -o -b -n 1
-</code></pre>
-</li>
+<pre class="bash"><code>iotop -o -b -n 1</code></pre></li>
 <li><p><strong>Consider additional exclusions:</strong></p>
 <ul>
 <li><code>~/.local/share/applications/</code></li>
 <li><code>~/.config/google-chrome/Default/Cache*</code></li>
 <li>Custom work directories with temp files</li>
-</ul>
-</li>
-<li><p><strong>Try kernel switch</strong> (most effective solution)</p>
-</li>
+</ul></li>
+<li><p><strong>Try kernel switch</strong> (most effective
+solution)</p></li>
 </ol>
-<hr>
-<h2>Monitoring Snapshot Health</h2>
-<h3>List All Snapshots</h3>
-<pre><code class="language-bash">sudo timeshift --list
-</code></pre>
-<h3>Check Timeshift Logs</h3>
-<pre><code class="language-bash">sudo journalctl -u timeshift-launcher -n 50 -f
-</code></pre>
-<h3>Manual Snapshot Test</h3>
-<pre><code class="language-bash">sudo timeshift --create --comments &quot;Test snapshot&quot;
-</code></pre>
-<hr>
-<h2>Related Guides</h2>
+<hr />
+<h2 id="monitoring-snapshot-health">Monitoring Snapshot Health</h2>
+<h3 id="list-all-snapshots">List All Snapshots</h3>
+<pre class="bash"><code>sudo timeshift --list</code></pre>
+<h3 id="check-timeshift-logs">Check Timeshift Logs</h3>
+<pre class="bash"><code>sudo journalctl -u timeshift-launcher -n 50 -f</code></pre>
+<h3 id="manual-snapshot-test">Manual Snapshot Test</h3>
+<pre class="bash"><code>sudo timeshift --create --comments &quot;Test snapshot&quot;</code></pre>
+<hr />
+<h2 id="related-guides">Related Guides</h2>
 <ul>
-<li>📖 <strong><a href="snapshots.md">Snapshots &amp; Backups</a></strong> - General snapshot concepts</li>
-<li>📖 <strong><a href="arch.md">Arch Linux Setup</a></strong> - BTRFS layout and Timeshift config</li>
-<li>📖 <strong><a href="system_maintenance.md">System Maintenance</a></strong> - Backup strategies</li>
-<li>📖 <strong><a href="fedora.md">Fedora Setup</a></strong> - Timeshift on Fedora/Silverblue</li>
+<li>📖 <strong><a href="snapshots.md">Snapshots &amp;
+Backups</a></strong> - General snapshot concepts</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Setup</a></strong> - BTRFS
+layout and Timeshift config</li>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Backup strategies</li>
+<li>📖 <strong><a href="fedora.md">Fedora Setup</a></strong> - Timeshift
+on Fedora/Silverblue</li>
 </ul>
-<hr>
-<h2>Summary</h2>
+<hr />
+<h2 id="summary">Summary</h2>
 <table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
 <thead>
 <tr>
 <th>Issue</th>
 <th>Solution</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>System freezes during snapshots while working</strong></td>
 <td>🥇 <strong>I/O Throttling (Method B or C above)</strong></td>
 </tr>
@@ -306,14 +519,51 @@ journalctl --grep=&quot;qgroup&quot; --follow<h1>Terminal 2: Run a test (Citrix,
 </tr>
 <tr>
 <td><strong>Want guaranteed no freezes</strong></td>
-<td>BFQ + <code>ionice -c 3</code> + <code>CPUQuota=50%</code> (all combined)</td>
+<td>BFQ + <code>ionice -c 3</code> + <code>CPUQuota=50%</code> (all
+combined)</td>
 </tr>
-</tbody></table>
-<p><strong>Key Takeaway:</strong> The <strong>only real solution is I/O throttling</strong> - you can&#39;t eliminate snapshot work, but you can prevent it from starving your foreground processes. Use:</p>
-<ol>
-<li><strong>BFQ scheduler</strong> for kernel-level fairness</li>
-<li><strong>Systemd throttling</strong> to run Timeshift at low priority</li>
-<li><strong><code>ionice</code></strong> for additional control when needed</li>
-</ol>
-<p>This works on <strong>any filesystem, any storage type, any kernel</strong> - it&#39;s the proper fix for background tasks that shouldn&#39;t freeze interactive use.</p>
-
+</tbody>
+</table>
+<p><strong>Key Takeaway:</strong> The <strong>only real solution is I/O
+throttling</strong> - you can’t eliminate snapshot work, but you can
+prevent it from starving your foreground processes. Use: 1. <strong>BFQ
+scheduler</strong> for kernel-level fairness 2. <strong>Systemd
+throttling</strong> to run Timeshift at low priority 3.
+<strong><code>ionice</code></strong> for additional control when
+needed</p>
+<p>This works on <strong>any filesystem, any storage type, any
+kernel</strong> - it’s the proper fix for background tasks that
+shouldn’t freeze interactive use.</p>
+<hr />
+<h2 id="why-would-i-do-this">🎯 Why Would I Do This?</h2>
+<ul>
+<li><strong>Keep gaming smooth</strong> - No stutters during
+backups</li>
+<li><strong>Work without interruption</strong> - Citrix/remote work
+doesn’t freeze</li>
+<li><strong>Record cleanly</strong> - No audio/video drops during
+snapshots</li>
+<li><strong>System stays responsive</strong> - Keep using your computer
+normally</li>
+<li><strong>Faster snapshots</strong> - BFQ and throttling can actually
+speed things up</li>
+</ul>
+<hr />
+<h2 id="related-guides-1">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="snapshots.md">Snapshots &amp;
+Backups</a></strong> - General snapshot concepts</li>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Backup strategies<br />
+</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - BTRFS
+layout and kernel options</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> -
+Fedora-specific snapshot tools</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

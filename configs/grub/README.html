@@ -1,32 +1,112 @@
-<h1>GRUB Configuration &amp; Theme Backup</h1>
-<p>This directory contains backups for your GRUB bootloader settings managed via <code>grub-customizer</code> and the active visual theme.</p>
-<h2>Files Included</h2>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Home</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../../website/index.html">Home</a>
+      <a href="../../website/history.html">History</a>
+      <a href="README.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">Home</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><code>default_grub</code>: A backup of <code>/etc/default/grub</code>.</li>
-<li><code>grub-customizer.cfg</code>: The specific configuration generated/used by <code>grub-customizer</code> in <code>/etc/grub-customizer/</code>.</li>
-<li><code>themes/terminator-/</code>: The visual theme files located in <code>/boot/grub/themes/</code>.</li>
+<li><a href="#grub-configuration-theme-backup"
+id="toc-grub-configuration-theme-backup">GRUB Configuration &amp; Theme
+Backup</a>
+<ul>
+<li><a href="#files-included" id="toc-files-included">Files
+Included</a></li>
+<li><a href="#how-to-restore" id="toc-how-to-restore">How to Restore</a>
+<ul>
+<li><a href="#restore-the-theme" id="toc-restore-the-theme">1. Restore
+the Theme</a></li>
+<li><a href="#restore-grub-settings" id="toc-restore-grub-settings">2.
+Restore GRUB Settings</a></li>
+<li><a href="#restore-grub-customizer-settings"
+id="toc-restore-grub-customizer-settings">3. Restore Grub Customizer
+Settings</a></li>
+<li><a href="#update-grub" id="toc-update-grub">4. Update GRUB</a></li>
+</ul></li>
+</ul></li>
 </ul>
-<h2>How to Restore</h2>
-<h3>1. Restore the Theme</h3>
+</nav>
+<h1 id="grub-configuration-theme-backup">GRUB Configuration &amp; Theme
+Backup</h1>
+<p>This directory contains backups for your GRUB bootloader settings
+managed via <code>grub-customizer</code> and the active visual
+theme.</p>
+<h2 id="files-included">Files Included</h2>
+<ul>
+<li><code>default_grub</code>: A backup of
+<code>/etc/default/grub</code>.</li>
+<li><code>grub-customizer.cfg</code>: The specific configuration
+generated/used by <code>grub-customizer</code> in
+<code>/etc/grub-customizer/</code>.</li>
+<li><code>themes/terminator-/</code>: The visual theme files located in
+<code>/boot/grub/themes/</code>.</li>
+</ul>
+<h2 id="how-to-restore">How to Restore</h2>
+<h3 id="restore-the-theme">1. Restore the Theme</h3>
 <p>Copy the theme folder back to the system GRUB themes directory:</p>
-<pre><code class="language-bash">sudo mkdir -p /boot/grub/themes
-sudo cp -r configs/grub/themes/terminator- /boot/grub/themes/
-</code></pre>
-<h3>2. Restore GRUB Settings</h3>
-<p>You can manually update <code>/etc/default/grub</code> using the backed-up <code>default_grub</code> as a reference, or copy it directly (caution: check for UUID changes if on a new disk):</p>
-<pre><code class="language-bash">sudo cp configs/grub/default_grub /etc/default/grub
-</code></pre>
-<h3>3. Restore Grub Customizer Settings</h3>
+<pre class="bash"><code>sudo mkdir -p /boot/grub/themes
+sudo cp -r configs/grub/themes/terminator- /boot/grub/themes/</code></pre>
+<h3 id="restore-grub-settings">2. Restore GRUB Settings</h3>
+<p>You can manually update <code>/etc/default/grub</code> using the
+backed-up <code>default_grub</code> as a reference, or copy it directly
+(caution: check for UUID changes if on a new disk):</p>
+<pre class="bash"><code>sudo cp configs/grub/default_grub /etc/default/grub</code></pre>
+<h3 id="restore-grub-customizer-settings">3. Restore Grub Customizer
+Settings</h3>
 <p>If you have <code>grub-customizer</code> installed:</p>
-<pre><code class="language-bash">sudo mkdir -p /etc/grub-customizer
-sudo cp configs/grub/grub-customizer.cfg /etc/grub-customizer/grub.cfg
-</code></pre>
-<h3>4. Update GRUB</h3>
-<p>After restoring the files, regenerate the GRUB configuration to apply changes:</p>
+<pre class="bash"><code>sudo mkdir -p /etc/grub-customizer
+sudo cp configs/grub/grub-customizer.cfg /etc/grub-customizer/grub.cfg</code></pre>
+<h3 id="update-grub">4. Update GRUB</h3>
+<p>After restoring the files, regenerate the GRUB configuration to apply
+changes:</p>
 <p><strong>On Arch Linux:</strong></p>
-<pre><code class="language-bash">sudo grub-mkconfig -o /boot/grub/grub.cfg
-</code></pre>
+<pre class="bash"><code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code></pre>
 <p><strong>On Fedora:</strong></p>
-<pre><code class="language-bash">sudo grub2-mkconfig -o /boot/grub2/grub.cfg
-</code></pre>
-
+<pre class="bash"><code>sudo grub2-mkconfig -o /boot/grub2/grub.cfg</code></pre>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../../website/script.js"></script>
+</body>
+</html>

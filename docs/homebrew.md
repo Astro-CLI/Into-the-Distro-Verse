@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: homebrew.md
+    Guide to Homebrew package management on Linux - user-space package manager.
+    Covers installation, basic usage, and comparison with system package managers.
+-->
+
 # Homebrew: The Linux "Brew"
 
 Homebrew (originally for macOS) is a popular package manager for Linux that installs software into its own prefix (usually `/home/linuxbrew/.linuxbrew`). It's a great way to get the latest CLI tools without needing `sudo` or messing with your system's native package manager (Pacman/DNF).

@@ -1,44 +1,62 @@
-# File & Project Synchronization Guide
+<!-- 
+    WIKI GUIDE: file-sync-guide.md
+    Comprehensive guide to syncing files, projects, and code across multiple machines.
+    Covers Git, Syncthing, rsync, rclone, and other synchronization strategies.
+-->
 
-A comprehensive guide to syncing files, projects, and repositories across multiple machines using Git, Syncthing, rsync, rclone, and other tools. Includes best practices and tool comparisons.
+# Syncing Files & Projects Across Your Machines
+
+Need your files on multiple computers? Whether it's code, documents, or media, this guide covers the right tool for every situation. We'll start with simple approaches and work up to complex multi-machine workflows.
 
 ---
 
-## 📊 Tool Comparison
+## 🤔 Why Would I Need This?
+
+- **Work on multiple devices** - Code on laptop, test on desktop
+- **Backup automatically** - Never lose important files again
+- **Keep teams in sync** - Collaborate with others seamlessly
+- **Access from anywhere** - Your files follow you
+- **Version control** - Track changes and revert if needed
+
+---
+
+## 📊 1. Tool Comparison: Picking the Right One
 
 | Tool | Purpose | Best For | Real-time | Versioning | Setup |
 |------|---------|----------|-----------|------------|-------|
-| **Git** | Version control | Code, docs, text | ❌ No | ✅ Full history | Medium |
-| **Syncthing** | P2P sync | Any files | ✅ Yes | ⚠️ Limited | Easy |
-| **rsync** | File sync | Backups, one-way | ❌ No | ❌ No | Simple |
-| **rclone** | Cloud sync | Cloud storage | ❌ No | ❌ No | Medium |
-| **Restic** | Backup | Archival | ❌ No | ✅ Dedup | Medium |
-| **Nextcloud** | Cloud + sync | Team files | ✅ Yes | ✅ Versioning | Complex |
+| **Git** | Version control | Code, docs | No | Full history | Medium |
+| **Syncthing** | P2P sync | Any files | Yes | Limited | Easy |
+| **rsync** | File sync | Backups | No | No | Simple |
+| **rclone** | Cloud sync | Cloud storage | No | No | Medium |
+| **Restic** | Encrypted backup | Archival | No | Yes | Medium |
+| **Nextcloud** | Team collaboration | Shared files | Yes | Yes | Complex |
 
 ---
 
-## 🌐 Git: Version Control & Collaboration
+## 💻 2. Git: For Code & Documents
+
+Use Git when you need version control—tracking every change and who made it.
 
 ### When to Use Git
-- **Source code** (primary use case)
-- **Documentation** and markdown files
-- **Configuration files**
-- **Any text-based project** that benefits from history
-- **Team collaboration** with branching workflows
-- **Distributed backup** (every clone is a backup)
 
-### Local Setup
+- Source code (primary use case)
+- Documentation and markdown files
+- Configuration files
+- Any text project with history
+- Team collaboration with branching
+
+### Quick Setup
 
 ```bash
 # Initialize a repository
 git init my-project
 cd my-project
 
-# Configure user
+# Configure your identity
 git config user.name "Your Name"
 git config user.email "you@example.com"
 
-# Or globally
+# Or globally (all projects)
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
@@ -60,18 +78,17 @@ git log --oneline
 
 # Create a branch
 git branch feature-x
-git checkout feature-x
-# or: git switch feature-x
+git switch feature-x
 
 # Merge back to main
-git checkout main
+git switch main
 git merge feature-x
 ```
 
-### Remote Repositories
+### Sync Across Machines
 
 ```bash
-# Add remote (GitHub, GitLab, Gitea, etc.)
+# Add remote (GitHub, GitLab, etc.)
 git remote add origin https://github.com/user/repo.git
 
 # Push to remote
@@ -80,77 +97,40 @@ git push -u origin main
 # Pull latest changes
 git pull origin main
 
-# Fetch without merging
-git fetch origin
-```
-
-### Multi-Machine Setup
-
-**Clone on other machines:**
-```bash
+# On another machine - clone it
 git clone https://github.com/user/repo.git
-cd repo
-```
-
-**Keep in sync:**
-```bash
-# Before work: pull latest
-git pull origin main
-
-# After work: push changes
-git push origin main
 ```
 
 ### SSH Keys (Passwordless Access)
 
 ```bash
-# Generate key
+# Generate key (one time)
 ssh-keygen -t ed25519 -C "your@email.com"
 
 # Add to SSH agent
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
-# Add public key to GitHub/GitLab
+# Copy public key to GitHub/GitLab
 cat ~/.ssh/id_ed25519.pub
-# Paste in Settings > SSH Keys
 
-# Test connection
+# Test it works
 ssh -T git@github.com
-```
-
-### .gitignore Best Practices
-
-```bash
-# Common patterns to ignore
-echo "
-.DS_Store
-*.log
-*.tmp
-node_modules/
-dist/
-build/
-*.swp
-.vscode/
-.env
-secrets/
-" > .gitignore
-
-git add .gitignore
-git commit -m "Add gitignore"
 ```
 
 ---
 
-## 🔄 Syncthing: Real-Time File Sync
+## 📁 3. Syncthing: Real-Time File Sync
+
+Use Syncthing when you want files to stay in sync automatically across your devices, without a central server.
 
 ### When to Use Syncthing
-- **Bidirectional sync** across personal machines
-- **Real-time updates** (watch for file changes)
-- **Decentralized** (no cloud server needed)
-- **Large binary files** (media, backups)
-- **Privacy-focused** (peer-to-peer, encrypted)
-- **Not suitable** for collaboration (no conflict resolution)
+
+- Bidirectional sync across personal machines
+- Real-time updates (watch for changes)
+- Decentralized (no cloud server needed)
+- Large binary files (media, databases)
+- Privacy-focused peer-to-peer
 
 ### Installation
 
@@ -168,10 +148,7 @@ sudo dnf install syncthing
 ### Start & Enable
 
 ```bash
-# Start manually
-syncthing
-
-# Or as systemd service (user)
+# As a user service
 systemctl --user enable --now syncthing.service
 
 # Check status
@@ -181,79 +158,36 @@ systemctl --user status syncthing.service
 journalctl --user -u syncthing.service -f
 ```
 
-### Web UI Configuration
+### Setup
 
 1. Open browser → `http://localhost:8384`
-2. Add folder to sync (local path)
-3. Get Device ID from Settings > Show ID
-4. Share folder with other devices by their Device ID
+2. Add a folder to sync (choose a local path)
+3. Go to Settings > Show ID to get your Device ID
+4. Share the folder with other devices using their Device IDs
 5. On other device: Accept the share
 
-### Common Folders to Sync
+### What Folders to Sync
 
 ```bash
-# Personal documents
-~/Documents
-
-# Configuration backups
-~/.config
-
-# Projects (faster than Git for huge files)
-~/Projects
-
-# Shared media
-~/Media
-```
-
-### Conflict Resolution
-
-When both machines edit the same file:
-```bash
-# Syncthing keeps both versions
-file.txt
-file.txt.sync-conflict-20240423-123456
-
-# Manually choose which one to keep
-# Or merge them, then delete the conflict file
-```
-
-### Advanced: Sync Filters
-
-Exclude large/temporary files in folder settings:
-```
-(?d)\.git
-(?d)node_modules
-(?d)\.venv
-*.tmp
-*.log
-*.swp
-```
-
-### Performance: Ignore Patterns
-
-For large projects, tell Syncthing to skip:
-```
-# In folder Advanced settings > Ignore Patterns
-(?d).git
-(?d).__pycache__
-(?d)node_modules
-(?d)venv
-*.o
-*.pyc
-.DS_Store
+~/Documents          # Personal documents
+~/.config            # Configuration backups
+~/Projects           # Large project files
+~/Media              # Photos and videos
 ```
 
 ---
 
-## 📦 rsync: One-Way File Sync
+## 🔄 4. rsync: One-Way Backups
+
+Use rsync for scheduled backups to external drives or servers.
 
 ### When to Use rsync
-- **Backup to external drive** or remote server
-- **One-way sync** (source → destination)
-- **Incremental updates** (only changed files)
-- **Scheduled backups** (cron jobs)
-- **Bandwidth-efficient** (delta sync)
-- **Not suitable** for real-time or bidirectional
+
+- Backup to external drive
+- One-way sync (source → destination)
+- Incremental updates only
+- Scheduled backups via cron
+- Efficient (only changed files)
 
 ### Basic Usage
 
@@ -261,31 +195,31 @@ For large projects, tell Syncthing to skip:
 # Backup local folder to external drive
 rsync -av ~/Documents /media/backup/
 
-# Backup to remote server
+# To remote server
 rsync -av ~/Documents user@remote.host:/backups/
 
-# With compression (over slow networks)
+# With compression (slow networks)
 rsync -avz ~/Documents user@remote.host:/backups/
 
-# Dry-run (see what would be synced)
+# Dry-run (see what would sync)
 rsync -av --dry-run ~/Documents /media/backup/
 ```
 
 ### Useful Flags
 
 ```bash
--a      # Archive mode (preserves permissions, timestamps)
+-a      # Archive mode (preserves permissions)
 -v      # Verbose
 -z      # Compress during transfer
---delete # Remove files from dest if deleted in source
+--delete # Remove from dest if deleted in source
 --exclude '*.log' # Skip matching files
---progress # Show transfer progress
+--progress # Show progress
 ```
 
 ### Automated Backup with Cron
 
 ```bash
-# Edit crontab
+# Edit your crontab
 crontab -e
 
 # Daily backup at 2 AM
@@ -295,26 +229,18 @@ crontab -e
 0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/
 ```
 
-### Remote Backup Over SSH
-
-```bash
-# Ensure SSH key auth is set up first
-ssh-copy-id user@remote.host
-
-# Then use rsync over SSH
-rsync -avz -e ssh ~/Documents user@remote.host:/backups/
-```
-
 ---
 
-## ☁️ rclone: Cloud Storage Sync
+## ☁️ 5. rclone: Cloud Storage Sync
+
+Use rclone to sync with cloud providers like Google Drive, Dropbox, or AWS S3.
 
 ### When to Use rclone
-- **Sync with cloud providers** (Google Drive, AWS S3, Dropbox, etc.)
-- **Backup to cloud** with encryption
-- **Move files between clouds**
-- **Bandwidth control** (useful for slow connections)
-- **Not suitable** for real-time sync
+
+- Sync with cloud providers
+- Backup to cloud with encryption
+- Move files between clouds
+- Bandwidth control for slow connections
 
 ### Installation
 
@@ -329,51 +255,48 @@ sudo apt install rclone
 curl https://rclone.org/install.sh | sudo bash
 ```
 
-### Configure Cloud Storage
+### Setup
 
 ```bash
-# Interactive setup
+# Interactive configuration
 rclone config
 
-# Follow prompts to authenticate with cloud provider
-# (Google Drive, Dropbox, AWS S3, etc.)
-
+# Follow prompts to authenticate with Google Drive, Dropbox, etc.
 # List configured remotes
 rclone listremotes
 ```
 
-### Common Operations
+### Common Commands
 
 ```bash
 # List files on cloud
 rclone ls mycloud:
 
-# Upload local folder to cloud
+# Upload to cloud
 rclone copy ~/Documents mycloud:/backups/
 
 # Download from cloud
 rclone copy mycloud:/backups/ ~/Documents/
 
-# Bidirectional sync (careful!)
+# Sync both ways (be careful!)
 rclone bisync ~/Documents mycloud:/backups/
 
-# With encryption (crypt)
-rclone copy ~/Documents myencrypted:/ --crypt-key mysecretkey
-
-# Bandwidth limit (e.g., 1MB/s)
+# With bandwidth limit (e.g., 1MB/s)
 rclone copy --bwlimit 1M ~/Documents mycloud:/backups/
 ```
 
 ---
 
-## 🔐 Restic: Encrypted Backup
+## 🔐 6. Restic: Encrypted Backups
+
+Use Restic for encrypted, versioned backups with deduplication.
 
 ### When to Use Restic
-- **Encrypted backups** (local or cloud)
-- **Deduplication** (efficient storage)
-- **Point-in-time recovery** (restore any previous state)
-- **Versioning** with automatic pruning
-- **Cross-platform** (Linux, macOS, Windows)
+
+- Encrypted backups (local or cloud)
+- Deduplication (efficient storage)
+- Point-in-time recovery
+- Automatic pruning
 
 ### Installation
 
@@ -398,16 +321,16 @@ restic init -r /mnt/backup
 restic -r /mnt/backup backup ~/Documents
 
 # Restore files
-restic -r /mnt/backup restore latest --target ~/restore-location
+restic -r /mnt/backup restore latest --target ~/restore/
 
 # View backup history
 restic -r /mnt/backup snapshots
 ```
 
-### Cloud Backup (S3 example)
+### Cloud Backup (S3)
 
 ```bash
-# Set environment variables
+# Set credentials
 export AWS_ACCESS_KEY_ID="your-key"
 export AWS_SECRET_ACCESS_KEY="your-secret"
 
@@ -418,155 +341,68 @@ restic init -r s3:s3.amazonaws.com/bucket-name
 restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents
 ```
 
-### Scheduled Backups
-
-```bash
-# Create backup script
-cat > ~/backup.sh << 'EOF'
-#!/bin/bash
-export RESTIC_REPOSITORY=/mnt/backup
-export RESTIC_PASSWORD="your-secure-password"
-restic backup ~/Documents ~/Projects
-restic forget --keep-daily 7 --keep-monthly 12
-EOF
-
-chmod +x ~/backup.sh
-
-# Add to crontab
-crontab -e
-# 0 3 * * * ~/backup.sh >> ~/backup.log 2>&1
-```
-
 ---
 
-## 🌐 Nextcloud: Team Collaboration + Sync
-
-### When to Use Nextcloud
-- **Team file sharing** with permissions
-- **Real-time collaboration** (files + calendar + contacts)
-- **Self-hosted control** (optional)
-- **Desktop + mobile sync**
-- **Versioning and sharing**
-- **Complex setup** but powerful
-
-### Installation (Self-Hosted)
-
-```bash
-# Docker (easiest)
-docker run -d \
-  -p 8080:80 \
-  -v nextcloud-data:/var/www/html \
-  --name nextcloud \
-  nextcloud
-
-# Then access http://localhost:8080
-```
-
-### Desktop Sync
-
-```bash
-# Install Nextcloud Desktop Client
-sudo pacman -S nextcloud-client
-
-# Open app and configure server
-# Choose local folder to sync
-```
-
----
-
-## 🎯 Recommended Setups by Use Case
+## 📋 7. Choosing the Right Setup
 
 ### Single Machine: Local Backups
+
 ```
 rsync (daily) → External SSD
 + Restic (weekly) → Cloud
 ```
 
 ### Personal Multi-Machine
+
 ```
 Git (code/docs) → GitHub
 + Syncthing (large files) → P2P between machines
 ```
 
 ### Team Collaboration
+
 ```
 Git (code) → GitHub/GitLab
 + Nextcloud (shared files) → Server
 + rclone (archives) → Cloud backup
 ```
 
-### Backup Strategy (3-2-1 Rule)
+### 3-2-1 Backup Rule
+
 ```
-3 copies:
-  - Original (local SSD)
-  - Backup 1 (rsync → external drive)
-  - Backup 2 (Restic → cloud)
-
-2 different media types:
-  - SSD (fast access)
-  - HDD or cloud (archival)
-
-1 offsite:
-  - Cloud backup (disaster recovery)
+3 copies of important data
+2 different media types (SSD + HDD)
+1 offsite (cloud)
 ```
 
 ---
 
-## ⚡ Quick Start: Popular Combinations
+## 🔒 Security Best Practices
 
-### Git + Syncthing (Developers)
-```bash
-# Code in Git
-git clone https://github.com/user/project.git
-
-# Large files / media in Syncthing
-# Configure Syncthing to sync ~/Projects
-# Add folder on secondary machine
-```
-
-### rsync + Cron (System Admins)
-```bash
-# Daily incremental backup
-0 2 * * * rsync -av ~/important /backup/
-
-# Monthly cloud backup
-0 3 1 * * rsync -av /backup user@cloud:/archives/
-```
-
-### Restic + S3 (Security-Conscious)
-```bash
-# Encrypted cloud backups
-restic init -r s3:bucket
-restic backup ~/sensitive-data
-# Automatic pruning keeps space efficient
-```
-
----
-
-## 🛡️ Security Best Practices
-
-1. **Use SSH keys** for Git and remote rsync
+1. **Use SSH keys** for Git and rsync
 2. **Enable 2FA** on GitHub/GitLab
-3. **Encrypt sensitive backups** with Restic
+3. **Encrypt cloud backups** with Restic
 4. **Syncthing:** Verify Device IDs before connecting
-5. **rclone:** Use `--crypt` for sensitive cloud data
+5. **rclone:** Use `--crypt` for sensitive data
 6. **.gitignore:** Never commit secrets, passwords, API keys
 7. **Permissions:** Restrict backup folders (`chmod 700`)
 
 ---
 
-## 📋 Troubleshooting
+## 🆘 Troubleshooting
 
 ### Git: "Permission denied" on push
+
 ```bash
-# Verify SSH key is set up
+# Test SSH key
 ssh -T git@github.com
 
-# Or use HTTPS with personal access token
+# Or use HTTPS with personal token
 git remote set-url origin https://github.com/user/repo.git
 ```
 
 ### Syncthing: Folder not syncing
+
 ```bash
 # Check logs
 journalctl --user -u syncthing.service -n 50
@@ -576,30 +412,29 @@ sudo ufw allow syncthing
 ```
 
 ### rsync: Files not updating
+
 ```bash
-# Use dry-run to debug
+# Dry-run to debug
 rsync -av --dry-run ~/source /dest
 
 # Check destination permissions
 ls -la /dest
 ```
 
-### rclone: Connection timeout
-```bash
-# Increase timeout
-rclone --timeout 30s copy ~/Documents mycloud:/
+---
 
-# Check authentication
-rclone config
-```
+## 🎯 Why Would I Use This?
+
+- **Never lose work again** - Automatic backups across devices
+- **Collaborate smoothly** - Version control with your team
+- **Work from anywhere** - Files follow you everywhere
+- **Disaster recovery** - 3-2-1 backup keeps you safe
+- **Peace of mind** - Know your files are secure and synced
 
 ---
 
-## 📚 References
+## 🔗 Related Guides
 
-- [Git Documentation](https://git-scm.com/doc)
-- [Syncthing Docs](https://docs.syncthing.net/)
-- [rsync Man Page](https://linux.die.net/man/1/rsync)
-- [rclone Documentation](https://rclone.org/docs/)
-- [Restic Backup](https://restic.readthedocs.io/)
-- [3-2-1 Backup Strategy](https://www.backblaze.com/blog/the-3-2-1-backup-strategy/)
+- 📖 **[Security Hardening](security.md)** - Secure your backups
+- 📖 **[System Maintenance](system_maintenance.md)** - Backup strategies
+- 📖 **[Arch Linux Guide](arch.md)** - Package management

@@ -1,1 +1,260 @@
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>fedora</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="fedora.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">fedora</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#fedora-workstation-enterprise-grade-desktop-computing"
+id="toc-fedora-workstation-enterprise-grade-desktop-computing">Fedora
+Workstation: Enterprise-Grade Desktop Computing</a>
+<ul>
+<li><a href="#package-manager-optimization"
+id="toc-package-manager-optimization">🚀 1. Package Manager
+Optimization</a></li>
+<li><a href="#repository-architecture"
+id="toc-repository-architecture">📦 2. Repository Architecture</a>
+<ul>
+<li><a href="#rpm-fusion-extended-software-coverage"
+id="toc-rpm-fusion-extended-software-coverage">RPM Fusion: Extended
+Software Coverage</a></li>
+<li><a href="#copr-community-maintained-software-collections"
+id="toc-copr-community-maintained-software-collections">COPR:
+Community-Maintained Software Collections</a></li>
+<li><a href="#flatpak-integration" id="toc-flatpak-integration">Flatpak
+Integration</a></li>
+</ul></li>
+<li><a href="#multimedia-codec-infrastructure"
+id="toc-multimedia-codec-infrastructure">🎬 3. Multimedia Codec
+Infrastructure</a>
+<ul>
+<li><a href="#wayland-display-protocol-support"
+id="toc-wayland-display-protocol-support">Wayland Display Protocol
+Support</a></li>
+</ul></li>
+<li><a href="#filesystem-snapshots-recovery"
+id="toc-filesystem-snapshots-recovery">🛡️ 4. Filesystem Snapshots &amp;
+Recovery</a></li>
+<li><a href="#system-administration" id="toc-system-administration">🧼
+5. System Administration</a>
+<ul>
+<li><a href="#essential-dnf-operations"
+id="toc-essential-dnf-operations">Essential DNF Operations</a></li>
+<li><a href="#release-cycle-management"
+id="toc-release-cycle-management">Release Cycle Management</a></li>
+</ul></li>
+<li><a href="#mandatory-access-control-selinux"
+id="toc-mandatory-access-control-selinux">🔒 6. Mandatory Access
+Control: SELinux</a></li>
+<li><a href="#related-documentation" id="toc-related-documentation">🔗
+Related Documentation</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: fedora.md
+    This file contains comprehensive setup and optimization procedures for Fedora Workstation.
+    Adapt these configurations to your specific hardware and workflow requirements.
+-->
+<h1 id="fedora-workstation-enterprise-grade-desktop-computing">Fedora
+Workstation: Enterprise-Grade Desktop Computing</h1>
+<p>Fedora occupies a distinctive position in the Linux ecosystem as a
+contemporary, innovation-focused distribution backed by substantial
+corporate resources. While Fedora’s philosophy emphasizes cutting-edge
+software stacks, achieving feature parity with community-driven
+distributions requires deliberate post-installation configuration. This
+guide addresses those essential gaps.</p>
+<hr />
+<h2 id="package-manager-optimization">🚀 1. Package Manager
+Optimization</h2>
+<p>DNF, Fedora’s package manager, requires tuning to achieve competitive
+performance with rolling-release counterparts. These optimizations
+address network efficiency and output clarity:</p>
+<p><strong>Enable colored terminal output:</strong></p>
+<pre class="bash"><code>echo &quot;Color=1&quot; | sudo tee -a /etc/dnf/dnf.conf</code></pre>
+<p>Improves terminal readability through syntax highlighting of package
+information.</p>
+<p><strong>Activate parallel downloads:</strong></p>
+<pre class="bash"><code>echo &quot;max_parallel_downloads=10&quot; | sudo tee -a /etc/dnf/dnf.conf</code></pre>
+<p>Leverages concurrent HTTP connections to dramatically reduce
+aggregate package installation time.</p>
+<p><strong>Enable intelligent mirror selection:</strong></p>
+<pre class="bash"><code>echo &quot;fastestmirror=True&quot; | sudo tee -a /etc/dnf/dnf.conf</code></pre>
+<p>Automatically identifies the geographically and performance-optimized
+mirror for your location.</p>
+<p>For manual configuration, edit <code>/etc/dnf/dnf.conf</code> and add
+these options as separate lines:</p>
+<pre class="text"><code>Color=1
+max_parallel_downloads=10
+fastestmirror=True</code></pre>
+<hr />
+<h2 id="repository-architecture">📦 2. Repository Architecture</h2>
+<h3 id="rpm-fusion-extended-software-coverage">RPM Fusion: Extended
+Software Coverage</h3>
+<p>Fedora’s distribution model prioritizes Free and Open Source software
+exclusively. This philosophical stance, while commendable, creates
+immediate gaps in multimedia support and proprietary drivers. RPM Fusion
+provides the necessary third-party repositories:</p>
+<pre class="bash"><code># Install both free and non-free repository definitions
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm</code></pre>
+<p>This grants access to H.264 codecs, proprietary NVIDIA drivers, and
+numerous production-oriented software packages.</p>
+<h3 id="copr-community-maintained-software-collections">COPR:
+Community-Maintained Software Collections</h3>
+<p>COPR (Community Projects) functions as Fedora’s equivalent to the
+Arch User Repository, enabling individual developers and teams to
+maintain software outside the official distribution:</p>
+<p><strong>Repository discovery:</strong> Visit <a
+href="https://copr.fedorainfracloud.org/">copr.fedorainfracloud.org</a></p>
+<p><strong>Repository activation syntax:</strong></p>
+<pre class="bash"><code>sudo dnf copr enable author/projectname</code></pre>
+<p><strong>Practical example—installing LazyGit from community
+repositories:</strong></p>
+<pre class="bash"><code>sudo dnf copr enable atim/lazygit
+sudo dnf install lazygit</code></pre>
+<h3 id="flatpak-integration">Flatpak Integration</h3>
+<p>Fedora provides exceptional support for containerized application
+deployment via Flatpak. For comprehensive configuration and permission
+management strategies:</p>
+<p>📖 <strong><a href="flatpak.md">docs/flatpak.md</a></strong></p>
+<hr />
+<h2 id="multimedia-codec-infrastructure">🎬 3. Multimedia Codec
+Infrastructure</h2>
+<p>Fedora requires explicit codec installation to support proprietary
+audio and video formats. This involves both system-level library
+installation and format-specific support:</p>
+<pre class="bash"><code>sudo dnf groupupdate core
+sudo dnf groupinstall &quot;Multimedia&quot; &quot;Sound and Video&quot;</code></pre>
+<h3 id="wayland-display-protocol-support">Wayland Display Protocol
+Support</h3>
+<p>Contemporary display servers require middleware for screen capture
+functionality. Xwayland Video Bridge provides the necessary translation
+layer:</p>
+<pre class="bash"><code>sudo dnf install xwaylandvideobridge</code></pre>
+<p>If this package is unavailable in standard repositories, investigate
+COPR alternatives or Flathub distribution channels.</p>
+<hr />
+<h2 id="filesystem-snapshots-recovery">🛡️ 4. Filesystem Snapshots &amp;
+Recovery</h2>
+<p>Fedora’s default BTRFS filesystem configuration enables sophisticated
+snapshot capabilities for rapid system recovery. For detailed
+implementation of Snapper, TimeShift, and recovery procedures:</p>
+<p>📖 <strong><a href="snapshots.md">docs/snapshots.md</a></strong></p>
+<hr />
+<h2 id="system-administration">🧼 5. System Administration</h2>
+<h3 id="essential-dnf-operations">Essential DNF Operations</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Operation</th>
+<th style="text-align: left;">Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>System upgrade</strong></td>
+<td
+style="text-align: left;"><code>sudo dnf upgrade --refresh</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Package installation</strong></td>
+<td
+style="text-align: left;"><code>sudo dnf install package_name</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Package removal</strong></td>
+<td
+style="text-align: left;"><code>sudo dnf remove package_name</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Package search</strong></td>
+<td style="text-align: left;"><code>dnf search keyword</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Installed packages
+listing</strong></td>
+<td style="text-align: left;"><code>dnf list --installed</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Cache cleanup</strong></td>
+<td style="text-align: left;"><code>sudo dnf clean all</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="release-cycle-management">Release Cycle Management</h3>
+<p>Fedora maintains a predictable six-month release schedule.
+Transitioning to newer releases is streamlined:</p>
+<pre class="bash"><code>sudo dnf install dnf-plugin-system-upgrade
+sudo dnf system-upgrade download --releasever=41  # Specify target version
+sudo dnf system-upgrade reboot</code></pre>
+<hr />
+<h2 id="mandatory-access-control-selinux">🔒 6. Mandatory Access
+Control: SELinux</h2>
+<p>Fedora enforces SELinux by default—a policy-based security framework
+fundamentally distinct from optional AppArmor implementations found in
+other distributions. Rather than disabling SELinux, address underlying
+permission issues through proper context restoration:</p>
+<pre class="bash"><code>sudo restorecon -Rv /home/user/my_folder</code></pre>
+<p>This corrects SELinux security contexts for filesystem hierarchies,
+resolving permission-related errors without compromising system
+security.</p>
+<hr />
+<h2 id="related-documentation">🔗 Related Documentation</h2>
+<ul>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> —
+Rolling-release distribution and AUR ecosystem</li>
+<li>📖 <strong><a href="debian.md">Debian Linux Guide</a></strong> —
+Stable-release philosophy and external repository management</li>
+<li>📖 <strong><a href="nix.md">Nix Package Manager</a></strong> —
+Declarative package management across distributions</li>
+<li>📖 <strong><a href="security.md">System Security
+Hardening</a></strong> — Comprehensive Fedora security optimization</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

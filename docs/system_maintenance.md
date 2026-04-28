@@ -1,104 +1,257 @@
-# System Maintenance: Snapshots, Backups, and Bootloaders
+<!-- 
+    WIKI GUIDE: system_maintenance.md
+    Essential maintenance for Arch Linux and Fedora, covering snapshots,
+    backups, BTRFS operations, and bootloader management.
+-->
 
-This guide covers essential maintenance for both **Arch Linux** and **Fedora**, focusing on BTRFS, snapshots (TimeShift/Snapper), and bootloaders (GRUB/systemd-boot).
+# System Maintenance: Snapshots, Backups & Recovery
+
+Your system will break. Maybe a bad update, maybe a config mistake. This guide sets up safety nets so you can recover quickly. We'll cover snapshots (fast rollbacks), backups (disaster recovery), and bootloaders (recovery options).
 
 ---
 
-## 1. Snapshot Tools: TimeShift vs. Snapper
+## 🤔 Why This Matters
 
-Snapshots are near-instantaneous state captures.
+- **Bad updates happen** - Snapshot before updating, roll back if needed
+- **Accidental deletion** - External backups protect your files
+- **System corruption** - Boot into snapshots to diagnose
+- **Peace of mind** - Know your system is protected
+- **Quick recovery** - Get back online in minutes, not hours
 
-### TimeShift (Recommended for Beginners)
-- **Best for**: Desktop users wanting a simple GUI.
-- **Arch**: `sudo pacman -S timeshift`
-- **Fedora**: `sudo dnf install timeshift`
-- **Logic**: Uses specific BTRFS subvolume names (`@` and `@home`).
-- **Automation**: Use `timeshift-autosnap` (AUR) on Arch to back up before updates.
+---
+
+## 📸 1. Snapshot Tools: TimeShift vs. Snapper
+
+Snapshots are instant system backups. They take almost no space and let you "undo" changes.
+
+### TimeShift (Recommended for Most Users)
+
+Best if you want a simple GUI and don't need power-user features.
+
+**Installation:**
+```bash
+# Arch
+paru -S timeshift timeshift-autosnap
+
+# Fedora
+sudo dnf install timeshift
+```
+
+**How it works:**
+- Uses BTRFS subvolumes named `@` and `@home`
+- Automatic snapshots before package manager updates (with autosnap)
+- Simple point-and-click restore
+- Shows up in your boot menu for recovery
+
+**Pro tip:** On Arch with autosnap, updates are automatically backed up.
 
 ### Snapper (Power User Alternative)
-- **Best for**: Advanced users and those who want more granular control.
-- **Arch**: `sudo pacman -S snapper snap-pac`
-- **Fedora**: `sudo dnf install snapper` (Snapper is very well integrated into Fedora/openSUSE).
-- **Configuration**:
-    ```bash
-    sudo snapper -c root create-config /
-    ```
-- **Timeline snapshots**: Snapper can be configured to take hourly snapshots automatically via systemd timers.
+
+Best if you want granular control and more features.
+
+**Installation:**
+```bash
+# Arch
+paru -S snapper snap-pac
+
+# Fedora
+sudo dnf install snapper
+```
+
+**Setup:**
+```bash
+sudo snapper -c root create-config /
+```
+
+**Features:**
+- Timeline snapshots (hourly, daily)
+- Pre/post snapshot pairs (track exactly what changed)
+- Config-based customization
+- More overhead but very powerful
 
 ---
 
-## 2. Backup Methods: BTRFS vs. RSYNC
+## 💾 2. Backup Methods: Internal vs. External
 
-### BTRFS Snapshots
-- **Pros**: Instant, takes 0 space initially, perfect for system rollbacks.
-- **Cons**: Only works on BTRFS. If the drive dies, the snapshot dies too.
-- **Use Case**: Rolling back a broken update or a bad config change.
+### BTRFS Snapshots (Internal)
 
-### RSYNC Backups
-- **Pros**: Filesystem agnostic. Can be sent to external drives or cloud storage.
-- **Cons**: Slower, takes literal space for every new file.
-- **Command**:
-    ```bash
-    rsync -avAXP --delete /source/ /destination/
-    ```
-    *(Flags: -a archive, -v verbose, -A ACLs, -X xattrs, -P progress)*
-- **Use Case**: Off-site backups of personal data.
+**Pros:**
+- Instant - takes almost no time
+- Zero space overhead initially
+- Perfect for rollbacks after updates
 
----
+**Cons:**
+- Only on BTRFS filesystems
+- Lives on same drive - if drive dies, snapshots die too
 
-## 3. BTRFS Maintenance
+**Best for:** Quick rollbacks after bad updates
 
-BTRFS is the default on Fedora and highly recommended for Arch.
+### RSYNC Backups (External)
 
-### Subvolume Layouts
-- **Arch (Common)**: `@` (root), `@home`, `@cache`, `@log`.
-- **Fedora (Default)**: `root` (root), `home` (home).
-- **Note**: TimeShift requires the Arch-style `@` naming convention. On Fedora, you may need to rename subvolumes to use TimeShift in BTRFS mode.
+**Pros:**
+- Works on any filesystem
+- Can backup to external drives or remote servers
+- Space-efficient (only changed files)
 
-### Health Checks
-- **Scrub (Check for errors)**:
-    ```bash
-    sudo btrfs scrub start /
-    ```
-- **Balance (Free up space)**:
-    ```bash
-    sudo btrfs balance start -dusage=50 /
-    ```
+**Cons:**
+- Slower than BTRFS snapshots
+- Takes real disk space
+- Manual scheduling required
+
+**Command:**
+```bash
+rsync -avAXP --delete /source/ /destination/
+```
+
+**Best for:** Disaster recovery and off-site backups
 
 ---
 
-## 4. Bootloaders: GRUB vs. systemd-boot
+## 🛠️ 3. BTRFS Operations
 
-### GRUB
-- **Best for**: Snapshot integration and dual-booting.
-- **Update (Arch)**: `sudo grub-mkconfig -o /boot/grub/grub.cfg`
-- **Update (Fedora)**: `sudo grub2-mkconfig -o /boot/grub2/grub.cfg`
-- **Snapshot Support**: Install `grub-btrfs` to see snapshots in the boot menu.
+If you're using BTRFS, run these occasionally for filesystem health:
 
-### systemd-boot
-- **Best for**: Speed, simplicity, and modern UEFI systems.
-- **Arch**: `bootctl install`
-- **Fedora**: Can be switched to, but GRUB is the default.
-- **Update**: No "config regeneration" command needed; it reads entries from `/boot/loader/entries/`.
-- **Snapshot Support**: Use `gummibbs` (Arch/AUR) to generate snapshot entries for the menu.
+### Check for Errors
+
+```bash
+sudo btrfs scrub start /
+```
+
+This checks the filesystem for corruption (like a disk health check).
+
+### Free Up Space
+
+```bash
+sudo btrfs balance start -dusage=50 /
+```
+
+This consolidates storage chunks (occasionally helpful for BTRFS).
 
 ---
 
-## 5. Summary: Arch vs. Fedora Maintenance
+## ⚙️ 4. Bootloader Setup: GRUB vs. systemd-boot
 
-| Task | Arch Linux | Fedora |
-| :--- | :--- | :--- |
-| **Package Manager** | `pacman` / `paru` | `dnf` |
-| **Snapshots** | TimeShift + `autosnap` | Snapper (native support) |
-| **Bootloader** | GRUB or systemd-boot | GRUB (default) |
-| **Kernel Updates** | Requires manual GRUB update* | Automatic via `dnf` |
+Your bootloader is the menu you see when your computer starts. You can boot into snapshots from here for recovery.
 
-*\*Only if using custom hooks or specific manual setups; usually handled by hooks in Arch as well.*
+### GRUB (Best for Snapshots)
+
+**Installation:**
+```bash
+# Arch
+sudo pacman -S grub-btrfs
+sudo systemctl enable --now grub-btrfsd.service
+
+# Fedora
+sudo dnf install grub-btrfs
+```
+
+**Advantage:** You'll see snapshots in your boot menu for easy recovery.
+
+**Update after kernel changes:**
+```bash
+# Arch
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+# Fedora
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+```
+
+### systemd-boot (Modern, Faster)
+
+**Setup:**
+```bash
+# Arch
+bootctl install
+```
+
+**Advantage:** Simpler, faster, no configuration needed.
+
+**For snapshots on systemd-boot:**
+```bash
+# Arch (AUR)
+paru -S gummibbs
+```
+
+---
+
+## 📋 5. Comparing Arch vs. Fedora Maintenance
+
+| Task | Arch | Fedora |
+|------|------|--------|
+| Package updates | `pacman -Syu` or `paru -Syu` | `sudo dnf upgrade` |
+| Snapshots | TimeShift + autosnap | Snapper (native) |
+| Bootloader | GRUB or systemd-boot | GRUB (default) |
+| Health checks | Manual BTRFS operations | Automatic in DNF |
+
+---
+
+## 🎯 Best Practices
+
+1. **Before major updates:**
+   ```bash
+   # Take a snapshot first
+   sudo timeshift --create --comments "Before major update"
+   
+   # Then update
+   sudo pacman -Syu
+   ```
+
+2. **Enable automatic snapshots:**
+   ```bash
+   # Arch with autosnap
+   systemctl --user enable --now timeshift-autosnap-hourly
+   ```
+
+3. **Regular RSYNC backups:**
+   ```bash
+   # Weekly backup to external drive
+   0 3 * * 0 rsync -av ~/important /media/backup/
+   ```
+
+4. **Check boot menu regularly:**
+   - Reboot and check that snapshots appear in bootloader
+   - Verify you can boot into an old snapshot if needed
+
+---
+
+## 🆘 Troubleshooting
+
+### Can't Boot After Update
+
+1. Hold Shift while booting (GRUB menu appears)
+2. Select a snapshot from before the update
+3. Boot into that snapshot
+4. Investigate what went wrong in the newer version
+
+### BTRFS Quota Freezes
+
+If your system freezes for 1-2 minutes during snapshots:
+
+```bash
+# Disable BTRFS quotas (stops the freezing)
+sudo btrfs quota disable /
+
+# Note: TimeShift GUI won't show snapshot sizes, but it still works
+```
+
+See the [TimeShift I/O Optimization](timeshift-io-optimization.md) guide for detailed solutions.
+
+---
+
+## 🎯 Why Would I Do This?
+
+- **Never lose your system** - Always have a working version to boot
+- **Experiment safely** - Try changes knowing you can undo them
+- **Disaster recovery** - External backups protect against hardware failure
+- **Upgrade confidently** - Know you can roll back if something breaks
+- **Learn from mistakes** - Boot old snapshots to debug what went wrong
 
 ---
 
 ## 🔗 Related Guides
-*   📖 **[Snapshots Guide](snapshots.md)** - Comprehensive guide on TimeShift and Snapper.
-*   📖 **[Arch Linux Guide](arch.md)** - Specific maintenance for rolling-release systems.
-*   📖 **[Fedora Guide](fedora.md)** - DNF cleaning and system upgrades.
-*   📖 **[Security Guide](security.md)** - Hardening and protecting your system.
+
+- 📖 **[Snapshots & Backups](snapshots.md)** - Deeper snapshot concepts
+- 📖 **[TimeShift I/O Optimization](timeshift-io-optimization.md)** - Fix snapshot freezes
+- 📖 **[Arch Linux Guide](arch.md)** - BTRFS layout for Arch
+- 📖 **[Fedora Guide](fedora.md)** - Fedora-specific maintenance
+- 📖 **[Security Hardening](security.md)** - Additional protection layers

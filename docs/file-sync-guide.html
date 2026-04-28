@@ -1,8 +1,190 @@
-<h1>File &amp; Project Synchronization Guide</h1>
-<p>A comprehensive guide to syncing files, projects, and repositories across multiple machines using Git, Syncthing, rsync, rclone, and other tools. Includes best practices and tool comparisons.</p>
-<hr>
-<h2>📊 Tool Comparison</h2>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>file sync guide</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="file-sync-guide.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">file sync guide</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#syncing-files-projects-across-your-machines"
+id="toc-syncing-files-projects-across-your-machines">Syncing Files &amp;
+Projects Across Your Machines</a>
+<ul>
+<li><a href="#why-would-i-need-this" id="toc-why-would-i-need-this">🤔
+Why Would I Need This?</a></li>
+<li><a href="#tool-comparison-picking-the-right-one"
+id="toc-tool-comparison-picking-the-right-one">📊 1. Tool Comparison:
+Picking the Right One</a></li>
+<li><a href="#git-for-code-documents" id="toc-git-for-code-documents">💻
+2. Git: For Code &amp; Documents</a>
+<ul>
+<li><a href="#when-to-use-git" id="toc-when-to-use-git">When to Use
+Git</a></li>
+<li><a href="#quick-setup" id="toc-quick-setup">Quick Setup</a></li>
+<li><a href="#basic-workflow" id="toc-basic-workflow">Basic
+Workflow</a></li>
+<li><a href="#sync-across-machines" id="toc-sync-across-machines">Sync
+Across Machines</a></li>
+<li><a href="#ssh-keys-passwordless-access"
+id="toc-ssh-keys-passwordless-access">SSH Keys (Passwordless
+Access)</a></li>
+</ul></li>
+<li><a href="#syncthing-real-time-file-sync"
+id="toc-syncthing-real-time-file-sync">📁 3. Syncthing: Real-Time File
+Sync</a>
+<ul>
+<li><a href="#when-to-use-syncthing" id="toc-when-to-use-syncthing">When
+to Use Syncthing</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#start-enable" id="toc-start-enable">Start &amp;
+Enable</a></li>
+<li><a href="#setup" id="toc-setup">Setup</a></li>
+<li><a href="#what-folders-to-sync" id="toc-what-folders-to-sync">What
+Folders to Sync</a></li>
+</ul></li>
+<li><a href="#rsync-one-way-backups" id="toc-rsync-one-way-backups">🔄
+4. rsync: One-Way Backups</a>
+<ul>
+<li><a href="#when-to-use-rsync" id="toc-when-to-use-rsync">When to Use
+rsync</a></li>
+<li><a href="#basic-usage" id="toc-basic-usage">Basic Usage</a></li>
+<li><a href="#useful-flags" id="toc-useful-flags">Useful Flags</a></li>
+<li><a href="#automated-backup-with-cron"
+id="toc-automated-backup-with-cron">Automated Backup with Cron</a></li>
+</ul></li>
+<li><a href="#rclone-cloud-storage-sync"
+id="toc-rclone-cloud-storage-sync">☁️ 5. rclone: Cloud Storage Sync</a>
+<ul>
+<li><a href="#when-to-use-rclone" id="toc-when-to-use-rclone">When to
+Use rclone</a></li>
+<li><a href="#installation-1"
+id="toc-installation-1">Installation</a></li>
+<li><a href="#setup-1" id="toc-setup-1">Setup</a></li>
+<li><a href="#common-commands" id="toc-common-commands">Common
+Commands</a></li>
+</ul></li>
+<li><a href="#restic-encrypted-backups"
+id="toc-restic-encrypted-backups">🔐 6. Restic: Encrypted Backups</a>
+<ul>
+<li><a href="#when-to-use-restic" id="toc-when-to-use-restic">When to
+Use Restic</a></li>
+<li><a href="#installation-2"
+id="toc-installation-2">Installation</a></li>
+<li><a href="#local-backup" id="toc-local-backup">Local Backup</a></li>
+<li><a href="#cloud-backup-s3" id="toc-cloud-backup-s3">Cloud Backup
+(S3)</a></li>
+</ul></li>
+<li><a href="#choosing-the-right-setup"
+id="toc-choosing-the-right-setup">📋 7. Choosing the Right Setup</a>
+<ul>
+<li><a href="#single-machine-local-backups"
+id="toc-single-machine-local-backups">Single Machine: Local
+Backups</a></li>
+<li><a href="#personal-multi-machine"
+id="toc-personal-multi-machine">Personal Multi-Machine</a></li>
+<li><a href="#team-collaboration" id="toc-team-collaboration">Team
+Collaboration</a></li>
+<li><a href="#backup-rule" id="toc-backup-rule">3-2-1 Backup
+Rule</a></li>
+</ul></li>
+<li><a href="#security-best-practices"
+id="toc-security-best-practices">🔒 Security Best Practices</a></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">🆘
+Troubleshooting</a>
+<ul>
+<li><a href="#git-permission-denied-on-push"
+id="toc-git-permission-denied-on-push">Git: “Permission denied” on
+push</a></li>
+<li><a href="#syncthing-folder-not-syncing"
+id="toc-syncthing-folder-not-syncing">Syncthing: Folder not
+syncing</a></li>
+<li><a href="#rsync-files-not-updating"
+id="toc-rsync-files-not-updating">rsync: Files not updating</a></li>
+</ul></li>
+<li><a href="#why-would-i-use-this" id="toc-why-would-i-use-this">🎯 Why
+Would I Use This?</a></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 Related
+Guides</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: file-sync-guide.md
+    Comprehensive guide to syncing files, projects, and code across multiple machines.
+    Covers Git, Syncthing, rsync, rclone, and other synchronization strategies.
+-->
+<h1 id="syncing-files-projects-across-your-machines">Syncing Files &amp;
+Projects Across Your Machines</h1>
+<p>Need your files on multiple computers? Whether it’s code, documents,
+or media, this guide covers the right tool for every situation. We’ll
+start with simple approaches and work up to complex multi-machine
+workflows.</p>
+<hr />
+<h2 id="why-would-i-need-this">🤔 Why Would I Need This?</h2>
+<ul>
+<li><strong>Work on multiple devices</strong> - Code on laptop, test on
+desktop</li>
+<li><strong>Backup automatically</strong> - Never lose important files
+again</li>
+<li><strong>Keep teams in sync</strong> - Collaborate with others
+seamlessly</li>
+<li><strong>Access from anywhere</strong> - Your files follow you</li>
+<li><strong>Version control</strong> - Track changes and revert if
+needed</li>
+</ul>
+<hr />
+<h2 id="tool-comparison-picking-the-right-one">📊 1. Tool Comparison:
+Picking the Right One</h2>
 <table>
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 16%" />
+<col style="width: 18%" />
+<col style="width: 20%" />
+<col style="width: 21%" />
+<col style="width: 12%" />
+</colgroup>
 <thead>
 <tr>
 <th>Tool</th>
@@ -13,81 +195,83 @@
 <th>Setup</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>Git</strong></td>
 <td>Version control</td>
-<td>Code, docs, text</td>
-<td>❌ No</td>
-<td>✅ Full history</td>
+<td>Code, docs</td>
+<td>No</td>
+<td>Full history</td>
 <td>Medium</td>
 </tr>
 <tr>
 <td><strong>Syncthing</strong></td>
 <td>P2P sync</td>
 <td>Any files</td>
-<td>✅ Yes</td>
-<td>⚠️ Limited</td>
+<td>Yes</td>
+<td>Limited</td>
 <td>Easy</td>
 </tr>
 <tr>
 <td><strong>rsync</strong></td>
 <td>File sync</td>
-<td>Backups, one-way</td>
-<td>❌ No</td>
-<td>❌ No</td>
+<td>Backups</td>
+<td>No</td>
+<td>No</td>
 <td>Simple</td>
 </tr>
 <tr>
 <td><strong>rclone</strong></td>
 <td>Cloud sync</td>
 <td>Cloud storage</td>
-<td>❌ No</td>
-<td>❌ No</td>
+<td>No</td>
+<td>No</td>
 <td>Medium</td>
 </tr>
 <tr>
 <td><strong>Restic</strong></td>
-<td>Backup</td>
+<td>Encrypted backup</td>
 <td>Archival</td>
-<td>❌ No</td>
-<td>✅ Dedup</td>
+<td>No</td>
+<td>Yes</td>
 <td>Medium</td>
 </tr>
 <tr>
 <td><strong>Nextcloud</strong></td>
-<td>Cloud + sync</td>
-<td>Team files</td>
-<td>✅ Yes</td>
-<td>✅ Versioning</td>
+<td>Team collaboration</td>
+<td>Shared files</td>
+<td>Yes</td>
+<td>Yes</td>
 <td>Complex</td>
 </tr>
-</tbody></table>
-<hr>
-<h2>🌐 Git: Version Control &amp; Collaboration</h2>
-<h3>When to Use Git</h3>
+</tbody>
+</table>
+<hr />
+<h2 id="git-for-code-documents">💻 2. Git: For Code &amp; Documents</h2>
+<p>Use Git when you need version control—tracking every change and who
+made it.</p>
+<h3 id="when-to-use-git">When to Use Git</h3>
 <ul>
-<li><strong>Source code</strong> (primary use case)</li>
-<li><strong>Documentation</strong> and markdown files</li>
-<li><strong>Configuration files</strong></li>
-<li><strong>Any text-based project</strong> that benefits from history</li>
-<li><strong>Team collaboration</strong> with branching workflows</li>
-<li><strong>Distributed backup</strong> (every clone is a backup)</li>
+<li>Source code (primary use case)</li>
+<li>Documentation and markdown files</li>
+<li>Configuration files</li>
+<li>Any text project with history</li>
+<li>Team collaboration with branching</li>
 </ul>
-<h3>Local Setup</h3>
-<pre><code class="language-bash"># Initialize a repository
+<h3 id="quick-setup">Quick Setup</h3>
+<pre class="bash"><code># Initialize a repository
 git init my-project
 cd my-project
 
-# Configure user
+# Configure your identity
 git config user.name &quot;Your Name&quot;
 git config user.email &quot;you@example.com&quot;
 
-# Or globally
+# Or globally (all projects)
 git config --global user.name &quot;Your Name&quot;
-git config --global user.email &quot;you@example.com&quot;
-</code></pre>
-<h3>Basic Workflow</h3>
-<pre><code class="language-bash"># Make changes
+git config --global user.email &quot;you@example.com&quot;</code></pre>
+<h3 id="basic-workflow">Basic Workflow</h3>
+<pre class="bash"><code># Make changes
 echo &quot;content&quot; &gt; file.txt
 
 # Stage changes
@@ -101,15 +285,13 @@ git log --oneline
 
 # Create a branch
 git branch feature-x
-git checkout feature-x
-# or: git switch feature-x
+git switch feature-x
 
 # Merge back to main
-git checkout main
-git merge feature-x
-</code></pre>
-<h3>Remote Repositories</h3>
-<pre><code class="language-bash"># Add remote (GitHub, GitLab, Gitea, etc.)
+git switch main
+git merge feature-x</code></pre>
+<h3 id="sync-across-machines">Sync Across Machines</h3>
+<pre class="bash"><code># Add remote (GitHub, GitLab, etc.)
 git remote add origin https://github.com/user/repo.git
 
 # Push to remote
@@ -118,271 +300,180 @@ git push -u origin main
 # Pull latest changes
 git pull origin main
 
-# Fetch without merging
-git fetch origin
-</code></pre>
-<h3>Multi-Machine Setup</h3>
-<p><strong>Clone on other machines:</strong></p>
-<pre><code class="language-bash">git clone https://github.com/user/repo.git
-cd repo
-</code></pre>
-<p><strong>Keep in sync:</strong></p>
-<pre><code class="language-bash"># Before work: pull latest
-git pull origin main
-
-# After work: push changes
-git push origin main
-</code></pre>
-<h3>SSH Keys (Passwordless Access)</h3>
-<pre><code class="language-bash"># Generate key
+# On another machine - clone it
+git clone https://github.com/user/repo.git</code></pre>
+<h3 id="ssh-keys-passwordless-access">SSH Keys (Passwordless
+Access)</h3>
+<pre class="bash"><code># Generate key (one time)
 ssh-keygen -t ed25519 -C &quot;your@email.com&quot;
 
 # Add to SSH agent
 eval &quot;$(ssh-agent -s)&quot;
 ssh-add ~/.ssh/id_ed25519
 
-# Add public key to GitHub/GitLab
+# Copy public key to GitHub/GitLab
 cat ~/.ssh/id_ed25519.pub
-# Paste in Settings &gt; SSH Keys
 
-# Test connection
-ssh -T git@github.com
-</code></pre>
-<h3>.gitignore Best Practices</h3>
-<pre><code class="language-bash"># Common patterns to ignore
-echo &quot;
-.DS_Store
-*.log
-*.tmp
-node_modules/
-dist/
-build/
-*.swp
-.vscode/
-.env
-secrets/
-&quot; &gt; .gitignore
-
-git add .gitignore
-git commit -m &quot;Add gitignore&quot;
-</code></pre>
-<hr>
-<h2>🔄 Syncthing: Real-Time File Sync</h2>
-<h3>When to Use Syncthing</h3>
+# Test it works
+ssh -T git@github.com</code></pre>
+<hr />
+<h2 id="syncthing-real-time-file-sync">📁 3. Syncthing: Real-Time File
+Sync</h2>
+<p>Use Syncthing when you want files to stay in sync automatically
+across your devices, without a central server.</p>
+<h3 id="when-to-use-syncthing">When to Use Syncthing</h3>
 <ul>
-<li><strong>Bidirectional sync</strong> across personal machines</li>
-<li><strong>Real-time updates</strong> (watch for file changes)</li>
-<li><strong>Decentralized</strong> (no cloud server needed)</li>
-<li><strong>Large binary files</strong> (media, backups)</li>
-<li><strong>Privacy-focused</strong> (peer-to-peer, encrypted)</li>
-<li><strong>Not suitable</strong> for collaboration (no conflict resolution)</li>
+<li>Bidirectional sync across personal machines</li>
+<li>Real-time updates (watch for changes)</li>
+<li>Decentralized (no cloud server needed)</li>
+<li>Large binary files (media, databases)</li>
+<li>Privacy-focused peer-to-peer</li>
 </ul>
-<h3>Installation</h3>
-<pre><code class="language-bash"># Arch Linux
+<h3 id="installation">Installation</h3>
+<pre class="bash"><code># Arch Linux
 sudo pacman -S syncthing
 
 # Ubuntu/Debian
 sudo apt install syncthing
 
 # Fedora
-sudo dnf install syncthing
-</code></pre>
-<h3>Start &amp; Enable</h3>
-<pre><code class="language-bash"># Start manually
-syncthing
-
-# Or as systemd service (user)
+sudo dnf install syncthing</code></pre>
+<h3 id="start-enable">Start &amp; Enable</h3>
+<pre class="bash"><code># As a user service
 systemctl --user enable --now syncthing.service
 
 # Check status
 systemctl --user status syncthing.service
 
 # View logs
-journalctl --user -u syncthing.service -f
-</code></pre>
-<h3>Web UI Configuration</h3>
-<ol>
+journalctl --user -u syncthing.service -f</code></pre>
+<h3 id="setup">Setup</h3>
+<ol type="1">
 <li>Open browser → <code>http://localhost:8384</code></li>
-<li>Add folder to sync (local path)</li>
-<li>Get Device ID from Settings &gt; Show ID</li>
-<li>Share folder with other devices by their Device ID</li>
+<li>Add a folder to sync (choose a local path)</li>
+<li>Go to Settings &gt; Show ID to get your Device ID</li>
+<li>Share the folder with other devices using their Device IDs</li>
 <li>On other device: Accept the share</li>
 </ol>
-<h3>Common Folders to Sync</h3>
-<pre><code class="language-bash"># Personal documents
-~/Documents
-
-# Configuration backups
-~/.config
-
-# Projects (faster than Git for huge files)
-~/Projects
-
-# Shared media
-~/Media
-</code></pre>
-<h3>Conflict Resolution</h3>
-<p>When both machines edit the same file:</p>
-<pre><code class="language-bash"># Syncthing keeps both versions
-file.txt
-file.txt.sync-conflict-20240423-123456
-
-# Manually choose which one to keep
-# Or merge them, then delete the conflict file
-</code></pre>
-<h3>Advanced: Sync Filters</h3>
-<p>Exclude large/temporary files in folder settings:</p>
-<pre><code>(?d)\.git
-(?d)node_modules
-(?d)\.venv
-*.tmp
-*.log
-*.swp
-</code></pre>
-<h3>Performance: Ignore Patterns</h3>
-<p>For large projects, tell Syncthing to skip:</p>
-<pre><code># In folder Advanced settings &gt; Ignore Patterns
-(?d).git
-(?d).__pycache__
-(?d)node_modules
-(?d)venv
-*.o
-*.pyc
-.DS_Store
-</code></pre>
-<hr>
-<h2>📦 rsync: One-Way File Sync</h2>
-<h3>When to Use rsync</h3>
+<h3 id="what-folders-to-sync">What Folders to Sync</h3>
+<pre class="bash"><code>~/Documents          # Personal documents
+~/.config            # Configuration backups
+~/Projects           # Large project files
+~/Media              # Photos and videos</code></pre>
+<hr />
+<h2 id="rsync-one-way-backups">🔄 4. rsync: One-Way Backups</h2>
+<p>Use rsync for scheduled backups to external drives or servers.</p>
+<h3 id="when-to-use-rsync">When to Use rsync</h3>
 <ul>
-<li><strong>Backup to external drive</strong> or remote server</li>
-<li><strong>One-way sync</strong> (source → destination)</li>
-<li><strong>Incremental updates</strong> (only changed files)</li>
-<li><strong>Scheduled backups</strong> (cron jobs)</li>
-<li><strong>Bandwidth-efficient</strong> (delta sync)</li>
-<li><strong>Not suitable</strong> for real-time or bidirectional</li>
+<li>Backup to external drive</li>
+<li>One-way sync (source → destination)</li>
+<li>Incremental updates only</li>
+<li>Scheduled backups via cron</li>
+<li>Efficient (only changed files)</li>
 </ul>
-<h3>Basic Usage</h3>
-<pre><code class="language-bash"># Backup local folder to external drive
+<h3 id="basic-usage">Basic Usage</h3>
+<pre class="bash"><code># Backup local folder to external drive
 rsync -av ~/Documents /media/backup/
 
-# Backup to remote server
+# To remote server
 rsync -av ~/Documents user@remote.host:/backups/
 
-# With compression (over slow networks)
+# With compression (slow networks)
 rsync -avz ~/Documents user@remote.host:/backups/
 
-# Dry-run (see what would be synced)
-rsync -av --dry-run ~/Documents /media/backup/
-</code></pre>
-<h3>Useful Flags</h3>
-<pre><code class="language-bash">-a      # Archive mode (preserves permissions, timestamps)
+# Dry-run (see what would sync)
+rsync -av --dry-run ~/Documents /media/backup/</code></pre>
+<h3 id="useful-flags">Useful Flags</h3>
+<pre class="bash"><code>-a      # Archive mode (preserves permissions)
 -v      # Verbose
 -z      # Compress during transfer
---delete # Remove files from dest if deleted in source
+--delete # Remove from dest if deleted in source
 --exclude &#39;*.log&#39; # Skip matching files
---progress # Show transfer progress
-</code></pre>
-<h3>Automated Backup with Cron</h3>
-<pre><code class="language-bash"># Edit crontab
+--progress # Show progress</code></pre>
+<h3 id="automated-backup-with-cron">Automated Backup with Cron</h3>
+<pre class="bash"><code># Edit your crontab
 crontab -e
 
 # Daily backup at 2 AM
 0 2 * * * rsync -av ~/Documents /media/backup/ &gt;&gt; ~/backup.log 2&gt;&amp;1
 
 # Weekly backup
-0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/
-</code></pre>
-<h3>Remote Backup Over SSH</h3>
-<pre><code class="language-bash"># Ensure SSH key auth is set up first
-ssh-copy-id user@remote.host
-
-# Then use rsync over SSH
-rsync -avz -e ssh ~/Documents user@remote.host:/backups/
-</code></pre>
-<hr>
-<h2>☁️ rclone: Cloud Storage Sync</h2>
-<h3>When to Use rclone</h3>
+0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/</code></pre>
+<hr />
+<h2 id="rclone-cloud-storage-sync">☁️ 5. rclone: Cloud Storage Sync</h2>
+<p>Use rclone to sync with cloud providers like Google Drive, Dropbox,
+or AWS S3.</p>
+<h3 id="when-to-use-rclone">When to Use rclone</h3>
 <ul>
-<li><strong>Sync with cloud providers</strong> (Google Drive, AWS S3, Dropbox, etc.)</li>
-<li><strong>Backup to cloud</strong> with encryption</li>
-<li><strong>Move files between clouds</strong></li>
-<li><strong>Bandwidth control</strong> (useful for slow connections)</li>
-<li><strong>Not suitable</strong> for real-time sync</li>
+<li>Sync with cloud providers</li>
+<li>Backup to cloud with encryption</li>
+<li>Move files between clouds</li>
+<li>Bandwidth control for slow connections</li>
 </ul>
-<h3>Installation</h3>
-<pre><code class="language-bash"># Arch Linux
+<h3 id="installation-1">Installation</h3>
+<pre class="bash"><code># Arch Linux
 sudo pacman -S rclone
 
 # Ubuntu/Debian
 sudo apt install rclone
 
 # Or universal installer
-curl https://rclone.org/install.sh | sudo bash
-</code></pre>
-<h3>Configure Cloud Storage</h3>
-<pre><code class="language-bash"># Interactive setup
+curl https://rclone.org/install.sh | sudo bash</code></pre>
+<h3 id="setup-1">Setup</h3>
+<pre class="bash"><code># Interactive configuration
 rclone config
 
-# Follow prompts to authenticate with cloud provider
-# (Google Drive, Dropbox, AWS S3, etc.)
-
+# Follow prompts to authenticate with Google Drive, Dropbox, etc.
 # List configured remotes
-rclone listremotes
-</code></pre>
-<h3>Common Operations</h3>
-<pre><code class="language-bash"># List files on cloud
+rclone listremotes</code></pre>
+<h3 id="common-commands">Common Commands</h3>
+<pre class="bash"><code># List files on cloud
 rclone ls mycloud:
 
-# Upload local folder to cloud
+# Upload to cloud
 rclone copy ~/Documents mycloud:/backups/
 
 # Download from cloud
 rclone copy mycloud:/backups/ ~/Documents/
 
-# Bidirectional sync (careful!)
+# Sync both ways (be careful!)
 rclone bisync ~/Documents mycloud:/backups/
 
-# With encryption (crypt)
-rclone copy ~/Documents myencrypted:/ --crypt-key mysecretkey
-
-# Bandwidth limit (e.g., 1MB/s)
-rclone copy --bwlimit 1M ~/Documents mycloud:/backups/
-</code></pre>
-<hr>
-<h2>🔐 Restic: Encrypted Backup</h2>
-<h3>When to Use Restic</h3>
+# With bandwidth limit (e.g., 1MB/s)
+rclone copy --bwlimit 1M ~/Documents mycloud:/backups/</code></pre>
+<hr />
+<h2 id="restic-encrypted-backups">🔐 6. Restic: Encrypted Backups</h2>
+<p>Use Restic for encrypted, versioned backups with deduplication.</p>
+<h3 id="when-to-use-restic">When to Use Restic</h3>
 <ul>
-<li><strong>Encrypted backups</strong> (local or cloud)</li>
-<li><strong>Deduplication</strong> (efficient storage)</li>
-<li><strong>Point-in-time recovery</strong> (restore any previous state)</li>
-<li><strong>Versioning</strong> with automatic pruning</li>
-<li><strong>Cross-platform</strong> (Linux, macOS, Windows)</li>
+<li>Encrypted backups (local or cloud)</li>
+<li>Deduplication (efficient storage)</li>
+<li>Point-in-time recovery</li>
+<li>Automatic pruning</li>
 </ul>
-<h3>Installation</h3>
-<pre><code class="language-bash"># Arch Linux
+<h3 id="installation-2">Installation</h3>
+<pre class="bash"><code># Arch Linux
 sudo pacman -S restic
 
 # Ubuntu/Debian
 sudo apt install restic
 
 # Homebrew
-brew install restic
-</code></pre>
-<h3>Local Backup</h3>
-<pre><code class="language-bash"># Initialize repository
+brew install restic</code></pre>
+<h3 id="local-backup">Local Backup</h3>
+<pre class="bash"><code># Initialize repository
 restic init -r /mnt/backup
 
 # First backup
 restic -r /mnt/backup backup ~/Documents
 
 # Restore files
-restic -r /mnt/backup restore latest --target ~/restore-location
+restic -r /mnt/backup restore latest --target ~/restore/
 
 # View backup history
-restic -r /mnt/backup snapshots
-</code></pre>
-<h3>Cloud Backup (S3 example)</h3>
-<pre><code class="language-bash"># Set environment variables
+restic -r /mnt/backup snapshots</code></pre>
+<h3 id="cloud-backup-s3">Cloud Backup (S3)</h3>
+<pre class="bash"><code># Set credentials
 export AWS_ACCESS_KEY_ID=&quot;your-key&quot;
 export AWS_SECRET_ACCESS_KEY=&quot;your-secret&quot;
 
@@ -390,152 +481,85 @@ export AWS_SECRET_ACCESS_KEY=&quot;your-secret&quot;
 restic init -r s3:s3.amazonaws.com/bucket-name
 
 # Backup to S3
-restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents
-</code></pre>
-<h3>Scheduled Backups</h3>
-<pre><code class="language-bash"># Create backup script
-cat &gt; ~/backup.sh &lt;&lt; &#39;EOF&#39;
-#!/bin/bash
-export RESTIC_REPOSITORY=/mnt/backup
-export RESTIC_PASSWORD=&quot;your-secure-password&quot;
-restic backup ~/Documents ~/Projects
-restic forget --keep-daily 7 --keep-monthly 12
-EOF
-
-chmod +x ~/backup.sh
-
-# Add to crontab
-crontab -e
-# 0 3 * * * ~/backup.sh &gt;&gt; ~/backup.log 2&gt;&amp;1
-</code></pre>
-<hr>
-<h2>🌐 Nextcloud: Team Collaboration + Sync</h2>
-<h3>When to Use Nextcloud</h3>
-<ul>
-<li><strong>Team file sharing</strong> with permissions</li>
-<li><strong>Real-time collaboration</strong> (files + calendar + contacts)</li>
-<li><strong>Self-hosted control</strong> (optional)</li>
-<li><strong>Desktop + mobile sync</strong></li>
-<li><strong>Versioning and sharing</strong></li>
-<li><strong>Complex setup</strong> but powerful</li>
-</ul>
-<h3>Installation (Self-Hosted)</h3>
-<pre><code class="language-bash"># Docker (easiest)
-docker run -d \
-  -p 8080:80 \
-  -v nextcloud-data:/var/www/html \
-  --name nextcloud \
-  nextcloud
-
-# Then access http://localhost:8080
-</code></pre>
-<h3>Desktop Sync</h3>
-<pre><code class="language-bash"># Install Nextcloud Desktop Client
-sudo pacman -S nextcloud-client
-
-# Open app and configure server
-# Choose local folder to sync
-</code></pre>
-<hr>
-<h2>🎯 Recommended Setups by Use Case</h2>
-<h3>Single Machine: Local Backups</h3>
+restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents</code></pre>
+<hr />
+<h2 id="choosing-the-right-setup">📋 7. Choosing the Right Setup</h2>
+<h3 id="single-machine-local-backups">Single Machine: Local Backups</h3>
 <pre><code>rsync (daily) → External SSD
-+ Restic (weekly) → Cloud
-</code></pre>
-<h3>Personal Multi-Machine</h3>
++ Restic (weekly) → Cloud</code></pre>
+<h3 id="personal-multi-machine">Personal Multi-Machine</h3>
 <pre><code>Git (code/docs) → GitHub
-+ Syncthing (large files) → P2P between machines
-</code></pre>
-<h3>Team Collaboration</h3>
++ Syncthing (large files) → P2P between machines</code></pre>
+<h3 id="team-collaboration">Team Collaboration</h3>
 <pre><code>Git (code) → GitHub/GitLab
 + Nextcloud (shared files) → Server
-+ rclone (archives) → Cloud backup
-</code></pre>
-<h3>Backup Strategy (3-2-1 Rule)</h3>
-<pre><code>3 copies:
-  - Original (local SSD)
-  - Backup 1 (rsync → external drive)
-  - Backup 2 (Restic → cloud)
-
-2 different media types:
-  - SSD (fast access)
-  - HDD or cloud (archival)
-
-1 offsite:
-  - Cloud backup (disaster recovery)
-</code></pre>
-<hr>
-<h2>⚡ Quick Start: Popular Combinations</h2>
-<h3>Git + Syncthing (Developers)</h3>
-<pre><code class="language-bash"># Code in Git
-git clone https://github.com/user/project.git
-
-# Large files / media in Syncthing
-# Configure Syncthing to sync ~/Projects
-# Add folder on secondary machine
-</code></pre>
-<h3>rsync + Cron (System Admins)</h3>
-<pre><code class="language-bash"># Daily incremental backup
-0 2 * * * rsync -av ~/important /backup/
-
-# Monthly cloud backup
-0 3 1 * * rsync -av /backup user@cloud:/archives/
-</code></pre>
-<h3>Restic + S3 (Security-Conscious)</h3>
-<pre><code class="language-bash"># Encrypted cloud backups
-restic init -r s3:bucket
-restic backup ~/sensitive-data
-# Automatic pruning keeps space efficient
-</code></pre>
-<hr>
-<h2>🛡️ Security Best Practices</h2>
-<ol>
-<li><strong>Use SSH keys</strong> for Git and remote rsync</li>
++ rclone (archives) → Cloud backup</code></pre>
+<h3 id="backup-rule">3-2-1 Backup Rule</h3>
+<pre><code>3 copies of important data
+2 different media types (SSD + HDD)
+1 offsite (cloud)</code></pre>
+<hr />
+<h2 id="security-best-practices">🔒 Security Best Practices</h2>
+<ol type="1">
+<li><strong>Use SSH keys</strong> for Git and rsync</li>
 <li><strong>Enable 2FA</strong> on GitHub/GitLab</li>
-<li><strong>Encrypt sensitive backups</strong> with Restic</li>
+<li><strong>Encrypt cloud backups</strong> with Restic</li>
 <li><strong>Syncthing:</strong> Verify Device IDs before connecting</li>
-<li><strong>rclone:</strong> Use <code>--crypt</code> for sensitive cloud data</li>
-<li><strong>.gitignore:</strong> Never commit secrets, passwords, API keys</li>
-<li><strong>Permissions:</strong> Restrict backup folders (<code>chmod 700</code>)</li>
+<li><strong>rclone:</strong> Use <code>--crypt</code> for sensitive
+data</li>
+<li><strong>.gitignore:</strong> Never commit secrets, passwords, API
+keys</li>
+<li><strong>Permissions:</strong> Restrict backup folders
+(<code>chmod 700</code>)</li>
 </ol>
-<hr>
-<h2>📋 Troubleshooting</h2>
-<h3>Git: &quot;Permission denied&quot; on push</h3>
-<pre><code class="language-bash"># Verify SSH key is set up
+<hr />
+<h2 id="troubleshooting">🆘 Troubleshooting</h2>
+<h3 id="git-permission-denied-on-push">Git: “Permission denied” on
+push</h3>
+<pre class="bash"><code># Test SSH key
 ssh -T git@github.com
 
-# Or use HTTPS with personal access token
-git remote set-url origin https://github.com/user/repo.git
-</code></pre>
-<h3>Syncthing: Folder not syncing</h3>
-<pre><code class="language-bash"># Check logs
+# Or use HTTPS with personal token
+git remote set-url origin https://github.com/user/repo.git</code></pre>
+<h3 id="syncthing-folder-not-syncing">Syncthing: Folder not syncing</h3>
+<pre class="bash"><code># Check logs
 journalctl --user -u syncthing.service -n 50
 
 # Verify firewall allows connections
-sudo ufw allow syncthing
-</code></pre>
-<h3>rsync: Files not updating</h3>
-<pre><code class="language-bash"># Use dry-run to debug
+sudo ufw allow syncthing</code></pre>
+<h3 id="rsync-files-not-updating">rsync: Files not updating</h3>
+<pre class="bash"><code># Dry-run to debug
 rsync -av --dry-run ~/source /dest
 
 # Check destination permissions
-ls -la /dest
-</code></pre>
-<h3>rclone: Connection timeout</h3>
-<pre><code class="language-bash"># Increase timeout
-rclone --timeout 30s copy ~/Documents mycloud:/
-
-# Check authentication
-rclone config
-</code></pre>
-<hr>
-<h2>📚 References</h2>
+ls -la /dest</code></pre>
+<hr />
+<h2 id="why-would-i-use-this">🎯 Why Would I Use This?</h2>
 <ul>
-<li><a href="https://git-scm.com/doc">Git Documentation</a></li>
-<li><a href="https://docs.syncthing.net/">Syncthing Docs</a></li>
-<li><a href="https://linux.die.net/man/1/rsync">rsync Man Page</a></li>
-<li><a href="https://rclone.org/docs/">rclone Documentation</a></li>
-<li><a href="https://restic.readthedocs.io/">Restic Backup</a></li>
-<li><a href="https://www.backblaze.com/blog/the-3-2-1-backup-strategy/">3-2-1 Backup Strategy</a></li>
+<li><strong>Never lose work again</strong> - Automatic backups across
+devices</li>
+<li><strong>Collaborate smoothly</strong> - Version control with your
+team</li>
+<li><strong>Work from anywhere</strong> - Files follow you
+everywhere</li>
+<li><strong>Disaster recovery</strong> - 3-2-1 backup keeps you
+safe</li>
+<li><strong>Peace of mind</strong> - Know your files are secure and
+synced</li>
 </ul>
-
+<hr />
+<h2 id="related-guides">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Secure your backups</li>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Backup strategies</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Package
+management</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

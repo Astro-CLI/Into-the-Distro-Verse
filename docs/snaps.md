@@ -1,36 +1,44 @@
-# Snap: The Universal App Store (Canonical) 📦
+<!-- 
+    WIKI GUIDE: snaps.md
+    Guide to Snap package management - Canonical's universal app distribution format.
+    Covers installation, usage, permissions, and comparison with alternatives.
+-->
 
-Snap is a software packaging and deployment system developed by Canonical. Like Flatpak, it is designed to be universal across distributions, but it also handles CLI tools and system services particularly well.
+# Snap: Universal Apps Made Easy
+
+Snaps are self-contained application packages that work on any Linux distribution. Unlike traditional packages, snaps bundle their own dependencies, so the same snap runs identically on Arch, Fedora, Ubuntu, or anything else. This guide shows you how to install and manage them.
 
 ---
 
-## 🤔 Why Snap?
+## 🤔 Why Use Snaps?
 
-1.  **Direct from Developers:** Many major apps (like VS Code, Spotify, and Slack) are officially maintained as Snaps by their developers.
-2.  **Classic Confinement:** Unlike Flatpak, Snaps can have "classic" confinement, giving them full access to your system—useful for compilers and deep system tools.
-3.  **Automatic Updates:** Snaps update automatically in the background by default.
-4.  **Rollbacks:** You can easily revert to a previous version of a Snap if an update breaks something.
+- **Universal compatibility** - Same app works on any Linux distro
+- **Direct from developers** - VS Code, Spotify, Slack maintain official snaps
+- **Automatic updates** - Stay current without thinking about it
+- **Easy rollbacks** - Revert to a previous version if something breaks
+- **Sandboxed security** - Apps run in isolated environments
 
 ---
 
 ## 🚀 1. Installation
 
-Snap requires a background service called `snapd` to be running.
-
 ### On Arch Linux
+
 ```bash
-# 1. Install from the AUR
+# Install snapd from AUR
 paru -S snapd
 
-# 2. Enable the socket (handles the daemon automatically)
+# Enable the socket (handles the daemon automatically)
 sudo systemctl enable --now snapd.socket
 
-# 3. Enable classic snap support (symlink)
+# Enable classic snap support
 sudo ln -s /var/lib/snapd/snap /snap
 ```
-*Note: You may need to restart your session for the binary paths to be updated.*
+
+Note: You may need to restart your session for the paths to update.
 
 ### On Fedora
+
 ```bash
 sudo dnf install snapd
 sudo ln -s /var/lib/snapd/snap /snap
@@ -41,48 +49,113 @@ sudo ln -s /var/lib/snapd/snap /snap
 ## 📦 2. Basic Commands
 
 | Task | Command |
-| :--- | :--- |
-| **Search** | `snap find app_name` |
-| **Install** | `sudo snap install app_id` |
-| **Install Classic** | `sudo snap install app_id --classic` |
-| **List Installed** | `snap list` |
-| **Update All** | `sudo snap refresh` |
-| **Revert Update** | `sudo snap revert app_id` |
-| **Uninstall** | `sudo snap remove app_id` |
+|------|---------|
+| Search for an app | `snap find app_name` |
+| Install an app | `sudo snap install app_id` |
+| Install (no sandbox) | `sudo snap install app_id --classic` |
+| List installed | `snap list` |
+| Update all | `sudo snap refresh` |
+| Revert app update | `sudo snap revert app_id` |
+| Uninstall | `sudo snap remove app_id` |
 
----
+### Examples
 
-## 🔒 3. Confinement Levels
-
--   **Strict:** The default. The app is sandboxed and cannot access your files without specific "interfaces" (connections).
--   **Classic:** The app has full access to your system (like a standard `.deb` or `.rpm`). Required for tools like VS Code or compilers.
--   **Devmode:** For developers. The app has full access but logs what it *would* have been blocked from doing.
-
----
-
-## 🧹 4. Maintenance
-
-Snaps keep old versions of packages on your disk by default, which can take up significant space.
-
-**To limit the number of old versions kept (e.g., to 2):**
 ```bash
+# Install VS Code
+sudo snap install code --classic
+
+# Install Spotify
+sudo snap install spotify
+
+# See all your installed snaps
+snap list
+
+# Update everything
+sudo snap refresh
+```
+
+---
+
+## 🔐 3. Understanding Snap Confinement
+
+Snaps run with different levels of isolation:
+
+### Strict Confinement (Default)
+
+The app is sandboxed and can't access files or system resources without explicit permission (interfaces).
+
+```bash
+# Example: Firefox with strict confinement
+sudo snap install firefox
+```
+
+### Classic Confinement
+
+The app has full system access (like traditional packages). Needed for compilers, IDEs, and deep system tools.
+
+```bash
+# Example: VS Code needs full access
+sudo snap install code --classic
+```
+
+### Devmode (Developers Only)
+
+The app can see what it would be blocked from doing (for debugging).
+
+```bash
+sudo snap install app_id --devmode
+```
+
+---
+
+## 🧹 4. Storage Maintenance
+
+Snaps keep old versions for rollbacks, which can waste disk space over time.
+
+Limit how many old versions to keep:
+
+```bash
+# Keep only 2 old versions of each snap
 sudo snap set system refresh.retain=2
 ```
 
 ---
 
-## ⚖️ Snap vs. Flatpak
+## ⚖️ 5. Snap vs. Flatpak vs. Others
 
-| Feature | Snap | Flatpak |
-| :--- | :--- | :--- |
-| **Creator** | Canonical (Ubuntu) | Community (Freedesktop) |
-| **Best For** | CLI tools, Servers, Proprietary Apps | Desktop Apps, GUI-heavy tools |
-| **Backend** | Proprietary (Snap Store) | Open Source (Flathub, etc.) |
-| **Mounting** | Uses Loop Devices (visible in `lsblk`) | Does not use Loop Devices |
+| Feature | Snap | Flatpak | Nix |
+|---------|------|---------|-----|
+| Creator | Canonical | Community | Community |
+| Best For | CLI tools, proprietary apps | Desktop GUIs | Development |
+| Updates | Automatic | Manual | Manual |
+| Storage | Uses loop devices | Direct | Functional |
+| Sandbox | Strong | Strong | Very strong |
+
+**Choose Snap if:**
+- You want automatic updates
+- You're on Ubuntu (native support)
+- You need cutting-edge CLI tools
+
+**Choose Flatpak if:**
+- You prefer desktop apps
+- You want more control over updates
+- You like open-source tools
+
+---
+
+## 🎯 Why Would I Use This?
+
+- **Same app everywhere** - Install once, works on any distro
+- **Always up-to-date** - Get the latest version automatically
+- **No dependency conflicts** - Apps bring their own libraries
+- **Easy management** - Simple commands for install/remove/update
+- **Rollback easily** - Previous version always available
 
 ---
 
 ## 🔗 Related Guides
-*   📖 **[Flatpak Guide](flatpak.md)** - The community-driven alternative to Snap.
-*   📖 **[Nix Guide](nix.md)** - Universal and functional package management.
-*   📖 **[Homebrew Guide](homebrew.md)** - CLI-focused package manager for Linux.
+
+- 📖 **[Flatpak Guide](flatpak.md)** - Canonical's competitor, great for desktop apps
+- 📖 **[Nix Guide](nix.md)** - Functional package management
+- 📖 **[Homebrew Guide](homebrew.md)** - CLI-focused universal packages
+- 📖 **[Arch Linux Guide](arch.md)** - Native package management

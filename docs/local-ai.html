@@ -1,309 +1,338 @@
-<h1>Local AI &amp; LLM Setup</h1>
-<p>This guide documents the setup of local Large Language Models (LLMs) on Arch Linux, optimized for AMD hardware (ROCm).</p>
-<h2>Hardware Context</h2>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>local ai</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="local-ai.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">local ai</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><strong>GPU:</strong> AMD Radeon RX 7600 XT (16GB VRAM)</li>
-<li><strong>CPU:</strong> AMD Ryzen 7 7800X3D</li>
-<li><strong>RAM:</strong> 32GB DDR5</li>
-<li><strong>Driver Stack:</strong> ROCm (Radeon Open Compute)</li>
+<li><a href="#running-local-ai-models-your-personal-chatgpt"
+id="toc-running-local-ai-models-your-personal-chatgpt">Running Local AI
+Models: Your Personal ChatGPT</a>
+<ul>
+<li><a href="#why-run-ai-locally" id="toc-why-run-ai-locally">🤔 Why Run
+AI Locally?</a></li>
+<li><a href="#your-hardware-matters" id="toc-your-hardware-matters">⚙️
+Your Hardware Matters</a></li>
+<li><a href="#setting-up-ollama-the-brain"
+id="toc-setting-up-ollama-the-brain">🧠 1. Setting Up Ollama (The
+Brain)</a>
+<ul>
+<li><a href="#option-a-native-installation-recommended"
+id="toc-option-a-native-installation-recommended">Option A: Native
+Installation (Recommended)</a></li>
+<li><a href="#option-b-docker-setup"
+id="toc-option-b-docker-setup">Option B: Docker Setup</a></li>
+</ul></li>
+<li><a href="#managing-models-with-the-ai-script"
+id="toc-managing-models-with-the-ai-script">🎛️ 2. Managing Models with
+the <code>ai</code> Script</a>
+<ul>
+<li><a href="#using-the-ai-manager" id="toc-using-the-ai-manager">Using
+the AI Manager</a></li>
+</ul></li>
+<li><a href="#open-interpreter-ai-with-hands"
+id="toc-open-interpreter-ai-with-hands">🤖 3. Open Interpreter: AI With
+Hands</a>
+<ul>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#using-open-interpreter"
+id="toc-using-open-interpreter">Using Open Interpreter</a></li>
+<li><a href="#example-commands" id="toc-example-commands">Example
+Commands</a></li>
+</ul></li>
+<li><a href="#security-internet-kill-switch"
+id="toc-security-internet-kill-switch">🔒 4. Security: Internet
+Kill-Switch</a></li>
+<li><a href="#recommended-models-for-16gb-vram"
+id="toc-recommended-models-for-16gb-vram">📊 5. Recommended Models for
+16GB VRAM</a></li>
+<li><a href="#helper-scripts" id="toc-helper-scripts">🛠️ 6. Helper
+Scripts</a>
+<ul>
+<li><a href="#script-1-model-manager-usrlocalbinai"
+id="toc-script-1-model-manager-usrlocalbinai">Script 1: Model Manager
+(<code>/usr/local/bin/ai</code>)</a></li>
+<li><a href="#script-2-interpreter-wrapper-usrlocalbininterpreter"
+id="toc-script-2-interpreter-wrapper-usrlocalbininterpreter">Script 2:
+Interpreter Wrapper (<code>/usr/local/bin/interpreter</code>)</a></li>
+</ul></li>
+<li><a href="#monitoring-maintenance" id="toc-monitoring-maintenance">📈
+7. Monitoring &amp; Maintenance</a>
+<ul>
+<li><a href="#check-vram-usage" id="toc-check-vram-usage">Check VRAM
+Usage</a></li>
+<li><a href="#list-all-models" id="toc-list-all-models">List All
+Models</a></li>
+<li><a href="#free-vram-immediately" id="toc-free-vram-immediately">Free
+VRAM Immediately</a></li>
+<li><a href="#model-storage" id="toc-model-storage">Model
+Storage</a></li>
+</ul></li>
+<li><a href="#tips-for-best-performance"
+id="toc-tips-for-best-performance">⚡ Tips for Best Performance</a></li>
+<li><a href="#why-would-i-use-this" id="toc-why-would-i-use-this">🎯 Why
+Would I Use This?</a></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 Related
+Guides</a></li>
+</ul></li>
 </ul>
-<p>The 16GB of VRAM allows for running models up to 14B-20B parameters entirely on the GPU at high speeds.</p>
-<hr>
-<h2>1. Core Engine: Ollama</h2>
-<p>Ollama serves as the backend &quot;brain.&quot; While native installation is recommended on Arch, Docker is a viable alternative for isolation.</p>
-<h3>Option A: Native Installation (Recommended)</h3>
-<p>Native installation provides the best performance and easiest integration with host-side tools.</p>
-<pre><code class="language-bash">sudo pacman -S ollama-rocm
-sudo systemctl enable --now ollama.service
-</code></pre>
-<h3>Option B: Docker-based Setup</h3>
-<p>Useful for isolating the LLM environment or running multiple versions.</p>
-<pre><code class="language-bash">docker run -d \
+</nav>
+<!-- 
+    WIKI GUIDE: local-ai.md
+    Guide for setting up local Large Language Models (LLMs) on Arch Linux,
+    optimized for AMD hardware using ROCm. Includes Ollama, Open Interpreter,
+    and helper scripts for easy model management.
+-->
+<h1 id="running-local-ai-models-your-personal-chatgpt">Running Local AI
+Models: Your Personal ChatGPT</h1>
+<p>Want AI tools that don’t phone home to big corporations? This guide
+shows how to run powerful language models entirely on your own hardware
+using Ollama. Everything stays private, runs fast, and never leaves your
+computer.</p>
+<hr />
+<h2 id="why-run-ai-locally">🤔 Why Run AI Locally?</h2>
+<ul>
+<li><strong>Privacy</strong> - No data sent to corporations or cloud
+servers</li>
+<li><strong>Speed</strong> - No network latency, instant responses</li>
+<li><strong>Cost</strong> - No API fees or subscription charges</li>
+<li><strong>Control</strong> - Use exactly the models you want</li>
+<li><strong>Offline</strong> - Works without internet connection</li>
+<li><strong>Learning</strong> - Understand how AI actually works</li>
+</ul>
+<hr />
+<h2 id="your-hardware-matters">⚙️ Your Hardware Matters</h2>
+<p>This guide assumes: - <strong>GPU:</strong> AMD Radeon RX 7600 XT
+(16GB VRAM) - <strong>CPU:</strong> AMD Ryzen 7 7800X3D -
+<strong>RAM:</strong> 32GB DDR5 - <strong>Driver:</strong> ROCm (AMD’s
+compute platform)</p>
+<p>With 16GB VRAM, you can run models up to 20B parameters smoothly.</p>
+<hr />
+<h2 id="setting-up-ollama-the-brain">🧠 1. Setting Up Ollama (The
+Brain)</h2>
+<p>Ollama is the backend engine that runs your models locally.</p>
+<h3 id="option-a-native-installation-recommended">Option A: Native
+Installation (Recommended)</h3>
+<p>Native installation gives the best performance:</p>
+<pre class="bash"><code>sudo pacman -S ollama-rocm
+sudo systemctl enable --now ollama.service</code></pre>
+<h3 id="option-b-docker-setup">Option B: Docker Setup</h3>
+<p>If you want isolation or have multiple versions:</p>
+<pre class="bash"><code>docker run -d \
   --device /dev/kfd --device /dev/dri \
   -v ollama:/root/.ollama \
   -p 11434:11434 \
   --name ollama \
-  ollama/ollama:rocm
-</code></pre>
-<p><em>Note: GPU access is enabled by mapping <code>/dev/kfd</code> and <code>/dev/dri</code> device files.</em></p>
-<hr>
-<h2>2. Manager Script: <code>ai</code></h2>
-<p>A portable Bash script located at <code>/usr/local/bin/ai</code> that provides an interactive menu to manage and launch models.</p>
-<h3>Key Features</h3>
+  ollama/ollama:rocm</code></pre>
+<p>(GPU access works by mapping device files <code>/dev/kfd</code> and
+<code>/dev/dri</code>)</p>
+<hr />
+<h2 id="managing-models-with-the-ai-script">🎛️ 2. Managing Models with
+the <code>ai</code> Script</h2>
+<p>We’ve created a helper script that makes model selection super easy.
+It’s an interactive menu that:</p>
 <ul>
-<li><strong>Categorization:</strong> Models are sorted into Large (14B), Medium (7B-8B), and Small (3B).</li>
-<li><strong>Ranking:</strong> Prioritizes specialist models (like Qwen Coder) at the top of their categories.</li>
-<li><strong>Instant Unload:</strong> Press <code>0</code> to instantly clear VRAM (useful before launching heavy games).</li>
-<li><strong>Persistence:</strong> Remembers your last choice; just press <code>Enter</code> to resume the previous session.</li>
+<li><strong>Categorizes models</strong> by size (Large, Medium,
+Small)</li>
+<li><strong>Remembers your choice</strong> - just press Enter to use the
+same model</li>
+<li><strong>Clears VRAM instantly</strong> with option 0</li>
+<li><strong>Ranks models</strong> by quality within each category</li>
 </ul>
-<hr>
-<h2>3. System Agent: Open Interpreter</h2>
-<p>Open Interpreter provides the &quot;hands&quot; for the AI, allowing it to run terminal commands and python scripts with your approval.</p>
-<h3>Setup (Python 3.14+ &quot;Monkey-Patch&quot;)</h3>
-<p>Newer Python versions (3.14+) have removed the legacy <code>pkg_resources</code> module. We install it in a virtual environment and apply a compatibility patch.</p>
-<ol>
-<li><p><strong>Create Environment:</strong></p>
-<pre><code class="language-bash">python -m venv ~/interpreter_env
+<h3 id="using-the-ai-manager">Using the AI Manager</h3>
+<pre class="bash"><code>ai</code></pre>
+<p>You’ll see a menu of available models. Select one and it launches
+instantly.</p>
+<hr />
+<h2 id="open-interpreter-ai-with-hands">🤖 3. Open Interpreter: AI With
+Hands</h2>
+<p>Open Interpreter lets AI help with system tasks - it can run terminal
+commands, write scripts, and explore your files (with your
+permission).</p>
+<h3 id="installation">Installation</h3>
+<pre class="bash"><code># Create a virtual environment
+python -m venv ~/interpreter_env
 ~/interpreter_env/bin/pip install open-interpreter setuptools
-</code></pre>
-</li>
-<li><p><strong>Apply Patch:</strong> Create <code>~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py</code>:</p>
-<pre><code class="language-python">import importlib.metadata
+
+# If Python 3.14+, add compatibility shim:
+cat &gt; ~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py &lt;&lt; &#39;COMPAT&#39;
+import importlib.metadata
 def get_distribution(name):
     return importlib.metadata.distribution(name)
-</code></pre>
-</li>
-<li><p><strong>Usage Command:</strong><br>Point it to your local Ollama instance:</p>
-<pre><code class="language-bash">~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --model ollama/qwen2.5-coder:14b
-</code></pre>
-</li>
-</ol>
-<h3>Command Examples</h3>
-<ul>
-<li><em>&quot;List the 5 largest files in my Downloads folder.&quot;</em></li>
-<li><em>&quot;Help me find all my .pkt files and move them to a new folder.&quot;</em></li>
-<li><em>&quot;Check my current GPU temperatures using rocm-smi.&quot;</em></li>
-</ul>
-<hr>
-<h2>4. Security: The Internet Kill-Switch</h2>
-<p>For sensitive tasks, you can run the AI in a fully offline sandbox using <code>firejail</code>. It will still be able to &quot;talk&quot; to your local Ollama brain, but cannot reach the internet.</p>
-<pre><code class="language-bash">firejail --net=none ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
-</code></pre>
-<hr>
-<h2>5. Helper Scripts</h2>
-<p>To make usage simple, the following scripts were created to automate model management and tool integration.</p>
-<h3>The <code>ai</code> Model Manager</h3>
-<p><strong>Location:</strong> <code>/usr/local/bin/ai</code> (Executable)</p>
-<p>This script provides an interactive menu for selecting and launching models, as well as clearing VRAM.</p>
-<pre><code class="language-bash">#!/usr/bin/env bash
+COMPAT</code></pre>
+<h3 id="using-open-interpreter">Using Open Interpreter</h3>
+<pre class="bash"><code># Normal mode (with internet access for web tasks)
+~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
 
-# Paths for last used model
-CACHE_DIR=&quot;$HOME/.cache&quot;
-LAST_MODEL_FILE=&quot;$CACHE_DIR/ai_last_model&quot;
-mkdir -p &quot;$CACHE_DIR&quot;
-
-# Define our ideal ranking order (Best to Worst in each category)
-LARGE_RANK=(
-    &quot;qwen2.5-coder:14b&quot;
-    &quot;phi4:latest&quot;
-    &quot;deepseek-r1:14b&quot;
-    &quot;gemma2:27b&quot;
-)
-
-MEDIUM_RANK=(
-    &quot;gemma2:9b&quot;
-    &quot;llama3.1:latest&quot;
-    &quot;qwen2.5-coder:7b&quot;
-    &quot;mistral:latest&quot;
-    &quot;deepseek-r1:7b&quot;
-)
-
-SMALL_RANK=(
-    &quot;qwen2.5:3b&quot;
-    &quot;llama3.2:latest&quot;
-    &quot;gemma2:2b&quot;
-)
-
-# Get current models from ollama
-mapfile -t current_models &lt; &lt;(ollama list | tail -n +2 | awk &#39;{print $1}&#39;)
-
-# Function to check if a model exists in current_models
-model_exists() {
-    local target=&quot;$1&quot;
-    for m in &quot;${current_models[@]}&quot;; do
-        if [ &quot;$m&quot; == &quot;$target&quot; ]; then return 0; fi
-    done
-    return 1
-}
-
-# Load last used model
-last_model=&quot;&quot;
-if [ -f &quot;$LAST_MODEL_FILE&quot; ]; then
-    last_model=$(cat &quot;$LAST_MODEL_FILE&quot;)
-fi
-
-echo &quot;--- Local AI Manager ---&quot;
-printf &quot;[0] 🧊 Unload All Models (Free VRAM)\n&quot;
-
-menu_items=()
-counter=1
-
-# Print Categories
-print_category() {
-    local header=&quot;$1&quot;
-    shift
-    local rank_array=(&quot;$@&quot;)
-    local found_any=0
-    
-    for model in &quot;${rank_array[@]}&quot;; do
-        if model_exists &quot;$model&quot;; then
-            if [ $found_any -eq 0 ]; then
-                printf &quot;\n\e[1;34m%s\e[0m\n&quot; &quot;$header&quot;
-                found_any=1
-            fi
-            mark=&quot;  &quot;
-            if [ &quot;$model&quot; == &quot;$last_model&quot; ]; then
-                mark=&quot;* &quot;
-            fi
-            printf &quot;[%d] %s%s\n&quot; &quot;$counter&quot; &quot;$mark&quot; &quot;$model&quot;
-            menu_items+=(&quot;$model&quot;)
-            counter=$((counter + 1))
-        fi
-    done
-}
-
-print_category &quot;--- LARGE MODELS (High IQ / 14B) ---&quot; &quot;${LARGE_RANK[@]}&quot;
-print_category &quot;--- MEDIUM MODELS (Balanced / 7B-8B) ---&quot; &quot;${MEDIUM_RANK[@]}&quot;
-print_category &quot;--- SMALL MODELS (Fast / 3B) ---&quot; &quot;${SMALL_RANK[@]}&quot;
-
-# Catch any models not in our list
-others=()
-for m in &quot;${current_models[@]}&quot;; do
-    is_ranked=0
-    for r in &quot;${LARGE_RANK[@]}&quot; &quot;${MEDIUM_RANK[@]}&quot; &quot;${SMALL_RANK[@]}&quot;; do
-        if [ &quot;$m&quot; == &quot;$r&quot; ]; then is_ranked=1; break; fi
-    done
-    if [ $is_ranked -eq 0 ]; then others+=(&quot;$m&quot;); fi
-done
-if [ ${#others[@]} -gt 0 ]; then
-    print_category &quot;--- OTHER MODELS ---&quot; &quot;${others[@]}&quot;
-fi
-
-echo &quot;&quot;
-if [ -n &quot;$last_model&quot; ]; then
-    read -p &quot;Select model (default: $last_model) [0-$((counter-1))]: &quot; choice
-else
-    read -p &quot;Select model [0-$((counter-1))]: &quot; choice
-fi
-
-# Selection Logic
-selected_model=&quot;&quot;
-if [ -z &quot;$choice&quot; ]; then
-    selected_model=&quot;$last_model&quot;
-elif [ &quot;$choice&quot; == &quot;0&quot; ]; then
-    echo &quot;🧊 Unloading from VRAM...&quot;
-    curl -s -X POST http://localhost:11434/api/generate -d &quot;{\&quot;model\&quot;: \&quot;$last_model\&quot;, \&quot;keep_alive\&quot;: 0}&quot; &gt; /dev/null
-    echo &quot;✅ VRAM cleared!&quot;
-    exit 0
-elif [[ &quot;$choice&quot; =~ ^[0-9]+$ ]]; then
-    if [ &quot;$choice&quot; -ge 1 ] &amp;&amp; [ &quot;$choice&quot; -le &quot;${#menu_items[@]}&quot; ]; then
-        selected_model=&quot;${menu_items[$((choice - 1))]}&quot;
-    else
-        echo &quot;❌ Invalid selection.&quot;
-        exit 1
-    fi
-else
-    echo &quot;❌ Invalid input.&quot;
-    exit 1
-fi
-
-# Run the model
-if [ -n &quot;$selected_model&quot; ]; then
-    echo &quot;$selected_model&quot; &gt; &quot;$LAST_MODEL_FILE&quot;
-    echo &quot;🚀 Launching $selected_model...&quot;
-    ollama run &quot;$selected_model&quot;
-fi
-</code></pre>
-<h3>The <code>interpreter</code> Shortcut (Portable Bash)</h3>
-<p><strong>Location:</strong> <code>/usr/local/bin/interpreter</code> (Executable)</p>
-<p>This script simplifies launching Open Interpreter, handles Python 3.14 compatibility, and adds a privacy toggle.</p>
-<pre><code class="language-bash">#!/usr/bin/env bash
-export PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
-INTERPRETER_BIN=&quot;$HOME/interpreter_env/bin/interpreter&quot;
-CMD=&quot;$INTERPRETER_BIN --local --api_base http://localhost:11434&quot;
-
-# Handle --offline flag
-if [[ &quot;$*&quot; == *&quot;--offline&quot;* ]]; then
-    echo &quot;🔒 Running in OFFLINE mode (Internet Disabled)&quot;
-    firejail --net=none --quiet bash -c &quot;$CMD ${*//--offline/}&quot;
-else
-    bash -c &quot;$CMD $*&quot;
-fi
-</code></pre>
-<hr>
-<h2>6. Live Information &amp; Internet Access</h2>
-<p>While the LLM &quot;brain&quot; (Ollama) is offline, Open Interpreter can access the internet using host-side tools.</p>
-<h3>How to use Internet</h3>
-<ol>
-<li>Run the command without the offline flag: <code>interpreter</code>.</li>
-<li>Ask the AI to perform a web-based task:<ul>
-<li><em>&quot;Find the current price of Bitcoin.&quot;</em></li>
-<li><em>&quot;Search the web for the latest Arch Linux news.&quot;</em></li>
-</ul>
-</li>
-</ol>
-<p>The AI will write and execute Python code (using libraries like <code>requests</code> or <code>selenium</code>) to fetch the data and present it to you.</p>
-<hr>
-<h2>7. Recommended Models for 16GB VRAM</h2>
+# Offline mode (no internet, complete privacy)
+~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --offline</code></pre>
+<h3 id="example-commands">Example Commands</h3>
+<pre><code>&quot;List the 5 largest files in my Downloads folder&quot;
+&quot;Help me organize my photos by date&quot;
+&quot;Check my GPU temperatures using rocm-smi&quot;</code></pre>
+<hr />
+<h2 id="security-internet-kill-switch">🔒 4. Security: Internet
+Kill-Switch</h2>
+<p>For sensitive work, run AI in an offline sandbox using firejail:</p>
+<pre class="bash"><code>firejail --net=none ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434</code></pre>
+<p>The AI can still talk to Ollama locally, but can’t reach the
+internet.</p>
+<hr />
+<h2 id="recommended-models-for-16gb-vram">📊 5. Recommended Models for
+16GB VRAM</h2>
 <table>
 <thead>
 <tr>
-<th align="left">Tier</th>
-<th align="left">Recommended Model</th>
-<th align="left">Best For...</th>
-<th align="left">VRAM Usage</th>
+<th>Tier</th>
+<th>Model</th>
+<th>Best For</th>
+<th>VRAM</th>
+<th>Speed</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Large</strong></td>
-<td align="left"><code>gemma2:27b</code></td>
-<td align="left"><strong>Google&#39;s Best:</strong> High Reasoning</td>
-<td align="left">~16GB+</td>
+<tbody>
+<tr>
+<td><strong>Large</strong></td>
+<td><code>qwen2.5-coder:14b</code></td>
+<td>🏆 System commands</td>
+<td>9GB</td>
+<td>Fast</td>
 </tr>
 <tr>
-<td align="left"><strong>Large</strong></td>
-<td align="left"><code>qwen2.5-coder:14b</code></td>
-<td align="left"><strong>Top Pick:</strong> Best for System Commands</td>
-<td align="left">~9GB</td>
+<td><strong>Large</strong></td>
+<td><code>gemma2:27b</code></td>
+<td>Reasoning &amp; analysis</td>
+<td>16GB+</td>
+<td>Moderate</td>
 </tr>
 <tr>
-<td align="left"><strong>Large</strong></td>
-<td align="left"><code>phi4:latest</code></td>
-<td align="left">Logic, Math, Reasoning</td>
-<td align="left">~9GB</td>
+<td><strong>Medium</strong></td>
+<td><code>gemma2:9b</code></td>
+<td>🏆 General chat</td>
+<td>6GB</td>
+<td>Fast</td>
 </tr>
 <tr>
-<td align="left"><strong>Large</strong></td>
-<td align="left"><code>deepseek-r1:14b</code></td>
-<td align="left">Deep Thinking (Reasoning)</td>
-<td align="left">~9GB</td>
+<td><strong>Medium</strong></td>
+<td><code>llama3.1:latest</code></td>
+<td>Reliable general use</td>
+<td>5GB</td>
+<td>Fast</td>
 </tr>
 <tr>
-<td align="left"><strong>Medium</strong></td>
-<td align="left"><code>gemma2:9b</code></td>
-<td align="left"><strong>Generalist King:</strong> Great Chat/Creative</td>
-<td align="left">~6GB</td>
+<td><strong>Small</strong></td>
+<td><code>qwen2.5:3b</code></td>
+<td>Quick summaries</td>
+<td>2GB</td>
+<td>Very fast</td>
 </tr>
-<tr>
-<td align="left"><strong>Medium</strong></td>
-<td align="left"><code>llama3.1:latest</code></td>
-<td align="left">General Chat &amp; Reliability</td>
-<td align="left">~5GB</td>
-</tr>
-<tr>
-<td align="left"><strong>Medium</strong></td>
-<td align="left"><code>qwen2.5-coder:7b</code></td>
-<td align="left">Coding &amp; Scripting</td>
-<td align="left">~5GB</td>
-</tr>
-<tr>
-<td align="left"><strong>Small</strong></td>
-<td align="left"><code>qwen2.5:3b</code></td>
-<td align="left">Instant Summaries / Low Resource</td>
-<td align="left">~2GB</td>
-</tr>
-<tr>
-<td align="left"><strong>Small</strong></td>
-<td align="left"><code>gemma2:2b</code></td>
-<td align="left">Blazing Fast Basic Tasks</td>
-<td align="left">~1.5GB</td>
-</tr>
-</tbody></table>
-<hr>
-<h2>8. Maintenance &amp; Performance</h2>
+</tbody>
+</table>
+<p><strong>Pro tip:</strong> <code>qwen2.5-coder:14b</code> is excellent
+for system administration tasks.</p>
+<hr />
+<h2 id="helper-scripts">🛠️ 6. Helper Scripts</h2>
+<p>Two scripts make everything easy:</p>
+<h3 id="script-1-model-manager-usrlocalbinai">Script 1: Model Manager
+(<code>/usr/local/bin/ai</code>)</h3>
+<p>Interactive menu for launching models and freeing VRAM.</p>
+<h3 id="script-2-interpreter-wrapper-usrlocalbininterpreter">Script 2:
+Interpreter Wrapper (<code>/usr/local/bin/interpreter</code>)</h3>
+<p>Simplifies launching Open Interpreter with the correct settings.</p>
+<p>Both scripts are self-contained and ready to use.</p>
+<hr />
+<h2 id="monitoring-maintenance">📈 7. Monitoring &amp; Maintenance</h2>
+<h3 id="check-vram-usage">Check VRAM Usage</h3>
+<pre class="bash"><code>rocm-smi</code></pre>
+<h3 id="list-all-models">List All Models</h3>
+<pre class="bash"><code>ollama list</code></pre>
+<h3 id="free-vram-immediately">Free VRAM Immediately</h3>
+<pre class="bash"><code>ai
+# Select option 0</code></pre>
+<h3 id="model-storage">Model Storage</h3>
+<p>Models are stored in: - Native:
+<code>/usr/share/ollama/.ollama</code> - Docker: Docker volume (managed
+automatically)</p>
+<hr />
+<h2 id="tips-for-best-performance">⚡ Tips for Best Performance</h2>
 <ul>
-<li><strong>Monitor VRAM:</strong> Run <code>rocm-smi</code> to see real-time allocation.</li>
-<li><strong>Clear Memory:</strong> Use the <code>ai</code> command and select <code>0</code> to free up GPU space immediately.</li>
-<li><strong>Disk Usage:</strong> Models are stored in <code>/usr/share/ollama/.ollama</code> (Native) or Docker volumes.</li>
+<li><strong>Start with Medium models</strong> - balances quality and
+speed</li>
+<li><strong>Use BFQ I/O scheduler</strong> - prevents system
+slowdowns</li>
+<li><strong>Monitor temps</strong> - AI models can heat your GPU</li>
+<li><strong>Close unnecessary apps</strong> - free up RAM for the
+model</li>
+<li><strong>Use offline mode</strong> for sensitive work</li>
 </ul>
-
+<hr />
+<h2 id="why-would-i-use-this">🎯 Why Would I Use This?</h2>
+<ul>
+<li><strong>Privacy-first AI</strong> - No data goes to cloud</li>
+<li><strong>Fast responses</strong> - Local processing = instant
+answers</li>
+<li><strong>Offline AI</strong> - Works without internet</li>
+<li><strong>Cost savings</strong> - One-time hardware investment</li>
+<li><strong>Learning</strong> - Understand how models actually work</li>
+<li><strong>System automation</strong> - Let AI help with tasks</li>
+</ul>
+<hr />
+<h2 id="related-guides">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="audio-video.md">Audio &amp; Video
+Production</a></strong> - For combining AI with media</li>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Keeping your system optimized</li>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Sandbox AI for maximum privacy</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Package
+management</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

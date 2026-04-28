@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: timeshift-io-optimization.md
+    Solutions for fixing system freezes caused by BTRFS snapshot operations
+    on NVMe SSDs, with detailed tuning guidelines.
+-->
+
 # Timeshift I/O Optimization: Fixing Snapshot-Related Freezes 🔧
 
 ## Problem: Random System Freezes During Work/Gaming
@@ -404,3 +410,22 @@ sudo timeshift --create --comments "Test snapshot"
 3. **`ionice`** for additional control when needed
 
 This works on **any filesystem, any storage type, any kernel** - it's the proper fix for background tasks that shouldn't freeze interactive use.
+
+---
+
+## 🎯 Why Would I Do This?
+
+- **Keep gaming smooth** - No stutters during backups
+- **Work without interruption** - Citrix/remote work doesn't freeze
+- **Record cleanly** - No audio/video drops during snapshots
+- **System stays responsive** - Keep using your computer normally
+- **Faster snapshots** - BFQ and throttling can actually speed things up
+
+---
+
+## 🔗 Related Guides
+
+- 📖 **[Snapshots & Backups](snapshots.md)** - General snapshot concepts
+- 📖 **[System Maintenance](system_maintenance.md)** - Backup strategies  
+- 📖 **[Arch Linux Guide](arch.md)** - BTRFS layout and kernel options
+- 📖 **[Fedora Guide](fedora.md)** - Fedora-specific snapshot tools

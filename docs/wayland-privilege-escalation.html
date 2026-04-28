@@ -1,200 +1,321 @@
-<h1>Wayland GUI Privilege Escalation</h1>
-<p>Running GUI applications as root on Wayland systems requires special handling because <code>pkexec</code> (and similar tools) deliberately strip environment variables for security. This guide covers the problem and two recommended solutions.</p>
-<hr>
-<h2>The Problem</h2>
-<p>On Wayland, <code>pkexec application</code> fails with GUI errors:</p>
-<pre><code>** could not connect to display
-** Couldn&#39;t run dumpcap in child process: Permission denied
-</code></pre>
-<h3>Why X11 Approach Doesn&#39;t Work</h3>
-<p><strong>On X11:</strong> Only <code>DISPLAY</code> variable needed (e.g., <code>:0</code>)</p>
-<p><strong>On Wayland:</strong> Multiple environment variables required:</p>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>wayland privilege escalation</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="wayland-privilege-escalation.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">wayland privilege escalation</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><code>WAYLAND_DISPLAY</code> — Wayland socket name (e.g., <code>wayland-0</code>)</li>
-<li><code>XDG_RUNTIME_DIR</code> — User runtime directory (e.g., <code>/run/user/1000</code>)</li>
-</ul>
-<p>When <code>pkexec</code> elevates privileges, it strips these variables for security, so the root process can&#39;t connect to your Wayland compositor. Additionally:</p>
+<li><a href="#running-gui-apps-as-root-on-wayland"
+id="toc-running-gui-apps-as-root-on-wayland">Running GUI Apps as Root on
+Wayland</a>
 <ul>
-<li>Root <code>HOME</code> is <code>/root</code>, not your user home</li>
-<li>Qt/KDE apps can&#39;t find user config/theme files</li>
-<li>Result: White theme, no display connection</li>
+<li><a href="#why-this-is-complicated"
+id="toc-why-this-is-complicated">🤔 Why This is Complicated</a></li>
+<li><a href="#solution-1-group-based-elevation-recommended"
+id="toc-solution-1-group-based-elevation-recommended">✅ Solution 1:
+Group-Based Elevation (Recommended)</a>
+<ul>
+<li><a href="#example-wireshark" id="toc-example-wireshark">Example:
+Wireshark</a></li>
+<li><a href="#why-this-is-best" id="toc-why-this-is-best">Why This Is
+Best</a></li>
+<li><a href="#disadvantages"
+id="toc-disadvantages">Disadvantages</a></li>
+</ul></li>
+<li><a href="#solution-2-direct-pkexec-with-environment-variables"
+id="toc-solution-2-direct-pkexec-with-environment-variables">⚡ Solution
+2: Direct pkexec with Environment Variables</a>
+<ul>
+<li><a href="#basic-usage" id="toc-basic-usage">Basic Usage</a></li>
+<li><a href="#make-an-alias" id="toc-make-an-alias">Make an
+Alias</a></li>
+<li><a href="#advantages" id="toc-advantages">Advantages</a></li>
+<li><a href="#disadvantages-1"
+id="toc-disadvantages-1">Disadvantages</a></li>
+</ul></li>
+<li><a href="#solution-3-wayland-aware-pkexec-wrapper"
+id="toc-solution-3-wayland-aware-pkexec-wrapper">🔧 Solution 3:
+Wayland-Aware pkexec Wrapper</a>
+<ul>
+<li><a href="#create-the-wrapper" id="toc-create-the-wrapper">Create the
+Wrapper</a></li>
+<li><a href="#add-an-alias" id="toc-add-an-alias">Add an Alias</a></li>
+<li><a href="#usage" id="toc-usage">Usage</a></li>
+<li><a href="#advantages-1" id="toc-advantages-1">Advantages</a></li>
+<li><a href="#disadvantages-2"
+id="toc-disadvantages-2">Disadvantages</a></li>
+</ul></li>
+<li><a href="#comparison" id="toc-comparison">📊 Comparison</a></li>
+<li><a href="#recommendations" id="toc-recommendations">🎯
+Recommendations</a></li>
+<li><a href="#why-kdesu-doesnt-work" id="toc-why-kdesu-doesnt-work">⚠️
+Why kdesu Doesn’t Work</a></li>
+<li><a href="#best-practices" id="toc-best-practices">🔒 Best
+Practices</a></li>
+<li><a href="#why-would-i-do-this" id="toc-why-would-i-do-this">🎯 Why
+Would I Do This?</a></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 Related
+Guides</a></li>
+</ul></li>
 </ul>
-<hr>
-<h2>Solution 1: Group-Based Elevation (Recommended)</h2>
-<p><strong>Best for:</strong> Apps that support setgid/group-based permissions (Wireshark, packet capture tools, etc.)</p>
-<p><strong>How it works:</strong> The GUI app runs as your user; only the privileged tool (e.g., <code>dumpcap</code>) runs elevated.</p>
-<h3>Setup (Wireshark Example)</h3>
-<pre><code class="language-bash"># Add your user to the wireshark group
+</nav>
+<!-- 
+    WIKI GUIDE: wayland-privilege-escalation.md
+    Solutions for running GUI applications with elevated privileges on Wayland.
+    Covers group-based elevation, pkexec with environment variables, and wrapper scripts.
+-->
+<h1 id="running-gui-apps-as-root-on-wayland">Running GUI Apps as Root on
+Wayland</h1>
+<p>Running graphical applications with elevated privileges on Wayland is
+trickier than X11 because <code>pkexec</code> strips environment
+variables for security. This guide shows three solutions, from simplest
+to most flexible.</p>
+<hr />
+<h2 id="why-this-is-complicated">🤔 Why This is Complicated</h2>
+<p><strong>X11 was simple:</strong> Just pass the <code>DISPLAY</code>
+variable, done.</p>
+<p><strong>Wayland needs more:</strong> - <code>WAYLAND_DISPLAY</code> —
+Which Wayland socket to use - <code>XDG_RUNTIME_DIR</code> — Where
+runtime files live - Theme/config variables — So the app looks right -
+Root HOME doesn’t have your configs</p>
+<p>When <code>pkexec</code> runs a command, it deliberately strips these
+variables for security—so your GUI can’t connect.</p>
+<hr />
+<h2 id="solution-1-group-based-elevation-recommended">✅ Solution 1:
+Group-Based Elevation (Recommended)</h2>
+<p><strong>Best for:</strong> Apps designed with privilege separation
+(Wireshark, packet capture tools).</p>
+<p><strong>How it works:</strong> The GUI runs as your user; only the
+privileged tool runs elevated.</p>
+<h3 id="example-wireshark">Example: Wireshark</h3>
+<pre class="bash"><code># Add your user to wireshark group
 sudo usermod -a -G wireshark $USER
 
-# Make dumpcap executable by the group
+# Make dumpcap (the capture tool) run with group privileges
+sudo chmod g+s /usr/bin/dumpcap
 sudo chmod g+x /usr/bin/dumpcap
 
-# Set the setgid bit so dumpcap runs as the wireshark group
-sudo chmod g+s /usr/bin/dumpcap
-</code></pre>
-<p>Then <strong>log out and back in</strong>, or use:</p>
-<pre><code class="language-bash">newgrp wireshark
-</code></pre>
-<h3>Usage</h3>
-<pre><code class="language-bash">wireshark
-# No sudo/pkexec needed — runs as your user with capture privileges
-</code></pre>
-<h3>Advantages</h3>
-<ul>
-<li>✅ Minimal privilege elevation (principle of least privilege)</li>
-<li>✅ No environment variable exposure</li>
-<li>✅ Standard Linux practice</li>
-<li>✅ Theme and configs work perfectly</li>
-<li>✅ No wrapper scripts needed</li>
-</ul>
-<h3>Disadvantages</h3>
-<ul>
-<li>❌ Requires logout/relogin to activate group membership</li>
-<li>❌ Not all apps have setgid support</li>
-<li>❌ Tool/binary must be designed for this</li>
-</ul>
-<hr>
-<h2>Solution 2: Direct pkexec with Environment Variables</h2>
-<p><strong>Best for:</strong> Quick one-off commands or minimal setup</p>
-<p><strong>How it works:</strong> Pass Wayland variables directly to <code>pkexec</code> via <code>env</code>.</p>
-<h3>Usage</h3>
-<pre><code class="language-bash"># Edit system file with theme intact
-pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab
-
-# Or any other app
-pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR kate /etc/fstab
-</code></pre>
-<h3>Add an Alias (Optional)</h3>
-<pre><code class="language-bash"># For Fish shell (~/.config/fish/config.fish)
-alias pkexec-gui=&#39;pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde&#39;
-
-# For Bash/Zsh (~/.bashrc or ~/.zshrc)
-alias pkexec-gui=&#39;pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde&#39;
-</code></pre>
-<p>Then use:</p>
-<pre><code class="language-bash">pkexec-gui kate /etc/fstab
-</code></pre>
-<h3>Advantages</h3>
-<ul>
-<li>✅ Minimal setup (no wrapper script needed)</li>
-<li>✅ Transparent what variables are being passed</li>
-<li>✅ Works immediately</li>
-<li>✅ Good for one-off commands</li>
-</ul>
-<h3>Disadvantages</h3>
-<ul>
-<li>❌ Long command line (but fixable with alias)</li>
-<li>❌ Runs entire application as root</li>
-</ul>
-<hr>
-<h2>Solution 3: Wayland-Aware pkexec Wrapper</h2>
-<p><strong>Best for:</strong> Frequently used privileged apps, cleaner workflow</p>
-<p><strong>How it works:</strong> Create a reusable wrapper script that preserves Wayland environment variables before <code>pkexec</code> escalates.</p>
-<h3>Setup</h3>
+# Log out and back in, or:
+newgrp wireshark</code></pre>
+<p>Then just run it normally:</p>
+<pre class="bash"><code>wireshark</code></pre>
+<p>No <code>sudo</code> or <code>pkexec</code> needed!</p>
+<h3 id="why-this-is-best">Why This Is Best</h3>
+<p>✅ Minimal privilege elevation (principle of least privilege) ✅ No
+environment variable exposure ✅ Standard Linux practice ✅ Theme and
+configs work perfectly ✅ No wrapper scripts needed</p>
+<h3 id="disadvantages">Disadvantages</h3>
+<p>❌ Requires logout/relogin to activate group membership ❌ Not all
+apps support this approach ❌ Tool/binary must be designed for it</p>
+<hr />
+<h2 id="solution-2-direct-pkexec-with-environment-variables">⚡ Solution
+2: Direct pkexec with Environment Variables</h2>
+<p><strong>Best for:</strong> Quick one-off commands or minimal
+setup.</p>
+<p><strong>How it works:</strong> Pass Wayland variables directly to
+<code>pkexec</code>.</p>
+<h3 id="basic-usage">Basic Usage</h3>
+<pre class="bash"><code># Edit a system file with theme intact
+pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab</code></pre>
+<p>Long? Yes. But it works immediately.</p>
+<h3 id="make-an-alias">Make an Alias</h3>
+<p>For Bash/Zsh (add to ~/.bashrc or ~/.zshrc):</p>
+<pre class="bash"><code>alias pkexec-gui=&#39;pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde&#39;</code></pre>
+<p>For Fish (add to ~/.config/fish/config.fish):</p>
+<pre class="fish"><code>alias pkexec-gui &#39;pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde&#39;</code></pre>
+<p>Then use it simply:</p>
+<pre class="bash"><code>pkexec-gui kate /etc/fstab</code></pre>
+<h3 id="advantages">Advantages</h3>
+<p>✅ Minimal setup (just an alias) ✅ Transparent what variables are
+being passed ✅ Works immediately ✅ Good for occasional commands</p>
+<h3 id="disadvantages-1">Disadvantages</h3>
+<p>❌ Runs entire application as root (less secure than group approach)
+❌ Long command line (fixed by alias)</p>
+<hr />
+<h2 id="solution-3-wayland-aware-pkexec-wrapper">🔧 Solution 3:
+Wayland-Aware pkexec Wrapper</h2>
+<p><strong>Best for:</strong> Frequently used privileged apps, cleaner
+workflow.</p>
+<p><strong>How it works:</strong> Create a reusable wrapper script that
+preserves Wayland environment variables.</p>
+<h3 id="create-the-wrapper">Create the Wrapper</h3>
 <p>Create <code>/usr/local/bin/run-as-root</code>:</p>
-<pre><code class="language-bash">sudo bash &lt;&lt; &#39;SCRIPT&#39;
-cat &gt; /usr/local/bin/run-as-root &lt;&lt; &#39;EOF&#39;
+<pre class="bash"><code>#!/bin/bash
+export WAYLAND_DISPLAY=$WAYLAND_DISPLAY
+export XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
+export QT_STYLE_OVERRIDE=breeze
+export QT_QPA_PLATFORMTHEME=kde
+exec &quot;$@&quot;</code></pre>
+<p>Install it:</p>
+<pre class="bash"><code>sudo bash &lt;&lt; &#39;INSTALL_SCRIPT&#39;
+cat &gt; /usr/local/bin/run-as-root &lt;&lt; &#39;WRAPPER&#39;
 #!/bin/bash
 export WAYLAND_DISPLAY=$WAYLAND_DISPLAY
 export XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR
 export QT_STYLE_OVERRIDE=breeze
 export QT_QPA_PLATFORMTHEME=kde
 exec &quot;$@&quot;
-EOF
+WRAPPER
 chmod +x /usr/local/bin/run-as-root
-SCRIPT
-</code></pre>
-<p>Or manually with nano/vim:</p>
-<pre><code class="language-bash">sudo nano /usr/local/bin/run-as-root
-# Paste the content above
-# Save &amp; exit
-sudo chmod +x /usr/local/bin/run-as-root
-</code></pre>
-<p>Then add an alias to your shell config (<code>~/.config/fish/config.fish</code>, <code>~/.bashrc</code>, etc.):</p>
-<pre><code class="language-bash">alias pkrun=&#39;pkexec /usr/local/bin/run-as-root&#39;
-</code></pre>
-<h3>Usage</h3>
-<pre><code class="language-bash"># Edit system file with theme intact
+INSTALL_SCRIPT</code></pre>
+<h3 id="add-an-alias">Add an Alias</h3>
+<p>Bash/Zsh (~/.bashrc or ~/.zshrc):</p>
+<pre class="bash"><code>alias pkrun=&#39;pkexec /usr/local/bin/run-as-root&#39;</code></pre>
+<p>Fish (~/.config/fish/config.fish):</p>
+<pre class="fish"><code>alias pkrun &#39;pkexec /usr/local/bin/run-as-root&#39;</code></pre>
+<h3 id="usage">Usage</h3>
+<pre class="bash"><code># Edit system file with theme
 pkrun kate /etc/fstab
 
 # Or without alias:
-pkexec /usr/local/bin/run-as-root kate /etc/fstab
-</code></pre>
-<h3>Advantages</h3>
-<ul>
-<li>✅ Works for any GUI app</li>
-<li>✅ Wayland display and theme preserved</li>
-<li>✅ Reusable for multiple applications</li>
-<li>✅ Cleaner than long command lines</li>
-</ul>
-<h3>Disadvantages</h3>
-<ul>
-<li>❌ Runs entire application as root (less secure than group approach)</li>
-<li>❌ Requires creating wrapper script</li>
-<li>❌ Should only be used when necessary</li>
-</ul>
-<hr>
-<h2>Comparison: Direct vs Wrapper Approach</h2>
+pkexec /usr/local/bin/run-as-root kate /etc/fstab</code></pre>
+<h3 id="advantages-1">Advantages</h3>
+<p>✅ Works for any GUI app ✅ Wayland display and theme preserved ✅
+Reusable for multiple applications ✅ Cleaner than long command
+lines</p>
+<h3 id="disadvantages-2">Disadvantages</h3>
+<p>❌ Runs entire application as root (less secure) ❌ Requires creating
+wrapper script ❌ Should only be used when necessary</p>
+<hr />
+<h2 id="comparison">📊 Comparison</h2>
 <table>
 <thead>
 <tr>
 <th>Aspect</th>
-<th>Direct (<code>env</code>)</th>
-<th>Wrapper Script</th>
+<th>Group-Based</th>
+<th>Direct env</th>
+<th>Wrapper</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>Setup Time</td>
-<td>30 seconds (alias only)</td>
+<td>2 minutes + logout</td>
+<td>30 seconds</td>
 <td>2 minutes</td>
 </tr>
 <tr>
-<td>Command Length</td>
-<td>Long (but alias hides it)</td>
-<td>Short &amp; clean</td>
+<td>Security</td>
+<td>Best</td>
+<td>Good</td>
+<td>Good</td>
+</tr>
+<tr>
+<td>Ease of Use</td>
+<td>Simple</td>
+<td>Good</td>
+<td>Very Simple</td>
 </tr>
 <tr>
 <td>Reusability</td>
-<td>Good with alias</td>
-<td>Better for frequent use</td>
+<td>Limited</td>
+<td>Good</td>
+<td>Excellent</td>
 </tr>
 <tr>
-<td>Transparency</td>
-<td>See variables in command</td>
-<td>Hidden in wrapper</td>
+<td>Theme Support</td>
+<td>Perfect</td>
+<td>Perfect</td>
+<td>Perfect</td>
 </tr>
-<tr>
-<td>Best For</td>
-<td>One-off commands</td>
-<td>Regular workflows</td>
-</tr>
-</tbody></table>
-<p><strong>Recommendation:</strong> </p>
-<ul>
-<li>Use <strong>direct <code>env</code></strong> for occasional root GUI access</li>
-<li>Use <strong>wrapper script</strong> if you frequently need privileged GUI apps</li>
-<li>Both are equally secure in terms of what&#39;s exposed</li>
-</ul>
-<hr>
-<h2>Why kdesu Doesn&#39;t Work</h2>
-<p>KDE&#39;s <code>kdesu</code> is designed for X11 and reads PAM/sudoers configuration rather than system groups. On modern systems with custom user setups (especially without a root password), it often fails silently or refuses to authenticate.</p>
-<p><strong>Not recommended</strong> for Wayland systems.</p>
-<hr>
-<h2>Best Practices</h2>
-<ol>
-<li><strong>Always prefer group-based elevation</strong> when the tool supports it</li>
-<li><strong>Avoid running entire GUIs as root</strong> when alternatives exist</li>
-<li><strong>Use pkexec wrapper only as a last resort</strong> for admin tools</li>
-<li><strong>Document why elevation is needed</strong> for each tool in your setup</li>
-<li><strong>Test after logout/relogin</strong> when using group-based approaches</li>
+</tbody>
+</table>
+<hr />
+<h2 id="recommendations">🎯 Recommendations</h2>
+<p><strong>For Wireshark / Capture tools:</strong> Use group-based
+elevation (Solution 1)</p>
+<p><strong>For occasional commands:</strong> Use direct env with alias
+(Solution 2)</p>
+<p><strong>For regular admin tools:</strong> Use wrapper script
+(Solution 3)</p>
+<hr />
+<h2 id="why-kdesu-doesnt-work">⚠️ Why kdesu Doesn’t Work</h2>
+<p>KDE’s <code>kdesu</code> tool is designed for X11 and relies on PAM
+configuration. On modern systems it often fails silently or refuses to
+authenticate.</p>
+<p><strong>Not recommended</strong> for Wayland. Use the solutions above
+instead.</p>
+<hr />
+<h2 id="best-practices">🔒 Best Practices</h2>
+<ol type="1">
+<li><strong>Always prefer group-based elevation</strong> when the tool
+supports it</li>
+<li><strong>Avoid running entire GUIs as root</strong> when alternatives
+exist</li>
+<li><strong>Use pkexec wrapper only as a last resort</strong> for admin
+tools</li>
+<li><strong>Document why elevation is needed</strong> for each tool</li>
+<li><strong>Test after logout/relogin</strong> when using group-based
+approaches</li>
 </ol>
-<hr>
-<h2>References</h2>
+<hr />
+<h2 id="why-would-i-do-this">🎯 Why Would I Do This?</h2>
 <ul>
-<li><a href="https://wayland.freedesktop.org/">Wayland Documentation</a></li>
-<li><a href="https://www.freedesktop.org/wiki/Software/polkit/">PolicyKit/pkexec</a></li>
-<li><a href="https://wiki.archlinux.org/title/Wireshark">Arch Wiki: Wireshark</a></li>
-<li><a href="https://doc.qt.io/qt-6/qpa.html">Qt Platform Plugins</a></li>
+<li><strong>Edit system files</strong> - Configs, firewall rules,
+etc.</li>
+<li><strong>Install packages</strong> - When GUI installers need
+root</li>
+<li><strong>Debug network issues</strong> - Capture packets with
+Wireshark</li>
+<li><strong>System administration</strong> - Manage users, mounts,
+etc.</li>
+<li><strong>Security tools</strong> - Run security scanners</li>
 </ul>
-
+<hr />
+<h2 id="related-guides">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Complete system security</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Package
+management</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> -
+Fedora-specific tools</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

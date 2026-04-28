@@ -1,215 +1,486 @@
-<h1>Virtual Machines: The Complete GUI Guide 🖥️</h1>
-<p>A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on Linux. Learn to create VMs, pass through GPUs and physical disks, install Windows with proper drivers, and build powerful virtualized workstations.</p>
-<hr>
-<h2>🚀 1. Quick Start: Installation</h2>
-<h3>The Stack We&#39;re Using</h3>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>virtualization</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="virtualization.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">virtualization</h1>
+</header>
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><strong>KVM:</strong> Linux&#39;s native hypervisor (built into kernel)</li>
+<li><a href="#virtual-machines-the-complete-gui-guide"
+id="toc-virtual-machines-the-complete-gui-guide">Virtual Machines: The
+Complete GUI Guide 🖥️</a>
+<ul>
+<li><a href="#quick-start-installation"
+id="toc-quick-start-installation">🚀 1. Quick Start: Installation</a>
+<ul>
+<li><a href="#the-stack-were-using" id="toc-the-stack-were-using">The
+Stack We’re Using</a></li>
+</ul></li>
+<li><a href="#install-everything-you-need"
+id="toc-install-everything-you-need">🛠️ 2. Install Everything You
+Need</a>
+<ul>
+<li><a href="#step-1-update-your-system"
+id="toc-step-1-update-your-system">Step 1: Update Your System</a></li>
+<li><a href="#step-2-install-virtualization-packages"
+id="toc-step-2-install-virtualization-packages">Step 2: Install
+Virtualization Packages</a></li>
+<li><a href="#step-3-configure-libvirt-permissions"
+id="toc-step-3-configure-libvirt-permissions">Step 3: Configure libvirt
+Permissions</a></li>
+<li><a href="#step-4-add-your-user-to-groups"
+id="toc-step-4-add-your-user-to-groups">Step 4: Add Your User to
+Groups</a></li>
+<li><a href="#step-5-start-and-enable-libvirtd-service"
+id="toc-step-5-start-and-enable-libvirtd-service">Step 5: Start and
+Enable libvirtd Service</a></li>
+<li><a href="#step-6-reboot-your-system"
+id="toc-step-6-reboot-your-system">Step 6: Reboot Your System</a></li>
+<li><a href="#step-7-launch-virt-manager"
+id="toc-step-7-launch-virt-manager">Step 7: Launch Virt-Manager</a></li>
+<li><a href="#verify-everything-works"
+id="toc-verify-everything-works">✅ Verify Everything Works</a></li>
+<li><a href="#troubleshooting-installation"
+id="toc-troubleshooting-installation">🔧 Troubleshooting
+Installation</a></li>
+</ul></li>
+<li><a href="#creating-your-first-vm-gui-method"
+id="toc-creating-your-first-vm-gui-method">🖥️ 3. Creating Your First VM
+(GUI Method)</a>
+<ul>
+<li><a href="#launch-virt-manager" id="toc-launch-virt-manager">Launch
+Virt-Manager</a></li>
+<li><a href="#step-by-step-vm-creation"
+id="toc-step-by-step-vm-creation">Step-by-Step VM Creation</a></li>
+<li><a href="#customize-before-starting-critical"
+id="toc-customize-before-starting-critical">⚙️ Customize Before Starting
+(Critical!)</a></li>
+</ul></li>
+<li><a href="#understanding-disk-controllers-sata-vs-scsi-vs-virtio"
+id="toc-understanding-disk-controllers-sata-vs-scsi-vs-virtio">💽 4.
+Understanding Disk Controllers: SATA vs SCSI vs VirtIO</a>
+<ul>
+<li><a href="#quick-comparison" id="toc-quick-comparison">📊 Quick
+Comparison</a></li>
+<li><a href="#detailed-breakdown" id="toc-detailed-breakdown">🔍
+Detailed Breakdown</a></li>
+<li><a href="#recommendation" id="toc-recommendation">🎯
+Recommendation</a></li>
+</ul></li>
+<li><a href="#windows-vms-the-virtio-driver-setup"
+id="toc-windows-vms-the-virtio-driver-setup">💾 5. Windows VMs: The
+VirtIO Driver Setup</a>
+<ul>
+<li><a href="#why-virtio-matters" id="toc-why-virtio-matters">Why VirtIO
+Matters</a></li>
+<li><a href="#download-virtio-drivers"
+id="toc-download-virtio-drivers">Download VirtIO Drivers</a></li>
+<li><a href="#installing-windows-with-virtio"
+id="toc-installing-windows-with-virtio">Installing Windows with
+VirtIO</a></li>
+<li><a href="#pro-tip-spice-guest-tools"
+id="toc-pro-tip-spice-guest-tools">Pro Tip: SPICE Guest Tools</a></li>
+</ul></li>
+<li><a href="#attaching-physical-disks-devsda-devnvme0n1-etc."
+id="toc-attaching-physical-disks-devsda-devnvme0n1-etc.">🔌 6. Attaching
+Physical Disks (/dev/sda, /dev/nvme0n1, etc.)</a>
+<ul>
+<li><a href="#why-attach-physical-disks"
+id="toc-why-attach-physical-disks">Why Attach Physical Disks?</a></li>
+<li><a href="#gui-method-add-physical-disk-to-vm"
+id="toc-gui-method-add-physical-disk-to-vm">GUI Method: Add Physical
+Disk to VM</a></li>
+<li><a href="#giving-yourself-permission"
+id="toc-giving-yourself-permission">Giving Yourself Permission</a></li>
+<li><a href="#critical-warnings" id="toc-critical-warnings">⚠️ CRITICAL
+WARNINGS</a></li>
+<li><a href="#read-only-mode-safe-exploration"
+id="toc-read-only-mode-safe-exploration">Read-Only Mode (Safe
+Exploration)</a></li>
+</ul></li>
+<li><a href="#gpu-passthrough-ultimate-performance"
+id="toc-gpu-passthrough-ultimate-performance">🎮 7. GPU Passthrough:
+Ultimate Performance</a>
+<ul>
+<li><a href="#what-is-gpu-passthrough"
+id="toc-what-is-gpu-passthrough">What is GPU Passthrough?</a></li>
+<li><a href="#requirements" id="toc-requirements">Requirements</a></li>
+<li><a href="#step-1-enable-iommu" id="toc-step-1-enable-iommu">Step 1:
+Enable IOMMU</a></li>
+<li><a href="#step-2-find-your-gpus-pci-ids"
+id="toc-step-2-find-your-gpus-pci-ids">Step 2: Find Your GPU’s PCI
+IDs</a></li>
+<li><a href="#step-3-isolate-the-gpu-from-host"
+id="toc-step-3-isolate-the-gpu-from-host">Step 3: Isolate the GPU from
+Host</a></li>
+<li><a href="#step-4-configure-vm-for-gpu-passthrough"
+id="toc-step-4-configure-vm-for-gpu-passthrough">Step 4: Configure VM
+for GPU Passthrough</a></li>
+<li><a href="#step-5-install-gpu-drivers-in-guest"
+id="toc-step-5-install-gpu-drivers-in-guest">Step 5: Install GPU Drivers
+in Guest</a></li>
+<li><a href="#troubleshooting-gpu-passthrough"
+id="toc-troubleshooting-gpu-passthrough">Troubleshooting GPU
+Passthrough</a></li>
+<li><a href="#chris-titus-tech-gpu-passthrough-script"
+id="toc-chris-titus-tech-gpu-passthrough-script">Chris Titus Tech GPU
+Passthrough Script</a></li>
+</ul></li>
+<li><a href="#converting-importing-existing-vm-disks"
+id="toc-converting-importing-existing-vm-disks">💿 8. Converting &amp;
+Importing Existing VM Disks</a>
+<ul>
+<li><a href="#from-virtualbox-vdi" id="toc-from-virtualbox-vdi">From
+VirtualBox (VDI)</a></li>
+<li><a href="#from-vmware-vmdk" id="toc-from-vmware-vmdk">From VMware
+(VMDK)</a></li>
+<li><a href="#from-hyper-v-vhdvhdx" id="toc-from-hyper-v-vhdvhdx">From
+Hyper-V (VHD/VHDX)</a></li>
+<li><a href="#from-physical-disk-clone-entire-drive"
+id="toc-from-physical-disk-clone-entire-drive">From Physical Disk (Clone
+Entire Drive)</a></li>
+<li><a href="#expand-disk-size-after-import"
+id="toc-expand-disk-size-after-import">Expand Disk Size After
+Import</a></li>
+</ul></li>
+<li><a href="#snapshots-time-travel-for-vms"
+id="toc-snapshots-time-travel-for-vms">📸 9. Snapshots: Time Travel for
+VMs</a>
+<ul>
+<li><a href="#creating-snapshots-gui"
+id="toc-creating-snapshots-gui">Creating Snapshots (GUI)</a></li>
+<li><a href="#restoring-snapshots"
+id="toc-restoring-snapshots">Restoring Snapshots</a></li>
+<li><a href="#when-to-snapshot" id="toc-when-to-snapshot">When to
+Snapshot</a></li>
+<li><a href="#snapshot-tips" id="toc-snapshot-tips">Snapshot
+Tips</a></li>
+<li><a href="#deleting-snapshots" id="toc-deleting-snapshots">Deleting
+Snapshots</a></li>
+</ul></li>
+<li><a href="#performance-tips" id="toc-performance-tips">⚡ 10.
+Performance Tips</a>
+<ul>
+<li><a href="#in-virt-manager-easy-optimizations"
+id="toc-in-virt-manager-easy-optimizations">In Virt-Manager (Easy
+Optimizations)</a></li>
+<li><a href="#xml-tweaks-for-maximum-performance"
+id="toc-xml-tweaks-for-maximum-performance">XML Tweaks for Maximum
+Performance</a></li>
+</ul></li>
+<li><a href="#useful-commands-quick-reference"
+id="toc-useful-commands-quick-reference">🔧 11. Useful Commands (Quick
+Reference)</a>
+<ul>
+<li><a href="#startingstopping-vms"
+id="toc-startingstopping-vms">Starting/Stopping VMs</a></li>
+<li><a href="#getting-vm-information"
+id="toc-getting-vm-information">Getting VM Information</a></li>
+<li><a href="#cloning-vms" id="toc-cloning-vms">Cloning VMs</a></li>
+<li><a href="#deleting-vms" id="toc-deleting-vms">Deleting VMs</a></li>
+</ul></li>
+<li><a href="#troubleshooting" id="toc-troubleshooting">🔧 12.
+Troubleshooting</a>
+<ul>
+<li><a href="#vm-wont-start" id="toc-vm-wont-start">VM Won’t
+Start</a></li>
+<li><a href="#windows-wont-install-no-disk-found"
+id="toc-windows-wont-install-no-disk-found">Windows Won’t Install (No
+Disk Found)</a></li>
+<li><a href="#poor-performance" id="toc-poor-performance">Poor
+Performance</a></li>
+<li><a href="#gpu-passthrough-not-working"
+id="toc-gpu-passthrough-not-working">GPU Passthrough Not
+Working</a></li>
+<li><a href="#cant-access-vm-from-host-network"
+id="toc-cant-access-vm-from-host-network">Can’t Access VM from Host
+Network</a></li>
+</ul></li>
+<li><a href="#additional-resources" id="toc-additional-resources">📚 13.
+Additional Resources</a>
+<ul>
+<li><a href="#chris-titus-tech-guides"
+id="toc-chris-titus-tech-guides">Chris Titus Tech Guides</a></li>
+<li><a href="#essential-reading" id="toc-essential-reading">Essential
+Reading</a></li>
+</ul></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 14. Related
+Guides</a></li>
+<li><a href="#why-would-i-use-this" id="toc-why-would-i-use-this">🎯 Why
+Would I Use This?</a></li>
+<li><a href="#related-guides-1" id="toc-related-guides-1">🔗 Related
+Guides</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: virtualization.md
+    Complete GUI-focused guide to KVM/QEMU/libvirt virtualization,
+    including GPU passthrough, Windows VMs, and advanced configurations.
+-->
+<h1 id="virtual-machines-the-complete-gui-guide">Virtual Machines: The
+Complete GUI Guide 🖥️</h1>
+<p>A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on
+Linux. Learn to create VMs, pass through GPUs and physical disks,
+install Windows with proper drivers, and build powerful virtualized
+workstations.</p>
+<hr />
+<h2 id="quick-start-installation">🚀 1. Quick Start: Installation</h2>
+<h3 id="the-stack-were-using">The Stack We’re Using</h3>
+<ul>
+<li><strong>KVM:</strong> Linux’s native hypervisor (built into
+kernel)</li>
 <li><strong>QEMU:</strong> The actual virtualizer that uses KVM</li>
 <li><strong>Virt-Manager:</strong> Your main GUI control panel</li>
-<li><strong>libvirt:</strong> Background service managing everything</li>
+<li><strong>libvirt:</strong> Background service managing
+everything</li>
 </ul>
-<hr>
-<h2>🛠️ 2. Install Everything You Need</h2>
-<h3>Step 1: Update Your System</h3>
+<hr />
+<h2 id="install-everything-you-need">🛠️ 2. Install Everything You
+Need</h2>
+<h3 id="step-1-update-your-system">Step 1: Update Your System</h3>
 <p><strong>Arch Linux:</strong></p>
-<pre><code class="language-bash">sudo pacman -Syu
-</code></pre>
+<pre class="bash"><code>sudo pacman -Syu</code></pre>
 <p><strong>Fedora:</strong></p>
-<pre><code class="language-bash">sudo dnf upgrade --refresh
-</code></pre>
+<pre class="bash"><code>sudo dnf upgrade --refresh</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
-<pre><code class="language-bash">sudo apt update &amp;&amp; sudo apt upgrade
-</code></pre>
-<hr>
-<h3>Step 2: Install Virtualization Packages</h3>
+<pre class="bash"><code>sudo apt update &amp;&amp; sudo apt upgrade</code></pre>
+<hr />
+<h3 id="step-2-install-virtualization-packages">Step 2: Install
+Virtualization Packages</h3>
 <p><strong>Arch Linux:</strong></p>
-<pre><code class="language-bash">sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat ebtables nftables libguestfs edk2-ovmf
-</code></pre>
-<p>💡 If prompted to REMOVE <code>iptables</code>, select <strong>YES</strong>. <code>nftables</code> is the modern replacement.</p>
+<pre class="bash"><code>sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat ebtables nftables libguestfs edk2-ovmf</code></pre>
+<p>💡 If prompted to REMOVE <code>iptables</code>, select
+<strong>YES</strong>. <code>nftables</code> is the modern
+replacement.</p>
 <p><strong>Fedora:</strong></p>
-<pre><code class="language-bash"># One-liner that installs everything
+<pre class="bash"><code># One-liner that installs everything
 sudo dnf install @virtualization
 
 # Or install packages individually:
-sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer bridge-utils libguestfs-tools
-</code></pre>
+sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer bridge-utils libguestfs-tools</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
-<pre><code class="language-bash">sudo apt install qemu-kvm libvirt-daemon-system libvirt-daemon libvirt-clients bridge-utils virt-manager virt-viewer libguestfs-tools ovmf
-</code></pre>
-<hr>
-<h3>Step 3: Configure libvirt Permissions</h3>
+<pre class="bash"><code>sudo apt install qemu-kvm libvirt-daemon-system libvirt-daemon libvirt-clients bridge-utils virt-manager virt-viewer libguestfs-tools ovmf</code></pre>
+<hr />
+<h3 id="step-3-configure-libvirt-permissions">Step 3: Configure libvirt
+Permissions</h3>
 <p><strong>Edit the config file (ALL DISTROS):</strong></p>
-<pre><code class="language-bash">sudo nano /etc/libvirt/libvirtd.conf
-</code></pre>
+<pre class="bash"><code>sudo nano /etc/libvirt/libvirtd.conf</code></pre>
 <p><strong>Find and uncomment/change these lines:</strong></p>
 <pre><code>unix_sock_group = &quot;libvirt&quot;
-unix_sock_rw_perms = &quot;0770&quot;
-</code></pre>
-<p>Save and exit (<code>Ctrl+X</code>, then <code>Y</code>, then <code>Enter</code>)</p>
-<hr>
-<h3>Step 4: Add Your User to Groups</h3>
+unix_sock_rw_perms = &quot;0770&quot;</code></pre>
+<p>Save and exit (<code>Ctrl+X</code>, then <code>Y</code>, then
+<code>Enter</code>)</p>
+<hr />
+<h3 id="step-4-add-your-user-to-groups">Step 4: Add Your User to
+Groups</h3>
 <p><strong>Arch Linux &amp; Fedora:</strong></p>
-<pre><code class="language-bash">sudo usermod -a -G libvirt $(whoami)
-newgrp libvirt
-</code></pre>
+<pre class="bash"><code>sudo usermod -a -G libvirt $(whoami)
+newgrp libvirt</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
-<pre><code class="language-bash">sudo usermod -a -G libvirt,kvm $(whoami)
-newgrp libvirt
-</code></pre>
-<hr>
-<h3>Step 5: Start and Enable libvirtd Service</h3>
+<pre class="bash"><code>sudo usermod -a -G libvirt,kvm $(whoami)
+newgrp libvirt</code></pre>
+<hr />
+<h3 id="step-5-start-and-enable-libvirtd-service">Step 5: Start and
+Enable libvirtd Service</h3>
 <p><strong>Arch Linux &amp; Fedora:</strong></p>
-<pre><code class="language-bash">sudo systemctl enable --now libvirtd.service
-</code></pre>
+<pre class="bash"><code>sudo systemctl enable --now libvirtd.service</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
-<pre><code class="language-bash">sudo systemctl restart libvirtd
-sudo systemctl enable libvirtd
-</code></pre>
-<hr>
-<h3>Step 6: Reboot Your System</h3>
+<pre class="bash"><code>sudo systemctl restart libvirtd
+sudo systemctl enable libvirtd</code></pre>
+<hr />
+<h3 id="step-6-reboot-your-system">Step 6: Reboot Your System</h3>
 <p><strong>ALL DISTROS:</strong></p>
-<pre><code class="language-bash">sudo reboot
-</code></pre>
-<p>⚠️ <strong>REBOOT IS REQUIRED</strong> for group changes and kernel modules to load properly!</p>
-<hr>
-<h3>Step 7: Launch Virt-Manager</h3>
+<pre class="bash"><code>sudo reboot</code></pre>
+<p>⚠️ <strong>REBOOT IS REQUIRED</strong> for group changes and kernel
+modules to load properly!</p>
+<hr />
+<h3 id="step-7-launch-virt-manager">Step 7: Launch Virt-Manager</h3>
 <p>After reboot:</p>
-<pre><code class="language-bash">virt-manager
-</code></pre>
-<hr>
-<h3>✅ Verify Everything Works</h3>
+<pre class="bash"><code>virt-manager</code></pre>
+<hr />
+<h3 id="verify-everything-works">✅ Verify Everything Works</h3>
 <p><strong>Check for KVM support:</strong></p>
-<pre><code class="language-bash">lsmod | grep kvm
-# Should show: kvm_intel OR kvm_amd
-</code></pre>
+<pre class="bash"><code>lsmod | grep kvm
+# Should show: kvm_intel OR kvm_amd</code></pre>
 <p><strong>Verify CPU virtualization is enabled:</strong></p>
-<pre><code class="language-bash">LC_ALL=C lscpu | grep Virtualization
-# Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)
-</code></pre>
+<pre class="bash"><code>LC_ALL=C lscpu | grep Virtualization
+# Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)</code></pre>
 <p><strong>Check libvirt service status:</strong></p>
-<pre><code class="language-bash">sudo systemctl status libvirtd
-# Should show: active (running)
-</code></pre>
-<p><strong>Verify you&#39;re in the libvirt group:</strong></p>
-<pre><code class="language-bash">groups | grep libvirt
-# Should show: libvirt
-</code></pre>
+<pre class="bash"><code>sudo systemctl status libvirtd
+# Should show: active (running)</code></pre>
+<p><strong>Verify you’re in the libvirt group:</strong></p>
+<pre class="bash"><code>groups | grep libvirt
+# Should show: libvirt</code></pre>
 <p><strong>Test virsh connection:</strong></p>
-<pre><code class="language-bash">virsh list --all
-# Should connect without errors and show empty VM list
-</code></pre>
+<pre class="bash"><code>virsh list --all
+# Should connect without errors and show empty VM list</code></pre>
 <p><strong>Launch virt-manager GUI:</strong></p>
-<pre><code class="language-bash">virt-manager
-# Should open without connection errors
-</code></pre>
-<hr>
-<h3>🔧 Troubleshooting Installation</h3>
-<p><strong>Problem: &quot;KVM not found&quot; or &quot;kvm module not loaded&quot;</strong></p>
-<ul>
-<li>✅ Enable <strong>Intel VT-x</strong> or <strong>AMD-V</strong> in your BIOS/UEFI settings</li>
-<li>✅ Reboot and check again with <code>lsmod | grep kvm</code></li>
-</ul>
-<p><strong>Problem: virt-manager won&#39;t connect / permission denied</strong></p>
-<ul>
-<li>✅ Make sure you <strong>logged out and back in</strong> after adding yourself to groups</li>
-<li>✅ Verify <code>/etc/libvirt/libvirtd.conf</code> was edited correctly</li>
-<li>✅ Run <code>groups | grep libvirt</code> to confirm group membership</li>
-</ul>
-<p><strong>Problem: &quot;network &#39;default&#39; is not active&quot;</strong></p>
-<pre><code class="language-bash">virsh net-start default
-virsh net-autostart default
-</code></pre>
-<p><strong>For GPU Passthrough (Advanced):</strong></p>
-<ul>
-<li>✅ Enable <strong>Intel VT-d</strong> or <strong>AMD-Vi</strong> in BIOS/UEFI</li>
-<li>✅ See GPU Passthrough section below for full setup</li>
-</ul>
-<hr>
-<h2>🖥️ 3. Creating Your First VM (GUI Method)</h2>
-<h3>Launch Virt-Manager</h3>
-<pre><code class="language-bash">virt-manager
-</code></pre>
-<h3>Step-by-Step VM Creation</h3>
-<ol>
-<li><p><strong>Click &quot;Create a new virtual machine&quot; (top-left)</strong></p>
-</li>
+<pre class="bash"><code>virt-manager
+# Should open without connection errors</code></pre>
+<hr />
+<h3 id="troubleshooting-installation">🔧 Troubleshooting
+Installation</h3>
+<p><strong>Problem: “KVM not found” or “kvm module not loaded”</strong>
+- ✅ Enable <strong>Intel VT-x</strong> or <strong>AMD-V</strong> in
+your BIOS/UEFI settings - ✅ Reboot and check again with
+<code>lsmod | grep kvm</code></p>
+<p><strong>Problem: virt-manager won’t connect / permission
+denied</strong> - ✅ Make sure you <strong>logged out and back
+in</strong> after adding yourself to groups - ✅ Verify
+<code>/etc/libvirt/libvirtd.conf</code> was edited correctly - ✅ Run
+<code>groups | grep libvirt</code> to confirm group membership</p>
+<p><strong>Problem: “network ‘default’ is not active”</strong></p>
+<pre class="bash"><code>virsh net-start default
+virsh net-autostart default</code></pre>
+<p><strong>For GPU Passthrough (Advanced):</strong> - ✅ Enable
+<strong>Intel VT-d</strong> or <strong>AMD-Vi</strong> in BIOS/UEFI - ✅
+See GPU Passthrough section below for full setup</p>
+<hr />
+<h2 id="creating-your-first-vm-gui-method">🖥️ 3. Creating Your First VM
+(GUI Method)</h2>
+<h3 id="launch-virt-manager">Launch Virt-Manager</h3>
+<pre class="bash"><code>virt-manager</code></pre>
+<h3 id="step-by-step-vm-creation">Step-by-Step VM Creation</h3>
+<ol type="1">
+<li><p><strong>Click “Create a new virtual machine”
+(top-left)</strong></p></li>
 <li><p><strong>Choose installation source:</strong></p>
 <ul>
-<li><strong>Local install media (ISO):</strong> Most common - browse to your downloaded ISO</li>
-<li><strong>Import existing disk image:</strong> For pre-made VM disks (qcow2, raw, etc.)</li>
+<li><strong>Local install media (ISO):</strong> Most common - browse to
+your downloaded ISO</li>
+<li><strong>Import existing disk image:</strong> For pre-made VM disks
+(qcow2, raw, etc.)</li>
 <li><strong>Network Install (HTTP/FTP):</strong> Advanced users</li>
-<li><strong>Manual install:</strong> When you want to configure everything yourself</li>
-</ul>
-</li>
+<li><strong>Manual install:</strong> When you want to configure
+everything yourself</li>
+</ul></li>
 <li><p><strong>Select your ISO file</strong></p>
 <ul>
-<li>Click &quot;Browse&quot; → &quot;Browse Local&quot;</li>
-<li>Navigate to your ISO (e.g., <code>~/Downloads/archlinux.iso</code>)</li>
+<li>Click “Browse” → “Browse Local”</li>
+<li>Navigate to your ISO (e.g.,
+<code>~/Downloads/archlinux.iso</code>)</li>
 <li>Virt-Manager will auto-detect the OS (or type to search)</li>
-</ul>
-</li>
+</ul></li>
 <li><p><strong>Allocate RAM and CPUs</strong></p>
 <ul>
-<li><strong>RAM:</strong> Minimum 2GB for Linux, 4GB+ for Windows, 8GB+ for heavy workloads</li>
-<li><strong>CPUs:</strong> 2-4 cores for most tasks, more for gaming/rendering</li>
-</ul>
-</li>
+<li><strong>RAM:</strong> Minimum 2GB for Linux, 4GB+ for Windows, 8GB+
+for heavy workloads</li>
+<li><strong>CPUs:</strong> 2-4 cores for most tasks, more for
+gaming/rendering</li>
+</ul></li>
 <li><p><strong>Create virtual disk</strong></p>
 <ul>
-<li><strong>Size:</strong> 40GB minimum for Linux, 60GB+ for Windows</li>
+<li><strong>Size:</strong> 40GB minimum for Linux, 60GB+ for
+Windows</li>
 <li><strong>Enable storage:</strong> Check this box</li>
-<li>Click &quot;Manage&quot; to change disk location if needed</li>
-</ul>
-</li>
+<li>Click “Manage” to change disk location if needed</li>
+</ul></li>
 <li><p><strong>Ready to begin installation - BUT WAIT!</strong></p>
 <ul>
-<li>✅ <strong>CHECK &quot;Customize configuration before install&quot;</strong> (IMPORTANT!)</li>
-<li>Click &quot;Finish&quot;</li>
-</ul>
-</li>
+<li>✅ <strong>CHECK “Customize configuration before install”</strong>
+(IMPORTANT!)</li>
+<li>Click “Finish”</li>
+</ul></li>
 </ol>
-<h3>⚙️ Customize Before Starting (Critical!)</h3>
-<p><strong>You&#39;re now in the VM hardware configuration screen. Here&#39;s what to change:</strong></p>
-<h4>Overview Tab</h4>
+<h3 id="customize-before-starting-critical">⚙️ Customize Before Starting
+(Critical!)</h3>
+<p><strong>You’re now in the VM hardware configuration screen. Here’s
+what to change:</strong></p>
+<h4 id="overview-tab">Overview Tab</h4>
 <ul>
-<li><strong>Chipset:</strong> Q35 (modern, required for PCIe passthrough)</li>
-<li><strong>Firmware:</strong> UEFI (for modern OSes) or BIOS (legacy)<ul>
+<li><strong>Chipset:</strong> Q35 (modern, required for PCIe
+passthrough)</li>
+<li><strong>Firmware:</strong> UEFI (for modern OSes) or BIOS (legacy)
+<ul>
 <li>For Windows: Use UEFI</li>
 <li>For GPU passthrough: MUST use UEFI</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h4>CPUs Tab</h4>
+<h4 id="cpus-tab">CPUs Tab</h4>
 <ul>
-<li><strong>Configuration:</strong> Click &quot;Copy host CPU configuration&quot; for best performance</li>
-<li><strong>Topology:</strong> Manually set sockets/cores/threads for better scheduling<ul>
+<li><strong>Configuration:</strong> Click “Copy host CPU configuration”
+for best performance</li>
+<li><strong>Topology:</strong> Manually set sockets/cores/threads for
+better scheduling
+<ul>
 <li>Example: 1 socket, 4 cores, 2 threads = 8 vCPUs</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h4>Boot Options Tab</h4>
+<h4 id="boot-options-tab">Boot Options Tab</h4>
 <ul>
-<li><strong>Enable boot menu:</strong> Check this for multi-boot options</li>
+<li><strong>Enable boot menu:</strong> Check this for multi-boot
+options</li>
 </ul>
-<h4>SATA Disk 1 Tab</h4>
+<h4 id="sata-disk-1-tab">SATA Disk 1 Tab</h4>
 <ul>
-<li><strong>Disk bus:</strong> Change from SATA to <strong>VirtIO</strong> for 3-5x better performance<ul>
+<li><strong>Disk bus:</strong> Change from SATA to
+<strong>VirtIO</strong> for 3-5x better performance
+<ul>
 <li>⚠️ Windows needs virtio drivers (see Windows section below)</li>
 <li>Linux works automatically with VirtIO</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h4>NIC Tab (Network)</h4>
+<h4 id="nic-tab-network">NIC Tab (Network)</h4>
 <ul>
-<li><strong>Device model:</strong> Change to <strong>virtio</strong> for best network performance</li>
+<li><strong>Device model:</strong> Change to <strong>virtio</strong> for
+best network performance</li>
 </ul>
-<p>Now click <strong>&quot;Begin Installation&quot;</strong> in the top-left!</p>
-<hr>
-<h2>💽 4. Understanding Disk Controllers: SATA vs SCSI vs VirtIO</h2>
-<p>When creating a VM, you need to choose a disk controller type. Here&#39;s what you need to know:</p>
-<h3>📊 Quick Comparison</h3>
+<p>Now click <strong>“Begin Installation”</strong> in the top-left!</p>
+<hr />
+<h2 id="understanding-disk-controllers-sata-vs-scsi-vs-virtio">💽 4.
+Understanding Disk Controllers: SATA vs SCSI vs VirtIO</h2>
+<p>When creating a VM, you need to choose a disk controller type. Here’s
+what you need to know:</p>
+<h3 id="quick-comparison">📊 Quick Comparison</h3>
 <table>
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 25%" />
+<col style="width: 32%" />
+<col style="width: 19%" />
+</colgroup>
 <thead>
 <tr>
 <th>Controller</th>
@@ -218,7 +489,8 @@ virsh net-autostart default
 <th>Best For</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>SATA</strong></td>
 <td>⭐⭐ Slow</td>
 <td>✅ Works out of the box</td>
@@ -236,146 +508,162 @@ virsh net-autostart default
 <td>⚠️ Needs VirtIO drivers</td>
 <td>Maximum performance</td>
 </tr>
-</tbody></table>
-<h3>🔍 Detailed Breakdown</h3>
-<h4>SATA (Serial ATA)</h4>
+</tbody>
+</table>
+<h3 id="detailed-breakdown">🔍 Detailed Breakdown</h3>
+<h4 id="sata-serial-ata">SATA (Serial ATA)</h4>
 <ul>
-<li>✅ <strong>Works immediately</strong> with Windows - no drivers needed</li>
+<li>✅ <strong>Works immediately</strong> with Windows - no drivers
+needed</li>
 <li>❌ <strong>Slower performance</strong> - higher overhead</li>
-<li>❌ <strong>Limited devices</strong> - typically 4-6 drives per controller</li>
-<li>👍 <strong>Use when:</strong> You want zero hassle during Windows installation</li>
+<li>❌ <strong>Limited devices</strong> - typically 4-6 drives per
+controller</li>
+<li>👍 <strong>Use when:</strong> You want zero hassle during Windows
+installation</li>
 <li>💡 <strong>Speed:</strong> ~100-200 MB/s typical</li>
 </ul>
-<h4>SCSI (virtio-scsi)</h4>
+<h4 id="scsi-virtio-scsi">SCSI (virtio-scsi)</h4>
 <ul>
 <li>✅ <strong>Better performance</strong> than SATA</li>
-<li>✅ <strong>Many devices</strong> - can handle hundreds of drives</li>
-<li>✅ <strong>Better for servers</strong> - ideal for multi-disk setups</li>
+<li>✅ <strong>Many devices</strong> - can handle hundreds of
+drives</li>
+<li>✅ <strong>Better for servers</strong> - ideal for multi-disk
+setups</li>
 <li>⚠️ <strong>Requires VirtIO drivers</strong> for Windows</li>
-<li>👍 <strong>Use when:</strong> You need good performance with multiple disks</li>
+<li>👍 <strong>Use when:</strong> You need good performance with
+multiple disks</li>
 <li>💡 <strong>Speed:</strong> ~500-800 MB/s typical</li>
 </ul>
-<h4>VirtIO (virtio-blk)</h4>
+<h4 id="virtio-virtio-blk">VirtIO (virtio-blk)</h4>
 <ul>
 <li>✅ <strong>Best performance</strong> - lowest CPU overhead</li>
-<li>✅ <strong>Native to KVM/QEMU</strong> - optimized paravirtualization</li>
-<li>✅ <strong>Linux works automatically</strong> - drivers built into kernel</li>
+<li>✅ <strong>Native to KVM/QEMU</strong> - optimized
+paravirtualization</li>
+<li>✅ <strong>Linux works automatically</strong> - drivers built into
+kernel</li>
 <li>⚠️ <strong>Requires VirtIO drivers</strong> for Windows</li>
 <li>❌ <strong>One device per controller</strong> - less flexible</li>
-<li>👍 <strong>Use when:</strong> You want maximum speed (gaming, intensive workloads)</li>
+<li>👍 <strong>Use when:</strong> You want maximum speed (gaming,
+intensive workloads)</li>
 <li>💡 <strong>Speed:</strong> ~1-2 GB/s+ possible</li>
 </ul>
-<h3>🎯 Recommendation</h3>
-<p><strong>For Windows VMs:</strong></p>
-<ol>
-<li><strong>During installation:</strong> Use SATA for easy setup OR add VirtIO drivers during install (see below)</li>
-<li><strong>After installation:</strong> Switch to VirtIO for best performance</li>
-<li><strong>For gaming/performance:</strong> Always use VirtIO with drivers installed</li>
-</ol>
-<p><strong>For Linux VMs:</strong></p>
-<ul>
-<li>Always use <strong>VirtIO</strong> - it works out of the box and gives best performance</li>
-</ul>
-<hr>
-<h2>💾 5. Windows VMs: The VirtIO Driver Setup</h2>
-<h3>Why VirtIO Matters</h3>
-<p><strong>Without VirtIO drivers:</strong> Windows will be SLOW (disk speeds ~50MB/s, bad network)<br><strong>With VirtIO drivers:</strong> FAST (disk speeds ~1GB/s+, native network performance)</p>
-<h3>Download VirtIO Drivers</h3>
-<pre><code class="language-bash"># Download the latest stable VirtIO ISO
+<h3 id="recommendation">🎯 Recommendation</h3>
+<p><strong>For Windows VMs:</strong> 1. <strong>During
+installation:</strong> Use SATA for easy setup OR add VirtIO drivers
+during install (see below) 2. <strong>After installation:</strong>
+Switch to VirtIO for best performance 3. <strong>For
+gaming/performance:</strong> Always use VirtIO with drivers
+installed</p>
+<p><strong>For Linux VMs:</strong> - Always use <strong>VirtIO</strong>
+- it works out of the box and gives best performance</p>
+<hr />
+<h2 id="windows-vms-the-virtio-driver-setup">💾 5. Windows VMs: The
+VirtIO Driver Setup</h2>
+<h3 id="why-virtio-matters">Why VirtIO Matters</h3>
+<p><strong>Without VirtIO drivers:</strong> Windows will be SLOW (disk
+speeds ~50MB/s, bad network) <strong>With VirtIO drivers:</strong> FAST
+(disk speeds ~1GB/s+, native network performance)</p>
+<h3 id="download-virtio-drivers">Download VirtIO Drivers</h3>
+<pre class="bash"><code># Download the latest stable VirtIO ISO
 cd ~/Downloads
-wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
-</code></pre>
-<p>Or download from: <a href="https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md">https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md</a></p>
-<h3>Installing Windows with VirtIO</h3>
-<p><strong>Step 1: Create Windows VM (customize before install as shown above)</strong></p>
+wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso</code></pre>
+<p>Or download from: <a
+href="https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md">https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md</a></p>
+<h3 id="installing-windows-with-virtio">Installing Windows with
+VirtIO</h3>
+<p><strong>Step 1: Create Windows VM (customize before install as shown
+above)</strong></p>
 <p><strong>Step 2: Add the VirtIO ISO as a second CD drive</strong></p>
-<p>In the VM configuration screen (before starting):</p>
-<ol>
-<li>Click <strong>&quot;Add Hardware&quot;</strong> (bottom-left)</li>
-<li>Select <strong>&quot;Storage&quot;</strong></li>
-<li><strong>Device type:</strong> CDROM device</li>
-<li>Click <strong>&quot;Manage&quot;</strong> → Browse to <code>virtio-win.iso</code></li>
-<li>Click <strong>&quot;Finish&quot;</strong></li>
-</ol>
+<p>In the VM configuration screen (before starting): 1. Click
+<strong>“Add Hardware”</strong> (bottom-left) 2. Select
+<strong>“Storage”</strong> 3. <strong>Device type:</strong> CDROM device
+4. Click <strong>“Manage”</strong> → Browse to
+<code>virtio-win.iso</code> 5. Click <strong>“Finish”</strong></p>
 <p><strong>Step 3: Start Windows Installation</strong></p>
-<p>When you reach &quot;Where do you want to install Windows?&quot; and see <strong>no drives:</strong></p>
-<ol>
-<li>Click <strong>&quot;Load driver&quot;</strong></li>
-<li>Click <strong>&quot;Browse&quot;</strong></li>
-<li>Navigate to CD drive (E: or D:) → <strong><code>viostor</code></strong> folder</li>
-<li>Select your Windows version folder (e.g., <code>w10</code> or <code>w11</code>)</li>
+<p>When you reach “Where do you want to install Windows?” and see
+<strong>no drives:</strong></p>
+<ol type="1">
+<li>Click <strong>“Load driver”</strong></li>
+<li>Click <strong>“Browse”</strong></li>
+<li>Navigate to CD drive (E: or D:) →
+<strong><code>viostor</code></strong> folder</li>
+<li>Select your Windows version folder (e.g., <code>w10</code> or
+<code>w11</code>)</li>
 <li>Select <code>amd64</code> folder</li>
 <li>Click <strong>OK</strong></li>
-<li>Windows will find &quot;Red Hat VirtIO SCSI controller&quot;</li>
+<li>Windows will find “Red Hat VirtIO SCSI controller”</li>
 <li>Click <strong>Next</strong></li>
 </ol>
 <p>Now your disk appears! Continue Windows installation normally.</p>
-<p><strong>Step 4: Install Remaining Drivers After Windows Boots</strong></p>
+<p><strong>Step 4: Install Remaining Drivers After Windows
+Boots</strong></p>
 <p>Once Windows is installed and running:</p>
-<ol>
+<ol type="1">
 <li>Open File Explorer</li>
 <li>Navigate to the VirtIO CD drive</li>
 <li>Run <strong><code>virtio-win-guest-tools.exe</code></strong></li>
 <li>Install all drivers (network, balloon, SPICE guest tools, etc.)</li>
 <li>Reboot</li>
 </ol>
-<p>✅ <strong>Done!</strong> Your Windows VM now runs at native speeds.</p>
-<h3>Pro Tip: SPICE Guest Tools</h3>
-<p>After installing virtio drivers, install SPICE guest tools for:</p>
+<p>✅ <strong>Done!</strong> Your Windows VM now runs at native
+speeds.</p>
+<h3 id="pro-tip-spice-guest-tools">Pro Tip: SPICE Guest Tools</h3>
+<p>After installing virtio drivers, install SPICE guest tools for: -
+Auto-resize VM window - Copy/paste between host and VM - Shared folders
+- Better graphics performance</p>
+<hr />
+<h2 id="attaching-physical-disks-devsda-devnvme0n1-etc.">🔌 6. Attaching
+Physical Disks (/dev/sda, /dev/nvme0n1, etc.)</h2>
+<h3 id="why-attach-physical-disks">Why Attach Physical Disks?</h3>
 <ul>
-<li>Auto-resize VM window</li>
-<li>Copy/paste between host and VM</li>
-<li>Shared folders</li>
-<li>Better graphics performance</li>
-</ul>
-<hr>
-<h2>🔌 6. Attaching Physical Disks (/dev/sda, /dev/nvme0n1, etc.)</h2>
-<h3>Why Attach Physical Disks?</h3>
-<ul>
-<li><strong>Dual-boot OS access:</strong> Mount your Windows partition in a Linux VM</li>
-<li><strong>Data drives:</strong> Give VM direct access to storage drives</li>
-<li><strong>Pass-through performance:</strong> Near-native disk speeds</li>
+<li><strong>Dual-boot OS access:</strong> Mount your Windows partition
+in a Linux VM</li>
+<li><strong>Data drives:</strong> Give VM direct access to storage
+drives</li>
+<li><strong>Pass-through performance:</strong> Near-native disk
+speeds</li>
 <li><strong>Recovery:</strong> Boot failed installations in a VM</li>
 </ul>
-<h3>GUI Method: Add Physical Disk to VM</h3>
-<p><strong>⚠️ WARNING:</strong> VM must be <strong>SHUT DOWN</strong> (not running) to add hardware!</p>
-<ol>
+<h3 id="gui-method-add-physical-disk-to-vm">GUI Method: Add Physical
+Disk to VM</h3>
+<p><strong>⚠️ WARNING:</strong> VM must be <strong>SHUT DOWN</strong>
+(not running) to add hardware!</p>
+<ol type="1">
 <li><p><strong>Identify your disk:</strong></p>
-<pre><code class="language-bash">lsblk
+<pre class="bash"><code>lsblk
 # Example output:
 # sda      8:0    0   1TB  0 disk
 # ├─sda1   8:1    0   500M 0 part  /boot/efi
 # ├─sda2   8:2    0   200G 0 part  /
 # └─sda3   8:3    0   799G 0 part  /home
 # sdb      8:16   0   2TB  0 disk
-# └─sdb1   8:17   0   2TB  0 part
-</code></pre>
-</li>
-<li><p><strong>Open VM in virt-manager</strong> (must be powered off)</p>
-</li>
-<li><p><strong>Click &quot;Add Hardware&quot;</strong> (bottom-left or top-left icon)</p>
-</li>
-<li><p><strong>Select &quot;Storage&quot;</strong></p>
+# └─sdb1   8:17   0   2TB  0 part</code></pre></li>
+<li><p><strong>Open VM in virt-manager</strong> (must be powered
+off)</p></li>
+<li><p><strong>Click “Add Hardware”</strong> (bottom-left or top-left
+icon)</p></li>
+<li><p><strong>Select “Storage”</strong></p>
 <ul>
 <li><strong>Device type:</strong> Disk device</li>
-<li><strong>Storage format:</strong> Select <strong>&quot;Select or create custom storage&quot;</strong></li>
-<li><strong>Manage:</strong> Type the device path manually<ul>
+<li><strong>Storage format:</strong> Select <strong>“Select or create
+custom storage”</strong></li>
+<li><strong>Manage:</strong> Type the device path manually
+<ul>
 <li>For entire disk: <code>/dev/sdb</code></li>
 <li>For partition: <code>/dev/sdb1</code></li>
-</ul>
-</li>
-<li><strong>Bus type:</strong> VirtIO (for Linux guests) or SATA (for Windows without drivers)</li>
+</ul></li>
+<li><strong>Bus type:</strong> VirtIO (for Linux guests) or SATA (for
+Windows without drivers)</li>
 <li><strong>Cache mode:</strong> none (safest for physical disks)</li>
-</ul>
-</li>
-<li><p><strong>Click &quot;Finish&quot;</strong></p>
-</li>
-<li><p><strong>Start the VM</strong> - the disk now appears inside!</p>
-</li>
+</ul></li>
+<li><p><strong>Click “Finish”</strong></p></li>
+<li><p><strong>Start the VM</strong> - the disk now appears
+inside!</p></li>
 </ol>
-<h3>Giving Yourself Permission</h3>
-<p>By default, libvirt might not have permission to access <code>/dev/sdb</code>:</p>
-<pre><code class="language-bash"># Check current permissions
+<h3 id="giving-yourself-permission">Giving Yourself Permission</h3>
+<p>By default, libvirt might not have permission to access
+<code>/dev/sdb</code>:</p>
+<pre class="bash"><code># Check current permissions
 ls -l /dev/sdb
 
 # Add yourself to the disk group
@@ -389,69 +677,61 @@ user = &quot;your-username&quot;
 group = &quot;your-username&quot;
 
 # Restart libvirtd
-sudo systemctl restart libvirtd
-</code></pre>
-<h3>⚠️ CRITICAL WARNINGS</h3>
-<p><strong>DO NOT:</strong></p>
-<ul>
-<li>❌ Mount a disk in both host AND VM simultaneously (data corruption!)</li>
-<li>❌ Pass through your root partition (<code>/</code>) while booted from it</li>
-<li>❌ Write to disks without backups first</li>
-</ul>
-<p><strong>SAFE PRACTICES:</strong></p>
-<ul>
-<li>✅ Unmount partitions on host before passing to VM</li>
-<li>✅ Use read-only mode if just accessing data</li>
-<li>✅ Pass entire disks (<code>/dev/sdb</code>) rather than partitions when possible</li>
-<li>✅ Test with non-critical disks first</li>
-</ul>
-<h3>Read-Only Mode (Safe Exploration)</h3>
+sudo systemctl restart libvirtd</code></pre>
+<h3 id="critical-warnings">⚠️ CRITICAL WARNINGS</h3>
+<p><strong>DO NOT:</strong> - ❌ Mount a disk in both host AND VM
+simultaneously (data corruption!) - ❌ Pass through your root partition
+(<code>/</code>) while booted from it - ❌ Write to disks without
+backups first</p>
+<p><strong>SAFE PRACTICES:</strong> - ✅ Unmount partitions on host
+before passing to VM - ✅ Use read-only mode if just accessing data - ✅
+Pass entire disks (<code>/dev/sdb</code>) rather than partitions when
+possible - ✅ Test with non-critical disks first</p>
+<h3 id="read-only-mode-safe-exploration">Read-Only Mode (Safe
+Exploration)</h3>
 <p>To mount a disk as read-only:</p>
-<ol>
-<li>Add the disk as described above</li>
-<li>Before finishing, go to <strong>XML tab</strong></li>
-<li>Add <code>&lt;readonly/&gt;</code> inside the <code>&lt;disk&gt;</code> block:<pre><code class="language-xml">&lt;disk type=&#39;block&#39; device=&#39;disk&#39;&gt;
+<ol type="1">
+<li><p>Add the disk as described above</p></li>
+<li><p>Before finishing, go to <strong>XML tab</strong></p></li>
+<li><p>Add <code>&lt;readonly/&gt;</code> inside the
+<code>&lt;disk&gt;</code> block:</p>
+<pre class="xml"><code>&lt;disk type=&#39;block&#39; device=&#39;disk&#39;&gt;
   &lt;driver name=&#39;qemu&#39; type=&#39;raw&#39; cache=&#39;none&#39;/&gt;
   &lt;source dev=&#39;/dev/sdb1&#39;/&gt;
   &lt;target dev=&#39;vdb&#39; bus=&#39;virtio&#39;/&gt;
   &lt;readonly/&gt;
-&lt;/disk&gt;
-</code></pre>
-</li>
+&lt;/disk&gt;</code></pre></li>
 </ol>
-<hr>
-<h2>🎮 7. GPU Passthrough: Ultimate Performance</h2>
-<h3>What is GPU Passthrough?</h3>
-<p><strong>Give your VM exclusive access to a dedicated GPU</strong> for:</p>
-<ul>
-<li>Near-native gaming performance in Windows VMs</li>
-<li>CUDA/compute workloads</li>
-<li>GPU-accelerated rendering</li>
-<li>Machine learning in VMs</li>
-</ul>
-<h3>Requirements</h3>
-<p>✅ <strong>CPU:</strong> Intel VT-d or AMD-Vi support (enable in BIOS)<br>✅ <strong>GPU:</strong> Second GPU (or iGPU + dedicated GPU)<br>✅ <strong>Motherboard:</strong> IOMMU support<br>✅ <strong>Bootloader:</strong> IOMMU enabled in kernel parameters</p>
-<p>⚠️ <strong>You need 2 GPUs:</strong> One for host, one to pass to VM (or use iGPU for host + dGPU for VM)</p>
-<h3>Step 1: Enable IOMMU</h3>
+<hr />
+<h2 id="gpu-passthrough-ultimate-performance">🎮 7. GPU Passthrough:
+Ultimate Performance</h2>
+<h3 id="what-is-gpu-passthrough">What is GPU Passthrough?</h3>
+<p><strong>Give your VM exclusive access to a dedicated GPU</strong>
+for: - Near-native gaming performance in Windows VMs - CUDA/compute
+workloads - GPU-accelerated rendering - Machine learning in VMs</p>
+<h3 id="requirements">Requirements</h3>
+<p>✅ <strong>CPU:</strong> Intel VT-d or AMD-Vi support (enable in
+BIOS) ✅ <strong>GPU:</strong> Second GPU (or iGPU + dedicated GPU) ✅
+<strong>Motherboard:</strong> IOMMU support ✅
+<strong>Bootloader:</strong> IOMMU enabled in kernel parameters</p>
+<p>⚠️ <strong>You need 2 GPUs:</strong> One for host, one to pass to VM
+(or use iGPU for host + dGPU for VM)</p>
+<h3 id="step-1-enable-iommu">Step 1: Enable IOMMU</h3>
 <p><strong>Edit GRUB configuration:</strong></p>
-<pre><code class="language-bash">sudo nano /etc/default/grub
-</code></pre>
+<pre class="bash"><code>sudo nano /etc/default/grub</code></pre>
 <p><strong>For Intel CPUs, add:</strong></p>
-<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;... intel_iommu=on iommu=pt&quot;
-</code></pre>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;... intel_iommu=on iommu=pt&quot;</code></pre>
 <p><strong>For AMD CPUs, add:</strong></p>
-<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;... amd_iommu=on iommu=pt&quot;
-</code></pre>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;... amd_iommu=on iommu=pt&quot;</code></pre>
 <p><strong>Update GRUB and reboot:</strong></p>
-<pre><code class="language-bash">sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo reboot
-</code></pre>
+<pre class="bash"><code>sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo reboot</code></pre>
 <p><strong>Verify IOMMU is enabled:</strong></p>
-<pre><code class="language-bash">dmesg | grep -i iommu
-# Should show IOMMU enabled
-</code></pre>
-<h3>Step 2: Find Your GPU&#39;s PCI IDs</h3>
-<pre><code class="language-bash">lspci -nnk | grep -i nvidia
+<pre class="bash"><code>dmesg | grep -i iommu
+# Should show IOMMU enabled</code></pre>
+<h3 id="step-2-find-your-gpus-pci-ids">Step 2: Find Your GPU’s PCI
+IDs</h3>
+<pre class="bash"><code>lspci -nnk | grep -i nvidia
 # OR
 lspci -nnk | grep -i amd
 # OR
@@ -459,147 +739,121 @@ lspci -nnk | grep -i vga
 
 # Example output:
 # 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
-# 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]
-</code></pre>
-<p><strong>Note the IDs in brackets:</strong> <code>10de:2484</code> and <code>10de:228b</code></p>
-<h3>Step 3: Isolate the GPU from Host</h3>
+# 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]</code></pre>
+<p><strong>Note the IDs in brackets:</strong> <code>10de:2484</code> and
+<code>10de:228b</code></p>
+<h3 id="step-3-isolate-the-gpu-from-host">Step 3: Isolate the GPU from
+Host</h3>
 <p><strong>Create vfio config:</strong></p>
-<pre><code class="language-bash">sudo nano /etc/modprobe.d/vfio.conf
-</code></pre>
+<pre class="bash"><code>sudo nano /etc/modprobe.d/vfio.conf</code></pre>
 <p><strong>Add (use YOUR IDs from above!):</strong></p>
 <pre><code>options vfio-pci ids=10de:2484,10de:228b
 softdep nvidia pre: vfio-pci
-softdep nouveau pre: vfio-pci
-</code></pre>
+softdep nouveau pre: vfio-pci</code></pre>
 <p><strong>Update initramfs:</strong></p>
 <p><strong>Arch:</strong></p>
-<pre><code class="language-bash">sudo mkinitcpio -P
-</code></pre>
+<pre class="bash"><code>sudo mkinitcpio -P</code></pre>
 <p><strong>Fedora:</strong></p>
-<pre><code class="language-bash">sudo dracut --force
-</code></pre>
+<pre class="bash"><code>sudo dracut --force</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
-<pre><code class="language-bash">sudo update-initramfs -u
-</code></pre>
+<pre class="bash"><code>sudo update-initramfs -u</code></pre>
 <p><strong>Reboot:</strong></p>
-<pre><code class="language-bash">sudo reboot
-</code></pre>
+<pre class="bash"><code>sudo reboot</code></pre>
 <p><strong>Verify GPU is bound to vfio:</strong></p>
-<pre><code class="language-bash">lspci -nnk -d 10de:2484
-# Should show: Kernel driver in use: vfio-pci
-</code></pre>
-<h3>Step 4: Configure VM for GPU Passthrough</h3>
+<pre class="bash"><code>lspci -nnk -d 10de:2484
+# Should show: Kernel driver in use: vfio-pci</code></pre>
+<h3 id="step-4-configure-vm-for-gpu-passthrough">Step 4: Configure VM
+for GPU Passthrough</h3>
 <p><strong>In virt-manager:</strong></p>
-<ol>
-<li><p><strong>Shut down your VM</strong> (if running)</p>
-</li>
-<li><p><strong>Open VM configuration</strong></p>
-</li>
+<ol type="1">
+<li><p><strong>Shut down your VM</strong> (if running)</p></li>
+<li><p><strong>Open VM configuration</strong></p></li>
 <li><p><strong>Overview tab:</strong></p>
 <ul>
 <li><strong>Chipset:</strong> Q35</li>
 <li><strong>Firmware:</strong> UEFI (required!)</li>
-</ul>
-</li>
+</ul></li>
 <li><p><strong>CPUs tab:</strong></p>
 <ul>
-<li>Enable <strong>&quot;Copy host CPU configuration&quot;</strong></li>
-</ul>
-</li>
-<li><p><strong>Click &quot;Add Hardware&quot;</strong></p>
-</li>
-<li><p><strong>Select &quot;PCI Host Device&quot;</strong></p>
+<li>Enable <strong>“Copy host CPU configuration”</strong></li>
+</ul></li>
+<li><p><strong>Click “Add Hardware”</strong></p></li>
+<li><p><strong>Select “PCI Host Device”</strong></p>
 <ul>
 <li>Find your GPU (will show the PCI address)</li>
 <li>Add the <strong>VGA controller</strong> (01:00.0)</li>
-<li>Click &quot;Finish&quot;</li>
-</ul>
-</li>
-<li><p><strong>Repeat &quot;Add Hardware&quot;</strong> for GPU audio device (01:00.1)</p>
-</li>
+<li>Click “Finish”</li>
+</ul></li>
+<li><p><strong>Repeat “Add Hardware”</strong> for GPU audio device
+(01:00.1)</p></li>
 <li><p><strong>XML tab</strong> (for advanced config):</p>
 <ul>
 <li>Click <strong>XML</strong> tab at top</li>
-<li>Find <code>&lt;domain type=&#39;kvm&#39;&gt;</code> and change to:</li>
+<li>Find <code>&lt;domain type='kvm'&gt;</code> and change to:</li>
 </ul>
-<pre><code class="language-xml">&lt;domain type=&#39;kvm&#39; xmlns:qemu=&#39;http://libvirt.org/schemas/domain/qemu/1.0&#39;&gt;
-</code></pre>
+<pre class="xml"><code>&lt;domain type=&#39;kvm&#39; xmlns:qemu=&#39;http://libvirt.org/schemas/domain/qemu/1.0&#39;&gt;</code></pre>
 <ul>
 <li>Add before <code>&lt;/domain&gt;</code>:</li>
 </ul>
-<pre><code class="language-xml">&lt;qemu:commandline&gt;
+<pre class="xml"><code>&lt;qemu:commandline&gt;
   &lt;qemu:arg value=&#39;-cpu&#39;/&gt;
   &lt;qemu:arg value=&#39;host,kvm=off,hv_vendor_id=null&#39;/&gt;
-&lt;/qemu:commandline&gt;
-</code></pre>
-</li>
-<li><p><strong>Optional:</strong> Remove Spice/QXL display if GPU is primary display</p>
-</li>
-<li><p><strong>Apply and start VM</strong></p>
-</li>
+&lt;/qemu:commandline&gt;</code></pre></li>
+<li><p><strong>Optional:</strong> Remove Spice/QXL display if GPU is
+primary display</p></li>
+<li><p><strong>Apply and start VM</strong></p></li>
 </ol>
-<h3>Step 5: Install GPU Drivers in Guest</h3>
-<p><strong>Windows:</strong></p>
-<ul>
-<li>Download NVIDIA/AMD drivers as normal</li>
-<li>Install and reboot</li>
-<li>GPU should appear in Device Manager</li>
-</ul>
-<p><strong>Linux:</strong></p>
-<ul>
-<li>Install drivers via package manager</li>
-<li>Configure Xorg if needed</li>
-</ul>
-<h3>Troubleshooting GPU Passthrough</h3>
-<p><strong>Error: &quot;device is already in use&quot;</strong></p>
-<pre><code class="language-bash"># Check what&#39;s using it
+<h3 id="step-5-install-gpu-drivers-in-guest">Step 5: Install GPU Drivers
+in Guest</h3>
+<p><strong>Windows:</strong> - Download NVIDIA/AMD drivers as normal -
+Install and reboot - GPU should appear in Device Manager</p>
+<p><strong>Linux:</strong> - Install drivers via package manager -
+Configure Xorg if needed</p>
+<h3 id="troubleshooting-gpu-passthrough">Troubleshooting GPU
+Passthrough</h3>
+<p><strong>Error: “device is already in use”</strong></p>
+<pre class="bash"><code># Check what&#39;s using it
 lspci -k -s 01:00.0
 
-# Make sure host drivers are blacklisted
-</code></pre>
-<p><strong>Black screen / Code 43 error:</strong></p>
-<ul>
-<li>Add KVM hiding: <code>kvm=off,hv_vendor_id=null</code></li>
-<li>Ensure UEFI firmware, not BIOS</li>
-<li>Update GPU VBIOS (advanced)</li>
-</ul>
-<p><strong>VM won&#39;t start:</strong></p>
-<pre><code class="language-bash"># Check libvirt logs
-sudo journalctl -u libvirtd -f
-</code></pre>
-<h3>Chris Titus Tech GPU Passthrough Script</h3>
+# Make sure host drivers are blacklisted</code></pre>
+<p><strong>Black screen / Code 43 error:</strong> - Add KVM hiding:
+<code>kvm=off,hv_vendor_id=null</code> - Ensure UEFI firmware, not BIOS
+- Update GPU VBIOS (advanced)</p>
+<p><strong>VM won’t start:</strong></p>
+<pre class="bash"><code># Check libvirt logs
+sudo journalctl -u libvirtd -f</code></pre>
+<h3 id="chris-titus-tech-gpu-passthrough-script">Chris Titus Tech GPU
+Passthrough Script</h3>
 <p>For automated GPU passthrough setup on Arch:</p>
-<pre><code class="language-bash">git clone https://github.com/ChrisTitusTech/gpu-passthrough
+<pre class="bash"><code>git clone https://github.com/ChrisTitusTech/gpu-passthrough
 cd gpu-passthrough
-./install.sh
-</code></pre>
-<hr>
-<h2>💿 8. Converting &amp; Importing Existing VM Disks</h2>
-<h3>From VirtualBox (VDI)</h3>
-<pre><code class="language-bash"># Convert VDI to qcow2
+./install.sh</code></pre>
+<hr />
+<h2 id="converting-importing-existing-vm-disks">💿 8. Converting &amp;
+Importing Existing VM Disks</h2>
+<h3 id="from-virtualbox-vdi">From VirtualBox (VDI)</h3>
+<pre class="bash"><code># Convert VDI to qcow2
 qemu-img convert -f vdi -O qcow2 ~/VirtualBox\ VMs/myvm/disk.vdi ~/vm-disk.qcow2
 
 # Import in virt-manager:
 # 1. Create new VM → &quot;Import existing disk image&quot;
 # 2. Browse to ~/vm-disk.qcow2
 # 3. Select OS type
-# 4. Configure RAM/CPU → Finish
-</code></pre>
-<h3>From VMware (VMDK)</h3>
-<pre><code class="language-bash"># Convert VMDK to qcow2
+# 4. Configure RAM/CPU → Finish</code></pre>
+<h3 id="from-vmware-vmdk">From VMware (VMDK)</h3>
+<pre class="bash"><code># Convert VMDK to qcow2
 qemu-img convert -f vmdk -O qcow2 ~/vmware/myvm/disk.vmdk ~/vm-disk.qcow2
 
-# Import as above
-</code></pre>
-<h3>From Hyper-V (VHD/VHDX)</h3>
-<pre><code class="language-bash"># Convert VHD to qcow2
+# Import as above</code></pre>
+<h3 id="from-hyper-v-vhdvhdx">From Hyper-V (VHD/VHDX)</h3>
+<pre class="bash"><code># Convert VHD to qcow2
 qemu-img convert -f vpc -O qcow2 ~/hyperv/disk.vhd ~/vm-disk.qcow2
 
 # Convert VHDX to qcow2
-qemu-img convert -f vhdx -O qcow2 ~/hyperv/disk.vhdx ~/vm-disk.qcow2
-</code></pre>
-<h3>From Physical Disk (Clone Entire Drive)</h3>
-<pre><code class="language-bash"># Find your disk
+qemu-img convert -f vhdx -O qcow2 ~/hyperv/disk.vhdx ~/vm-disk.qcow2</code></pre>
+<h3 id="from-physical-disk-clone-entire-drive">From Physical Disk (Clone
+Entire Drive)</h3>
+<pre class="bash"><code># Find your disk
 lsblk
 
 # Clone to image file (VERIFY DEVICE NAME!)
@@ -608,126 +862,114 @@ sudo dd if=/dev/sdb of=~/physical-disk.img bs=4M status=progress
 # Convert to qcow2 for better compression
 qemu-img convert -f raw -O qcow2 ~/physical-disk.img ~/vm-disk.qcow2
 
-# Import in virt-manager
-</code></pre>
-<p>⚠️ <strong>WARNING:</strong> Triple-check device names! <code>if=/dev/sda</code> could wipe your host OS!</p>
-<h3>Expand Disk Size After Import</h3>
-<pre><code class="language-bash"># Resize the qcow2 file
+# Import in virt-manager</code></pre>
+<p>⚠️ <strong>WARNING:</strong> Triple-check device names!
+<code>if=/dev/sda</code> could wipe your host OS!</p>
+<h3 id="expand-disk-size-after-import">Expand Disk Size After
+Import</h3>
+<pre class="bash"><code># Resize the qcow2 file
 qemu-img resize ~/vm-disk.qcow2 +50G
 
 # Then inside the guest OS:
 # Linux: Use gparted or fdisk + resize2fs
-# Windows: Use Disk Management to extend partition
-</code></pre>
-<hr>
-<h2>📸 9. Snapshots: Time Travel for VMs</h2>
-<h3>Creating Snapshots (GUI)</h3>
+# Windows: Use Disk Management to extend partition</code></pre>
+<hr />
+<h2 id="snapshots-time-travel-for-vms">📸 9. Snapshots: Time Travel for
+VMs</h2>
+<h3 id="creating-snapshots-gui">Creating Snapshots (GUI)</h3>
 <p><strong>In virt-manager:</strong></p>
-<ol>
-<li>Open your VM (doesn&#39;t need to be running)</li>
-<li>Click <strong>&quot;Manage VM Snapshots&quot;</strong> icon (camera/clock icon)</li>
-<li>Click <strong>&quot;Create new snapshot&quot;</strong> (+ button)</li>
-<li>Give it a name: &quot;Before Windows Update&quot; or &quot;Clean Install&quot;</li>
+<ol type="1">
+<li>Open your VM (doesn’t need to be running)</li>
+<li>Click <strong>“Manage VM Snapshots”</strong> icon (camera/clock
+icon)</li>
+<li>Click <strong>“Create new snapshot”</strong> (+ button)</li>
+<li>Give it a name: “Before Windows Update” or “Clean Install”</li>
 <li>Optional: Add description</li>
-<li>Click <strong>&quot;Finish&quot;</strong></li>
+<li>Click <strong>“Finish”</strong></li>
 </ol>
-<h3>Restoring Snapshots</h3>
-<ol>
-<li>Open &quot;Manage VM Snapshots&quot;</li>
+<h3 id="restoring-snapshots">Restoring Snapshots</h3>
+<ol type="1">
+<li>Open “Manage VM Snapshots”</li>
 <li>Select the snapshot you want to restore</li>
-<li>Click <strong>&quot;Run snapshot&quot;</strong> (play button)</li>
+<li>Click <strong>“Run snapshot”</strong> (play button)</li>
 <li>Confirm → Your VM reverts instantly!</li>
 </ol>
-<h3>When to Snapshot</h3>
-<p>✅ <strong>Before:</strong></p>
+<h3 id="when-to-snapshot">When to Snapshot</h3>
+<p>✅ <strong>Before:</strong> - Major system updates - Installing new
+software - Changing system configurations - Experimenting with
+settings</p>
+<p>✅ <strong>After:</strong> - Fresh OS installation (clean slate) -
+Getting software environment working - Successful configurations</p>
+<h3 id="snapshot-tips">Snapshot Tips</h3>
 <ul>
-<li>Major system updates</li>
-<li>Installing new software</li>
-<li>Changing system configurations</li>
-<li>Experimenting with settings</li>
+<li><strong>Name snapshots clearly:</strong>
+“2024-04-04-before-nvidia-driver” not “snap1”</li>
+<li><strong>Don’t rely on 50+ snapshots:</strong> They eat disk space
+and slow down VMs</li>
+<li><strong>Delete old snapshots:</strong> Keep 3-5 important ones
+max</li>
+<li><strong>External snapshots for production:</strong> More reliable
+than internal</li>
 </ul>
-<p>✅ <strong>After:</strong></p>
-<ul>
-<li>Fresh OS installation (clean slate)</li>
-<li>Getting software environment working</li>
-<li>Successful configurations</li>
-</ul>
-<h3>Snapshot Tips</h3>
-<ul>
-<li><strong>Name snapshots clearly:</strong> &quot;2024-04-04-before-nvidia-driver&quot; not &quot;snap1&quot;</li>
-<li><strong>Don&#39;t rely on 50+ snapshots:</strong> They eat disk space and slow down VMs</li>
-<li><strong>Delete old snapshots:</strong> Keep 3-5 important ones max</li>
-<li><strong>External snapshots for production:</strong> More reliable than internal</li>
-</ul>
-<h3>Deleting Snapshots</h3>
-<ol>
-<li>Open &quot;Manage VM Snapshots&quot;</li>
+<h3 id="deleting-snapshots">Deleting Snapshots</h3>
+<ol type="1">
+<li>Open “Manage VM Snapshots”</li>
 <li>Select old snapshot</li>
-<li>Click <strong>&quot;Delete snapshot&quot;</strong> (trash icon)</li>
+<li>Click <strong>“Delete snapshot”</strong> (trash icon)</li>
 <li>Confirm</li>
 </ol>
-<p><strong>This merges the snapshot back into the base disk</strong> - doesn&#39;t lose data from current state.</p>
-<hr>
-<h2>⚡ 10. Performance Tips</h2>
-<h3>In Virt-Manager (Easy Optimizations)</h3>
-<p><strong>CPUs Tab:</strong></p>
-<ul>
-<li>✅ Check <strong>&quot;Copy host CPU configuration&quot;</strong> (huge performance boost!)</li>
-<li>✅ Manually set topology: 1 socket, 4 cores, 1-2 threads</li>
-</ul>
-<p><strong>Boot Options:</strong></p>
-<ul>
-<li>✅ Enable boot menu for flexibility</li>
-</ul>
-<p><strong>Disk:</strong></p>
-<ul>
-<li>✅ Use <strong>VirtIO</strong> bus (not SATA/IDE)</li>
-<li>✅ Cache mode: <strong>writeback</strong> for speed (dev), <strong>none</strong> for safety (production)</li>
-<li>✅ Discard mode: <strong>unmap</strong> (for SSD trim support)</li>
-</ul>
-<p><strong>Network:</strong></p>
-<ul>
-<li>✅ Device model: <strong>virtio</strong></li>
-</ul>
-<p><strong>Video:</strong></p>
-<ul>
-<li>✅ For Linux guests: <strong>Virtio</strong></li>
-<li>✅ For Windows (no GPU passthrough): <strong>QXL</strong> or <strong>Virtio</strong></li>
-<li>⚠️ Remove when using GPU passthrough</li>
-</ul>
-<h3>XML Tweaks for Maximum Performance</h3>
-<p><strong>Edit VM (virt-manager → Open VM → Edit → Preferences → Enable XML editing)</strong></p>
+<p><strong>This merges the snapshot back into the base disk</strong> -
+doesn’t lose data from current state.</p>
+<hr />
+<h2 id="performance-tips">⚡ 10. Performance Tips</h2>
+<h3 id="in-virt-manager-easy-optimizations">In Virt-Manager (Easy
+Optimizations)</h3>
+<p><strong>CPUs Tab:</strong> - ✅ Check <strong>“Copy host CPU
+configuration”</strong> (huge performance boost!) - ✅ Manually set
+topology: 1 socket, 4 cores, 1-2 threads</p>
+<p><strong>Boot Options:</strong> - ✅ Enable boot menu for
+flexibility</p>
+<p><strong>Disk:</strong> - ✅ Use <strong>VirtIO</strong> bus (not
+SATA/IDE) - ✅ Cache mode: <strong>writeback</strong> for speed (dev),
+<strong>none</strong> for safety (production) - ✅ Discard mode:
+<strong>unmap</strong> (for SSD trim support)</p>
+<p><strong>Network:</strong> - ✅ Device model:
+<strong>virtio</strong></p>
+<p><strong>Video:</strong> - ✅ For Linux guests:
+<strong>Virtio</strong> - ✅ For Windows (no GPU passthrough):
+<strong>QXL</strong> or <strong>Virtio</strong> - ⚠️ Remove when using
+GPU passthrough</p>
+<h3 id="xml-tweaks-for-maximum-performance">XML Tweaks for Maximum
+Performance</h3>
+<p><strong>Edit VM (virt-manager → Open VM → Edit → Preferences → Enable
+XML editing)</strong></p>
 <p><strong>Or via command line:</strong></p>
-<pre><code class="language-bash">virsh edit vm-name
-</code></pre>
+<pre class="bash"><code>virsh edit vm-name</code></pre>
 <p><strong>Add host-passthrough CPU mode:</strong></p>
-<pre><code class="language-xml">&lt;cpu mode=&#39;host-passthrough&#39; check=&#39;none&#39;&gt;
+<pre class="xml"><code>&lt;cpu mode=&#39;host-passthrough&#39; check=&#39;none&#39;&gt;
   &lt;topology sockets=&#39;1&#39; dies=&#39;1&#39; cores=&#39;4&#39; threads=&#39;2&#39;/&gt;
-&lt;/cpu&gt;
-</code></pre>
+&lt;/cpu&gt;</code></pre>
 <p><strong>Enable hugepages (if configured on host):</strong></p>
-<pre><code class="language-xml">&lt;memoryBacking&gt;
+<pre class="xml"><code>&lt;memoryBacking&gt;
   &lt;hugepages/&gt;
-&lt;/memoryBacking&gt;
-</code></pre>
+&lt;/memoryBacking&gt;</code></pre>
 <p><strong>Add CPU pinning for dedicated cores:</strong></p>
-<pre><code class="language-xml">&lt;vcpu placement=&#39;static&#39; cpuset=&#39;2-5&#39;&gt;4&lt;/vcpu&gt;
+<pre class="xml"><code>&lt;vcpu placement=&#39;static&#39; cpuset=&#39;2-5&#39;&gt;4&lt;/vcpu&gt;
 &lt;cputune&gt;
   &lt;vcpupin vcpu=&#39;0&#39; cpuset=&#39;2&#39;/&gt;
   &lt;vcpupin vcpu=&#39;1&#39; cpuset=&#39;3&#39;/&gt;
   &lt;vcpupin vcpu=&#39;2&#39; cpuset=&#39;4&#39;/&gt;
   &lt;vcpupin vcpu=&#39;3&#39; cpuset=&#39;5&#39;/&gt;
-&lt;/cputune&gt;
-</code></pre>
+&lt;/cputune&gt;</code></pre>
 <p><strong>For VirtIO SCSI (better I/O):</strong></p>
-<pre><code class="language-xml">&lt;controller type=&#39;scsi&#39; index=&#39;0&#39; model=&#39;virtio-scsi&#39;&gt;
+<pre class="xml"><code>&lt;controller type=&#39;scsi&#39; index=&#39;0&#39; model=&#39;virtio-scsi&#39;&gt;
   &lt;driver queues=&#39;4&#39; iothread=&#39;1&#39;/&gt;
-&lt;/controller&gt;
-</code></pre>
-<hr>
-<h2>🔧 11. Useful Commands (Quick Reference)</h2>
-<h3>Starting/Stopping VMs</h3>
-<pre><code class="language-bash"># List all VMs
+&lt;/controller&gt;</code></pre>
+<hr />
+<h2 id="useful-commands-quick-reference">🔧 11. Useful Commands (Quick
+Reference)</h2>
+<h3 id="startingstopping-vms">Starting/Stopping VMs</h3>
+<pre class="bash"><code># List all VMs
 virsh list --all
 
 # Start VM
@@ -740,10 +982,9 @@ virsh shutdown vm-name
 virsh destroy vm-name
 
 # Auto-start VM on boot
-virsh autostart vm-name
-</code></pre>
-<h3>Getting VM Information</h3>
-<pre><code class="language-bash"># Get VM IP address
+virsh autostart vm-name</code></pre>
+<h3 id="getting-vm-information">Getting VM Information</h3>
+<pre class="bash"><code># Get VM IP address
 virsh domifaddr vm-name
 
 # View VM details
@@ -756,101 +997,133 @@ virt-top
 virsh net-list --all
 
 # Start default network
-virsh net-start default
-</code></pre>
-<h3>Cloning VMs</h3>
-<pre><code class="language-bash"># Clone entire VM (auto-generates new disk)
-virt-clone --original vm-name --name new-vm-name --auto-clone
-</code></pre>
-<h3>Deleting VMs</h3>
-<pre><code class="language-bash"># Delete VM config (keeps disk)
+virsh net-start default</code></pre>
+<h3 id="cloning-vms">Cloning VMs</h3>
+<pre class="bash"><code># Clone entire VM (auto-generates new disk)
+virt-clone --original vm-name --name new-vm-name --auto-clone</code></pre>
+<h3 id="deleting-vms">Deleting VMs</h3>
+<pre class="bash"><code># Delete VM config (keeps disk)
 virsh undefine vm-name
 
 # Delete VM AND all disks
-virsh undefine vm-name --remove-all-storage
-</code></pre>
-<hr>
-<h2>🔧 12. Troubleshooting</h2>
-<h3>VM Won&#39;t Start</h3>
-<p><strong>Error: &quot;network &#39;default&#39; is not active&quot;</strong></p>
-<pre><code class="language-bash">virsh net-start default
-virsh net-autostart default
-</code></pre>
-<p><strong>Error: &quot;Failed to connect socket&quot;</strong></p>
-<pre><code class="language-bash">sudo systemctl restart libvirtd
+virsh undefine vm-name --remove-all-storage</code></pre>
+<hr />
+<h2 id="troubleshooting">🔧 12. Troubleshooting</h2>
+<h3 id="vm-wont-start">VM Won’t Start</h3>
+<p><strong>Error: “network ‘default’ is not active”</strong></p>
+<pre class="bash"><code>virsh net-start default
+virsh net-autostart default</code></pre>
+<p><strong>Error: “Failed to connect socket”</strong></p>
+<pre class="bash"><code>sudo systemctl restart libvirtd
 # Check you&#39;re in libvirt group:
 groups | grep libvirt
-# If not, add yourself and logout/login
-</code></pre>
+# If not, add yourself and logout/login</code></pre>
 <p><strong>Error: Permission denied accessing disk</strong></p>
-<pre><code class="language-bash"># Check disk ownership
+<pre class="bash"><code># Check disk ownership
 ls -l /var/lib/libvirt/images/
 
 # Fix permissions
-sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/
-</code></pre>
-<h3>Windows Won&#39;t Install (No Disk Found)</h3>
-<p>✅ <strong>Solution:</strong> Load VirtIO drivers during Windows installation (see Windows section above)</p>
-<h3>Poor Performance</h3>
-<ol>
+sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/</code></pre>
+<h3 id="windows-wont-install-no-disk-found">Windows Won’t Install (No
+Disk Found)</h3>
+<p>✅ <strong>Solution:</strong> Load VirtIO drivers during Windows
+installation (see Windows section above)</p>
+<h3 id="poor-performance">Poor Performance</h3>
+<ol type="1">
 <li>✅ Enable <strong>VirtIO</strong> for disk and network</li>
 <li>✅ Set CPU mode to <strong>host-passthrough</strong></li>
 <li>✅ Install guest tools (SPICE, VirtIO drivers)</li>
 <li>✅ Allocate enough RAM (4GB+ for Windows, 2GB+ for Linux)</li>
 </ol>
-<h3>GPU Passthrough Not Working</h3>
-<p><strong>Black screen / Code 43:</strong></p>
-<ul>
-<li>✅ Verify IOMMU is enabled: <code>dmesg | grep -i iommu</code></li>
-<li>✅ Check GPU is bound to vfio: <code>lspci -nnk -d YOUR:GPUID</code></li>
-<li>✅ Use UEFI firmware (not BIOS)</li>
-<li>✅ Add KVM hiding in XML: <code>kvm=off,hv_vendor_id=null</code></li>
-</ul>
+<h3 id="gpu-passthrough-not-working">GPU Passthrough Not Working</h3>
+<p><strong>Black screen / Code 43:</strong> - ✅ Verify IOMMU is
+enabled: <code>dmesg | grep -i iommu</code> - ✅ Check GPU is bound to
+vfio: <code>lspci -nnk -d YOUR:GPUID</code> - ✅ Use UEFI firmware (not
+BIOS) - ✅ Add KVM hiding in XML:
+<code>kvm=off,hv_vendor_id=null</code></p>
 <p><strong>VM crashes when starting with GPU:</strong></p>
-<pre><code class="language-bash"># Check logs
-sudo journalctl -u libvirtd -f
-</code></pre>
-<h3>Can&#39;t Access VM from Host Network</h3>
-<p><strong>Using NAT (default):</strong></p>
-<ul>
-<li>VMs can access internet, but host can&#39;t reach VM directly</li>
-<li>Solution: Use bridge network or port forwarding</li>
-</ul>
-<p><strong>Using Bridge:</strong></p>
-<ul>
-<li>VM gets IP from your router/DHCP</li>
-<li>Accessible from anywhere on your LAN</li>
-</ul>
-<hr>
-<h2>📚 13. Additional Resources</h2>
-<h3>Chris Titus Tech Guides</h3>
+<pre class="bash"><code># Check logs
+sudo journalctl -u libvirtd -f</code></pre>
+<h3 id="cant-access-vm-from-host-network">Can’t Access VM from Host
+Network</h3>
+<p><strong>Using NAT (default):</strong> - VMs can access internet, but
+host can’t reach VM directly - Solution: Use bridge network or port
+forwarding</p>
+<p><strong>Using Bridge:</strong> - VM gets IP from your router/DHCP -
+Accessible from anywhere on your LAN</p>
+<hr />
+<h2 id="additional-resources">📚 13. Additional Resources</h2>
+<h3 id="chris-titus-tech-guides">Chris Titus Tech Guides</h3>
 <p><strong>Ultimate Arch Linux VM Installation:</strong></p>
-<pre><code class="language-bash"># Automated setup script
+<pre class="bash"><code># Automated setup script
 git clone https://github.com/ChrisTitusTech/virtualization
 cd virtualization
-./setup.sh
-</code></pre>
-<p><strong>Chris Titus GPU Passthrough Guide:</strong></p>
+./setup.sh</code></pre>
+<p><strong>Chris Titus GPU Passthrough Guide:</strong> - <a
+href="https://www.youtube.com/watch?v=h7SG7ccjn-g">YouTube: GPU
+Passthrough Tutorial</a> - <a
+href="https://github.com/ChrisTitusTech/gpu-passthrough">GitHub: GPU
+Passthrough Scripts</a></p>
+<h3 id="essential-reading">Essential Reading</h3>
 <ul>
-<li><a href="https://www.youtube.com/watch?v=h7SG7ccjn-g">YouTube: GPU Passthrough Tutorial</a></li>
-<li><a href="https://github.com/ChrisTitusTech/gpu-passthrough">GitHub: GPU Passthrough Scripts</a></li>
+<li><strong>Arch Wiki - KVM:</strong> <a
+href="https://wiki.archlinux.org/title/KVM">wiki.archlinux.org/title/KVM</a></li>
+<li><strong>Arch Wiki - PCI Passthrough:</strong> <a
+href="https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF">wiki.archlinux.org/title/PCI_passthrough_via_OVMF</a></li>
+<li><strong>Arch Wiki - Libvirt:</strong> <a
+href="https://wiki.archlinux.org/title/Libvirt">wiki.archlinux.org/title/Libvirt</a></li>
+<li><strong>VirtIO Drivers:</strong> <a
+href="https://github.com/virtio-win/virtio-win-pkg-scripts">github.com/virtio-win/virtio-win-pkg-scripts</a></li>
+<li><strong>r/VFIO Community:</strong> <a
+href="https://www.reddit.com/r/VFIO">reddit.com/r/VFIO</a> - GPU
+passthrough help</li>
 </ul>
-<h3>Essential Reading</h3>
+<hr />
+<h2 id="related-guides">🔗 14. Related Guides</h2>
 <ul>
-<li><strong>Arch Wiki - KVM:</strong> <a href="https://wiki.archlinux.org/title/KVM">wiki.archlinux.org/title/KVM</a></li>
-<li><strong>Arch Wiki - PCI Passthrough:</strong> <a href="https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF">wiki.archlinux.org/title/PCI_passthrough_via_OVMF</a></li>
-<li><strong>Arch Wiki - Libvirt:</strong> <a href="https://wiki.archlinux.org/title/Libvirt">wiki.archlinux.org/title/Libvirt</a></li>
-<li><strong>VirtIO Drivers:</strong> <a href="https://github.com/virtio-win/virtio-win-pkg-scripts">github.com/virtio-win/virtio-win-pkg-scripts</a></li>
-<li><strong>r/VFIO Community:</strong> <a href="https://www.reddit.com/r/VFIO">reddit.com/r/VFIO</a> - GPU passthrough help</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Setup</a></strong> -
+Installing virtualization tools on Arch.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Configuration</a></strong> -
+Virtualization group installation on Fedora.</li>
+<li>📖 <strong><a href="debian.md">Debian Guide</a></strong> - KVM setup
+on Debian/Ubuntu systems.</li>
+<li>📖 <strong><a href="snapshots.md">System Snapshots</a></strong> -
+Similar snapshot concepts for bare metal systems.</li>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Securing your virtualization environment.</li>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Backup strategies for VMs and hosts.</li>
 </ul>
-<hr>
-<h2>🔗 14. Related Guides</h2>
+<hr />
+<h2 id="why-would-i-use-this">🎯 Why Would I Use This?</h2>
 <ul>
-<li>📖 <strong><a href="arch.md">Arch Linux Setup</a></strong> - Installing virtualization tools on Arch.</li>
-<li>📖 <strong><a href="fedora.md">Fedora Configuration</a></strong> - Virtualization group installation on Fedora.</li>
-<li>📖 <strong><a href="debian.md">Debian Guide</a></strong> - KVM setup on Debian/Ubuntu systems.</li>
-<li>📖 <strong><a href="snapshots.md">System Snapshots</a></strong> - Similar snapshot concepts for bare metal systems.</li>
-<li>📖 <strong><a href="security.md">Security Hardening</a></strong> - Securing your virtualization environment.</li>
-<li>📖 <strong><a href="system_maintenance.md">System Maintenance</a></strong> - Backup strategies for VMs and hosts.</li>
+<li><strong>Test software safely</strong> - Run untrusted programs in
+isolation</li>
+<li><strong>Try other operating systems</strong> - Run Windows, macOS,
+or other Linux distros</li>
+<li><strong>Development testing</strong> - Test on multiple OS
+versions</li>
+<li><strong>Gaming</strong> - Some Windows games run well in VMs</li>
+<li><strong>Legacy software</strong> - Run old software on modern
+systems</li>
+<li><strong>Networking lab</strong> - Practice networking without extra
+hardware</li>
 </ul>
-
+<hr />
+<h2 id="related-guides-1">🔗 Related Guides</h2>
+<ul>
+<li>📖 <strong><a href="system_maintenance.md">System
+Maintenance</a></strong> - Backing up VMs</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Native
+KVM support on Arch</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Fedora
+virtualization tools</li>
+<li>📖 <strong><a href="security.md">Security Hardening</a></strong> -
+Securing your host system</li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

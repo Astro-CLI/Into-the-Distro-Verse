@@ -1,107 +1,244 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>arch</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="arch.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">arch</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#arch-linux-a-pragmatic-rolling-release-environment"
+id="toc-arch-linux-a-pragmatic-rolling-release-environment">Arch Linux:
+A Pragmatic Rolling-Release Environment</a>
+<ul>
+<li><a href="#core-system-optimization"
+id="toc-core-system-optimization">🚀 1. Core System Optimization</a>
+<ul>
+<li><a href="#pacman-configuration-enhancement"
+id="toc-pacman-configuration-enhancement">Pacman Configuration
+Enhancement</a></li>
+<li><a href="#mirror-selection-with-reflector"
+id="toc-mirror-selection-with-reflector">Mirror Selection with
+Reflector</a></li>
+<li><a href="#aur-access-via-paru" id="toc-aur-access-via-paru">AUR
+Access via Paru</a></li>
+<li><a href="#wayland-screen-sharing-infrastructure"
+id="toc-wayland-screen-sharing-infrastructure">Wayland Screen Sharing
+Infrastructure</a></li>
+</ul></li>
+<li><a href="#system-resilience-recovery"
+id="toc-system-resilience-recovery">🛡️ 2. System Resilience &amp;
+Recovery</a>
+<ul>
+<li><a href="#snapshot-based-system-protection"
+id="toc-snapshot-based-system-protection">Snapshot-Based System
+Protection</a></li>
+</ul></li>
+<li><a href="#package-inventory-management"
+id="toc-package-inventory-management">📦 3. Package Inventory
+Management</a>
+<ul>
+<li><a href="#system-restoration-procedure"
+id="toc-system-restoration-procedure">System Restoration
+Procedure</a></li>
+<li><a href="#cross-distribution-package-management"
+id="toc-cross-distribution-package-management">Cross-Distribution
+Package Management</a></li>
+</ul></li>
+<li><a href="#ongoing-system-maintenance"
+id="toc-ongoing-system-maintenance">🛠️ 4. Ongoing System Maintenance</a>
+<ul>
+<li><a href="#cache-pruning" id="toc-cache-pruning">Cache
+Pruning</a></li>
+<li><a href="#orphan-package-removal"
+id="toc-orphan-package-removal">Orphan Package Removal</a></li>
+</ul></li>
+<li><a href="#related-documentation" id="toc-related-documentation">🔗
+Related Documentation</a></li>
+</ul></li>
+</ul>
+</nav>
 <!-- 
     WIKI GUIDE: arch.md
-    This file contains my notes and setup steps. 
-    Feel free to tweak it for your own distro! 
---><h1>Arch Linux Setup &amp; Maintenance Guide 🚀</h1>
-<p>This guide covers the specific steps to set up and maintain an Arch Linux environment.</p>
-<hr>
-<!-- Section for specific setup/config steps -->
-<h2>🚀 1. Essential Setup</h2>
-<!-- Quick sub-note for this part -->
-<h3>Pacman Optimizations (Quality of Life)</h3>
-<p>Before installing packages, make <code>pacman</code> faster and more visual.</p>
-<ol>
-<li><p>Edit the config: <code>sudo nano /etc/pacman.conf</code></p>
-</li>
-<li><p>Uncomment or add these lines under <code>[options]</code> (ILoveCandy adds a Pac-Man eating pellets to your progress bars):</p>
-<p>Color<br>ILoveCandy<br>ParallelDownloads = 10</p>
-</li>
-</ol>
-<!-- Quick sub-note for this part -->
-<h3>Mirror Management (Reflector)</h3>
-<p>Arch mirrors can get slow or outdated. <code>reflector</code> automatically finds the fastest ones for you.</p>
-<pre><code class="language-bash">sudo pacman -S reflector
-# Update mirrors to the 10 fastest HTTPS ones in your region
-sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-</code></pre>
-<!-- Quick sub-note for this part -->
-<h3>Install AUR Helper (<code>paru</code>)</h3>
-<p>Paru is a modern AUR helper written in Rust. It&#39;s the primary way to access the vast library of community packages.</p>
-<p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre><code class="language-bash">sudo pacman -S --needed base-devel git &amp;&amp; \
-git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makepkg -si &amp;&amp; cd .. &amp;&amp; rm -rf paru
-</code></pre>
-<!-- Quick sub-note for this part -->
-<h3>Wayland Screen Sharing (Xwayland Video Bridge)</h3>
-<p><strong>Essential for Wayland users:</strong> Enables screen sharing in Discord, OBS, Zoom, Chromium, and other applications on Wayland desktops.</p>
-<pre><code class="language-bash"># Install from AUR
+    This file contains comprehensive setup and maintenance procedures for Arch Linux.
+    Feel free to adapt these configurations for your specific use case.
+-->
+<h1 id="arch-linux-a-pragmatic-rolling-release-environment">Arch Linux:
+A Pragmatic Rolling-Release Environment</h1>
+<p>Arch Linux represents a philosophy-driven distribution that
+prioritizes simplicity through user control rather than automation. This
+guide covers the essential optimizations, package management strategies,
+and maintenance routines that make Arch an efficient platform for
+experienced users.</p>
+<hr />
+<h2 id="core-system-optimization">🚀 1. Core System Optimization</h2>
+<h3 id="pacman-configuration-enhancement">Pacman Configuration
+Enhancement</h3>
+<p>The default <code>pacman</code> configuration is functional but can
+be significantly improved for both performance and user experience. Edit
+<code>/etc/pacman.conf</code> to unlock these quality-of-life
+improvements:</p>
+<p><strong>Colored package manager output:</strong></p>
+<pre class="text"><code>Color</code></pre>
+<p>Enables syntax highlighting in pacman’s terminal output, making
+information more scannable.</p>
+<p><strong>Visual progress feedback:</strong></p>
+<pre class="text"><code>ILoveCandy</code></pre>
+<p>Displays an animated Pac-Man character consuming pellets during
+package downloads—an elegant touch that provides real-time visual
+feedback during operations.</p>
+<p><strong>Parallel download acceleration:</strong></p>
+<pre class="text"><code>ParallelDownloads = 10</code></pre>
+<p>Instructs pacman to fetch up to 10 packages simultaneously from
+mirrors, significantly reducing installation time on modern
+connections.</p>
+<h3 id="mirror-selection-with-reflector">Mirror Selection with
+Reflector</h3>
+<p>Arch’s package delivery depends on mirror infrastructure, which can
+vary in speed and synchronization status. The <code>reflector</code>
+utility automates the discovery and configuration of optimal
+mirrors:</p>
+<pre class="bash"><code>sudo pacman -S reflector
+# Identify the 10 fastest HTTPS-enabled mirrors in your region
+sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist</code></pre>
+<p>This approach ensures your system consistently pulls packages from
+reliable, geographically-optimized sources.</p>
+<h3 id="aur-access-via-paru">AUR Access via Paru</h3>
+<p>The Arch User Repository (AUR) expands Arch’s package ecosystem
+exponentially. Paru, a modern AUR helper written in Rust, provides a
+seamless interface to this community-maintained collection:</p>
+<pre class="bash"><code>sudo pacman -S --needed base-devel git &amp;&amp; \
+git clone https://aur.archlinux.org/paru.git &amp;&amp; cd paru &amp;&amp; makepkg -si &amp;&amp; cd .. &amp;&amp; rm -rf paru</code></pre>
+<h3 id="wayland-screen-sharing-infrastructure">Wayland Screen Sharing
+Infrastructure</h3>
+<p>Modern display protocols require explicit middleware for screen
+capture functionality. Xwayland Video Bridge bridges this gap for
+Wayland-based desktop environments:</p>
+<pre class="bash"><code># Install from the AUR
 paru -S xwaylandvideobridge
 
-# Or search for it
-paru -Ss xwayland video bridge
-</code></pre>
-<hr>
-<!-- Section for specific setup/config steps -->
-<h2>🛡️ 2. Snapshots &amp; Maintenance</h2>
-<p>BTRFS snapshots are an essential &quot;safety net&quot; for system stability. For a comprehensive guide on setting up <strong>TimeShift</strong>, <strong>Snapper</strong>, and bootloader integration, see the universal guide:</p>
-<ul>
-<li>📖 <strong><a href="snapshots.md">docs/snapshots.md</a></strong></li>
-</ul>
-<hr>
-<!-- Section for specific setup/config steps -->
-<h2>📦 3. Package Management</h2>
+# Alternatively, search for available versions
+paru -Ss xwayland video bridge</code></pre>
+<p>This enables screen sharing across Discord, OBS, Zoom, Chromium, and
+similar applications on Wayland desktops.</p>
+<hr />
+<h2 id="system-resilience-recovery">🛡️ 2. System Resilience &amp;
+Recovery</h2>
+<h3 id="snapshot-based-system-protection">Snapshot-Based System
+Protection</h3>
+<p>Arch benefits significantly from snapshot infrastructure for rapid
+recovery scenarios. BTRFS snapshots provide atomic system state
+preservation. For comprehensive implementation details covering
+TimeShift, Snapper, and bootloader integration:</p>
+<p>📖 <strong><a href="snapshots.md">docs/snapshots.md</a></strong></p>
+<hr />
+<h2 id="package-inventory-management">📦 3. Package Inventory
+Management</h2>
+<p>Arch provides multiple package restoration mechanisms documented in
+dedicated inventory files:</p>
 <table>
 <thead>
 <tr>
-<th align="left">List</th>
-<th align="left">Content</th>
+<th style="text-align: left;">Inventory</th>
+<th style="text-align: left;">Purpose</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong><code>arch_pkglist.txt</code></strong></td>
-<td align="left">Official native packages.</td>
+<tbody>
+<tr>
+<td
+style="text-align: left;"><strong><code>arch_pkglist.txt</code></strong></td>
+<td style="text-align: left;">Official repository packages.</td>
 </tr>
 <tr>
-<td align="left"><strong><code>arch_aur_list.txt</code></strong></td>
-<td align="left">AUR packages (via <code>paru</code>).</td>
+<td
+style="text-align: left;"><strong><code>arch_aur_list.txt</code></strong></td>
+<td style="text-align: left;">AUR-sourced packages via
+<code>paru</code>.</td>
 </tr>
-</tbody></table>
-<!-- Quick sub-note for this part -->
-<h3>Restore your system:</h3>
-<pre><code class="language-bash"># Official packages
+</tbody>
+</table>
+<h3 id="system-restoration-procedure">System Restoration Procedure</h3>
+<pre class="bash"><code># Restore official packages
 sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
 
-# AUR packages
-paru -S --needed - &lt; packages/arch_aur_list.txt
-</code></pre>
-<!-- Quick sub-note for this part -->
-<h3>Universal Packages (Flatpak)</h3>
-<p>For a comprehensive guide on managing Flatpaks, permissions, and Flathub, see the universal guide:</p>
+# Restore AUR packages
+paru -S --needed - &lt; packages/arch_aur_list.txt</code></pre>
+<h3 id="cross-distribution-package-management">Cross-Distribution
+Package Management</h3>
+<p>For application coverage beyond Arch repositories, consult the
+universal package management guide:</p>
+<p>📖 <strong><a href="flatpak.md">docs/flatpak.md</a></strong></p>
+<hr />
+<h2 id="ongoing-system-maintenance">🛠️ 4. Ongoing System
+Maintenance</h2>
+<h3 id="cache-pruning">Cache Pruning</h3>
+<pre class="bash"><code>sudo pacman -Sc</code></pre>
+<p>Removes cached packages that are no longer installed, reclaiming disk
+space while preserving the most recent package versions for rapid
+reinstallation.</p>
+<h3 id="orphan-package-removal">Orphan Package Removal</h3>
+<pre class="bash"><code>pacman -Qtdq
+sudo pacman -Rns $(pacman -Qtdq)</code></pre>
+<p>Identifies and removes packages that were installed as dependencies
+but are no longer required by any installed package—a frequent source of
+system bloat.</p>
+<hr />
+<h2 id="related-documentation">🔗 Related Documentation</h2>
 <ul>
-<li>📖 <strong><a href="flatpak.md">docs/flatpak.md</a></strong></li>
+<li>📖 <strong><a href="fedora.md">Fedora Linux Guide</a></strong> —
+Workstation-focused distribution with stable release cycles</li>
+<li>📖 <strong><a href="debian.md">Debian Linux Guide</a></strong> —
+Conservative stability-first approach and multi-distro repository
+integration</li>
+<li>📖 <strong><a href="nix.md">Nix Package Manager</a></strong> —
+Declarative package management across distributions</li>
+<li>📖 <strong><a href="security.md">System Security
+Hardening</a></strong> — Defense-in-depth strategies for Arch
+systems</li>
 </ul>
-<hr>
-<!-- Section for specific setup/config steps -->
-<h2>🛠️ 3. Maintenance</h2>
-<!-- Quick sub-note for this part -->
-<h3>Clear Pacman Cache</h3>
-<pre><code class="language-bash">sudo pacman -Sc
-</code></pre>
-<!-- Quick sub-note for this part -->
-<h3>Find and Remove Orphans</h3>
-<pre><code class="language-bash">pacman -Qtdq
-sudo pacman -Rns $(pacman -Qtdq)
-</code></pre>
-<hr>
-<!-- Section for specific setup/config steps -->
-<h2>🔗 Related Guides</h2>
-<ul>
-<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Setup and optimizations for Fedora Workstation.</li>
-<li>📖 <strong><a href="debian.md">Debian Guide</a></strong> - Stable-release management and external repos.</li>
-<li>📖 <strong><a href="nix.md">Nix Guide</a></strong> - Using the universal Nix package manager on Arch.</li>
-<li>📖 <strong><a href="security.md">Security Guide</a></strong> - Hardening your Arch system.</li>
-</ul>
-<!-- 
-    TIP: If you're using Neovim, you can use 
-    :set wrap to make this easier to read! 
--->
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

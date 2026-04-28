@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: security.md
+    Defense-in-depth security hardening guide for Linux including AppArmor,
+    firewalls, sandboxing, and privacy tools.
+-->
+
 # Linux Security: Hardening & Protection
 
 Security is about layers. This guide covers the "Defense in Depth" strategy for Linux systems, including Mandatory Access Control (AppArmor), Application Sandboxing (Firejail), Application Firewall (OpenSnitch), Network Firewall (UFW), Antivirus (ClamAV), and Network Privacy (DNS-over-TLS).
@@ -484,3 +490,24 @@ SELinux is the default on Fedora. **Do not attempt on Arch.**
 *   📖 **[Fedora Guide](fedora.md)** - SELinux and Fedora Workstation hardening.
 *   📖 **[Debian Guide](debian.md)** - Stable-release security and safe repo management.
 *   📖 **[Snapshots Guide](snapshots.md)** - Essential for system recovery.
+
+---
+
+## 🎯 Why Would I Use This?
+
+- **Protect your privacy** - Prevent tracking and data collection
+- **Defend against malware** - Sandbox and firewall protection
+- **Control what apps access** - Determine who sees your data
+- **Comply with security standards** - Meet organizational requirements
+- **Peace of mind** - Know your system is protected
+- **Learn security** - Understand how to secure systems
+
+---
+
+## 🔗 Related Guides
+
+- 📖 **[Snapshots & Backups](snapshots.md)** - Recovery from security incidents
+- 📖 **[System Maintenance](system_maintenance.md)** - Keeping your system healthy
+- 📖 **[Wayland Privilege Escalation](wayland-privilege-escalation.md)** - Safe elevated privileges
+- 📖 **[Arch Linux Guide](arch.md)** - Arch-specific hardening
+- 📖 **[Fedora Guide](fedora.md)** - Fedora SELinux configuration

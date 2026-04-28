@@ -1,37 +1,50 @@
-# How to Set Up a Hidden Website with Docker and Tor
+<!-- 
+    WIKI GUIDE: apache-tor-docker.md
+    This guide shows how to set up an anonymous website hosted on Tor 
+    using Docker containers for maximum isolation and privacy.
+    Adapt to your content and security requirements.
+-->
 
-So you want to host a website that only works on Tor Browser and nobody can trace back to you. This guide walks you through it. I'm going to assume you've never done this before, so we'll go step by step.
+# Hosting an Anonymous Website on Tor with Docker
 
----
-
-## What You're Actually Doing
-
-Three things are happening here:
-
-1. Docker creates isolated containers on your computer. Think of it like running separate mini-computers inside your main computer. If someone breaks into one, they can't mess with the others.
-
-2. Tor is software that hides your location by routing traffic through multiple computers around the world. When someone visits your site, their connection bounces around and they never see your real IP.
-
-3. Apache is a web server. It's what actually shows people your website files.
-
-So basically: your visitor connects through Tor, reaches your Tor container, which talks to your Apache container, which serves your HTML files.
+Want a website that only works through Tor and can't be traced back to you? This guide walks you through setting it up using Docker—the containerized approach keeps everything isolated and easy to manage. We'll assume you're new to this, so we'll explain each step clearly.
 
 ---
 
-## What You Need
+## 🤔 Why Would I Do This?
 
-- Linux (any distro: Ubuntu, Debian, Arch, Fedora, whatever)
-- A terminal (you'll be typing commands)
+- **Complete anonymity** - Your real IP address is completely hidden
+- **Censorship resistance** - Your site can't be taken down by ISPs
+- **Privacy protection** - Visitors can't be tracked
+- **Freedom of speech** - Host controversial content safely
+- **Testing** - Learn about privacy technologies
+
+---
+
+## 🧠 What's Actually Happening
+
+Three main pieces work together here:
+
+1. **Docker** creates isolated containers (think of them as mini-computers inside your computer)
+2. **Tor** hides your location by routing traffic through multiple computers worldwide
+3. **Apache** is the web server that actually serves your website files
+
+So visitors connect through Tor → reach your Tor container → which talks to your Apache container → which sends them your website. Nobody sees your real IP.
+
+---
+
+## ✅ What You Need
+
+- Linux (any distro: Ubuntu, Debian, Arch, Fedora)
+- A terminal
 - About an hour
 - 2GB of free disk space
 
-If you don't have Linux, this won't work. But if you're reading this, you probably already know that.
-
 ---
 
-## Installing Docker
+## 🚀 1. Install Docker
 
-First we need Docker. The commands are different depending on which Linux distro you're using.
+The installation varies by distro:
 
 ### Ubuntu or Debian
 
@@ -60,7 +73,7 @@ sudo systemctl enable docker
 
 ### Other Distros
 
-Go to docker.com and follow their installation guide.
+Visit docker.com for their installation guide.
 
 After installing, let Docker run without sudo:
 
@@ -75,13 +88,13 @@ Test it works:
 docker run hello-world
 ```
 
-If you see a message saying hello, you're good.
+If you see a "hello" message, you're good!
 
 ---
 
-## Set Up Your Project
+## 🗂️ 2. Create Your Project Structure
 
-Create a folder for everything and make the subdirectories:
+Create a folder to organize everything:
 
 ```bash
 mkdir -p ~/my-onion-site
@@ -89,7 +102,7 @@ cd ~/my-onion-site
 mkdir -p tor/keys apache/html apache/config logs
 ```
 
-Now you have a structure like this:
+Your folder now looks like:
 
 ```
 my-onion-site/
@@ -98,20 +111,20 @@ my-onion-site/
 ├── apache/
 │   ├── html/          (your website files)
 │   └── config/        (Apache settings)
-└── logs/              (where errors get written)
+└── logs/              (error logs)
 ```
 
 ---
 
-## Create Your Website
+## 📄 3. Create Your Website
 
-Open a text editor and create your first HTML file:
+Create a simple HTML file:
 
 ```bash
 nano apache/html/index.html
 ```
 
-Paste this in:
+Paste this:
 
 ```html
 <!DOCTYPE html>
@@ -141,13 +154,13 @@ Paste this in:
 </html>
 ```
 
-Save it: Ctrl+X, then Y, then Enter.
+Save with Ctrl+X, then Y, then Enter.
 
 ---
 
-## Create Apache Settings
+## 🔐 4. Create Apache Security Configuration
 
-Create another file for Apache configuration:
+Create a config file with security rules:
 
 ```bash
 nano apache/config/custom.conf
@@ -172,11 +185,11 @@ Header set Referrer-Policy "no-referrer"
 </Directory>
 ```
 
-These are just safety rules. Save it the same way.
+This is just security boilerplate. Save it.
 
 ---
 
-## Create the Dockerfile
+## 🐳 5. Create the Dockerfile
 
 This tells Docker how to build the Apache container:
 
@@ -207,9 +220,9 @@ Save it.
 
 ---
 
-## Create Tor Configuration
+## ⚙️ 6. Configure Tor
 
-Tor needs its own config file:
+Tor needs its config file:
 
 ```bash
 nano tor/torrc
@@ -229,15 +242,15 @@ HiddenServiceVersion 3
 Log notice file /var/log/tor/notices.log
 ```
 
-Save it. The key lines are:
-- HiddenServicePort tells Tor to listen on port 80 and forward to your Apache container
-- HiddenServiceVersion 3 means use the newer, more secure Tor addresses
+Key lines explained:
+- `HiddenServicePort` tells Tor to listen on port 80 and forward to your Apache container
+- `HiddenServiceVersion 3` uses modern, secure Tor addresses
 
 ---
 
-## Create docker-compose.yml
+## 🎯 7. Create docker-compose.yml
 
-This is the file that orchestrates everything. It tells Docker to run both Tor and Apache and connect them:
+This file orchestrates both containers:
 
 ```bash
 nano docker-compose.yml
@@ -294,13 +307,13 @@ networks:
         - subnet: 172.18.0.0/16
 ```
 
-Save it. That's all the files.
+Save it. That's all the files!
 
 ---
 
-## Start Everything
+## ▶️ 8. Start Your Site
 
-Make sure you're in your project folder:
+Make sure you're in the project folder:
 
 ```bash
 cd ~/my-onion-site
@@ -312,7 +325,7 @@ Start both containers:
 docker-compose up -d
 ```
 
-The -d means run in the background.
+The `-d` means run in the background.
 
 Watch Tor start up:
 
@@ -320,13 +333,13 @@ Watch Tor start up:
 docker-compose logs -f tor
 ```
 
-Wait until you see "Bootstrapped 100%". This takes 30-60 seconds. When you see it, press Ctrl+C to stop watching.
+Wait for "Bootstrapped 100%". This takes 30-60 seconds. When you see it, press Ctrl+C.
 
 ---
 
-## Get Your .onion Address
+## 🧅 9. Get Your .onion Address
 
-When Tor starts for the first time, it generates your .onion address and saves it:
+When Tor starts, it generates your unique .onion address:
 
 ```bash
 cat tor/keys/hostname
@@ -338,13 +351,13 @@ You'll see something like:
 thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion
 ```
 
-Save this. This is your website's URL. Don't lose it.
+Save this! This is your website's URL. Don't lose it.
 
 ---
 
-## Access Your Site
+## 🌐 10. Access Your Site
 
-Download Tor Browser from torproject.org if you don't have it already.
+Download Tor Browser from torproject.org if you don't have it.
 
 Open Tor Browser and wait for it to connect (takes a minute or two).
 
@@ -354,23 +367,23 @@ In the address bar, paste your .onion address:
 http://thisisyouronionaddressv3example7xq4fx2zfuzed5oxc.onion/
 ```
 
-You should see your website. Your location is hidden. You're totally anonymous. That's it.
+You should see your website. Your location is hidden. Perfect!
 
 ---
 
-## Common Problems
+## 🐛 Troubleshooting
 
-### Can't connect to my .onion address
+### Can't connect to the .onion address
 
-First, wait 60 seconds. Tor takes time.
+First, wait 60 seconds—Tor needs time.
 
-Check if Tor is bootstrapped:
+Check if Tor is ready:
 
 ```bash
 docker-compose logs tor | grep "Bootstrapped"
 ```
 
-If it says 100%, then Tor is ready.
+If it says 100%, Tor is ready.
 
 Check if Apache is running:
 
@@ -378,7 +391,7 @@ Check if Apache is running:
 docker-compose logs apache
 ```
 
-If there are errors, restart:
+If there are errors, restart everything:
 
 ```bash
 docker-compose down
@@ -393,7 +406,7 @@ Tor can't reach Apache. Try restarting:
 docker-compose restart
 ```
 
-### I want to update my website
+### Want to update your website
 
 Just edit your HTML file:
 
@@ -401,83 +414,76 @@ Just edit your HTML file:
 nano apache/html/index.html
 ```
 
-Save it. It updates automatically. You don't need to restart anything.
+Save it. It updates automatically—no restart needed.
 
-### I want to stop my site but keep the .onion address
+### Want to stop but keep your .onion address
 
 ```bash
 docker-compose down
 ```
 
-The .onion address stays the same.
+Your address stays the same.
 
-### I want to completely start over and get a new .onion address
+### Want a brand new .onion address
 
 ```bash
 docker-compose down -v
 ```
 
-Only do this if you actually want a new address. You can't get the old one back.
+Only do this if you really want a new address. You can't get the old one back.
 
 ---
 
-## Basic Commands You'll Use
+## 📋 Common Commands
 
-Start your site:
 ```bash
+# Start your site
 docker-compose up -d
-```
 
-Stop your site (keeps your .onion address):
-```bash
+# Stop your site (keeps your address)
 docker-compose down
-```
 
-See what's happening:
-```bash
+# See what's happening
 docker-compose logs -f
-```
 
-Check if everything is running:
-```bash
+# Check if everything is running
 docker-compose ps
-```
 
-Get your .onion address:
-```bash
+# Get your .onion address
 cat tor/keys/hostname
 ```
 
 ---
 
-## Keep It Safe
+## 🔒 Security Tips
 
-Don't upload photos that have GPS data in them. Strip the metadata first:
+### Metadata is Dangerous
+
+Don't upload photos with GPS data. Strip it first:
 
 ```bash
 # Install exiftool
 sudo apt install exiftool          # Debian/Ubuntu
 sudo pacman -S perl-image-exiftool  # Arch
 
-# Strip all metadata from a photo
+# Strip all metadata
 exiftool -all= your-photo.jpg
 ```
 
-Don't link to your real website or real email address.
+### Other Safety Rules
 
-Don't use PHP, Python, or Node.js unless you really have to. Just HTML and CSS. The simpler, the safer.
-
-Keep your .onion private key safe. It's in tor/keys/hs_ed25519_secret_key. If you lose it, you lose your address forever. Maybe copy it somewhere safe:
+- Don't link to your real website or real email
+- Don't use PHP, Python, or Node.js unless necessary—just HTML and CSS. Simpler = safer.
+- Keep your Tor private key safe (it's in `tor/keys/hs_ed25519_secret_key`)
+- Back it up somewhere offline:
 
 ```bash
 cp tor/keys/hs_ed25519_secret_key ~/backup-key.txt
 ```
 
-Store it somewhere offline.
-
 ---
 
-## Adding More Pages
+## ➕ Adding More Pages
 
 Create another HTML file:
 
@@ -485,7 +491,7 @@ Create another HTML file:
 nano apache/html/about.html
 ```
 
-Paste this:
+Paste:
 
 ```html
 <!DOCTYPE html>
@@ -501,7 +507,7 @@ Paste this:
 </html>
 ```
 
-Link to it from your index.html:
+Link from your index:
 
 ```html
 <a href="about.html">About</a>
@@ -509,7 +515,7 @@ Link to it from your index.html:
 
 ---
 
-## Check Your Visitor Stats
+## 📊 View Your Visitor Stats
 
 See who's visiting (without storing their IP):
 
@@ -521,50 +527,18 @@ Press Ctrl+C to stop.
 
 ---
 
-## What's Actually Happening
+## 🎯 Why Would I Use This?
 
-When someone visits:
-
-1. They open Tor Browser
-2. They type your .onion address
-3. Tor bounces their connection through 3 random computers around the world
-4. Their traffic arrives at your Tor container
-5. Your Tor container talks to your Apache container
-6. Apache sends your website files
-7. They see it
-8. Nobody can trace it back to you
+- **Publish anonymously** - No one knows who you are
+- **Bypass censorship** - Tor can't be blocked by most governments
+- **Privacy testing** - Learn how privacy actually works
+- **Secret projects** - Host sensitive content safely
+- **Whistleblowing** - Protect sources and journalists
 
 ---
 
-## Distro Notes
+## 🔗 Related Guides
 
-Most of the guide is the same on any distro. The only thing that changes is the package manager:
-
-Ubuntu/Debian: apt or apt-get
-Arch: pacman
-Fedora/CentOS: dnf or yum
-Others: usually apt or dnf, check their docs
-
-If a command doesn't work on your distro, Google the error. You'll find an answer.
-
----
-
-## Need Help
-
-If something breaks:
-
-1. Read the error message carefully
-2. Google the error
-3. Check docker-compose logs -f to see what's actually happening
-4. Restart everything
-5. Wait 60 seconds before trying again
-
-If it's really broken, start over. The nice thing about Docker is you can just delete everything and try again. Your .onion address is saved in tor/keys/, so if you keep that folder, you keep your address.
-
----
-
-## One More Thing
-
-The first time you do this, it takes about an hour. The second time, 20 minutes. By the third time, 5 minutes. It gets easier.
-
-The website is now live and completely anonymous. Be safe and be smart about what you put on it.
+- 📖 **[Tor Hidden Service (Native)](tor-hidden-service-arch.md)** - Running Tor without Docker
+- 📖 **[Security Hardening](security.md)** - Complete security setup
+- 📖 **[Arch Linux Guide](arch.md)** - System package management

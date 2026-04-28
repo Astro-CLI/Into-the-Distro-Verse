@@ -1,110 +1,216 @@
-<h1>Flatpak: The Universal App Store 📦</h1>
-<p>Flatpak is a next-generation technology for building and distributing desktop applications on Linux. It allows apps to run in an isolated &quot;sandbox,&quot; making them more secure and compatible across any distribution.</p>
-<hr>
-<h2>🤔 Why Flatpak?</h2>
-<ol>
-<li><strong>Universal Compatibility:</strong> The same app runs exactly the same on Arch, Fedora, Debian, or NixOS.</li>
-<li><strong>Sandbox Security:</strong> Apps are isolated from your system files unless you specifically grant them access.</li>
-<li><strong>Latest Versions:</strong> Apps on Flathub are often updated faster than those in your distro&#39;s official repositories.</li>
-<li><strong>Runtime Independence:</strong> Apps bundle their own dependencies, avoiding &quot;dependency hell.&quot;</li>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>flatpak</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="flatpak.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">flatpak</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#flatpak-the-universal-app-store"
+id="toc-flatpak-the-universal-app-store">Flatpak: The Universal App
+Store 📦</a>
+<ul>
+<li><a href="#why-flatpak" id="toc-why-flatpak">🤔 Why Flatpak?</a></li>
+<li><a href="#installation" id="toc-installation">🚀 1. Installation</a>
+<ul>
+<li><a href="#on-arch-linux" id="toc-on-arch-linux">On Arch
+Linux</a></li>
+<li><a href="#on-fedora" id="toc-on-fedora">On Fedora</a></li>
+</ul></li>
+<li><a href="#setting-up-flathub-the-software-goldmine"
+id="toc-setting-up-flathub-the-software-goldmine">📦 2. Setting Up
+Flathub (The Software Goldmine)</a></li>
+<li><a href="#basic-commands" id="toc-basic-commands">🛠️ 3. Basic
+Commands</a></li>
+<li><a href="#permissions-flatseal" id="toc-permissions-flatseal">🔒 4.
+Permissions &amp; Flatseal</a>
+<ul>
+<li><a href="#option-a-flatseal-gui"
+id="toc-option-a-flatseal-gui">Option A: Flatseal (GUI)</a></li>
+<li><a href="#option-b-cli-overrides"
+id="toc-option-b-cli-overrides">Option B: CLI Overrides</a></li>
+</ul></li>
+<li><a href="#theming-aesthetics" id="toc-theming-aesthetics">🎨 5.
+Theming &amp; Aesthetics</a></li>
+<li><a href="#maintenance" id="toc-maintenance">🧹 6.
+Maintenance</a></li>
+<li><a href="#related-guides" id="toc-related-guides">🔗 Related
+Guides</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: flatpak.md
+    Guide to Flatpak package management - universal app distribution for Linux.
+    Covers installation, usage, permissions, and comparison with alternatives.
+-->
+<h1 id="flatpak-the-universal-app-store">Flatpak: The Universal App
+Store 📦</h1>
+<p>Flatpak is a next-generation technology for building and distributing
+desktop applications on Linux. It allows apps to run in an isolated
+“sandbox,” making them more secure and compatible across any
+distribution.</p>
+<hr />
+<h2 id="why-flatpak">🤔 Why Flatpak?</h2>
+<ol type="1">
+<li><strong>Universal Compatibility:</strong> The same app runs exactly
+the same on Arch, Fedora, Debian, or NixOS.</li>
+<li><strong>Sandbox Security:</strong> Apps are isolated from your
+system files unless you specifically grant them access.</li>
+<li><strong>Latest Versions:</strong> Apps on Flathub are often updated
+faster than those in your distro’s official repositories.</li>
+<li><strong>Runtime Independence:</strong> Apps bundle their own
+dependencies, avoiding “dependency hell.”</li>
 </ol>
-<hr>
-<h2>🚀 1. Installation</h2>
-<h3>On Arch Linux</h3>
-<pre><code class="language-bash">sudo pacman -S flatpak
-</code></pre>
-<h3>On Fedora</h3>
+<hr />
+<h2 id="installation">🚀 1. Installation</h2>
+<h3 id="on-arch-linux">On Arch Linux</h3>
+<pre class="bash"><code>sudo pacman -S flatpak</code></pre>
+<h3 id="on-fedora">On Fedora</h3>
 <p>Flatpak is installed by default.</p>
-<hr>
-<h2>📦 2. Setting Up Flathub (The Software Goldmine)</h2>
+<hr />
+<h2 id="setting-up-flathub-the-software-goldmine">📦 2. Setting Up
+Flathub (The Software Goldmine)</h2>
 <p>Flathub is the central repository for most Flatpak applications.</p>
-<p><strong>Enable the Full Flathub Repo:</strong><br>Fedora often includes a &quot;filtered&quot; version of Flathub. To get access to everything (including proprietary apps like Discord, Steam, or Spotify), run:</p>
-<pre><code class="language-bash">flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-</code></pre>
-<hr>
-<h2>🛠️ 3. Basic Commands</h2>
+<p><strong>Enable the Full Flathub Repo:</strong> Fedora often includes
+a “filtered” version of Flathub. To get access to everything (including
+proprietary apps like Discord, Steam, or Spotify), run:</p>
+<pre class="bash"><code>flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo</code></pre>
+<hr />
+<h2 id="basic-commands">🛠️ 3. Basic Commands</h2>
 <table>
 <thead>
 <tr>
-<th align="left">Task</th>
-<th align="left">Command</th>
+<th style="text-align: left;">Task</th>
+<th style="text-align: left;">Command</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left"><strong>Search</strong></td>
-<td align="left"><code>flatpak search app_name</code></td>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Search</strong></td>
+<td style="text-align: left;"><code>flatpak search app_name</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Install</strong></td>
-<td align="left"><code>flatpak install flathub app_id</code></td>
+<td style="text-align: left;"><strong>Install</strong></td>
+<td
+style="text-align: left;"><code>flatpak install flathub app_id</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Update All</strong></td>
-<td align="left"><code>flatpak update</code></td>
+<td style="text-align: left;"><strong>Update All</strong></td>
+<td style="text-align: left;"><code>flatpak update</code></td>
 </tr>
 <tr>
-<td align="left"><strong>List Installed</strong></td>
-<td align="left"><code>flatpak list --app</code></td>
+<td style="text-align: left;"><strong>List Installed</strong></td>
+<td style="text-align: left;"><code>flatpak list --app</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Uninstall</strong></td>
-<td align="left"><code>flatpak uninstall app_id</code></td>
+<td style="text-align: left;"><strong>Uninstall</strong></td>
+<td style="text-align: left;"><code>flatpak uninstall app_id</code></td>
 </tr>
 <tr>
-<td align="left"><strong>Clean Unused</strong></td>
-<td align="left"><code>flatpak uninstall --unused</code></td>
+<td style="text-align: left;"><strong>Clean Unused</strong></td>
+<td
+style="text-align: left;"><code>flatpak uninstall --unused</code></td>
 </tr>
-</tbody></table>
-<hr>
-<h2>🔒 4. Permissions &amp; Flatseal</h2>
-<p>Because Flatpaks are sandboxed, they sometimes need extra permissions (like access to your <code>~/Documents</code> or a USB drive).</p>
-<h3>Option A: Flatseal (GUI)</h3>
+</tbody>
+</table>
+<hr />
+<h2 id="permissions-flatseal">🔒 4. Permissions &amp; Flatseal</h2>
+<p>Because Flatpaks are sandboxed, they sometimes need extra permissions
+(like access to your <code>~/Documents</code> or a USB drive).</p>
+<h3 id="option-a-flatseal-gui">Option A: Flatseal (GUI)</h3>
 <p>The most user-friendly way to manage permissions.</p>
-<pre><code class="language-bash">flatpak install flathub com.github.tchx84.Flatseal
-</code></pre>
-<h3>Option B: CLI Overrides</h3>
+<pre class="bash"><code>flatpak install flathub com.github.tchx84.Flatseal</code></pre>
+<h3 id="option-b-cli-overrides">Option B: CLI Overrides</h3>
 <p>You can manage permissions directly from the terminal.</p>
 <ul>
-<li><strong>Grant folder access:</strong><pre><code class="language-bash">flatpak override com.example.App --filesystem=/path/to/folder
-</code></pre>
-</li>
-<li><strong>Grant home directory access:</strong><pre><code class="language-bash">flatpak override com.example.App --filesystem=home
-</code></pre>
-</li>
-<li><strong>Grant hardware/USB access:</strong><pre><code class="language-bash">flatpak override com.example.App --device=all
-</code></pre>
-</li>
-<li><strong>Show current overrides:</strong><pre><code class="language-bash">flatpak override com.example.App --show
-</code></pre>
-</li>
-<li><strong>Reset to defaults:</strong><pre><code class="language-bash">flatpak override com.example.App --reset
-</code></pre>
-</li>
+<li><strong>Grant folder access:</strong>
+<code>bash     flatpak override com.example.App --filesystem=/path/to/folder</code></li>
+<li><strong>Grant home directory access:</strong>
+<code>bash     flatpak override com.example.App --filesystem=home</code></li>
+<li><strong>Grant hardware/USB access:</strong>
+<code>bash     flatpak override com.example.App --device=all</code></li>
+<li><strong>Show current overrides:</strong>
+<code>bash     flatpak override com.example.App --show</code></li>
+<li><strong>Reset to defaults:</strong>
+<code>bash     flatpak override com.example.App --reset</code></li>
 </ul>
-<hr>
-<h2>🎨 5. Theming &amp; Aesthetics</h2>
-<p>Flatpaks sometimes look &quot;out of place&quot; because they don&#39;t always pick up your system theme automatically.</p>
-<p><strong>Applying GTK Themes:</strong><br>Most popular themes (like Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.</p>
-<pre><code class="language-bash"># Example: Search for your theme
-flatpak search org.gtk.Gtk3theme.Breeze
-</code></pre>
-<p><strong>Granting Access to Theme Folders:</strong><br>If your theme isn&#39;t on Flathub, you can give Flatpaks access to your local theme folders:</p>
-<pre><code class="language-bash">flatpak override --user --filesystem=$HOME/.themes
-flatpak override --user --filesystem=$HOME/.icons
-</code></pre>
-<hr>
-<h2>🧹 6. Maintenance</h2>
-<p>Flatpaks can take up a lot of space because they keep old runtimes.</p>
+<hr />
+<h2 id="theming-aesthetics">🎨 5. Theming &amp; Aesthetics</h2>
+<p>Flatpaks sometimes look “out of place” because they don’t always pick
+up your system theme automatically.</p>
+<p><strong>Applying GTK Themes:</strong> Most popular themes (like
+Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.</p>
+<pre class="bash"><code># Example: Search for your theme
+flatpak search org.gtk.Gtk3theme.Breeze</code></pre>
+<p><strong>Granting Access to Theme Folders:</strong> If your theme
+isn’t on Flathub, you can give Flatpaks access to your local theme
+folders:</p>
+<pre class="bash"><code>flatpak override --user --filesystem=$HOME/.themes
+flatpak override --user --filesystem=$HOME/.icons</code></pre>
+<hr />
+<h2 id="maintenance">🧹 6. Maintenance</h2>
+<p>Flatpaks can take up a lot of space because they keep old
+runtimes.</p>
 <p><strong>To free up space:</strong></p>
-<pre><code class="language-bash"># Removes runtimes that are no longer used by any installed app
-flatpak uninstall --unused
-</code></pre>
-<hr>
-<h2>🔗 Related Guides</h2>
+<pre class="bash"><code># Removes runtimes that are no longer used by any installed app
+flatpak uninstall --unused</code></pre>
+<hr />
+<h2 id="related-guides">🔗 Related Guides</h2>
 <ul>
-<li>📖 <strong><a href="snaps.md">Snap Guide</a></strong> - Canonical&#39;s alternative to Flatpak.</li>
-<li>📖 <strong><a href="nix.md">Nix Guide</a></strong> - Declarative and universal package management.</li>
-<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Fedora&#39;s deep integration with Flatpak.</li>
-<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Using Flatpak in the Arch ecosystem.</li>
+<li>📖 <strong><a href="snaps.md">Snap Guide</a></strong> - Canonical’s
+alternative to Flatpak.</li>
+<li>📖 <strong><a href="nix.md">Nix Guide</a></strong> - Declarative and
+universal package management.</li>
+<li>📖 <strong><a href="fedora.md">Fedora Guide</a></strong> - Fedora’s
+deep integration with Flatpak.</li>
+<li>📖 <strong><a href="arch.md">Arch Linux Guide</a></strong> - Using
+Flatpak in the Arch ecosystem.</li>
 </ul>
-
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>

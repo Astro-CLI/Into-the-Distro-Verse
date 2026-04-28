@@ -1,3 +1,9 @@
+<!-- 
+    WIKI GUIDE: virtualization.md
+    Complete GUI-focused guide to KVM/QEMU/libvirt virtualization,
+    including GPU passthrough, Windows VMs, and advanced configurations.
+-->
+
 # Virtual Machines: The Complete GUI Guide 🖥️
 
 A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on Linux. Learn to create VMs, pass through GPUs and physical disks, install Windows with proper drivers, and build powerful virtualized workstations.
@@ -1005,3 +1011,23 @@ cd virtualization
 *   📖 **[System Snapshots](snapshots.md)** - Similar snapshot concepts for bare metal systems.
 *   📖 **[Security Hardening](security.md)** - Securing your virtualization environment.
 *   📖 **[System Maintenance](system_maintenance.md)** - Backup strategies for VMs and hosts.
+
+---
+
+## 🎯 Why Would I Use This?
+
+- **Test software safely** - Run untrusted programs in isolation
+- **Try other operating systems** - Run Windows, macOS, or other Linux distros
+- **Development testing** - Test on multiple OS versions
+- **Gaming** - Some Windows games run well in VMs
+- **Legacy software** - Run old software on modern systems
+- **Networking lab** - Practice networking without extra hardware
+
+---
+
+## 🔗 Related Guides
+
+- 📖 **[System Maintenance](system_maintenance.md)** - Backing up VMs
+- 📖 **[Arch Linux Guide](arch.md)** - Native KVM support on Arch
+- 📖 **[Fedora Guide](fedora.md)** - Fedora virtualization tools
+- 📖 **[Security Hardening](security.md)** - Securing your host system
