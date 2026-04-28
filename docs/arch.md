@@ -17,11 +17,13 @@ This guide covers the specific steps to set up and maintain an Arch Linux enviro
 ### Pacman Optimizations (Quality of Life)
 Before installing packages, make `pacman` faster and more visual.
 1.  Edit the config: `sudo nano /etc/pacman.conf`
-2.  Uncomment or add these lines under `[options]` (ILoveCandy adds a Pac-Man eating pellets to your progress bars):
+2.  Uncomment or add these lines under `[options]` (`ILoveCandy` adds a Pac-Man eating pellets to your progress bars):
 
+    ```text
     Color
     ILoveCandy
     ParallelDownloads = 10
+    ```
 
 <!-- Quick sub-note for this part -->
 ### Mirror Management (Reflector)

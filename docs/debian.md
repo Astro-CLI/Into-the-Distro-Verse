@@ -4,6 +4,25 @@ Debian is the "Universal Operating System" that serves as the base for Ubuntu, K
 
 ---
 
+## 🚀 0. APT Optimization (Speed up updates)
+
+Optimize APT for faster updates and colored output:
+
+**Shell (Bash/Zsh/Fish):**
+```bash
+echo "APT::Get::Assume-Yes \"true\";" | sudo tee /etc/apt/apt.conf.d/99custom-options
+echo "Apt::Color \"1\";" | sudo tee -a /etc/apt/apt.conf.d/99custom-options
+echo "Acquire::http::Pipeline-Depth \"0\";" | sudo tee -a /etc/apt/apt.conf.d/99custom-options
+```
+
+Or manually edit `/etc/apt/apt.conf.d/99custom-options` and add:
+```text
+Apt::Color "1";
+APT::Get::Assume-Yes "true";
+```
+
+---
+
 ## 🚀 1. Basic Repository Management
 
 Standard repositories are defined in `/etc/apt/sources.list`.

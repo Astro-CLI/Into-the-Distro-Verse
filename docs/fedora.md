@@ -13,6 +13,13 @@ echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
 ```
 
+Or manually edit `/etc/dnf/dnf.conf` and add:
+```text
+Color
+max_parallel_downloads=10
+fastestmirror=True
+```
+
 ---
 
 ## 📦 2. Software Repositories
