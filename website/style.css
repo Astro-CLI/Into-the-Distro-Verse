@@ -12,80 +12,144 @@ body {
   font-family: 'Outfit', sans-serif;
   line-height: 1.6;
   font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+/* HEADER */
 header {
   background-color: #0a0a0a;
   border-bottom: 2px solid #00d4ff;
-  padding: 30px 20px;
-  margin-bottom: 40px;
+  padding: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .header-inner {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 header h1 {
   font-family: 'Bangers', cursive;
-  font-size: 2.5em;
+  font-size: 2em;
   color: #00d4ff;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 nav {
   display: flex;
-  gap: 30px;
+  gap: 25px;
   flex-wrap: wrap;
 }
 
 nav a {
   color: #808080;
   text-decoration: none;
-  font-size: 0.95em;
+  font-size: 0.9em;
   transition: color 0.2s;
-  padding-bottom: 5px;
 }
 
 nav a:hover {
   color: #00d4ff;
-  border-bottom: 2px solid #00d4ff;
 }
 
-main {
-  max-width: 900px;
+/* MAIN LAYOUT */
+.container {
+  display: flex;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px 40px 20px;
+  width: 100%;
+  gap: 30px;
+  padding: 30px 20px;
+  flex: 1;
+}
+
+/* SIDEBAR */
+.wiki-toc {
+  width: 220px;
+  flex-shrink: 0;
+  background-color: #0a0a0a;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.wiki-toc h2 {
+  font-family: 'Bangers', cursive;
+  font-size: 1em;
+  color: #00d4ff;
+  margin-bottom: 15px;
+  border: none;
+  padding: 0;
+}
+
+.wiki-toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wiki-toc li {
+  margin: 8px 0;
+}
+
+.wiki-toc a {
+  color: #808080;
+  text-decoration: none;
+  display: block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  transition: all 0.2s;
+}
+
+.wiki-toc a:hover {
+  background-color: #1a1a1a;
+  color: #00d4ff;
+}
+
+/* MAIN CONTENT */
+main {
+  flex: 1;
+  min-width: 0;
 }
 
 h1 {
   font-family: 'Bangers', cursive;
   font-size: 2.2em;
   color: #00d4ff;
-  margin: 40px 0 20px 0;
+  margin: 30px 0 20px 0;
   padding-bottom: 15px;
   border-bottom: 2px solid #00d4ff;
 }
 
 h2 {
   font-family: 'Bangers', cursive;
-  font-size: 1.6em;
+  font-size: 1.5em;
   color: #00d4ff;
-  margin: 35px 0 15px 0;
-  padding-bottom: 10px;
+  margin: 30px 0 15px 0;
+  padding-bottom: 8px;
   border-bottom: 1px solid #333333;
 }
 
 h3 {
   font-family: 'Bangers', cursive;
-  font-size: 1.2em;
+  font-size: 1.15em;
   color: #ff6b9d;
   margin: 20px 0 12px 0;
 }
 
 h4 {
   font-family: 'Bangers', cursive;
-  font-size: 1.05em;
+  font-size: 1em;
   color: #ff6b9d;
   margin: 15px 0 8px 0;
 }
@@ -156,7 +220,6 @@ table {
   margin: 20px 0;
   border: 1px solid #333333;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 th {
@@ -179,9 +242,9 @@ tr:hover {
 
 hr {
   border: none;
-  height: 2px;
-  background: linear-gradient(to right, #00d4ff, transparent);
-  margin: 40px 0;
+  height: 1px;
+  background-color: #333333;
+  margin: 30px 0;
 }
 
 blockquote {
@@ -190,7 +253,6 @@ blockquote {
   padding: 15px 0 15px 20px;
   color: #a0a0a0;
   background-color: #0a0a0a;
-  padding-left: 20px;
 }
 
 details {
@@ -213,17 +275,30 @@ summary:hover {
   color: #ff6b9d;
 }
 
-details[open] summary {
-  margin-bottom: 15px;
-}
-
+/* FOOTER */
 footer {
   background-color: #0a0a0a;
   border-top: 2px solid #00d4ff;
   padding: 25px 20px;
   text-align: center;
   color: #808080;
-  margin-top: 60px;
+  margin-top: auto;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .wiki-toc {
+    width: 100%;
+    position: relative;
+    top: 0;
+    max-height: none;
+    sticky: none;
+  }
 }
 
 @media (max-width: 600px) {
@@ -232,7 +307,7 @@ footer {
   }
   
   header h1 {
-    font-size: 1.8em;
+    font-size: 1.5em;
   }
   
   h1 {
@@ -243,20 +318,20 @@ footer {
     font-size: 1.2em;
   }
   
-  main {
-    padding: 0 15px 30px 15px;
+  .container {
+    padding: 15px 15px;
   }
   
   header {
-    padding: 20px 15px;
-    margin-bottom: 30px;
+    padding: 15px;
   }
   
   nav {
     gap: 15px;
+    font-size: 0.85em;
   }
   
-  nav a {
-    font-size: 0.85em;
+  .wiki-toc {
+    padding: 15px;
   }
 }
