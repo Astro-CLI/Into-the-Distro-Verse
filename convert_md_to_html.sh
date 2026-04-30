@@ -52,6 +52,7 @@ for file in "${FILES_TO_CONVERT[@]}"; do
     clean_path=${file#./}
     output="${file%.md}.html"
     md_filename=$(basename "$file")
+    md_relative_path="${clean_path}"  # Full path to .md file
     
     depth=$(echo "$clean_path" | tr -cd '/' | wc -c)
     rel_prefix=""
@@ -74,7 +75,7 @@ for file in "${FILES_TO_CONVERT[@]}"; do
     <nav class="nav-right">
       <a href="${INDEX_REL_PATH}">Home</a>
       <a href="${HISTORY_REL_PATH}">History</a>
-      <a href="${md_filename}" class="markdown-viewer-btn">Raw</a>
+      <a href="${md_relative_path}" class="markdown-viewer-btn">Raw</a>
       <a href="${REPO_URL}" class="github-link" target="_blank">
         <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
         GitHub
@@ -117,13 +118,25 @@ EOF
 done
 
 # Post-process: Fix all .md links in HTML files to point to .html instead
+# BUT preserve the markdown-viewer-btn (Raw) links which should stay as .md
 echo ""
 echo "Fixing internal links (.md -> .html) in all HTML files..."
 find . -name ".git" -prune -o -name "*.html" -type f -print0 | while IFS= read -r -d '' html_file; do
-    # Replace href="something.md" with href="something.html"
-    sed -i 's|href="\([^"]*\)\.md"|href="\1.html"|g' "$html_file"
-    # Also handle links with anchors: href="something.md#anchor" -> href="something.html#anchor"
-    sed -i 's|href="\([^"]*\)\.md#|href="\1.html#|g' "$html_file"
+    # Create temp file
+    tmp_file="${html_file}.tmp"
+    
+    # First, protect markdown-viewer-btn links by replacing them temporarily
+    sed 's|href="\([^"]*\.md\)" class="markdown-viewer-btn"|href="__MARKDOWN_BTN__\1__|g' "$html_file" > "$tmp_file"
+    
+    # Replace other .md links with .html
+    sed -i 's|href="\([^"]*\)\.md"|href="\1.html"|g' "$tmp_file"
+    sed -i 's|href="\([^"]*\)\.md#|href="\1.html#|g' "$tmp_file"
+    
+    # Restore markdown-viewer-btn links back to .md
+    sed -i 's|href="__MARKDOWN_BTN__\([^"]*\.md\)__|href="\1" class="markdown-viewer-btn"|g' "$tmp_file"
+    
+    # Replace temp file with original
+    mv "$tmp_file" "$html_file"
 done
 
 echo "---------------------------------------"
