@@ -1003,17 +1003,6 @@ cd virtualization
 
 ---
 
-## 🔗 14. Related Guides
-
-*   📖 **[Arch Linux Setup](arch.md)** - Installing virtualization tools on Arch.
-*   📖 **[Fedora Configuration](fedora.md)** - Virtualization group installation on Fedora.
-*   📖 **[Debian Guide](debian.md)** - KVM setup on Debian/Ubuntu systems.
-*   📖 **[System Snapshots](snapshots.md)** - Similar snapshot concepts for bare metal systems.
-*   📖 **[Security Hardening](security.md)** - Securing your virtualization environment.
-*   📖 **[System Maintenance](system_maintenance.md)** - Backup strategies for VMs and hosts.
-
----
-
 ## 🎯 Why Would I Use This?
 
 - **Test software safely** - Run untrusted programs in isolation
@@ -1031,3 +1020,5 @@ cd virtualization
 - 📖 **[Arch Linux Guide](arch.md)** - Native KVM support on Arch
 - 📖 **[Fedora Guide](fedora.md)** - Fedora virtualization tools
 - 📖 **[Security Hardening](security.md)** - Securing your host system
+- 📖 **[Debian Guide](debian.md)** - KVM setup on Debian/Ubuntu systems
+- 📖 **[System Snapshots](snapshots.md)** - Similar snapshot concepts for bare metal systems
