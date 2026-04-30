@@ -13,109 +13,98 @@ My name is Ariel, and for the last few years, I've been the only Linux user in m
 <!-- Section for specific setup/config steps -->
 ## 📘 Documentation Index
 
-Detailed setup and maintenance guides for specific systems and toolsets. All available documentation listed alphabetically below.
-
-### 📚 Complete Documentation Table
-
-| Documentation | Category | Description |
-| :--- | :--- | :--- |
-| **[Accessibility (TTS)](docs/accessibility-tts.md)** | Accessibility | High-quality neural text-to-speech with Piper |
-| **[Apache + Tor + Docker](docs/apache-tor-docker.md)** | Networking | Anonymous website hosting with Apache & Docker |
-| **[Arch Linux](docs/arch.md)** | Operating Systems | Rolling-release environment & AUR setup |
-| **[Audio & Video](docs/audio-video.md)** | Creative & Media | Pro-audio, streaming, DAWs & OBS setup |
-| **[Bash Configuration](bash.md)** | Shell Configuration | Bash setup with readline, zoxide, thefuck integration |
-| **[Debian](docs/debian.md)** | Operating Systems | Stable-release environment & External repos |
-| **[Fedora](docs/fedora.md)** | Operating Systems | Workstation environment & DNF optimizations |
-| **[File Sync Guide](docs/file-sync-guide.md)** | System Utilities | File synchronization and backup strategies |
-| **[Fish Configuration](fish.md)** | Shell Configuration | Fish shell setup with plugins and modern tools |
-| **[Flatpak](docs/flatpak.md)** | Package Managers | Sandboxed universal applications |
-| **[Homebrew](docs/homebrew.md)** | Package Managers | CLI tool manager for Linux |
-| **[KDE Plasma](configs/kde/README.md)** | Environment Config | Restore KDE layout, shortcuts, and themes |
-| **[License](licence.md)** | Project Info | Project license information |
-| **[Local AI & LLM](docs/local-ai.md)** | AI & Intelligence | Self-hosted Ollama & Agentic Interpreters |
-| **[Music Streaming](docs/streaming/music.md)** | Creative & Media | Music streaming without ads setup |
-| **[Nix](docs/nix.md)** | Package Managers | Reproducible package management |
-| **[Packages](packages/README.md)** | System Restoration | List of installed applications and restoration guide |
-| **[Security & Hardening](docs/security.md)** | System Security | AppArmor, UFW, ClamAV, encrypted DNS setup |
-| **[Shell Configurations](configs/shells/README.md)** | Environment Config | Backup and restore all shell configs (zsh, bash, fish) |
-| **[Snapshots & Recovery](docs/snapshots.md)** | System Maintenance | System recovery with TimeShift/Snapper |
-| **[Snaps](docs/snaps.md)** | Package Managers | Canonical's universal package manager |
-| **[GRUB Bootloader](configs/grub/README.md)** | Environment Config | Visual customization for the GRUB bootloader |
-| **[Streaming Services](docs/streaming/README.md)** | Creative & Media | Music & video streaming setup guide |
-| **[System Maintenance](docs/system_maintenance.md)** | System Utilities | Routine system maintenance and optimization |
-| **[Timeshift I/O Optimization](docs/timeshift-io-optimization.md)** | System Maintenance | Fixing snapshot-related freezes & performance |
-| **[Tor Hidden Service (Arch)](docs/tor-hidden-service-arch.md)** | Networking | Anonymous website hosting with Nginx (native) |
-| **[Virtualization](docs/virtualization.md)** | Virtualization | KVM/QEMU/Libvirt VM management |
-| **[Video Streaming](docs/streaming/video.md)** | Creative & Media | Video streaming without ads setup |
-| **[Wayland Privilege Escalation](docs/wayland-privilege-escalation.md)** | System Security | Wayland security considerations and fixes |
-| **[ZSH Configuration](zsh.md)** | Shell Configuration | ZSH with Oh My Zsh, plugins, and modern tools |
-
----
+Detailed setup and maintenance guides organized by category. All items listed alphabetically within their category.
 
 ### 🐧 Operating Systems
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Arch Linux** | Rolling-release environment & AUR setup | [**docs/arch.md**](docs/arch.md) |
-| **Debian** | Stable-release environment & External repos | [**docs/debian.md**](docs/debian.md) |
-| **Fedora** | Workstation environment & DNF optimizations | [**docs/fedora.md**](docs/fedora.md) |
+| **Arch Linux** | Rolling-release environment & AUR setup | [docs/arch.md](docs/arch.md) |
+| **Debian** | Stable-release environment & External repos | [docs/debian.md](docs/debian.md) |
+| **Fedora** | Workstation environment & DNF optimizations | [docs/fedora.md](docs/fedora.md) |
 
 ### 📦 Package Managers & App Distribution
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Flatpak** | Sandboxed universal applications | [**docs/flatpak.md**](docs/flatpak.md) |
-| **Homebrew** | CLI tool manager for Linux | [**docs/homebrew.md**](docs/homebrew.md) |
-| **Nix** | Reproducible package management | [**docs/nix.md**](docs/nix.md) |
-| **Snap** | Canonical's universal package manager | [**docs/snaps.md**](docs/snaps.md) |
+| **Flatpak** | Sandboxed universal applications | [docs/flatpak.md](docs/flatpak.md) |
+| **Homebrew** | CLI tool manager for Linux | [docs/homebrew.md](docs/homebrew.md) |
+| **Nix** | Reproducible package management | [docs/nix.md](docs/nix.md) |
+| **Snap** | Canonical's universal package manager | [docs/snaps.md](docs/snaps.md) |
 
 ### 🎮 Virtualization & Emulation
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Virtualization** | KVM/QEMU/Libvirt VM management | [**docs/virtualization.md**](docs/virtualization.md) |
+| **Virtualization** | KVM/QEMU/Libvirt VM management | [docs/virtualization.md](docs/virtualization.md) |
 
 ### 🛡️ System Maintenance & Recovery
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Snapshots** | System recovery (TimeShift/Snapper) | [**docs/snapshots.md**](docs/snapshots.md) |
-| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [**docs/timeshift-io-optimization.md**](docs/timeshift-io-optimization.md) |
+| **Snapshots** | System recovery with TimeShift/Snapper | [docs/snapshots.md](docs/snapshots.md) |
+| **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [docs/timeshift-io-optimization.md](docs/timeshift-io-optimization.md) |
 
 ### 🌐 Networking & Hosting
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Tor + Apache & Docker** | Anonymous website hosting with Apache & Docker | [**docs/apache-tor-docker.md**](docs/apache-tor-docker.md) |
-| **Tor Hidden Service (Arch)** | Anonymous website hosting with Nginx (native) | [**docs/tor-hidden-service-arch.md**](docs/tor-hidden-service-arch.md) |
+| **Tor + Apache & Docker** | Anonymous website hosting with Apache & Docker | [docs/apache-tor-docker.md](docs/apache-tor-docker.md) |
+| **Tor Hidden Service (Arch)** | Anonymous website hosting with Nginx (native) | [docs/tor-hidden-service-arch.md](docs/tor-hidden-service-arch.md) |
 
 ### 🎨 Creative & Media
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [**docs/audio-video.md**](docs/audio-video.md) |
-| **Streaming Services** | Music & video streaming without ads | [**docs/streaming/**](docs/streaming/) |
+| **Audio & Video** | Pro-audio, streaming, DAWs & OBS setup | [docs/audio-video.md](docs/audio-video.md) |
+| **Music Streaming** | Music streaming without ads setup | [docs/streaming/music.md](docs/streaming/music.md) |
+| **Streaming Services** | Complete streaming setup guide | [docs/streaming/README.md](docs/streaming/) |
+| **Video Streaming** | Video streaming without ads setup | [docs/streaming/video.md](docs/streaming/video.md) |
 
 ### 🤖 AI & Intelligence
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [**docs/local-ai.md**](docs/local-ai.md) |
+| **Local AI & LLM** | Self-hosted Ollama & Agentic Interpreters | [docs/local-ai.md](docs/local-ai.md) |
 
 ### 🐚 Shell Configuration
 
 | Shell | Description | Documentation |
 | :--- | :--- | :--- |
-| **ZSH** | Complete setup with Oh My Zsh and modern tools | [**zsh.md**](zsh.md) |
-| **Bash** | Fallback shell with readline and zoxide | [**bash.md**](bash.md) |
-| **Fish** | User-friendly shell with native features | [**fish.md**](fish.md) |
-| **All Shells** | Backup configs and restoration guide | [**configs/shells/README.md**](configs/shells/README.md) |
+| **Bash** | Fallback shell with readline and modern tools | [bash.md](bash.md) |
+| **Fish** | User-friendly shell with native features | [fish.md](fish.md) |
+| **Shell Configs** | Backup and restore all shell configs (zsh, bash, fish, starship) | [configs/shells/README.md](configs/shells/README.md) |
+| **ZSH** | Complete setup with Oh My Zsh and modern tools | [zsh.md](zsh.md) |
 
 ### ♿ Accessibility & Usability
 
 | System | Description | Documentation |
 | :--- | :--- | :--- |
-| **Accessibility (TTS)** | High-quality neural text-to-speech with Piper | [**docs/accessibility-tts.md**](docs/accessibility-tts.md) |
+| **Text-to-Speech** | High-quality neural TTS with Piper | [docs/accessibility-tts.md](docs/accessibility-tts.md) |
+
+### 🛡️ Security & System Utilities
+
+| System | Description | Documentation |
+| :--- | :--- | :--- |
+| **File Sync Guide** | File synchronization and backup strategies | [docs/file-sync-guide.md](docs/file-sync-guide.md) |
+| **Security & Hardening** | AppArmor, UFW, ClamAV, encrypted DNS setup | [docs/security.md](docs/security.md) |
+| **System Maintenance** | Routine system maintenance and optimization | [docs/system_maintenance.md](docs/system_maintenance.md) |
+| **Wayland Security** | Wayland security considerations and fixes | [docs/wayland-privilege-escalation.md](docs/wayland-privilege-escalation.md) |
+
+### ⚙️ Environment Configuration
+
+| Configuration | Description | Documentation |
+| :--- | :--- | :--- |
+| **GRUB Bootloader** | Visual customization for the GRUB bootloader | [configs/grub/README.md](configs/grub/README.md) |
+| **KDE Plasma** | Restore KDE Plasma layout, shortcuts, and themes | [configs/kde/README.md](configs/kde/README.md) |
+| **Shell Configs** | Backup and restore all shell configs (zsh, bash, fish, starship) | [configs/shells/README.md](configs/shells/README.md) |
+
+### 📋 Reference & Resources
+
+| Resource | Description | Documentation |
+| :--- | :--- | :--- |
+| **License** | Project license information | [licence.md](licence.md) |
+| **Packages** | List of installed applications and restoration guide | [packages/README.md](packages/README.md) |
 
 ---
 
@@ -124,16 +113,16 @@ Detailed setup and maintenance guides for specific systems and toolsets. All ava
 
 The `packages/` directory contains text files listing all installed applications. These are used to quickly restore software on a fresh installation.
 
-<!-- Quick sub-note for this part -->
 ### System Restoration
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/Astro-CLI/Into-the-Distro-Verse.git
-    cd Into-the-Distro-Verse
-    ```
 
-2.  **Follow the Guide:**
-    Execute the restoration commands for your specific system in the **[Package Management Guide](packages/README.md)**.
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/Astro-CLI/Into-the-Distro-Verse.git
+   cd Into-the-Distro-Verse
+   ```
+
+2. **Follow the Guide:**
+   See **[Package Management Guide](packages/README.md)** for restoration commands.
 
 ---
 
@@ -142,21 +131,8 @@ The `packages/` directory contains text files listing all installed applications
 
 Guides for securing and maintaining the integrity of a Linux system.
 
-*   **Network & Security:** Setup for AppArmor, UFW Firewall, ClamAV, and encrypted DNS (DoT). [**docs/security.md**](docs/security.md)
-*   **System Integrity:** Instructions for BTRFS health checks and automated snapshots. [**docs/snapshots.md**](docs/snapshots.md)
-
----
-
-<!-- Section for specific setup/config steps -->
-## ⚙️ Environment Configuration
-
-Backups of user-specific settings and desktop configurations, organized alphabetically.
-
-| Configuration | Description | Documentation |
-| :--- | :--- | :--- |
-| **GRUB Bootloader** | Visual customization for the GRUB bootloader | [**configs/grub/README.md**](configs/grub/README.md) |
-| **KDE Plasma** | Restore KDE Plasma layout, shortcuts, and themes | [**configs/kde/README.md**](configs/kde/README.md) |
-| **Shell Configurations** | Backup and restore all shell configs (zsh, bash, fish, starship) | [**configs/shells/README.md**](configs/shells/README.md) |
+- **Network & Security:** Setup for AppArmor, UFW Firewall, ClamAV, and encrypted DNS (DoT). [**docs/security.md**](docs/security.md)
+- **System Integrity:** Instructions for BTRFS health checks and automated snapshots. [**docs/snapshots.md**](docs/snapshots.md)
 
 ---
 

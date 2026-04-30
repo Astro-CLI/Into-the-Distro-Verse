@@ -53,9 +53,6 @@ the Distro-Verse 🌌</a>
 <li><a href="#documentation-index" id="toc-documentation-index">📘
 Documentation Index</a>
 <ul>
-<li><a href="#complete-documentation-table"
-id="toc-complete-documentation-table">📚 Complete Documentation
-Table</a></li>
 <li><a href="#operating-systems" id="toc-operating-systems">🐧 Operating
 Systems</a></li>
 <li><a href="#package-managers-app-distribution"
@@ -78,6 +75,13 @@ Configuration</a></li>
 <li><a href="#accessibility-usability"
 id="toc-accessibility-usability">♿ Accessibility &amp;
 Usability</a></li>
+<li><a href="#security-system-utilities"
+id="toc-security-system-utilities">🛡️ Security &amp; System
+Utilities</a></li>
+<li><a href="#environment-configuration"
+id="toc-environment-configuration">⚙️ Environment Configuration</a></li>
+<li><a href="#reference-resources" id="toc-reference-resources">📋
+Reference &amp; Resources</a></li>
 </ul></li>
 <li><a href="#software-repositories" id="toc-software-repositories">📦
 Software &amp; Repositories</a>
@@ -88,8 +92,6 @@ Restoration</a></li>
 <li><a href="#system-hardening-integrity"
 id="toc-system-hardening-integrity">🛡️ System Hardening &amp;
 Integrity</a></li>
-<li><a href="#environment-configuration"
-id="toc-environment-configuration">⚙️ Environment Configuration</a></li>
 <li><a href="#the-ultimate-linux-resource-list"
 id="toc-the-ultimate-linux-resource-list">🕸️ The Ultimate Linux Resource
 List</a>
@@ -128,232 +130,8 @@ configurations, regardless of which distro they call home.</p>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="documentation-index">📘 Documentation Index</h2>
-<p>Detailed setup and maintenance guides for specific systems and
-toolsets. All available documentation listed alphabetically below.</p>
-<h3 id="complete-documentation-table">📚 Complete Documentation
-Table</h3>
-<table>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
-</colgroup>
-<thead>
-<tr>
-<th style="text-align: left;">Documentation</th>
-<th style="text-align: left;">Category</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/accessibility-tts.md">Accessibility (TTS)</a></strong></td>
-<td style="text-align: left;">Accessibility</td>
-<td style="text-align: left;">High-quality neural text-to-speech with
-Piper</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/apache-tor-docker.md">Apache + Tor + Docker</a></strong></td>
-<td style="text-align: left;">Networking</td>
-<td style="text-align: left;">Anonymous website hosting with Apache
-&amp; Docker</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a href="docs/arch.md">Arch
-Linux</a></strong></td>
-<td style="text-align: left;">Operating Systems</td>
-<td style="text-align: left;">Rolling-release environment &amp; AUR
-setup</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/audio-video.md">Audio &amp; Video</a></strong></td>
-<td style="text-align: left;">Creative &amp; Media</td>
-<td style="text-align: left;">Pro-audio, streaming, DAWs &amp; OBS
-setup</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a href="bash.md">Bash
-Configuration</a></strong></td>
-<td style="text-align: left;">Shell Configuration</td>
-<td style="text-align: left;">Bash setup with readline, zoxide, thefuck
-integration</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/debian.md">Debian</a></strong></td>
-<td style="text-align: left;">Operating Systems</td>
-<td style="text-align: left;">Stable-release environment &amp; External
-repos</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/fedora.md">Fedora</a></strong></td>
-<td style="text-align: left;">Operating Systems</td>
-<td style="text-align: left;">Workstation environment &amp; DNF
-optimizations</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/file-sync-guide.md">File Sync Guide</a></strong></td>
-<td style="text-align: left;">System Utilities</td>
-<td style="text-align: left;">File synchronization and backup
-strategies</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a href="fish.md">Fish
-Configuration</a></strong></td>
-<td style="text-align: left;">Shell Configuration</td>
-<td style="text-align: left;">Fish shell setup with plugins and modern
-tools</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/flatpak.md">Flatpak</a></strong></td>
-<td style="text-align: left;">Package Managers</td>
-<td style="text-align: left;">Sandboxed universal applications</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/homebrew.md">Homebrew</a></strong></td>
-<td style="text-align: left;">Package Managers</td>
-<td style="text-align: left;">CLI tool manager for Linux</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="configs/kde/README.md">KDE Plasma</a></strong></td>
-<td style="text-align: left;">Environment Config</td>
-<td style="text-align: left;">Restore KDE layout, shortcuts, and
-themes</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="licence.md">License</a></strong></td>
-<td style="text-align: left;">Project Info</td>
-<td style="text-align: left;">Project license information</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a href="docs/local-ai.md">Local
-AI &amp; LLM</a></strong></td>
-<td style="text-align: left;">AI &amp; Intelligence</td>
-<td style="text-align: left;">Self-hosted Ollama &amp; Agentic
-Interpreters</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/streaming/music.md">Music Streaming</a></strong></td>
-<td style="text-align: left;">Creative &amp; Media</td>
-<td style="text-align: left;">Music streaming without ads setup</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/nix.md">Nix</a></strong></td>
-<td style="text-align: left;">Package Managers</td>
-<td style="text-align: left;">Reproducible package management</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="packages/README.md">Packages</a></strong></td>
-<td style="text-align: left;">System Restoration</td>
-<td style="text-align: left;">List of installed applications and
-restoration guide</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/security.md">Security &amp; Hardening</a></strong></td>
-<td style="text-align: left;">System Security</td>
-<td style="text-align: left;">AppArmor, UFW, ClamAV, encrypted DNS
-setup</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="configs/shells/README.md">Shell Configurations</a></strong></td>
-<td style="text-align: left;">Environment Config</td>
-<td style="text-align: left;">Backup and restore all shell configs (zsh,
-bash, fish)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/snapshots.md">Snapshots &amp; Recovery</a></strong></td>
-<td style="text-align: left;">System Maintenance</td>
-<td style="text-align: left;">System recovery with
-TimeShift/Snapper</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/snaps.md">Snaps</a></strong></td>
-<td style="text-align: left;">Package Managers</td>
-<td style="text-align: left;">Canonical’s universal package manager</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="configs/grub/README.md">GRUB Bootloader</a></strong></td>
-<td style="text-align: left;">Environment Config</td>
-<td style="text-align: left;">Visual customization for the GRUB
-bootloader</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/streaming/README.md">Streaming Services</a></strong></td>
-<td style="text-align: left;">Creative &amp; Media</td>
-<td style="text-align: left;">Music &amp; video streaming setup
-guide</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/system_maintenance.md">System Maintenance</a></strong></td>
-<td style="text-align: left;">System Utilities</td>
-<td style="text-align: left;">Routine system maintenance and
-optimization</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/timeshift-io-optimization.md">Timeshift I/O
-Optimization</a></strong></td>
-<td style="text-align: left;">System Maintenance</td>
-<td style="text-align: left;">Fixing snapshot-related freezes &amp;
-performance</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/tor-hidden-service-arch.md">Tor Hidden Service
-(Arch)</a></strong></td>
-<td style="text-align: left;">Networking</td>
-<td style="text-align: left;">Anonymous website hosting with Nginx
-(native)</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/virtualization.md">Virtualization</a></strong></td>
-<td style="text-align: left;">Virtualization</td>
-<td style="text-align: left;">KVM/QEMU/Libvirt VM management</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/streaming/video.md">Video Streaming</a></strong></td>
-<td style="text-align: left;">Creative &amp; Media</td>
-<td style="text-align: left;">Video streaming without ads setup</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a
-href="docs/wayland-privilege-escalation.md">Wayland Privilege
-Escalation</a></strong></td>
-<td style="text-align: left;">System Security</td>
-<td style="text-align: left;">Wayland security considerations and
-fixes</td>
-</tr>
-<tr>
-<td style="text-align: left;"><strong><a href="zsh.md">ZSH
-Configuration</a></strong></td>
-<td style="text-align: left;">Shell Configuration</td>
-<td style="text-align: left;">ZSH with Oh My Zsh, plugins, and modern
-tools</td>
-</tr>
-</tbody>
-</table>
-<hr />
+<p>Detailed setup and maintenance guides organized by category. All
+items listed alphabetically within their category.</p>
 <h3 id="operating-systems">🐧 Operating Systems</h3>
 <table>
 <colgroup>
@@ -374,21 +152,21 @@ tools</td>
 <td style="text-align: left;">Rolling-release environment &amp; AUR
 setup</td>
 <td style="text-align: left;"><a
-href="docs/arch.md"><strong>docs/arch.md</strong></a></td>
+href="docs/arch.md">docs/arch.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Debian</strong></td>
 <td style="text-align: left;">Stable-release environment &amp; External
 repos</td>
 <td style="text-align: left;"><a
-href="docs/debian.md"><strong>docs/debian.md</strong></a></td>
+href="docs/debian.md">docs/debian.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Fedora</strong></td>
 <td style="text-align: left;">Workstation environment &amp; DNF
 optimizations</td>
 <td style="text-align: left;"><a
-href="docs/fedora.md"><strong>docs/fedora.md</strong></a></td>
+href="docs/fedora.md">docs/fedora.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -412,25 +190,24 @@ Distribution</h3>
 <td style="text-align: left;"><strong>Flatpak</strong></td>
 <td style="text-align: left;">Sandboxed universal applications</td>
 <td style="text-align: left;"><a
-href="docs/flatpak.md"><strong>docs/flatpak.md</strong></a></td>
+href="docs/flatpak.md">docs/flatpak.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Homebrew</strong></td>
 <td style="text-align: left;">CLI tool manager for Linux</td>
 <td style="text-align: left;"><a
-href="docs/homebrew.md"><strong>docs/homebrew.md</strong></a></td>
+href="docs/homebrew.md">docs/homebrew.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Nix</strong></td>
 <td style="text-align: left;">Reproducible package management</td>
-<td style="text-align: left;"><a
-href="docs/nix.md"><strong>docs/nix.md</strong></a></td>
+<td style="text-align: left;"><a href="docs/nix.md">docs/nix.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Snap</strong></td>
 <td style="text-align: left;">Canonical’s universal package manager</td>
 <td style="text-align: left;"><a
-href="docs/snaps.md"><strong>docs/snaps.md</strong></a></td>
+href="docs/snaps.md">docs/snaps.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -453,7 +230,7 @@ href="docs/snaps.md"><strong>docs/snaps.md</strong></a></td>
 <td style="text-align: left;"><strong>Virtualization</strong></td>
 <td style="text-align: left;">KVM/QEMU/Libvirt VM management</td>
 <td style="text-align: left;"><a
-href="docs/virtualization.md"><strong>docs/virtualization.md</strong></a></td>
+href="docs/virtualization.md">docs/virtualization.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -475,9 +252,10 @@ Recovery</h3>
 <tbody>
 <tr>
 <td style="text-align: left;"><strong>Snapshots</strong></td>
-<td style="text-align: left;">System recovery (TimeShift/Snapper)</td>
+<td style="text-align: left;">System recovery with
+TimeShift/Snapper</td>
 <td style="text-align: left;"><a
-href="docs/snapshots.md"><strong>docs/snapshots.md</strong></a></td>
+href="docs/snapshots.md">docs/snapshots.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Timeshift I/O
@@ -485,7 +263,7 @@ Optimization</strong></td>
 <td style="text-align: left;">Fixing snapshot-related freezes &amp;
 performance</td>
 <td style="text-align: left;"><a
-href="docs/timeshift-io-optimization.md"><strong>docs/timeshift-io-optimization.md</strong></a></td>
+href="docs/timeshift-io-optimization.md">docs/timeshift-io-optimization.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -510,7 +288,7 @@ Docker</strong></td>
 <td style="text-align: left;">Anonymous website hosting with Apache
 &amp; Docker</td>
 <td style="text-align: left;"><a
-href="docs/apache-tor-docker.md"><strong>docs/apache-tor-docker.md</strong></a></td>
+href="docs/apache-tor-docker.md">docs/apache-tor-docker.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Tor Hidden Service
@@ -518,7 +296,7 @@ href="docs/apache-tor-docker.md"><strong>docs/apache-tor-docker.md</strong></a><
 <td style="text-align: left;">Anonymous website hosting with Nginx
 (native)</td>
 <td style="text-align: left;"><a
-href="docs/tor-hidden-service-arch.md"><strong>docs/tor-hidden-service-arch.md</strong></a></td>
+href="docs/tor-hidden-service-arch.md">docs/tor-hidden-service-arch.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -542,14 +320,25 @@ href="docs/tor-hidden-service-arch.md"><strong>docs/tor-hidden-service-arch.md</
 <td style="text-align: left;">Pro-audio, streaming, DAWs &amp; OBS
 setup</td>
 <td style="text-align: left;"><a
-href="docs/audio-video.md"><strong>docs/audio-video.md</strong></a></td>
+href="docs/audio-video.md">docs/audio-video.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Music Streaming</strong></td>
+<td style="text-align: left;">Music streaming without ads setup</td>
+<td style="text-align: left;"><a
+href="docs/streaming/music.md">docs/streaming/music.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Streaming Services</strong></td>
-<td style="text-align: left;">Music &amp; video streaming without
-ads</td>
+<td style="text-align: left;">Complete streaming setup guide</td>
 <td style="text-align: left;"><a
-href="docs/streaming/"><strong>docs/streaming/</strong></a></td>
+href="docs/streaming/">docs/streaming/README.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Video Streaming</strong></td>
+<td style="text-align: left;">Video streaming without ads setup</td>
+<td style="text-align: left;"><a
+href="docs/streaming/video.md">docs/streaming/video.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -573,7 +362,7 @@ href="docs/streaming/"><strong>docs/streaming/</strong></a></td>
 <td style="text-align: left;">Self-hosted Ollama &amp; Agentic
 Interpreters</td>
 <td style="text-align: left;"><a
-href="docs/local-ai.md"><strong>docs/local-ai.md</strong></a></td>
+href="docs/local-ai.md">docs/local-ai.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -593,31 +382,29 @@ href="docs/local-ai.md"><strong>docs/local-ai.md</strong></a></td>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>ZSH</strong></td>
-<td style="text-align: left;">Complete setup with Oh My Zsh and modern
-tools</td>
-<td style="text-align: left;"><a
-href="zsh.md"><strong>zsh.md</strong></a></td>
-</tr>
-<tr>
 <td style="text-align: left;"><strong>Bash</strong></td>
-<td style="text-align: left;">Fallback shell with readline and
-zoxide</td>
-<td style="text-align: left;"><a
-href="bash.md"><strong>bash.md</strong></a></td>
+<td style="text-align: left;">Fallback shell with readline and modern
+tools</td>
+<td style="text-align: left;"><a href="bash.md">bash.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>Fish</strong></td>
 <td style="text-align: left;">User-friendly shell with native
 features</td>
-<td style="text-align: left;"><a
-href="fish.md"><strong>fish.md</strong></a></td>
+<td style="text-align: left;"><a href="fish.md">fish.md</a></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>All Shells</strong></td>
-<td style="text-align: left;">Backup configs and restoration guide</td>
+<td style="text-align: left;"><strong>Shell Configs</strong></td>
+<td style="text-align: left;">Backup and restore all shell configs (zsh,
+bash, fish, starship)</td>
 <td style="text-align: left;"><a
-href="configs/shells/README.md"><strong>configs/shells/README.md</strong></a></td>
+href="configs/shells/README.md">configs/shells/README.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>ZSH</strong></td>
+<td style="text-align: left;">Complete setup with Oh My Zsh and modern
+tools</td>
+<td style="text-align: left;"><a href="zsh.md">zsh.md</a></td>
 </tr>
 </tbody>
 </table>
@@ -637,49 +424,61 @@ href="configs/shells/README.md"><strong>configs/shells/README.md</strong></a></t
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><strong>Accessibility (TTS)</strong></td>
-<td style="text-align: left;">High-quality neural text-to-speech with
-Piper</td>
+<td style="text-align: left;"><strong>Text-to-Speech</strong></td>
+<td style="text-align: left;">High-quality neural TTS with Piper</td>
 <td style="text-align: left;"><a
-href="docs/accessibility-tts.md"><strong>docs/accessibility-tts.md</strong></a></td>
+href="docs/accessibility-tts.md">docs/accessibility-tts.md</a></td>
 </tr>
 </tbody>
 </table>
-<hr />
-<!-- Section for specific setup/config steps -->
-<h2 id="software-repositories">📦 Software &amp; Repositories</h2>
-<p>The <code>packages/</code> directory contains text files listing all
-installed applications. These are used to quickly restore software on a
-fresh installation.</p>
-<!-- Quick sub-note for this part -->
-<h3 id="system-restoration">System Restoration</h3>
-<ol type="1">
-<li><p><strong>Clone the Repository:</strong>
-<code>bash     git clone https://github.com/Astro-CLI/Into-the-Distro-Verse.git     cd Into-the-Distro-Verse</code></p></li>
-<li><p><strong>Follow the Guide:</strong> Execute the restoration
-commands for your specific system in the <strong><a
-href="packages/README.md">Package Management
-Guide</a></strong>.</p></li>
-</ol>
-<hr />
-<!-- Section for specific setup/config steps -->
-<h2 id="system-hardening-integrity">🛡️ System Hardening &amp;
-Integrity</h2>
-<p>Guides for securing and maintaining the integrity of a Linux
-system.</p>
-<ul>
-<li><strong>Network &amp; Security:</strong> Setup for AppArmor, UFW
-Firewall, ClamAV, and encrypted DNS (DoT). <a
-href="docs/security.md"><strong>docs/security.md</strong></a></li>
-<li><strong>System Integrity:</strong> Instructions for BTRFS health
-checks and automated snapshots. <a
-href="docs/snapshots.md"><strong>docs/snapshots.md</strong></a></li>
-</ul>
-<hr />
-<!-- Section for specific setup/config steps -->
-<h2 id="environment-configuration">⚙️ Environment Configuration</h2>
-<p>Backups of user-specific settings and desktop configurations,
-organized alphabetically.</p>
+<h3 id="security-system-utilities">🛡️ Security &amp; System
+Utilities</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">System</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>File Sync Guide</strong></td>
+<td style="text-align: left;">File synchronization and backup
+strategies</td>
+<td style="text-align: left;"><a
+href="docs/file-sync-guide.md">docs/file-sync-guide.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Security &amp;
+Hardening</strong></td>
+<td style="text-align: left;">AppArmor, UFW, ClamAV, encrypted DNS
+setup</td>
+<td style="text-align: left;"><a
+href="docs/security.md">docs/security.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>System Maintenance</strong></td>
+<td style="text-align: left;">Routine system maintenance and
+optimization</td>
+<td style="text-align: left;"><a
+href="docs/system_maintenance.md">docs/system_maintenance.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Wayland Security</strong></td>
+<td style="text-align: left;">Wayland security considerations and
+fixes</td>
+<td style="text-align: left;"><a
+href="docs/wayland-privilege-escalation.md">docs/wayland-privilege-escalation.md</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="environment-configuration">⚙️ Environment Configuration</h3>
 <table>
 <colgroup>
 <col style="width: 33%" />
@@ -699,24 +498,82 @@ organized alphabetically.</p>
 <td style="text-align: left;">Visual customization for the GRUB
 bootloader</td>
 <td style="text-align: left;"><a
-href="configs/grub/README.md"><strong>configs/grub/README.md</strong></a></td>
+href="configs/grub/README.md">configs/grub/README.md</a></td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>KDE Plasma</strong></td>
 <td style="text-align: left;">Restore KDE Plasma layout, shortcuts, and
 themes</td>
 <td style="text-align: left;"><a
-href="configs/kde/README.md"><strong>configs/kde/README.md</strong></a></td>
+href="configs/kde/README.md">configs/kde/README.md</a></td>
 </tr>
 <tr>
-<td style="text-align: left;"><strong>Shell Configurations</strong></td>
+<td style="text-align: left;"><strong>Shell Configs</strong></td>
 <td style="text-align: left;">Backup and restore all shell configs (zsh,
 bash, fish, starship)</td>
 <td style="text-align: left;"><a
-href="configs/shells/README.md"><strong>configs/shells/README.md</strong></a></td>
+href="configs/shells/README.md">configs/shells/README.md</a></td>
 </tr>
 </tbody>
 </table>
+<h3 id="reference-resources">📋 Reference &amp; Resources</h3>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">Resource</th>
+<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>License</strong></td>
+<td style="text-align: left;">Project license information</td>
+<td style="text-align: left;"><a href="licence.md">licence.md</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Packages</strong></td>
+<td style="text-align: left;">List of installed applications and
+restoration guide</td>
+<td style="text-align: left;"><a
+href="packages/README.md">packages/README.md</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="software-repositories">📦 Software &amp; Repositories</h2>
+<p>The <code>packages/</code> directory contains text files listing all
+installed applications. These are used to quickly restore software on a
+fresh installation.</p>
+<h3 id="system-restoration">System Restoration</h3>
+<ol type="1">
+<li><p><strong>Clone the Repository:</strong></p>
+<pre class="bash"><code>git clone https://github.com/Astro-CLI/Into-the-Distro-Verse.git
+cd Into-the-Distro-Verse</code></pre></li>
+<li><p><strong>Follow the Guide:</strong> See <strong><a
+href="packages/README.md">Package Management Guide</a></strong> for
+restoration commands.</p></li>
+</ol>
+<hr />
+<!-- Section for specific setup/config steps -->
+<h2 id="system-hardening-integrity">🛡️ System Hardening &amp;
+Integrity</h2>
+<p>Guides for securing and maintaining the integrity of a Linux
+system.</p>
+<ul>
+<li><strong>Network &amp; Security:</strong> Setup for AppArmor, UFW
+Firewall, ClamAV, and encrypted DNS (DoT). <a
+href="docs/security.md"><strong>docs/security.md</strong></a></li>
+<li><strong>System Integrity:</strong> Instructions for BTRFS health
+checks and automated snapshots. <a
+href="docs/snapshots.md"><strong>docs/snapshots.md</strong></a></li>
+</ul>
 <hr />
 <!-- Section for specific setup/config steps -->
 <h2 id="the-ultimate-linux-resource-list">🕸️ The Ultimate Linux Resource
