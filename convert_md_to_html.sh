@@ -54,6 +54,10 @@ for file in "${FILES_TO_CONVERT[@]}"; do
     md_filename=$(basename "$file")
     md_relative_path="${clean_path}"  # Full path to .md file
     
+    # Get absolute path for the Raw button (file:// URL)
+    md_absolute_path="$(cd "$(dirname "$file")" && pwd)/$(basename "$file")"
+    md_file_uri="file://${md_absolute_path}"
+    
     depth=$(echo "$clean_path" | tr -cd '/' | wc -c)
     rel_prefix=""
     for ((i=0; i<depth; i++)); do rel_prefix="../$rel_prefix"; done
@@ -75,7 +79,7 @@ for file in "${FILES_TO_CONVERT[@]}"; do
     <nav class="nav-right">
       <a href="${INDEX_REL_PATH}">Home</a>
       <a href="${HISTORY_REL_PATH}">History</a>
-      <a href="${md_relative_path}" class="markdown-viewer-btn">Raw</a>
+      <a href="${md_file_uri}" class="markdown-viewer-btn">Raw</a>
       <a href="${REPO_URL}" class="github-link" target="_blank">
         <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
         GitHub
