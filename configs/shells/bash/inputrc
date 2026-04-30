@@ -1,0 +1,17 @@
+# Better readline config for bash
+
+# Emacs keybindings (default, but explicit)
+set editing-mode emacs
+
+# History search with arrow keys (like zsh/fish)
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# Vi keybindings (optional, uncomment if you want)
+# set editing-mode vi
+
+# Better completion
+set completion-ignore-case on
+set bell-style none
+set show-all-if-ambiguous on
+set show-all-if-unmodified on
