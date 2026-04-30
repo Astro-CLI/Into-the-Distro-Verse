@@ -1,4 +1,4 @@
-# Music Streaming Without Ads
+### Music Streaming Without Ads
 
 Get premium music experiences without the ads, paywalls, or bloat. This guide covers **Spicetify** for Spotify and **YouTube Music** setup.
 

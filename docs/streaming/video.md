@@ -1,4 +1,4 @@
-# Video Streaming Without Paywalls
+### Video Streaming Without Paywalls
 
 Stream movies, TV shows, and live content across all your devices—legally and ad-free. This guide covers **Stremio**, **Debrid services**, and open-source alternatives.
 

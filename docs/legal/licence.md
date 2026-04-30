@@ -1,4 +1,4 @@
-# License (LGPL v2.1 - Ariel's Edition)
+### License (LGPL v2.1 - Ariel's Edition)
 
 ## The Actual Terms
 

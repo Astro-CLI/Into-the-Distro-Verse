@@ -1,4 +1,4 @@
-# 🎬 Streaming Services Guide
+### 🎬 Streaming Services Guide
 
 Get premium content without ads or paywalls. Everything you need to stream music, movies, and TV shows across all your devices.
 

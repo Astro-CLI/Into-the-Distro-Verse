@@ -1,4 +1,4 @@
-# Legal Documents
+### Legal Documents
 
 Licensing and legal information for the Into-the-Distro-Verse project.
 
