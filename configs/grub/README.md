@@ -1,4 +1,4 @@
-# GRUB Configuration & Theme Backup
+### GRUB Configuration & Theme Backup
 
 This directory contains backups for your GRUB bootloader settings managed via `grub-customizer` and the active visual theme.
 

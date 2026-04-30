@@ -39,13 +39,13 @@ Get premium music experiences without the ads, paywalls, or bloat. This guide co
 #### Ubuntu/Debian/Arch (Linux)
 
 ```bash
-# Install Spicetify
+### Install Spicetify
 curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 
-# Add to PATH
+### Add to PATH
 export PATH="$HOME/.spicetify:$PATH"
 
-# Verify installation
+### Verify installation
 spicetify --version
 ```
 
@@ -59,7 +59,7 @@ export PATH="$HOME/.spicetify:$PATH"
 ```bash
 brew install spicetify-cli
 
-# Verify
+### Verify
 spicetify --version
 ```
 
@@ -100,16 +100,16 @@ Themes customize Spotify's appearance. Popular options:
 ```bash
 cd ~/.config/spicetify/Themes
 
-# Clone the Dribbblish theme
+### Clone the Dribbblish theme
 git clone https://github.com/spicetify/spicetify-themes.git
 
 cp -r spicetify-themes/Dribbblish .
 
-# Set the theme
+### Set the theme
 spicetify config current_theme Dribbblish
 spicetify config color_scheme dark  # or: light
 
-# Apply
+### Apply
 spicetify apply
 ```
 
@@ -137,13 +137,13 @@ spicetify apply
 Extensions add functionality to Spotify. Install from the marketplace:
 
 ```bash
-# Navigate to extensions directory
+### Navigate to extensions directory
 cd ~/.config/spicetify/Extensions
 
-# Clone community extensions
+### Clone community extensions
 git clone https://github.com/spicetify/spicetify-extensions.git
 
-# Copy desired extensions
+### Copy desired extensions
 cp spicetify-extensions/fullAppDisplay/fullAppDisplay.js .
 cp spicetify-extensions/showQueueDuration/showQueueDuration.js .
 cp spicetify-extensions/groupSession/groupSession.js .
@@ -215,22 +215,22 @@ spicetify apply
 ### Common Spicetify Commands
 
 ```bash
-# Show current config
+### Show current config
 spicetify config-dir
 
-# Apply changes
+### Apply changes
 spicetify apply
 
-# Restore original Spotify (undo Spicetify)
+### Restore original Spotify (undo Spicetify)
 spicetify restore
 
-# Backup before major changes
+### Backup before major changes
 spicetify backup
 
-# Update Spicetify to latest
+### Update Spicetify to latest
 spicetify upgrade
 
-# Check status
+### Check status
 spicetify status
 ```
 
@@ -265,15 +265,15 @@ Simply visit **https://music.youtube.com**
 
 **Via Package Manager:**
 ```bash
-# Ubuntu/Debian
+### Ubuntu/Debian
 sudo apt install youtube-music
 
-# Arch
+### Arch
 yay -S youtube-music-desktop-app
-# or
+### or
 paru -S youtube-music-desktop-app
 
-# Fedora
+### Fedora
 sudo dnf install youtube-music
 ```
 
@@ -292,7 +292,7 @@ flatpak run com.github.th-ch.YouTubeMusic
 
 ```bash
 brew install youtube-music
-# or
+### or
 brew install --cask youtube-music
 ```
 
@@ -406,26 +406,26 @@ If you use YouTube Music regularly, YouTube Premium ($14.99/month) removes ads a
 ### Spicetify: Spotify Doesn't Start After Apply
 
 ```bash
-# Restore to original
+### Restore to original
 spicetify restore
 
-# Restart Spotify
+### Restart Spotify
 spotify &
 
-# Check logs
+### Check logs
 cat ~/.config/spicetify/config-xpui.ini
 ```
 
 ### Spicetify: Extensions Not Loading
 
 ```bash
-# Verify extensions folder
+### Verify extensions folder
 ls -la ~/.config/spicetify/Extensions/
 
-# Ensure extensions are listed in config
+### Ensure extensions are listed in config
 cat ~/.config/spicetify/config-xpui.ini | grep extensions
 
-# Reapply
+### Reapply
 spicetify apply
 ```
 
@@ -439,10 +439,10 @@ spicetify apply
 ### YouTube Music Desktop: No Sound
 
 ```bash
-# Check audio output
+### Check audio output
 pactl list sinks
 
-# Restart app and try again
+### Restart app and try again
 pkill youtube-music
 youtube-music &
 ```
@@ -452,13 +452,13 @@ youtube-music &
 Make sure PATH is updated:
 
 ```bash
-# Check if installed
+### Check if installed
 ls ~/.spicetify/
 
-# Add to PATH manually
+### Add to PATH manually
 export PATH="$HOME/.spicetify:$PATH"
 
-# Make permanent (add to ~/.bashrc or ~/.zshrc)
+### Make permanent (add to ~/.bashrc or ~/.zshrc)
 echo 'export PATH="$HOME/.spicetify:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
@@ -470,37 +470,37 @@ source ~/.bashrc
 ### Spicetify (5 minutes)
 
 ```bash
-# Install
+### Install
 curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 export PATH="$HOME/.spicetify:$PATH"
 
-# Setup
+### Setup
 spicetify init
 spicetify backup apply
 
-# Install theme
+### Install theme
 cd ~/.config/spicetify/Themes
 git clone https://github.com/spicetify/spicetify-themes.git
 cp -r spicetify-themes/Dribbblish .
 spicetify config current_theme Dribbblish
 spicetify apply
 
-# Restart Spotify → Done!
+### Restart Spotify → Done!
 ```
 
 ### YouTube Music (2 minutes)
 
 ```bash
-# Install desktop app
+### Install desktop app
 sudo apt install youtube-music  # Linux
-# or
+### or
 brew install youtube-music  # macOS
 
-# Open
+### Open
 youtube-music &
 
-# Install uBlock Origin in browser
-# Visit music.youtube.com → Enjoy ad-free music!
+### Install uBlock Origin in browser
+### Visit music.youtube.com → Enjoy ad-free music!
 ```
 
 ---

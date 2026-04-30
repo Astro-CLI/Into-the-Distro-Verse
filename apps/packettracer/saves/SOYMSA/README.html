@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#packet-tracer-version-control-with-git-github"
 id="toc-packet-tracer-version-control-with-git-github">Packet Tracer
-Version Control with Git &amp; GitHub</a>
-<ul>
+Version Control with Git &amp; GitHub</a></li>
 <li><a href="#first-time-setup" id="toc-first-time-setup">1. First-Time
 Setup</a>
 <ul>
@@ -84,11 +83,10 @@ GitHub</a></li>
 <li><a href="#quick-workflow-summary"
 id="toc-quick-workflow-summary">Quick Workflow Summary</a></li>
 </ul></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="packet-tracer-version-control-with-git-github">Packet Tracer
-Version Control with Git &amp; GitHub</h1>
+<h3 id="packet-tracer-version-control-with-git-github">Packet Tracer
+Version Control with Git &amp; GitHub</h3>
 <p>This guide provides a straightforward workflow for using
 <code>git</code> and the GitHub CLI (<code>gh</code>) to save and
 document changes to your Packet Tracer (<code>.pkt</code>) files in a
@@ -122,16 +120,16 @@ GitHub Repository and Push Initial Files</h3>
 your GitHub account, adds your current files, and pushes them.</p>
 <p><strong>IMPORTANT</strong>: Replace <code>your-repo-name</code> with
 a name you choose (e.g., <code>packet-tracer-project</code>).</p>
-<pre class="bash"><code># Create the repository and link it to your local project
+<pre class="bash"><code>### Create the repository and link it to your local project
 gh repo create your-repo-name --private --source=. --remote=origin
 
-# Add all files to git (including the .pkt files and this README)
+### Add all files to git (including the .pkt files and this README)
 git add .
 
-# Make your first commit
+### Make your first commit
 git commit -m &quot;Initial commit: Project setup and first Packet Tracer files&quot;
 
-# Push the files to your new GitHub repository
+### Push the files to your new GitHub repository
 git push -u origin main</code></pre>
 <p>Your project is now set up and linked to GitHub!</p>
 <hr />
@@ -149,11 +147,11 @@ modified.</p>
 <h3 id="step-3-add-the-files-to-a-commit">Step 3: Add the Files to a
 “Commit”</h3>
 <p>Add the modified files to the next “snapshot” (commit).</p>
-<pre class="bash"><code># To add all modified files
+<pre class="bash"><code>### To add all modified files
 git add .
 
-# Or, to add a specific file
-# git add YourFileName.pkt</code></pre>
+### Or, to add a specific file
+### git add YourFileName.pkt</code></pre>
 <h3 id="step-4-commit-your-changes-with-a-message">Step 4: Commit Your
 Changes with a Message</h3>
 <p>“Committing” saves a snapshot of your changes. The message
@@ -172,16 +170,16 @@ GitHub</h3>
 <p>That’s it! Your changes are now safely stored on GitHub.</p>
 <h3 id="quick-workflow-summary">Quick Workflow Summary</h3>
 <p>Here are the daily commands in sequence:</p>
-<pre class="bash"><code># 1. Check what you&#39;ve changed
+<pre class="bash"><code>### 1. Check what you&#39;ve changed
 git status
 
-# 2. Add the files
+### 2. Add the files
 git add .
 
-# 3. Save the changes with a descriptive message
+### 3. Save the changes with a descriptive message
 git commit -m &quot;feat: Add and configure the new web server in the DMZ&quot;
 
-# 4. Upload to GitHub
+### 4. Upload to GitHub
 git push</code></pre>
 <footer>
   <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>

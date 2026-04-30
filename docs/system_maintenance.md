@@ -4,7 +4,7 @@
     backups, BTRFS operations, and bootloader management.
 -->
 
-# System Maintenance: Snapshots, Backups & Recovery
+### System Maintenance: Snapshots, Backups & Recovery
 
 Your system will break. Maybe a bad update, maybe a config mistake. This guide sets up safety nets so you can recover quickly. We'll cover snapshots (fast rollbacks), backups (disaster recovery), and bootloaders (recovery options).
 
@@ -30,10 +30,10 @@ Best if you want a simple GUI and don't need power-user features.
 
 **Installation:**
 ```bash
-# Arch
+### Arch
 paru -S timeshift timeshift-autosnap
 
-# Fedora
+### Fedora
 sudo dnf install timeshift
 ```
 
@@ -51,10 +51,10 @@ Best if you want granular control and more features.
 
 **Installation:**
 ```bash
-# Arch
+### Arch
 paru -S snapper snap-pac
 
-# Fedora
+### Fedora
 sudo dnf install snapper
 ```
 
@@ -137,11 +137,11 @@ Your bootloader is the menu you see when your computer starts. You can boot into
 
 **Installation:**
 ```bash
-# Arch
+### Arch
 sudo pacman -S grub-btrfs
 sudo systemctl enable --now grub-btrfsd.service
 
-# Fedora
+### Fedora
 sudo dnf install grub-btrfs
 ```
 
@@ -149,10 +149,10 @@ sudo dnf install grub-btrfs
 
 **Update after kernel changes:**
 ```bash
-# Arch
+### Arch
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-# Fedora
+### Fedora
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 ```
 
@@ -160,7 +160,7 @@ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 
 **Setup:**
 ```bash
-# Arch
+### Arch
 bootctl install
 ```
 
@@ -168,7 +168,7 @@ bootctl install
 
 **For snapshots on systemd-boot:**
 ```bash
-# Arch (AUR)
+### Arch (AUR)
 paru -S gummibbs
 ```
 
@@ -228,10 +228,10 @@ paru -S gummibbs
 If your system freezes for 1-2 minutes during snapshots:
 
 ```bash
-# Disable BTRFS quotas (stops the freezing)
+### Disable BTRFS quotas (stops the freezing)
 sudo btrfs quota disable /
 
-# Note: TimeShift GUI won't show snapshot sizes, but it still works
+### Note: TimeShift GUI won't show snapshot sizes, but it still works
 ```
 
 See the [TimeShift I/O Optimization](timeshift-io-optimization.md) guide for detailed solutions.

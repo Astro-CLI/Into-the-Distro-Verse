@@ -4,7 +4,7 @@
     Feel free to adapt these configurations for your specific use case.
 -->
 
-# Arch Linux: A Pragmatic Rolling-Release Environment
+### Arch Linux: A Pragmatic Rolling-Release Environment
 
 Arch Linux represents a philosophy-driven distribution that prioritizes simplicity through user control rather than automation. This guide covers the essential optimizations, package management strategies, and maintenance routines that make Arch an efficient platform for experienced users.
 
@@ -40,7 +40,7 @@ Arch's package delivery depends on mirror infrastructure, which can vary in spee
 
 ```bash
 sudo pacman -S reflector
-# Identify the 10 fastest HTTPS-enabled mirrors in your region
+### Identify the 10 fastest HTTPS-enabled mirrors in your region
 sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 ```
 
@@ -60,10 +60,10 @@ git clone https://aur.archlinux.org/paru.git && cd paru && makepkg -si && cd .. 
 Modern display protocols require explicit middleware for screen capture functionality. Xwayland Video Bridge bridges this gap for Wayland-based desktop environments:
 
 ```bash
-# Install from the AUR
+### Install from the AUR
 paru -S xwaylandvideobridge
 
-# Alternatively, search for available versions
+### Alternatively, search for available versions
 paru -Ss xwayland video bridge
 ```
 
@@ -93,10 +93,10 @@ Arch provides multiple package restoration mechanisms documented in dedicated in
 ### System Restoration Procedure
 
 ```bash
-# Restore official packages
+### Restore official packages
 sudo pacman -S --needed - < packages/arch_pkglist.txt
 
-# Restore AUR packages
+### Restore AUR packages
 paru -S --needed - < packages/arch_aur_list.txt
 ```
 

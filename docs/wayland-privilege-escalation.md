@@ -4,7 +4,7 @@
     Covers group-based elevation, pkexec with environment variables, and wrapper scripts.
 -->
 
-# Running GUI Apps as Root on Wayland
+### Running GUI Apps as Root on Wayland
 
 Running graphical applications with elevated privileges on Wayland is trickier than X11 because `pkexec` strips environment variables for security. This guide shows three solutions, from simplest to most flexible.
 
@@ -33,14 +33,14 @@ When `pkexec` runs a command, it deliberately strips these variables for securit
 ### Example: Wireshark
 
 ```bash
-# Add your user to wireshark group
+### Add your user to wireshark group
 sudo usermod -a -G wireshark $USER
 
-# Make dumpcap (the capture tool) run with group privileges
+### Make dumpcap (the capture tool) run with group privileges
 sudo chmod g+s /usr/bin/dumpcap
 sudo chmod g+x /usr/bin/dumpcap
 
-# Log out and back in, or:
+### Log out and back in, or:
 newgrp wireshark
 ```
 
@@ -77,7 +77,7 @@ No `sudo` or `pkexec` needed!
 ### Basic Usage
 
 ```bash
-# Edit a system file with theme intact
+### Edit a system file with theme intact
 pkexec env WAYLAND_DISPLAY=$WAYLAND_DISPLAY XDG_RUNTIME_DIR=$XDG_RUNTIME_DIR QT_STYLE_OVERRIDE=breeze QT_QPA_PLATFORMTHEME=kde kate /etc/fstab
 ```
 
@@ -169,10 +169,10 @@ alias pkrun 'pkexec /usr/local/bin/run-as-root'
 ### Usage
 
 ```bash
-# Edit system file with theme
+### Edit system file with theme
 pkrun kate /etc/fstab
 
-# Or without alias:
+### Or without alias:
 pkexec /usr/local/bin/run-as-root kate /etc/fstab
 ```
 

@@ -4,7 +4,7 @@
     Covers installation, usage, permissions, and comparison with alternatives.
 -->
 
-# Flatpak: The Universal App Store 📦
+### Flatpak: The Universal App Store 📦
 
 Flatpak is a next-generation technology for building and distributing desktop applications on Linux. It allows apps to run in an isolated "sandbox," making them more secure and compatible across any distribution.
 
@@ -99,7 +99,7 @@ Flatpaks sometimes look "out of place" because they don't always pick up your sy
 **Applying GTK Themes:**
 Most popular themes (like Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.
 ```bash
-# Example: Search for your theme
+### Example: Search for your theme
 flatpak search org.gtk.Gtk3theme.Breeze
 ```
 
@@ -118,7 +118,7 @@ Flatpaks can take up a lot of space because they keep old runtimes.
 
 **To free up space:**
 ```bash
-# Removes runtimes that are no longer used by any installed app
+### Removes runtimes that are no longer used by any installed app
 flatpak uninstall --unused
 ```
 

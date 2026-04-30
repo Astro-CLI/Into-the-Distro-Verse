@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#virtual-machines-the-complete-gui-guide"
 id="toc-virtual-machines-the-complete-gui-guide">Virtual Machines: The
-Complete GUI Guide 🖥️</a>
-<ul>
+Complete GUI Guide 🖥️</a></li>
 <li><a href="#quick-start-installation"
 id="toc-quick-start-installation">🚀 1. Quick Start: Installation</a>
 <ul>
@@ -249,7 +248,6 @@ Reading</a></li>
 Would I Use This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -257,8 +255,8 @@ Guides</a></li>
     Complete GUI-focused guide to KVM/QEMU/libvirt virtualization,
     including GPU passthrough, Windows VMs, and advanced configurations.
 -->
-<h1 id="virtual-machines-the-complete-gui-guide">Virtual Machines: The
-Complete GUI Guide 🖥️</h1>
+<h3 id="virtual-machines-the-complete-gui-guide">Virtual Machines: The
+Complete GUI Guide 🖥️</h3>
 <p>A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on
 Linux. Learn to create VMs, pass through GPUs and physical disks,
 install Windows with proper drivers, and build powerful virtualized
@@ -293,10 +291,10 @@ Virtualization Packages</h3>
 <strong>YES</strong>. <code>nftables</code> is the modern
 replacement.</p>
 <p><strong>Fedora:</strong></p>
-<pre class="bash"><code># One-liner that installs everything
+<pre class="bash"><code>### One-liner that installs everything
 sudo dnf install @virtualization
 
-# Or install packages individually:
+### Or install packages individually:
 sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer bridge-utils libguestfs-tools</code></pre>
 <p><strong>Debian/Ubuntu:</strong></p>
 <pre class="bash"><code>sudo apt install qemu-kvm libvirt-daemon-system libvirt-daemon libvirt-clients bridge-utils virt-manager virt-viewer libguestfs-tools ovmf</code></pre>
@@ -341,22 +339,22 @@ modules to load properly!</p>
 <h3 id="verify-everything-works">✅ Verify Everything Works</h3>
 <p><strong>Check for KVM support:</strong></p>
 <pre class="bash"><code>lsmod | grep kvm
-# Should show: kvm_intel OR kvm_amd</code></pre>
+### Should show: kvm_intel OR kvm_amd</code></pre>
 <p><strong>Verify CPU virtualization is enabled:</strong></p>
 <pre class="bash"><code>LC_ALL=C lscpu | grep Virtualization
-# Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)</code></pre>
+### Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)</code></pre>
 <p><strong>Check libvirt service status:</strong></p>
 <pre class="bash"><code>sudo systemctl status libvirtd
-# Should show: active (running)</code></pre>
+### Should show: active (running)</code></pre>
 <p><strong>Verify you’re in the libvirt group:</strong></p>
 <pre class="bash"><code>groups | grep libvirt
-# Should show: libvirt</code></pre>
+### Should show: libvirt</code></pre>
 <p><strong>Test virsh connection:</strong></p>
 <pre class="bash"><code>virsh list --all
-# Should connect without errors and show empty VM list</code></pre>
+### Should connect without errors and show empty VM list</code></pre>
 <p><strong>Launch virt-manager GUI:</strong></p>
 <pre class="bash"><code>virt-manager
-# Should open without connection errors</code></pre>
+### Should open without connection errors</code></pre>
 <hr />
 <h3 id="troubleshooting-installation">🔧 Troubleshooting
 Installation</h3>
@@ -562,7 +560,7 @@ VirtIO Driver Setup</h2>
 speeds ~50MB/s, bad network) <strong>With VirtIO drivers:</strong> FAST
 (disk speeds ~1GB/s+, native network performance)</p>
 <h3 id="download-virtio-drivers">Download VirtIO Drivers</h3>
-<pre class="bash"><code># Download the latest stable VirtIO ISO
+<pre class="bash"><code>### Download the latest stable VirtIO ISO
 cd ~/Downloads
 wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso</code></pre>
 <p>Or download from: <a
@@ -661,20 +659,20 @@ inside!</p></li>
 <h3 id="giving-yourself-permission">Giving Yourself Permission</h3>
 <p>By default, libvirt might not have permission to access
 <code>/dev/sdb</code>:</p>
-<pre class="bash"><code># Check current permissions
+<pre class="bash"><code>### Check current permissions
 ls -l /dev/sdb
 
-# Add yourself to the disk group
+### Add yourself to the disk group
 sudo usermod -aG disk $USER
 
-# OR change libvirt user permissions (in /etc/libvirt/qemu.conf)
+### OR change libvirt user permissions (in /etc/libvirt/qemu.conf)
 sudo nano /etc/libvirt/qemu.conf
 
-# Uncomment and set:
+### Uncomment and set:
 user = &quot;your-username&quot;
 group = &quot;your-username&quot;
 
-# Restart libvirtd
+### Restart libvirtd
 sudo systemctl restart libvirtd</code></pre>
 <h3 id="critical-warnings">⚠️ CRITICAL WARNINGS</h3>
 <p><strong>DO NOT:</strong> - ❌ Mount a disk in both host AND VM
@@ -726,18 +724,18 @@ BIOS) ✅ <strong>GPU:</strong> Second GPU (or iGPU + dedicated GPU) ✅
 sudo reboot</code></pre>
 <p><strong>Verify IOMMU is enabled:</strong></p>
 <pre class="bash"><code>dmesg | grep -i iommu
-# Should show IOMMU enabled</code></pre>
+### Should show IOMMU enabled</code></pre>
 <h3 id="step-2-find-your-gpus-pci-ids">Step 2: Find Your GPU’s PCI
 IDs</h3>
 <pre class="bash"><code>lspci -nnk | grep -i nvidia
-# OR
+### OR
 lspci -nnk | grep -i amd
-# OR
+### OR
 lspci -nnk | grep -i vga
 
-# Example output:
-# 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
-# 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]</code></pre>
+### Example output:
+### 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
+### 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]</code></pre>
 <p><strong>Note the IDs in brackets:</strong> <code>10de:2484</code> and
 <code>10de:228b</code></p>
 <h3 id="step-3-isolate-the-gpu-from-host">Step 3: Isolate the GPU from
@@ -759,7 +757,7 @@ softdep nouveau pre: vfio-pci</code></pre>
 <pre class="bash"><code>sudo reboot</code></pre>
 <p><strong>Verify GPU is bound to vfio:</strong></p>
 <pre class="bash"><code>lspci -nnk -d 10de:2484
-# Should show: Kernel driver in use: vfio-pci</code></pre>
+### Should show: Kernel driver in use: vfio-pci</code></pre>
 <h3 id="step-4-configure-vm-for-gpu-passthrough">Step 4: Configure VM
 for GPU Passthrough</h3>
 <p><strong>In virt-manager:</strong></p>
@@ -810,15 +808,15 @@ Configure Xorg if needed</p>
 <h3 id="troubleshooting-gpu-passthrough">Troubleshooting GPU
 Passthrough</h3>
 <p><strong>Error: “device is already in use”</strong></p>
-<pre class="bash"><code># Check what&#39;s using it
+<pre class="bash"><code>### Check what&#39;s using it
 lspci -k -s 01:00.0
 
-# Make sure host drivers are blacklisted</code></pre>
+### Make sure host drivers are blacklisted</code></pre>
 <p><strong>Black screen / Code 43 error:</strong> - Add KVM hiding:
 <code>kvm=off,hv_vendor_id=null</code> - Ensure UEFI firmware, not BIOS
 - Update GPU VBIOS (advanced)</p>
 <p><strong>VM won’t start:</strong></p>
-<pre class="bash"><code># Check libvirt logs
+<pre class="bash"><code>### Check libvirt logs
 sudo journalctl -u libvirtd -f</code></pre>
 <h3 id="chris-titus-tech-gpu-passthrough-script">Chris Titus Tech GPU
 Passthrough Script</h3>
@@ -830,47 +828,47 @@ cd gpu-passthrough
 <h2 id="converting-importing-existing-vm-disks">💿 8. Converting &amp;
 Importing Existing VM Disks</h2>
 <h3 id="from-virtualbox-vdi">From VirtualBox (VDI)</h3>
-<pre class="bash"><code># Convert VDI to qcow2
+<pre class="bash"><code>### Convert VDI to qcow2
 qemu-img convert -f vdi -O qcow2 ~/VirtualBox\ VMs/myvm/disk.vdi ~/vm-disk.qcow2
 
-# Import in virt-manager:
-# 1. Create new VM → &quot;Import existing disk image&quot;
-# 2. Browse to ~/vm-disk.qcow2
-# 3. Select OS type
-# 4. Configure RAM/CPU → Finish</code></pre>
+### Import in virt-manager:
+### 1. Create new VM → &quot;Import existing disk image&quot;
+### 2. Browse to ~/vm-disk.qcow2
+### 3. Select OS type
+### 4. Configure RAM/CPU → Finish</code></pre>
 <h3 id="from-vmware-vmdk">From VMware (VMDK)</h3>
-<pre class="bash"><code># Convert VMDK to qcow2
+<pre class="bash"><code>### Convert VMDK to qcow2
 qemu-img convert -f vmdk -O qcow2 ~/vmware/myvm/disk.vmdk ~/vm-disk.qcow2
 
-# Import as above</code></pre>
+### Import as above</code></pre>
 <h3 id="from-hyper-v-vhdvhdx">From Hyper-V (VHD/VHDX)</h3>
-<pre class="bash"><code># Convert VHD to qcow2
+<pre class="bash"><code>### Convert VHD to qcow2
 qemu-img convert -f vpc -O qcow2 ~/hyperv/disk.vhd ~/vm-disk.qcow2
 
-# Convert VHDX to qcow2
+### Convert VHDX to qcow2
 qemu-img convert -f vhdx -O qcow2 ~/hyperv/disk.vhdx ~/vm-disk.qcow2</code></pre>
 <h3 id="from-physical-disk-clone-entire-drive">From Physical Disk (Clone
 Entire Drive)</h3>
-<pre class="bash"><code># Find your disk
+<pre class="bash"><code>### Find your disk
 lsblk
 
-# Clone to image file (VERIFY DEVICE NAME!)
+### Clone to image file (VERIFY DEVICE NAME!)
 sudo dd if=/dev/sdb of=~/physical-disk.img bs=4M status=progress
 
-# Convert to qcow2 for better compression
+### Convert to qcow2 for better compression
 qemu-img convert -f raw -O qcow2 ~/physical-disk.img ~/vm-disk.qcow2
 
-# Import in virt-manager</code></pre>
+### Import in virt-manager</code></pre>
 <p>⚠️ <strong>WARNING:</strong> Triple-check device names!
 <code>if=/dev/sda</code> could wipe your host OS!</p>
 <h3 id="expand-disk-size-after-import">Expand Disk Size After
 Import</h3>
-<pre class="bash"><code># Resize the qcow2 file
+<pre class="bash"><code>### Resize the qcow2 file
 qemu-img resize ~/vm-disk.qcow2 +50G
 
-# Then inside the guest OS:
-# Linux: Use gparted or fdisk + resize2fs
-# Windows: Use Disk Management to extend partition</code></pre>
+### Then inside the guest OS:
+### Linux: Use gparted or fdisk + resize2fs
+### Windows: Use Disk Management to extend partition</code></pre>
 <hr />
 <h2 id="snapshots-time-travel-for-vms">📸 9. Snapshots: Time Travel for
 VMs</h2>
@@ -967,43 +965,43 @@ XML editing)</strong></p>
 <h2 id="useful-commands-quick-reference">🔧 11. Useful Commands (Quick
 Reference)</h2>
 <h3 id="startingstopping-vms">Starting/Stopping VMs</h3>
-<pre class="bash"><code># List all VMs
+<pre class="bash"><code>### List all VMs
 virsh list --all
 
-# Start VM
+### Start VM
 virsh start vm-name
 
-# Shutdown gracefully
+### Shutdown gracefully
 virsh shutdown vm-name
 
-# Force stop (like pulling power)
+### Force stop (like pulling power)
 virsh destroy vm-name
 
-# Auto-start VM on boot
+### Auto-start VM on boot
 virsh autostart vm-name</code></pre>
 <h3 id="getting-vm-information">Getting VM Information</h3>
-<pre class="bash"><code># Get VM IP address
+<pre class="bash"><code>### Get VM IP address
 virsh domifaddr vm-name
 
-# View VM details
+### View VM details
 virsh dominfo vm-name
 
-# Monitor resource usage
+### Monitor resource usage
 virt-top
 
-# Check if default network is running
+### Check if default network is running
 virsh net-list --all
 
-# Start default network
+### Start default network
 virsh net-start default</code></pre>
 <h3 id="cloning-vms">Cloning VMs</h3>
-<pre class="bash"><code># Clone entire VM (auto-generates new disk)
+<pre class="bash"><code>### Clone entire VM (auto-generates new disk)
 virt-clone --original vm-name --name new-vm-name --auto-clone</code></pre>
 <h3 id="deleting-vms">Deleting VMs</h3>
-<pre class="bash"><code># Delete VM config (keeps disk)
+<pre class="bash"><code>### Delete VM config (keeps disk)
 virsh undefine vm-name
 
-# Delete VM AND all disks
+### Delete VM AND all disks
 virsh undefine vm-name --remove-all-storage</code></pre>
 <hr />
 <h2 id="troubleshooting">🔧 12. Troubleshooting</h2>
@@ -1013,14 +1011,14 @@ virsh undefine vm-name --remove-all-storage</code></pre>
 virsh net-autostart default</code></pre>
 <p><strong>Error: “Failed to connect socket”</strong></p>
 <pre class="bash"><code>sudo systemctl restart libvirtd
-# Check you&#39;re in libvirt group:
+### Check you&#39;re in libvirt group:
 groups | grep libvirt
-# If not, add yourself and logout/login</code></pre>
+### If not, add yourself and logout/login</code></pre>
 <p><strong>Error: Permission denied accessing disk</strong></p>
-<pre class="bash"><code># Check disk ownership
+<pre class="bash"><code>### Check disk ownership
 ls -l /var/lib/libvirt/images/
 
-# Fix permissions
+### Fix permissions
 sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/</code></pre>
 <h3 id="windows-wont-install-no-disk-found">Windows Won’t Install (No
 Disk Found)</h3>
@@ -1040,7 +1038,7 @@ vfio: <code>lspci -nnk -d YOUR:GPUID</code> - ✅ Use UEFI firmware (not
 BIOS) - ✅ Add KVM hiding in XML:
 <code>kvm=off,hv_vendor_id=null</code></p>
 <p><strong>VM crashes when starting with GPU:</strong></p>
-<pre class="bash"><code># Check logs
+<pre class="bash"><code>### Check logs
 sudo journalctl -u libvirtd -f</code></pre>
 <h3 id="cant-access-vm-from-host-network">Can’t Access VM from Host
 Network</h3>
@@ -1053,7 +1051,7 @@ Accessible from anywhere on your LAN</p>
 <h2 id="additional-resources">📚 13. Additional Resources</h2>
 <h3 id="chris-titus-tech-guides">Chris Titus Tech Guides</h3>
 <p><strong>Ultimate Arch Linux VM Installation:</strong></p>
-<pre class="bash"><code># Automated setup script
+<pre class="bash"><code>### Automated setup script
 git clone https://github.com/ChrisTitusTech/virtualization
 cd virtualization
 ./setup.sh</code></pre>

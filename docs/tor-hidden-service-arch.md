@@ -4,7 +4,7 @@
     No Docker required - native installation for maximum performance.
 -->
 
-# Hosting a Private Website on Tor: Native Arch Edition
+### Hosting a Private Website on Tor: Native Arch Edition
 
 Want to host a website that only works through Tor without using Docker? This native approach is simpler and faster. Your .onion address stays completely anonymous, and visitors can't see your real IP.
 
@@ -58,10 +58,10 @@ sudo mkdir -p /srv/http
 Copy your website files:
 
 ```bash
-# From a local folder
+### From a local folder
 sudo cp -r ~/my-website/* /srv/http/
 
-# Or from GitHub
+### Or from GitHub
 sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/
 ```
 
@@ -267,21 +267,21 @@ Warning: You can't get your old address back!
 ## 📋 Common Commands
 
 ```bash
-# Check Nginx
+### Check Nginx
 sudo systemctl status nginx
 sudo systemctl restart nginx
 
-# Check Tor
+### Check Tor
 sudo systemctl status tor
 sudo systemctl restart tor
 
-# View your address
+### View your address
 sudo cat /var/lib/tor/hidden_service/hostname
 
-# View Tor logs
+### View Tor logs
 sudo journalctl -u tor -f
 
-# Check if it's working
+### Check if it's working
 sudo curl http://localhost/
 ```
 
@@ -309,11 +309,11 @@ Store it somewhere safe, ideally offline.
 ### Protect Sensitive Files
 
 ```bash
-# Don't track access logs (less evidence)
-# Already done - Tor hides visitor IPs
+### Don't track access logs (less evidence)
+### Already done - Tor hides visitor IPs
 
-# Keep web root minimal
-# Less code = fewer vulnerabilities
+### Keep web root minimal
+### Less code = fewer vulnerabilities
 ```
 
 ---

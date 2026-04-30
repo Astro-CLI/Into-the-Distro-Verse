@@ -4,7 +4,7 @@
     Covers installation, usage, permissions, and comparison with alternatives.
 -->
 
-# Snap: Universal Apps Made Easy
+### Snap: Universal Apps Made Easy
 
 Snaps are self-contained application packages that work on any Linux distribution. Unlike traditional packages, snaps bundle their own dependencies, so the same snap runs identically on Arch, Fedora, Ubuntu, or anything else. This guide shows you how to install and manage them.
 
@@ -25,13 +25,13 @@ Snaps are self-contained application packages that work on any Linux distributio
 ### On Arch Linux
 
 ```bash
-# Install snapd from AUR
+### Install snapd from AUR
 paru -S snapd
 
-# Enable the socket (handles the daemon automatically)
+### Enable the socket (handles the daemon automatically)
 sudo systemctl enable --now snapd.socket
 
-# Enable classic snap support
+### Enable classic snap support
 sudo ln -s /var/lib/snapd/snap /snap
 ```
 
@@ -61,16 +61,16 @@ sudo ln -s /var/lib/snapd/snap /snap
 ### Examples
 
 ```bash
-# Install VS Code
+### Install VS Code
 sudo snap install code --classic
 
-# Install Spotify
+### Install Spotify
 sudo snap install spotify
 
-# See all your installed snaps
+### See all your installed snaps
 snap list
 
-# Update everything
+### Update everything
 sudo snap refresh
 ```
 
@@ -85,7 +85,7 @@ Snaps run with different levels of isolation:
 The app is sandboxed and can't access files or system resources without explicit permission (interfaces).
 
 ```bash
-# Example: Firefox with strict confinement
+### Example: Firefox with strict confinement
 sudo snap install firefox
 ```
 
@@ -94,7 +94,7 @@ sudo snap install firefox
 The app has full system access (like traditional packages). Needed for compilers, IDEs, and deep system tools.
 
 ```bash
-# Example: VS Code needs full access
+### Example: VS Code needs full access
 sudo snap install code --classic
 ```
 
@@ -115,7 +115,7 @@ Snaps keep old versions for rollbacks, which can waste disk space over time.
 Limit how many old versions to keep:
 
 ```bash
-# Keep only 2 old versions of each snap
+### Keep only 2 old versions of each snap
 sudo snap set system refresh.retain=2
 ```
 

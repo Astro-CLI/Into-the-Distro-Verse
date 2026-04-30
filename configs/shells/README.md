@@ -1,4 +1,4 @@
-# Shell Configurations
+### Shell Configurations
 
 This directory contains backup configurations for **ZSH**, **Bash**, and **Fish** shells.
 
@@ -47,22 +47,22 @@ cp configs/shells/starship.toml ~/.config/starship.toml
 
 ### Restore All
 ```bash
-# ZSH
+### ZSH
 cp configs/shells/zsh/zshrc ~/.zshrc
 
-# Bash
+### Bash
 cp configs/shells/bash/bashrc ~/.bashrc
 cp configs/shells/bash/inputrc ~/.inputrc
 
-# Fish
+### Fish
 mkdir -p ~/.config/fish
 cp configs/shells/fish/config.fish ~/.config/fish/config.fish
 
-# Starship (all shells)
+### Starship (all shells)
 mkdir -p ~/.config
 cp configs/shells/starship.toml ~/.config/starship.toml
 
-# Reload shell
+### Reload shell
 exec $SHELL
 ```
 
@@ -87,25 +87,25 @@ paru -S zoxide thefuck tealdeer ripgrep fd fzf bat eza
 
 ### ZSH Plugins
 ```bash
-# zsh-autosuggestions
+### zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
-# zsh-completions
+### zsh-completions
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 
-# forgit
+### forgit
 git clone https://github.com/wfxr/forgit.git ~/.oh-my-zsh/custom/plugins/forgit
 ```
 
 ### Fish Plugins
 ```bash
-# Fisher (plugin manager)
+### Fisher (plugin manager)
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.install.fish | source
 
-# Tide prompt
+### Tide prompt
 fisher install ilancosman/tide@v6
 
-# FZF integration
+### FZF integration
 fisher install jethrokuan/fzf.fish
 ```
 
@@ -158,20 +158,20 @@ paru -S starship
 When you modify your shell configuration, update the backups:
 
 ```bash
-# After modifying ~/.zshrc
+### After modifying ~/.zshrc
 cp ~/.zshrc configs/shells/zsh/zshrc
 
-# After modifying ~/.bashrc
+### After modifying ~/.bashrc
 cp ~/.bashrc configs/shells/bash/bashrc
 cp ~/.inputrc configs/shells/bash/inputrc
 
-# After modifying ~/.config/fish/config.fish
+### After modifying ~/.config/fish/config.fish
 cp ~/.config/fish/config.fish configs/shells/fish/config.fish
 
-# After modifying ~/.config/starship.toml
+### After modifying ~/.config/starship.toml
 cp ~/.config/starship.toml configs/shells/starship.toml
 
-# Commit to git
+### Commit to git
 git add configs/shells/
 git commit -m "Update shell configs"
 ```

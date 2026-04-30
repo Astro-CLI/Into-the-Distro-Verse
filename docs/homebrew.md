@@ -4,7 +4,7 @@
     Covers installation, basic usage, and comparison with system package managers.
 -->
 
-# Homebrew: The Linux "Brew"
+### Homebrew: The Linux "Brew"
 
 Homebrew (originally for macOS) is a popular package manager for Linux that installs software into its own prefix (usually `/home/linuxbrew/.linuxbrew`). It's a great way to get the latest CLI tools without needing `sudo` or messing with your system's native package manager (Pacman/DNF).
 
@@ -48,13 +48,13 @@ After the script finishes, it will give you a few lines to add to your shell pro
 
 **Shell (Bash/Zsh):**
 ```bash
-# Add this to your ~/.bashrc or ~/.zshrc
+### Add this to your ~/.bashrc or ~/.zshrc
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 ```
 
 **Shell (Fish):**
 ```fish
-# Add this to your ~/.config/fish/config.fish
+### Add this to your ~/.config/fish/config.fish
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
 ```
 

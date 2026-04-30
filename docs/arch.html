@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#arch-linux-a-pragmatic-rolling-release-environment"
 id="toc-arch-linux-a-pragmatic-rolling-release-environment">Arch Linux:
-A Pragmatic Rolling-Release Environment</a>
-<ul>
+A Pragmatic Rolling-Release Environment</a></li>
 <li><a href="#core-system-optimization"
 id="toc-core-system-optimization">🚀 1. Core System Optimization</a>
 <ul>
@@ -95,7 +94,6 @@ id="toc-orphan-package-removal">Orphan Package Removal</a></li>
 </ul></li>
 <li><a href="#related-documentation" id="toc-related-documentation">🔗
 Related Documentation</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -103,8 +101,8 @@ Related Documentation</a></li>
     This file contains comprehensive setup and maintenance procedures for Arch Linux.
     Feel free to adapt these configurations for your specific use case.
 -->
-<h1 id="arch-linux-a-pragmatic-rolling-release-environment">Arch Linux:
-A Pragmatic Rolling-Release Environment</h1>
+<h3 id="arch-linux-a-pragmatic-rolling-release-environment">Arch Linux:
+A Pragmatic Rolling-Release Environment</h3>
 <p>Arch Linux represents a philosophy-driven distribution that
 prioritizes simplicity through user control rather than automation. This
 guide covers the essential optimizations, package management strategies,
@@ -139,7 +137,7 @@ vary in speed and synchronization status. The <code>reflector</code>
 utility automates the discovery and configuration of optimal
 mirrors:</p>
 <pre class="bash"><code>sudo pacman -S reflector
-# Identify the 10 fastest HTTPS-enabled mirrors in your region
+### Identify the 10 fastest HTTPS-enabled mirrors in your region
 sudo reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist</code></pre>
 <p>This approach ensures your system consistently pulls packages from
 reliable, geographically-optimized sources.</p>
@@ -154,10 +152,10 @@ Infrastructure</h3>
 <p>Modern display protocols require explicit middleware for screen
 capture functionality. Xwayland Video Bridge bridges this gap for
 Wayland-based desktop environments:</p>
-<pre class="bash"><code># Install from the AUR
+<pre class="bash"><code>### Install from the AUR
 paru -S xwaylandvideobridge
 
-# Alternatively, search for available versions
+### Alternatively, search for available versions
 paru -Ss xwayland video bridge</code></pre>
 <p>This enables screen sharing across Discord, OBS, Zoom, Chromium, and
 similar applications on Wayland desktops.</p>
@@ -198,10 +196,10 @@ style="text-align: left;"><strong><code>arch_aur_list.txt</code></strong></td>
 </tbody>
 </table>
 <h3 id="system-restoration-procedure">System Restoration Procedure</h3>
-<pre class="bash"><code># Restore official packages
+<pre class="bash"><code>### Restore official packages
 sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
 
-# Restore AUR packages
+### Restore AUR packages
 paru -S --needed - &lt; packages/arch_aur_list.txt</code></pre>
 <h3 id="cross-distribution-package-management">Cross-Distribution
 Package Management</h3>

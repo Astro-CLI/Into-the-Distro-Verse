@@ -4,7 +4,7 @@
     Adapt these configurations to your specific hardware and workflow requirements.
 -->
 
-# Fedora Workstation: Enterprise-Grade Desktop Computing
+### Fedora Workstation: Enterprise-Grade Desktop Computing
 
 Fedora occupies a distinctive position in the Linux ecosystem as a contemporary, innovation-focused distribution backed by substantial corporate resources. While Fedora's philosophy emphasizes cutting-edge software stacks, achieving feature parity with community-driven distributions requires deliberate post-installation configuration. This guide addresses those essential gaps.
 
@@ -52,7 +52,7 @@ fastestmirror=True
 Fedora's distribution model prioritizes Free and Open Source software exclusively. This philosophical stance, while commendable, creates immediate gaps in multimedia support and proprietary drivers. RPM Fusion provides the necessary third-party repositories:
 
 ```bash
-# Install both free and non-free repository definitions
+### Install both free and non-free repository definitions
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 ```
 

@@ -1,4 +1,4 @@
-# ZSH Configuration Guide
+### ZSH Configuration Guide
 
 ## Overview
 ZSH is configured with **Oh My Zsh** framework, providing a feature-rich interactive shell experience with POSIX compliance for scripts.
@@ -36,15 +36,15 @@ sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.
 ### Integration Configuration
 
 ```bash
-# ~/.zshrc additions:
+### ~/.zshrc additions:
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 eval "$(zoxide init zsh)"
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 eval "$(thefuck --alias)"
 
-# FZF + FD integration
+### FZF + FD integration
 export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
 export FZF_CTRL_T_COMMAND='fd --type f --follow --exclude .git'
 export FZF_ALT_C_COMMAND='fd --type d --follow --exclude .git'

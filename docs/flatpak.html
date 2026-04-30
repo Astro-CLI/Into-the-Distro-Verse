@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#flatpak-the-universal-app-store"
 id="toc-flatpak-the-universal-app-store">Flatpak: The Universal App
-Store 📦</a>
-<ul>
+Store 📦</a></li>
 <li><a href="#why-flatpak" id="toc-why-flatpak">🤔 Why Flatpak?</a></li>
 <li><a href="#installation" id="toc-installation">🚀 1. Installation</a>
 <ul>
@@ -77,7 +76,6 @@ Theming &amp; Aesthetics</a></li>
 Maintenance</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -85,8 +83,8 @@ Guides</a></li>
     Guide to Flatpak package management - universal app distribution for Linux.
     Covers installation, usage, permissions, and comparison with alternatives.
 -->
-<h1 id="flatpak-the-universal-app-store">Flatpak: The Universal App
-Store 📦</h1>
+<h3 id="flatpak-the-universal-app-store">Flatpak: The Universal App
+Store 📦</h3>
 <p>Flatpak is a next-generation technology for building and distributing
 desktop applications on Linux. It allows apps to run in an isolated
 “sandbox,” making them more secure and compatible across any
@@ -182,7 +180,7 @@ style="text-align: left;"><code>flatpak uninstall --unused</code></td>
 up your system theme automatically.</p>
 <p><strong>Applying GTK Themes:</strong> Most popular themes (like
 Breeze, Adwaita-dark, or Dracula) are available as Flatpak runtimes.</p>
-<pre class="bash"><code># Example: Search for your theme
+<pre class="bash"><code>### Example: Search for your theme
 flatpak search org.gtk.Gtk3theme.Breeze</code></pre>
 <p><strong>Granting Access to Theme Folders:</strong> If your theme
 isn’t on Flathub, you can give Flatpaks access to your local theme
@@ -194,7 +192,7 @@ flatpak override --user --filesystem=$HOME/.icons</code></pre>
 <p>Flatpaks can take up a lot of space because they keep old
 runtimes.</p>
 <p><strong>To free up space:</strong></p>
-<pre class="bash"><code># Removes runtimes that are no longer used by any installed app
+<pre class="bash"><code>### Removes runtimes that are no longer used by any installed app
 flatpak uninstall --unused</code></pre>
 <hr />
 <h2 id="related-guides">🔗 Related Guides</h2>

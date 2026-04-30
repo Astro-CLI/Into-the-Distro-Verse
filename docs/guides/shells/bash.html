@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#bash-configuration-guide"
-id="toc-bash-configuration-guide">BASH Configuration Guide</a>
-<ul>
+id="toc-bash-configuration-guide">BASH Configuration Guide</a></li>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
 <li><a href="#framework" id="toc-framework">Framework</a></li>
 <li><a href="#core-configuration-files"
@@ -104,10 +103,9 @@ id="toc-troubleshooting">Troubleshooting</a></li>
 <li><a href="#performance-notes" id="toc-performance-notes">Performance
 Notes</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="bash-configuration-guide">BASH Configuration Guide</h1>
+<h3 id="bash-configuration-guide">BASH Configuration Guide</h3>
 <h2 id="overview">Overview</h2>
 <p>Bash is configured as a fallback shell with zsh/fish-like features.
 While not as elegant as zsh/fish, it provides a comfortable Emacs-based
@@ -138,24 +136,24 @@ readline).</p>
 <li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
 </ul>
 <h3 id="integration-configuration">Integration Configuration</h3>
-<pre class="bash"><code># ~/.bashrc additions:
+<pre class="bash"><code>### ~/.bashrc additions:
 
-# HISTORY IMPROVEMENTS
+### HISTORY IMPROVEMENTS
 HISTSIZE=10000
 HISTFILESIZE=20000
 HISTCONTROL=ignoredups:erasedups
 HISTTIMEFORMAT=&quot;%Y-%m-%d %H:%M:%S &quot;
 
-# STARSHIP PROMPT
+### STARSHIP PROMPT
 eval &quot;$(starship init bash)&quot;
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 eval &quot;$(zoxide init bash)&quot;
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 eval &quot;$(thefuck --alias)&quot;
 
-# FZF INTEGRATION
+### FZF INTEGRATION
 [ -f ~/.fzf.bash ] &amp;&amp; source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
 export FZF_CTRL_T_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
@@ -220,21 +218,21 @@ export FZF_ALT_C_COMMAND=&#39;fd --type d --follow --exclude .git&#39;</code></p
 </ul>
 <h3 id="vi-mode-optional">Vi Mode (Optional)</h3>
 <p>To enable vi keybindings instead:</p>
-<pre class="bash"><code># Uncomment in ~/.inputrc:
-# set editing-mode vi
+<pre class="bash"><code>### Uncomment in ~/.inputrc:
+### set editing-mode vi
 
-# Or in ~/.bashrc:
+### Or in ~/.bashrc:
 set -o vi</code></pre>
 <h2 id="readline-configuration-.inputrc">Readline Configuration
 (~/.inputrc)</h2>
-<pre class="bash"><code># Emacs keybindings (explicit)
+<pre class="bash"><code>### Emacs keybindings (explicit)
 set editing-mode emacs
 
-# History search with arrow keys
+### History search with arrow keys
 &quot;\e[A&quot;: history-search-backward
 &quot;\e[B&quot;: history-search-forward
 
-# Better completion
+### Better completion
 set completion-ignore-case on
 set bell-style none
 set show-all-if-ambiguous on

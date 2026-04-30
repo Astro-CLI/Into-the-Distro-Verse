@@ -316,18 +316,18 @@ costs</li>
 <hr />
 <h2 id="installation-reference">🛠️ Installation Reference</h2>
 <h3 id="music-1">Music</h3>
-<pre class="bash"><code># Spicetify (5 minutes)
+<pre class="bash"><code>### Spicetify (5 minutes)
 curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 spicetify init &amp;&amp; spicetify backup apply
 
-# YouTube Music (2 minutes)
+### YouTube Music (2 minutes)
 sudo apt install youtube-music  # or brew install youtube-music</code></pre>
 <h3 id="video-1">Video</h3>
-<pre class="bash"><code># Stremio (5 minutes)
+<pre class="bash"><code>### Stremio (5 minutes)
 sudo apt install stremio
 stremio &amp;  # Then create account at stremio.com
 
-# Jellyfin (15 minutes, Docker)
+### Jellyfin (15 minutes, Docker)
 docker run -d --name jellyfin -p 8096:8096 \
   -v /path/to/media:/media \
   jellyfin/jellyfin</code></pre>

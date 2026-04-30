@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#snapshots-backups-the-safety-net"
 id="toc-snapshots-backups-the-safety-net">Snapshots &amp; Backups: The
-Safety Net 🛡️</a>
-<ul>
+Safety Net 🛡️</a></li>
 <li><a href="#snapshot-tools" id="toc-snapshot-tools">🕒 1. Snapshot
 Tools</a>
 <ul>
@@ -86,7 +85,6 @@ Updates</a></li>
 </ul></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -94,8 +92,8 @@ Guides</a></li>
     Guide to system snapshots and backups using TimeShift and Snapper on Arch and Fedora.
     Covers filesystem snapshots, backup strategies, and bootloader integration.
 -->
-<h1 id="snapshots-backups-the-safety-net">Snapshots &amp; Backups: The
-Safety Net 🛡️</h1>
+<h3 id="snapshots-backups-the-safety-net">Snapshots &amp; Backups: The
+Safety Net 🛡️</h3>
 <p>Regardless of which distro you’re using, snapshots and backups are
 essential for system recovery. This guide covers how to set up the
 perfect safety net for both Arch and Fedora users.</p>
@@ -162,10 +160,10 @@ to see snapshots in the boot menu.
 <h2 id="maintenance-btrfs">🧹 4. Maintenance (BTRFS)</h2>
 <p>If you’re using BTRFS, you should run these occasionally to keep the
 filesystem healthy.</p>
-<pre class="bash"><code># Scrub: Check for data corruption
+<pre class="bash"><code>### Scrub: Check for data corruption
 sudo btrfs scrub start /
 
-# Balance: Free up unused chunks
+### Balance: Free up unused chunks
 sudo btrfs balance start -dusage=50 /</code></pre>
 <hr />
 <h2 id="troubleshooting-performance">⚠️ 5. Troubleshooting &amp;
@@ -186,7 +184,7 @@ GUI.</p>
 hooks (which can be slow), use the <code>grub-btrfsd</code> daemon. It
 only updates the menu when a snapshot change is detected.</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Arch/Fedora
+<pre class="bash"><code>### Arch/Fedora
 sudo systemctl enable --now grub-btrfsd.service</code></pre>
 <hr />
 <h2 id="related-guides">🔗 Related Guides</h2>

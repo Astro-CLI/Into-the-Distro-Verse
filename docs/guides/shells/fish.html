@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#fish-configuration-guide"
-id="toc-fish-configuration-guide">FISH Configuration Guide</a>
-<ul>
+id="toc-fish-configuration-guide">FISH Configuration Guide</a></li>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
 <li><a href="#installation" id="toc-installation">Installation</a></li>
 <li><a href="#framework-plugins" id="toc-framework-plugins">Framework
@@ -123,20 +122,19 @@ Notes</a></li>
 <li><a href="#configuration-persistence"
 id="toc-configuration-persistence">Configuration Persistence</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="fish-configuration-guide">FISH Configuration Guide</h1>
+<h3 id="fish-configuration-guide">FISH Configuration Guide</h3>
 <h2 id="overview">Overview</h2>
 <p>Fish (Friendly Interactive Shell) is configured as an alternative
 interactive shell with user-friendly defaults. It provides syntax
 highlighting, auto-suggestions, and tab completion out of the box, now
 enhanced with modern CLI tool integrations.</p>
 <h2 id="installation">Installation</h2>
-<pre class="bash"><code># Install fish
+<pre class="bash"><code>### Install fish
 sudo pacman -S fish
 
-# Set as default shell (optional)
+### Set as default shell (optional)
 chsh -s /usr/bin/fish</code></pre>
 <h2 id="framework-plugins">Framework &amp; Plugins</h2>
 <h3 id="plugin-manager">Plugin Manager</h3>
@@ -162,7 +160,7 @@ chsh -s /usr/bin/fish</code></pre>
 </tbody>
 </table>
 <h3 id="plugin-installation">Plugin Installation</h3>
-<pre class="bash"><code># Install new plugins
+<pre class="bash"><code>### Install new plugins
 fisher install ilancosman/tide@v6
 fisher install jethrokuan/fzf.fish</code></pre>
 <h2 id="core-configuration">Core Configuration</h2>
@@ -196,15 +194,15 @@ zsh-autosuggestions</li>
 <li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
 </ul>
 <h3 id="integration-configuration">Integration Configuration</h3>
-<pre class="bash"><code># ~/.config/fish/config.fish additions:
+<pre class="bash"><code>### ~/.config/fish/config.fish additions:
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 zoxide init fish | source
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 thefuck --alias | source
 
-# FZF + FD INTEGRATION
+### FZF + FD INTEGRATION
 set -gx FZF_DEFAULT_COMMAND &#39;fd --type f --follow --exclude .git&#39;
 set -gx FZF_CTRL_T_COMMAND &#39;fd --type f --follow --exclude .git&#39;
 set -gx FZF_ALT_C_COMMAND &#39;fd --type d --follow --exclude .git&#39;</code></pre>
@@ -264,7 +262,7 @@ set -gx FZF_ALT_C_COMMAND &#39;fd --type d --follow --exclude .git&#39;</code></
 </table>
 <h3 id="vi-mode-optional">Vi Mode (Optional)</h3>
 <p>To enable vi keybindings:</p>
-<pre class="fish"><code># In config.fish:
+<pre class="fish"><code>### In config.fish:
 fish_vi_key_bindings</code></pre>
 <h2 id="auto-suggestions">Auto-Suggestions</h2>
 <p>Fish’s <strong>built-in auto-suggestions</strong> show previous
@@ -323,14 +321,14 @@ rg &quot;pattern&quot;    # Search files with ripgrep
 fd &quot;filename&quot;   # Find files with fd</code></pre>
 <h2 id="custom-functions">Custom Functions</h2>
 <p>Define custom functions in config.fish:</p>
-<pre class="fish"><code># Create directory and enter it
+<pre class="fish"><code>### Create directory and enter it
 function mkcd
     if test -n &quot;$argv[1]&quot;
         mkdir -p $argv[1]; and cd $argv[1]
     end
 end
 
-# Quick edit config
+### Quick edit config
 function fishconfig
     $EDITOR ~/.config/fish/config.fish
 end</code></pre>
@@ -353,24 +351,24 @@ end</code></pre>
 </ol>
 <h2 id="variables-in-fish">Variables in Fish</h2>
 <p>Fish uses <code>set</code> instead of <code>export</code>:</p>
-<pre class="fish"><code># Local variable (function-scoped)
+<pre class="fish"><code>### Local variable (function-scoped)
 set myvar &quot;value&quot;
 
-# Global variable (session-wide)
+### Global variable (session-wide)
 set -g myvar &quot;value&quot;
 
-# Universal variable (persistent across sessions)
+### Universal variable (persistent across sessions)
 set -U myvar &quot;value&quot;
 
-# Export to child processes (environment)
+### Export to child processes (environment)
 set -gx PATH $PATH /new/path</code></pre>
 <h2 id="abbreviations-vs-aliases">Abbreviations vs Aliases</h2>
 <p>Fish supports both - abbreviations are better for frequently used
 commands:</p>
-<pre class="fish"><code># Abbreviation (expands when you press space)
+<pre class="fish"><code>### Abbreviation (expands when you press space)
 abbr -a gc git commit
 
-# Alias (always expands)
+### Alias (always expands)
 alias gc &#39;git commit -v&#39;</code></pre>
 <h2 id="tab-completion">Tab Completion</h2>
 <p>Fish’s tab completion is <strong>context-aware</strong>: - Press
@@ -378,7 +376,7 @@ alias gc &#39;git commit -v&#39;</code></pre>
 subcommands, file paths, git branches - Customize completions via
 <code>~/.config/fish/completions/</code></p>
 <p>Example:</p>
-<pre class="fish"><code># Suggest git branches for git checkout
+<pre class="fish"><code>### Suggest git branches for git checkout
 git checkout [Tab]</code></pre>
 <h2 id="comparison-with-zshbash">Comparison with ZSH/BASH</h2>
 <table>

@@ -4,7 +4,7 @@
     on NVMe SSDs, with detailed tuning guidelines.
 -->
 
-# Timeshift I/O Optimization: Fixing Snapshot-Related Freezes 🔧
+### Timeshift I/O Optimization: Fixing Snapshot-Related Freezes 🔧
 
 ## Problem: Random System Freezes During Work/Gaming
 
@@ -58,10 +58,10 @@ Instead of fighting the I/O scheduler, we **intentionally add latency** to Times
 Run snapshots with lowest I/O priority:
 
 ```bash
-# One-time snapshot with throttling
+### One-time snapshot with throttling
 sudo ionice -c 3 timeshift --create --comments "Throttled snapshot"
 
-# Or make it default for all snapshots - add to cron or systemd timer
+### Or make it default for all snapshots - add to cron or systemd timer
 ```
 
 **Method B: Permanent - Systemd Service Throttling (Recommended)**
@@ -77,13 +77,13 @@ Paste this:
 
 ```ini
 [Service]
-# Run Timeshift at lowest I/O priority - keeps system responsive
+### Run Timeshift at lowest I/O priority - keeps system responsive
 CPUSchedulingPolicy=idle
 IOSchedulingClass=idle
 IOSchedulingPriority=7
 Nice=10
 
-# Optional: Cap CPU usage if snapshots still cause lag
+### Optional: Cap CPU usage if snapshots still cause lag
 CPUQuota=50%
 ```
 
@@ -95,9 +95,9 @@ sudo systemctl restart timeshift-launcher
 
 **Verify it's working:**
 ```bash
-# Next snapshot, check the priority
+### Next snapshot, check the priority
 ps aux | grep timeshift
-# Should show lower I/O priority
+### Should show lower I/O priority
 ```
 
 **Method C: BFQ Scheduler (Most Effective - Kernel-level I/O Fairness)**
@@ -105,17 +105,17 @@ ps aux | grep timeshift
 Use the **BFQ I/O scheduler** which specifically prioritizes interactive processes:
 
 ```bash
-# Check if BFQ is available
+### Check if BFQ is available
 cat /sys/block/nvme0n1/queue/scheduler
 
-# If you see "[bfq]" it's enabled, if not:
+### If you see "[bfq]" it's enabled, if not:
 echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
 
-# Make persistent across reboots
+### Make persistent across reboots
 echo "ACTION==\"add|change\", KERNEL==\"nvme*\", ATTR{queue/scheduler}=\"bfq\"" | \
   sudo tee /etc/udev/rules.d/99-bfq-iosched.rules
 
-# Reload
+### Reload
 sudo udevadm control --reload-rules
 sudo udevadm trigger
 ```
@@ -123,7 +123,7 @@ sudo udevadm trigger
 Verify:
 ```bash
 cat /sys/block/nvme0n1/queue/scheduler
-# Should show [bfq] selected
+### Should show [bfq] selected
 ```
 
 **Method D: Combined Approach (Best Results)**
@@ -131,10 +131,10 @@ cat /sys/block/nvme0n1/queue/scheduler
 Use **both** BFQ scheduler + Timeshift throttling:
 
 ```bash
-# 1. Enable BFQ (from Method C above)
+### 1. Enable BFQ (from Method C above)
 echo bfq | sudo tee /sys/block/nvme0n1/queue/scheduler
 
-# 2. Add Timeshift throttling (from Method B above)
+### 2. Add Timeshift throttling (from Method B above)
 sudo mkdir -p /etc/systemd/system/timeshift-launcher.service.d/
 cat << 'EOF' | sudo tee /etc/systemd/system/timeshift-launcher.service.d/throttle.conf
 [Service]
@@ -283,11 +283,11 @@ sudo python3 -c "import json; print(json.dumps(json.load(open('/etc/timeshift/ti
 During the next hourly snapshot, monitor for freezes:
 
 ```bash
-# Terminal 1: Watch for BTRFS qgroup scans
+### Terminal 1: Watch for BTRFS qgroup scans
 journalctl --grep="qgroup" --follow
 
-# Terminal 2: Run a test (Citrix, game, or streaming)
-# Verify no freezes occur
+### Terminal 2: Run a test (Citrix, game, or streaming)
+### Verify no freezes occur
 ```
 
 ### Confirm Freezes Are Gone

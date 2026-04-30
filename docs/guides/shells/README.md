@@ -1,4 +1,4 @@
-# Shell Configuration Guides
+### Shell Configuration Guides
 
 Complete guides for configuring Bash, Zsh, and Fish shells with modern CLI tools and features.
 

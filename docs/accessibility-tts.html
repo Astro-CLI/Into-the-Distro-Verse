@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#text-to-speech-accessibility-natural-voices-for-linux"
 id="toc-text-to-speech-accessibility-natural-voices-for-linux">Text-to-Speech
-&amp; Accessibility: Natural Voices for Linux</a>
-<ul>
+&amp; Accessibility: Natural Voices for Linux</a></li>
 <li><a href="#understanding-your-tts-options"
 id="toc-understanding-your-tts-options">🎤 1. Understanding Your TTS
 Options</a></li>
@@ -90,7 +89,6 @@ Choices</a></li>
 Would I Use This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -99,9 +97,9 @@ Guides</a></li>
     for accessibility and screen readers on Linux systems.
     Adapt voice configurations to your preferences and system capabilities.
 -->
-<h1
+<h3
 id="text-to-speech-accessibility-natural-voices-for-linux">Text-to-Speech
-&amp; Accessibility: Natural Voices for Linux</h1>
+&amp; Accessibility: Natural Voices for Linux</h3>
 <p>Text-to-speech makes your system speak to you—perfect for
 accessibility, screen readers, or building voice interfaces. Modern
 neural TTS systems like Piper sound far better than the old robotic
@@ -153,17 +151,17 @@ runs locally.</p>
 <hr />
 <h2 id="installing-piper-tts">🚀 2. Installing Piper TTS</h2>
 <p>First, install the packages:</p>
-<pre class="bash"><code># Install required packages (Arch/AUR)
+<pre class="bash"><code>### Install required packages (Arch/AUR)
 paru -S piper-tts-bin speech-dispatcher
 
-# Optional: Install additional voice packages
+### Optional: Install additional voice packages
 paru -S piper-voices-en-us</code></pre>
 <h3 id="installing-a-voice">Installing a Voice</h3>
 <p>Download a Piper voice (or use the voice packages):</p>
-<pre class="bash"><code># Voices are stored in
+<pre class="bash"><code>### Voices are stored in
 ~/.local/share/piper-voices/
 
-# Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json</code></pre>
+### Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json</code></pre>
 <h3 id="configuration">Configuration</h3>
 <h4 id="enable-the-piper-module">1. Enable the Piper Module</h4>
 <p>Edit <code>/etc/speech-dispatcher/speechd.conf</code>:</p>
@@ -407,10 +405,10 @@ Good balance 2. <strong>kristin-medium</strong> - Natural female voice
 <h2 id="testing-your-voice-choices">🧪 7. Testing Your Voice
 Choices</h2>
 <p>Before committing to a voice, test it first:</p>
-<pre class="bash"><code># Test ryan-high at 50% volume
+<pre class="bash"><code>### Test ryan-high at 50% volume
 echo &quot;Hello, I am Ryan&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 
-# Test lessac-high female voice
+### Test lessac-high female voice
 echo &quot;Hello, I am Lessac&quot; | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768</code></pre>
 <h2 id="why-would-i-use-this">🎯 Why Would I Use This?</h2>
 <ul>

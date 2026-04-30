@@ -1,4 +1,4 @@
-# Package Management Guide
+### Package Management Guide
 
 This directory contains the package lists and restoration scripts for various Linux distributions. Use these files to quickly replicate a software environment on a fresh installation.
 
@@ -22,16 +22,16 @@ This directory contains the package lists and restoration scripts for various Li
 
 ### Arch Linux
 ```bash
-# 1. Install Official Packages
+### 1. Install Official Packages
 sudo pacman -S --needed - < packages/arch_pkglist.txt
 
-# 2. Install AUR Packages
+### 2. Install AUR Packages
 paru -S --needed - < packages/arch_aur_list.txt
 ```
 
 ### Universal (Flatpaks)
 ```bash
-# Install Flatpaks on any system
+### Install Flatpaks on any system
 xargs -a packages/flatpak_list.txt -r flatpak install -y
 ```
 

@@ -5,7 +5,7 @@
     and helper scripts for easy model management.
 -->
 
-# Running Local AI Models: Your Personal ChatGPT
+### Running Local AI Models: Your Personal ChatGPT
 
 Want AI tools that don't phone home to big corporations? This guide shows how to run powerful language models entirely on your own hardware using Ollama. Everything stays private, runs fast, and never leaves your computer.
 
@@ -90,11 +90,11 @@ Open Interpreter lets AI help with system tasks - it can run terminal commands, 
 ### Installation
 
 ```bash
-# Create a virtual environment
+### Create a virtual environment
 python -m venv ~/interpreter_env
 ~/interpreter_env/bin/pip install open-interpreter setuptools
 
-# If Python 3.14+, add compatibility shim:
+### If Python 3.14+, add compatibility shim:
 cat > ~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py << 'COMPAT'
 import importlib.metadata
 def get_distribution(name):
@@ -105,10 +105,10 @@ COMPAT
 ### Using Open Interpreter
 
 ```bash
-# Normal mode (with internet access for web tasks)
+### Normal mode (with internet access for web tasks)
 ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
 
-# Offline mode (no internet, complete privacy)
+### Offline mode (no internet, complete privacy)
 ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --offline
 ```
 
@@ -182,7 +182,7 @@ ollama list
 
 ```bash
 ai
-# Select option 0
+### Select option 0
 ```
 
 ### Model Storage

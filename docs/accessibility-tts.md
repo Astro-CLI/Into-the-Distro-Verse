@@ -5,7 +5,7 @@
     Adapt voice configurations to your preferences and system capabilities.
 -->
 
-# Text-to-Speech & Accessibility: Natural Voices for Linux
+### Text-to-Speech & Accessibility: Natural Voices for Linux
 
 Text-to-speech makes your system speak to you—perfect for accessibility, screen readers, or building voice interfaces. Modern neural TTS systems like Piper sound far better than the old robotic voices, and you can run everything locally without internet. This guide shows you how to set up professional-quality voices for real-world use.
 
@@ -30,10 +30,10 @@ We'll focus on **Piper** because it sounds natural and runs locally.
 First, install the packages:
 
 ```bash
-# Install required packages (Arch/AUR)
+### Install required packages (Arch/AUR)
 paru -S piper-tts-bin speech-dispatcher
 
-# Optional: Install additional voice packages
+### Optional: Install additional voice packages
 paru -S piper-voices-en-us
 ```
 
@@ -42,10 +42,10 @@ paru -S piper-voices-en-us
 Download a Piper voice (or use the voice packages):
 
 ```bash
-# Voices are stored in
+### Voices are stored in
 ~/.local/share/piper-voices/
 
-# Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json
+### Example: en_US-amy-medium.onnx and en_US-amy-medium.onnx.json
 ```
 
 ### Configuration
@@ -318,10 +318,10 @@ Piper voices come in different quality levels:
 Before committing to a voice, test it first:
 
 ```bash
-# Test ryan-high at 50% volume
+### Test ryan-high at 50% volume
 echo "Hello, I am Ryan" | piper-tts --model /usr/share/piper-voices/en/en_US/ryan/high/en_US-ryan-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 
-# Test lessac-high female voice
+### Test lessac-high female voice
 echo "Hello, I am Lessac" | piper-tts --model /usr/share/piper-voices/en/en_US/lessac/high/en_US-lessac-high.onnx --output-raw | paplay --rate=22050 --format=s16le --channels=1 --raw --volume=32768
 ```
 

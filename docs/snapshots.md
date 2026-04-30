@@ -4,7 +4,7 @@
     Covers filesystem snapshots, backup strategies, and bootloader integration.
 -->
 
-# Snapshots & Backups: The Safety Net 🛡️
+### Snapshots & Backups: The Safety Net 🛡️
 
 Regardless of which distro you're using, snapshots and backups are essential for system recovery. This guide covers how to set up the perfect safety net for both Arch and Fedora users.
 
@@ -71,10 +71,10 @@ Ensure you can boot directly into a snapshot from your boot menu.
 If you're using BTRFS, you should run these occasionally to keep the filesystem healthy.
 
 ```bash
-# Scrub: Check for data corruption
+### Scrub: Check for data corruption
 sudo btrfs scrub start /
 
-# Balance: Free up unused chunks
+### Balance: Free up unused chunks
 sudo btrfs balance start -dusage=50 /
 ```
 
@@ -97,7 +97,7 @@ Instead of running `grub-mkconfig` manually or via heavy hooks (which can be slo
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Arch/Fedora
+### Arch/Fedora
 sudo systemctl enable --now grub-btrfsd.service
 ```
 

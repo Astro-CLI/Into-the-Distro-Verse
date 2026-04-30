@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#hosting-a-private-website-on-tor-native-arch-edition"
 id="toc-hosting-a-private-website-on-tor-native-arch-edition">Hosting a
-Private Website on Tor: Native Arch Edition</a>
-<ul>
+Private Website on Tor: Native Arch Edition</a></li>
 <li><a href="#why-this-over-docker" id="toc-why-this-over-docker">🤔 Why
 This Over Docker?</a></li>
 <li><a href="#what-you-need" id="toc-what-you-need">✅ What You
@@ -107,7 +106,6 @@ More Pages</a></li>
 Would I Do This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -115,8 +113,8 @@ Guides</a></li>
     Guide for hosting a Tor hidden service directly on Arch Linux using Nginx.
     No Docker required - native installation for maximum performance.
 -->
-<h1 id="hosting-a-private-website-on-tor-native-arch-edition">Hosting a
-Private Website on Tor: Native Arch Edition</h1>
+<h3 id="hosting-a-private-website-on-tor-native-arch-edition">Hosting a
+Private Website on Tor: Native Arch Edition</h3>
 <p>Want to host a website that only works through Tor without using
 Docker? This native approach is simpler and faster. Your .onion address
 stays completely anonymous, and visitors can’t see your real IP.</p>
@@ -152,10 +150,10 @@ depends on Nginx hardening.</p>
 <p>Create the web root:</p>
 <pre class="bash"><code>sudo mkdir -p /srv/http</code></pre>
 <p>Copy your website files:</p>
-<pre class="bash"><code># From a local folder
+<pre class="bash"><code>### From a local folder
 sudo cp -r ~/my-website/* /srv/http/
 
-# Or from GitHub
+### Or from GitHub
 sudo cp -r /home/astro/Documents/GitHub/Into-the-Distro-Verse/website/* /srv/http/</code></pre>
 <p>Set correct ownership:</p>
 <pre class="bash"><code>sudo chown -R http:http /srv/http
@@ -269,21 +267,21 @@ sudo cat /var/lib/tor/hidden_service/hostname</code></pre>
 <p>Warning: You can’t get your old address back!</p>
 <hr />
 <h2 id="common-commands">📋 Common Commands</h2>
-<pre class="bash"><code># Check Nginx
+<pre class="bash"><code>### Check Nginx
 sudo systemctl status nginx
 sudo systemctl restart nginx
 
-# Check Tor
+### Check Tor
 sudo systemctl status tor
 sudo systemctl restart tor
 
-# View your address
+### View your address
 sudo cat /var/lib/tor/hidden_service/hostname
 
-# View Tor logs
+### View Tor logs
 sudo journalctl -u tor -f
 
-# Check if it&#39;s working
+### Check if it&#39;s working
 sudo curl http://localhost/</code></pre>
 <hr />
 <h2 id="security-tips">🔒 Security Tips</h2>
@@ -302,11 +300,11 @@ up:</p>
 sudo chown $USER:$USER ~/backup-onion-key.txt</code></pre>
 <p>Store it somewhere safe, ideally offline.</p>
 <h3 id="protect-sensitive-files">Protect Sensitive Files</h3>
-<pre class="bash"><code># Don&#39;t track access logs (less evidence)
-# Already done - Tor hides visitor IPs
+<pre class="bash"><code>### Don&#39;t track access logs (less evidence)
+### Already done - Tor hides visitor IPs
 
-# Keep web root minimal
-# Less code = fewer vulnerabilities</code></pre>
+### Keep web root minimal
+### Less code = fewer vulnerabilities</code></pre>
 <hr />
 <h2 id="adding-more-pages">➕ Adding More Pages</h2>
 <p>Create a new HTML file:</p>

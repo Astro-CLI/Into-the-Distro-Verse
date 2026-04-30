@@ -5,7 +5,7 @@
     Adapt to your content and security requirements.
 -->
 
-# Hosting an Anonymous Website on Tor with Docker
+### Hosting an Anonymous Website on Tor with Docker
 
 Want a website that only works through Tor and can't be traced back to you? This guide walks you through setting it up using Docker—the containerized approach keeps everything isolated and easy to manage. We'll assume you're new to this, so we'll explain each step clearly.
 
@@ -437,19 +437,19 @@ Only do this if you really want a new address. You can't get the old one back.
 ## 📋 Common Commands
 
 ```bash
-# Start your site
+### Start your site
 docker-compose up -d
 
-# Stop your site (keeps your address)
+### Stop your site (keeps your address)
 docker-compose down
 
-# See what's happening
+### See what's happening
 docker-compose logs -f
 
-# Check if everything is running
+### Check if everything is running
 docker-compose ps
 
-# Get your .onion address
+### Get your .onion address
 cat tor/keys/hostname
 ```
 
@@ -462,11 +462,11 @@ cat tor/keys/hostname
 Don't upload photos with GPS data. Strip it first:
 
 ```bash
-# Install exiftool
+### Install exiftool
 sudo apt install exiftool          # Debian/Ubuntu
 sudo pacman -S perl-image-exiftool  # Arch
 
-# Strip all metadata
+### Strip all metadata
 exiftool -all= your-photo.jpg
 ```
 

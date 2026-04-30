@@ -4,7 +4,7 @@
     Nix operates independently of your distribution's native package manager.
 -->
 
-# Nix: Functional Package Management and Reproducible Environments
+### Nix: Functional Package Management and Reproducible Environments
 
 Nix represents a fundamentally different approach to package management through functional programming principles. Unlike imperative package managers (pacman, dnf, apt), Nix treats package definitions as pure functions, ensuring reproducibility and isolation. It provides access to **Nixpkgs**, the largest and most comprehensive software repository in the Linux ecosystem—encompassing over 80,000 packages with exceptional freshness and diversity.
 
@@ -35,17 +35,17 @@ Nix provides multiple installation pathways depending on your distribution and r
 Arch packages Nix in its official repositories, though deployment requires manual daemon initialization:
 
 ```bash
-# 1. Install the Nix package
+### 1. Install the Nix package
 sudo pacman -S nix
 
-# 2. Enable and start the Nix daemon service
+### 2. Enable and start the Nix daemon service
 sudo systemctl enable --now nix-daemon.service
 
-# 3. Add your user to the nix-users group for unprivileged package operations
+### 3. Add your user to the nix-users group for unprivileged package operations
 sudo usermod -aG nix-users $USER
 
-# 4. Log out and back in for group membership to take effect
-# Then, add the default package channel
+### 4. Log out and back in for group membership to take effect
+### Then, add the default package channel
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
 nix-channel --update
 ```
@@ -69,12 +69,12 @@ Nix operates through multiple abstraction layers, each serving distinct use case
 This pattern proves invaluable for development workflows. Rather than polluting your system with project-specific dependencies, nix-shell creates isolated temporary environments that dissolve upon exit:
 
 ```bash
-# Enter a shell with Node.js available
+### Enter a shell with Node.js available
 nix-shell -p nodejs_20
 
-# Within this shell, 'node' and 'npm' are accessible
-# Type 'exit' to return to your normal environment
-# The packages remain cached for rapid re-entry
+### Within this shell, 'node' and 'npm' are accessible
+### Type 'exit' to return to your normal environment
+### The packages remain cached for rapid re-entry
 ```
 
 ### Persistent User Profiles (nix profile)
@@ -82,16 +82,16 @@ nix-shell -p nodejs_20
 For long-term application management, Nix profiles provide user-level package installation with full version tracking:
 
 ```bash
-# Search for available packages
+### Search for available packages
 nix search nixpkgs discord
 
-# Install a package to your profile
+### Install a package to your profile
 nix profile install nixpkgs#discord
 
-# List your profile's installed packages
+### List your profile's installed packages
 nix profile list
 
-# Upgrade all packages to their latest versions
+### Upgrade all packages to their latest versions
 nix profile upgrade '.*'
 ```
 
@@ -110,7 +110,7 @@ nix-env -iA nixpkgs.hello
 Because Nix maintains historical package versions for atomic rollback functionality, the `/nix/store` directory accumulates significant storage over time. Periodic garbage collection reclaims this space while preserving usable package caches:
 
 ```bash
-# Remove unreferenced package versions and unused runtimes
+### Remove unreferenced package versions and unused runtimes
 nix-collect-garbage -d
 ```
 
@@ -122,19 +122,19 @@ Nix-installed GUI applications may not automatically appear in your desktop envi
 
 **For Bash/Zsh:**
 ```bash
-# Add this line to ~/.bashrc or ~/.zshrc
+### Add this line to ~/.bashrc or ~/.zshrc
 export XDG_DATA_DIRS="$HOME/.nix-profile/share:$XDG_DATA_DIRS"
 
-# Then reload your shell configuration
+### Then reload your shell configuration
 source ~/.bashrc  # or source ~/.zshrc
 ```
 
 **For Fish:**
 ```fish
-# Add this line to ~/.config/fish/config.fish
+### Add this line to ~/.config/fish/config.fish
 set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
 
-# Then reload your configuration
+### Then reload your configuration
 source ~/.config/fish/config.fish
 ```
 

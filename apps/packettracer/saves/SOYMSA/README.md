@@ -1,4 +1,4 @@
-# Packet Tracer Version Control with Git & GitHub
+### Packet Tracer Version Control with Git & GitHub
 
 This guide provides a straightforward workflow for using `git` and the GitHub CLI (`gh`) to save and document changes to your Packet Tracer (`.pkt`) files in a GitHub repository.
 
@@ -36,16 +36,16 @@ This command creates a new **private** repository on your GitHub account, adds y
 **IMPORTANT**: Replace `your-repo-name` with a name you choose (e.g., `packet-tracer-project`).
 
 ```bash
-# Create the repository and link it to your local project
+### Create the repository and link it to your local project
 gh repo create your-repo-name --private --source=. --remote=origin
 
-# Add all files to git (including the .pkt files and this README)
+### Add all files to git (including the .pkt files and this README)
 git add .
 
-# Make your first commit
+### Make your first commit
 git commit -m "Initial commit: Project setup and first Packet Tracer files"
 
-# Push the files to your new GitHub repository
+### Push the files to your new GitHub repository
 git push -u origin main
 ```
 
@@ -74,11 +74,11 @@ git status
 Add the modified files to the next "snapshot" (commit).
 
 ```bash
-# To add all modified files
+### To add all modified files
 git add .
 
-# Or, to add a specific file
-# git add YourFileName.pkt
+### Or, to add a specific file
+### git add YourFileName.pkt
 ```
 
 ### Step 4: Commit Your Changes with a Message
@@ -109,15 +109,15 @@ That's it! Your changes are now safely stored on GitHub.
 Here are the daily commands in sequence:
 
 ```bash
-# 1. Check what you've changed
+### 1. Check what you've changed
 git status
 
-# 2. Add the files
+### 2. Add the files
 git add .
 
-# 3. Save the changes with a descriptive message
+### 3. Save the changes with a descriptive message
 git commit -m "feat: Add and configure the new web server in the DMZ"
 
-# 4. Upload to GitHub
+### 4. Upload to GitHub
 git push
 ```

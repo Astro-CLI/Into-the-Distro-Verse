@@ -120,22 +120,22 @@ Watch movies & TV shows: Stremio with Debrid services, self-hosted alternatives.
 ### Music
 
 ```bash
-# Spicetify (5 minutes)
+### Spicetify (5 minutes)
 curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh
 spicetify init && spicetify backup apply
 
-# YouTube Music (2 minutes)
+### YouTube Music (2 minutes)
 sudo apt install youtube-music  # or brew install youtube-music
 ```
 
 ### Video
 
 ```bash
-# Stremio (5 minutes)
+### Stremio (5 minutes)
 sudo apt install stremio
 stremio &  # Then create account at stremio.com
 
-# Jellyfin (15 minutes, Docker)
+### Jellyfin (15 minutes, Docker)
 docker run -d --name jellyfin -p 8096:8096 \
   -v /path/to/media:/media \
   jellyfin/jellyfin

@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#package-management-guide"
-id="toc-package-management-guide">Package Management Guide</a>
-<ul>
+id="toc-package-management-guide">Package Management Guide</a></li>
 <li><a href="#package-lists" id="toc-package-lists">📂 Package
 Lists</a></li>
 <li><a href="#restoration-how-to-install-everything"
@@ -68,10 +67,9 @@ Lists</a></li>
 <li><a href="#sync-universal-lists" id="toc-sync-universal-lists">Sync
 Universal Lists</a></li>
 </ul></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="package-management-guide">Package Management Guide</h1>
+<h3 id="package-management-guide">Package Management Guide</h3>
 <p>This directory contains the package lists and restoration scripts for
 various Linux distributions. Use these files to quickly replicate a
 software environment on a fresh installation.</p>
@@ -130,13 +128,13 @@ style="text-align: left;"><strong><code>flatpak_list.txt</code></strong></td>
 <h2 id="restoration-how-to-install-everything">🚀 Restoration (How to
 install everything)</h2>
 <h3 id="arch-linux">Arch Linux</h3>
-<pre class="bash"><code># 1. Install Official Packages
+<pre class="bash"><code>### 1. Install Official Packages
 sudo pacman -S --needed - &lt; packages/arch_pkglist.txt
 
-# 2. Install AUR Packages
+### 2. Install AUR Packages
 paru -S --needed - &lt; packages/arch_aur_list.txt</code></pre>
 <h3 id="universal-flatpaks">Universal (Flatpaks)</h3>
-<pre class="bash"><code># Install Flatpaks on any system
+<pre class="bash"><code>### Install Flatpaks on any system
 xargs -a packages/flatpak_list.txt -r flatpak install -y</code></pre>
 <hr />
 <h2 id="maintenance-syncing">🔄 Maintenance &amp; Syncing</h2>

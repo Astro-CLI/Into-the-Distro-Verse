@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#running-local-ai-models-your-personal-chatgpt"
 id="toc-running-local-ai-models-your-personal-chatgpt">Running Local AI
-Models: Your Personal ChatGPT</a>
-<ul>
+Models: Your Personal ChatGPT</a></li>
 <li><a href="#why-run-ai-locally" id="toc-why-run-ai-locally">🤔 Why Run
 AI Locally?</a></li>
 <li><a href="#your-hardware-matters" id="toc-your-hardware-matters">⚙️
@@ -116,7 +115,6 @@ id="toc-tips-for-best-performance">⚡ Tips for Best Performance</a></li>
 Would I Use This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -125,8 +123,8 @@ Guides</a></li>
     optimized for AMD hardware using ROCm. Includes Ollama, Open Interpreter,
     and helper scripts for easy model management.
 -->
-<h1 id="running-local-ai-models-your-personal-chatgpt">Running Local AI
-Models: Your Personal ChatGPT</h1>
+<h3 id="running-local-ai-models-your-personal-chatgpt">Running Local AI
+Models: Your Personal ChatGPT</h3>
 <p>Want AI tools that don’t phone home to big corporations? This guide
 shows how to run powerful language models entirely on your own hardware
 using Ollama. Everything stays private, runs fast, and never leaves your
@@ -192,21 +190,21 @@ Hands</h2>
 commands, write scripts, and explore your files (with your
 permission).</p>
 <h3 id="installation">Installation</h3>
-<pre class="bash"><code># Create a virtual environment
+<pre class="bash"><code>### Create a virtual environment
 python -m venv ~/interpreter_env
 ~/interpreter_env/bin/pip install open-interpreter setuptools
 
-# If Python 3.14+, add compatibility shim:
+### If Python 3.14+, add compatibility shim:
 cat &gt; ~/interpreter_env/lib/python3.14/site-packages/pkg_resources.py &lt;&lt; &#39;COMPAT&#39;
 import importlib.metadata
 def get_distribution(name):
     return importlib.metadata.distribution(name)
 COMPAT</code></pre>
 <h3 id="using-open-interpreter">Using Open Interpreter</h3>
-<pre class="bash"><code># Normal mode (with internet access for web tasks)
+<pre class="bash"><code>### Normal mode (with internet access for web tasks)
 ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434
 
-# Offline mode (no internet, complete privacy)
+### Offline mode (no internet, complete privacy)
 ~/interpreter_env/bin/interpreter --local --api_base http://localhost:11434 --offline</code></pre>
 <h3 id="example-commands">Example Commands</h3>
 <pre><code>&quot;List the 5 largest files in my Downloads folder&quot;
@@ -290,7 +288,7 @@ Interpreter Wrapper (<code>/usr/local/bin/interpreter</code>)</h3>
 <pre class="bash"><code>ollama list</code></pre>
 <h3 id="free-vram-immediately">Free VRAM Immediately</h3>
 <pre class="bash"><code>ai
-# Select option 0</code></pre>
+### Select option 0</code></pre>
 <h3 id="model-storage">Model Storage</h3>
 <p>Models are stored in: - Native:
 <code>/usr/share/ollama/.ollama</code> - Docker: Docker volume (managed

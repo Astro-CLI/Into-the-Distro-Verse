@@ -4,7 +4,7 @@
     Covers Git, Syncthing, rsync, rclone, and other synchronization strategies.
 -->
 
-# Syncing Files & Projects Across Your Machines
+### Syncing Files & Projects Across Your Machines
 
 Need your files on multiple computers? Whether it's code, documents, or media, this guide covers the right tool for every situation. We'll start with simple approaches and work up to complex multi-machine workflows.
 
@@ -48,15 +48,15 @@ Use Git when you need version control—tracking every change and who made it.
 ### Quick Setup
 
 ```bash
-# Initialize a repository
+### Initialize a repository
 git init my-project
 cd my-project
 
-# Configure your identity
+### Configure your identity
 git config user.name "Your Name"
 git config user.email "you@example.com"
 
-# Or globally (all projects)
+### Or globally (all projects)
 git config --global user.name "Your Name"
 git config --global user.email "you@example.com"
 ```
@@ -64,23 +64,23 @@ git config --global user.email "you@example.com"
 ### Basic Workflow
 
 ```bash
-# Make changes
+### Make changes
 echo "content" > file.txt
 
-# Stage changes
+### Stage changes
 git add file.txt
 
-# Commit with message
+### Commit with message
 git commit -m "Add file"
 
-# View history
+### View history
 git log --oneline
 
-# Create a branch
+### Create a branch
 git branch feature-x
 git switch feature-x
 
-# Merge back to main
+### Merge back to main
 git switch main
 git merge feature-x
 ```
@@ -88,33 +88,33 @@ git merge feature-x
 ### Sync Across Machines
 
 ```bash
-# Add remote (GitHub, GitLab, etc.)
+### Add remote (GitHub, GitLab, etc.)
 git remote add origin https://github.com/user/repo.git
 
-# Push to remote
+### Push to remote
 git push -u origin main
 
-# Pull latest changes
+### Pull latest changes
 git pull origin main
 
-# On another machine - clone it
+### On another machine - clone it
 git clone https://github.com/user/repo.git
 ```
 
 ### SSH Keys (Passwordless Access)
 
 ```bash
-# Generate key (one time)
+### Generate key (one time)
 ssh-keygen -t ed25519 -C "your@email.com"
 
-# Add to SSH agent
+### Add to SSH agent
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 
-# Copy public key to GitHub/GitLab
+### Copy public key to GitHub/GitLab
 cat ~/.ssh/id_ed25519.pub
 
-# Test it works
+### Test it works
 ssh -T git@github.com
 ```
 
@@ -135,26 +135,26 @@ Use Syncthing when you want files to stay in sync automatically across your devi
 ### Installation
 
 ```bash
-# Arch Linux
+### Arch Linux
 sudo pacman -S syncthing
 
-# Ubuntu/Debian
+### Ubuntu/Debian
 sudo apt install syncthing
 
-# Fedora
+### Fedora
 sudo dnf install syncthing
 ```
 
 ### Start & Enable
 
 ```bash
-# As a user service
+### As a user service
 systemctl --user enable --now syncthing.service
 
-# Check status
+### Check status
 systemctl --user status syncthing.service
 
-# View logs
+### View logs
 journalctl --user -u syncthing.service -f
 ```
 
@@ -192,16 +192,16 @@ Use rsync for scheduled backups to external drives or servers.
 ### Basic Usage
 
 ```bash
-# Backup local folder to external drive
+### Backup local folder to external drive
 rsync -av ~/Documents /media/backup/
 
-# To remote server
+### To remote server
 rsync -av ~/Documents user@remote.host:/backups/
 
-# With compression (slow networks)
+### With compression (slow networks)
 rsync -avz ~/Documents user@remote.host:/backups/
 
-# Dry-run (see what would sync)
+### Dry-run (see what would sync)
 rsync -av --dry-run ~/Documents /media/backup/
 ```
 
@@ -219,13 +219,13 @@ rsync -av --dry-run ~/Documents /media/backup/
 ### Automated Backup with Cron
 
 ```bash
-# Edit your crontab
+### Edit your crontab
 crontab -e
 
-# Daily backup at 2 AM
+### Daily backup at 2 AM
 0 2 * * * rsync -av ~/Documents /media/backup/ >> ~/backup.log 2>&1
 
-# Weekly backup
+### Weekly backup
 0 3 * * 0 rsync -av ~/Documents user@remote.host:/backups/
 ```
 
@@ -245,43 +245,43 @@ Use rclone to sync with cloud providers like Google Drive, Dropbox, or AWS S3.
 ### Installation
 
 ```bash
-# Arch Linux
+### Arch Linux
 sudo pacman -S rclone
 
-# Ubuntu/Debian
+### Ubuntu/Debian
 sudo apt install rclone
 
-# Or universal installer
+### Or universal installer
 curl https://rclone.org/install.sh | sudo bash
 ```
 
 ### Setup
 
 ```bash
-# Interactive configuration
+### Interactive configuration
 rclone config
 
-# Follow prompts to authenticate with Google Drive, Dropbox, etc.
-# List configured remotes
+### Follow prompts to authenticate with Google Drive, Dropbox, etc.
+### List configured remotes
 rclone listremotes
 ```
 
 ### Common Commands
 
 ```bash
-# List files on cloud
+### List files on cloud
 rclone ls mycloud:
 
-# Upload to cloud
+### Upload to cloud
 rclone copy ~/Documents mycloud:/backups/
 
-# Download from cloud
+### Download from cloud
 rclone copy mycloud:/backups/ ~/Documents/
 
-# Sync both ways (be careful!)
+### Sync both ways (be careful!)
 rclone bisync ~/Documents mycloud:/backups/
 
-# With bandwidth limit (e.g., 1MB/s)
+### With bandwidth limit (e.g., 1MB/s)
 rclone copy --bwlimit 1M ~/Documents mycloud:/backups/
 ```
 
@@ -301,43 +301,43 @@ Use Restic for encrypted, versioned backups with deduplication.
 ### Installation
 
 ```bash
-# Arch Linux
+### Arch Linux
 sudo pacman -S restic
 
-# Ubuntu/Debian
+### Ubuntu/Debian
 sudo apt install restic
 
-# Homebrew
+### Homebrew
 brew install restic
 ```
 
 ### Local Backup
 
 ```bash
-# Initialize repository
+### Initialize repository
 restic init -r /mnt/backup
 
-# First backup
+### First backup
 restic -r /mnt/backup backup ~/Documents
 
-# Restore files
+### Restore files
 restic -r /mnt/backup restore latest --target ~/restore/
 
-# View backup history
+### View backup history
 restic -r /mnt/backup snapshots
 ```
 
 ### Cloud Backup (S3)
 
 ```bash
-# Set credentials
+### Set credentials
 export AWS_ACCESS_KEY_ID="your-key"
 export AWS_SECRET_ACCESS_KEY="your-secret"
 
-# Initialize on S3
+### Initialize on S3
 restic init -r s3:s3.amazonaws.com/bucket-name
 
-# Backup to S3
+### Backup to S3
 restic -r s3:s3.amazonaws.com/bucket-name backup ~/Documents
 ```
 
@@ -394,30 +394,30 @@ Git (code) → GitHub/GitLab
 ### Git: "Permission denied" on push
 
 ```bash
-# Test SSH key
+### Test SSH key
 ssh -T git@github.com
 
-# Or use HTTPS with personal token
+### Or use HTTPS with personal token
 git remote set-url origin https://github.com/user/repo.git
 ```
 
 ### Syncthing: Folder not syncing
 
 ```bash
-# Check logs
+### Check logs
 journalctl --user -u syncthing.service -n 50
 
-# Verify firewall allows connections
+### Verify firewall allows connections
 sudo ufw allow syncthing
 ```
 
 ### rsync: Files not updating
 
 ```bash
-# Dry-run to debug
+### Dry-run to debug
 rsync -av --dry-run ~/source /dest
 
-# Check destination permissions
+### Check destination permissions
 ls -la /dest
 ```
 

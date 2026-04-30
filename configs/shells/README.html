@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#shell-configurations" id="toc-shell-configurations">Shell
-Configurations</a>
-<ul>
+Configurations</a></li>
 <li><a href="#directory-structure"
 id="toc-directory-structure">Directory Structure</a></li>
 <li><a href="#quick-restore" id="toc-quick-restore">Quick Restore</a>
@@ -85,10 +84,9 @@ id="toc-configuration-highlights">Configuration Highlights</a>
 id="toc-troubleshooting">Troubleshooting</a></li>
 <li><a href="#updates" id="toc-updates">Updates</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="shell-configurations">Shell Configurations</h1>
+<h3 id="shell-configurations">Shell Configurations</h3>
 <p>This directory contains backup configurations for
 <strong>ZSH</strong>, <strong>Bash</strong>, and <strong>Fish</strong>
 shells.</p>
@@ -119,22 +117,22 @@ exec fish</code></pre>
 <pre class="bash"><code>mkdir -p ~/.config
 cp configs/shells/starship.toml ~/.config/starship.toml</code></pre>
 <h3 id="restore-all">Restore All</h3>
-<pre class="bash"><code># ZSH
+<pre class="bash"><code>### ZSH
 cp configs/shells/zsh/zshrc ~/.zshrc
 
-# Bash
+### Bash
 cp configs/shells/bash/bashrc ~/.bashrc
 cp configs/shells/bash/inputrc ~/.inputrc
 
-# Fish
+### Fish
 mkdir -p ~/.config/fish
 cp configs/shells/fish/config.fish ~/.config/fish/config.fish
 
-# Starship (all shells)
+### Starship (all shells)
 mkdir -p ~/.config
 cp configs/shells/starship.toml ~/.config/starship.toml
 
-# Reload shell
+### Reload shell
 exec $SHELL</code></pre>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Before restoring, ensure these are installed:</p>
@@ -145,22 +143,22 @@ exec $SHELL</code></pre>
 <h3 id="cli-tools">CLI Tools</h3>
 <pre class="bash"><code>paru -S zoxide thefuck tealdeer ripgrep fd fzf bat eza</code></pre>
 <h3 id="zsh-plugins">ZSH Plugins</h3>
-<pre class="bash"><code># zsh-autosuggestions
+<pre class="bash"><code>### zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 
-# zsh-completions
+### zsh-completions
 git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
 
-# forgit
+### forgit
 git clone https://github.com/wfxr/forgit.git ~/.oh-my-zsh/custom/plugins/forgit</code></pre>
 <h3 id="fish-plugins">Fish Plugins</h3>
-<pre class="bash"><code># Fisher (plugin manager)
+<pre class="bash"><code>### Fisher (plugin manager)
 curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.install.fish | source
 
-# Tide prompt
+### Tide prompt
 fisher install ilancosman/tide@v6
 
-# FZF integration
+### FZF integration
 fisher install jethrokuan/fzf.fish</code></pre>
 <h3 id="starship-prompt-all-shells">Starship Prompt (all shells)</h3>
 <pre class="bash"><code>paru -S starship</code></pre>
@@ -241,20 +239,20 @@ configured correctly)</li>
 </table>
 <h2 id="updates">Updates</h2>
 <p>When you modify your shell configuration, update the backups:</p>
-<pre class="bash"><code># After modifying ~/.zshrc
+<pre class="bash"><code>### After modifying ~/.zshrc
 cp ~/.zshrc configs/shells/zsh/zshrc
 
-# After modifying ~/.bashrc
+### After modifying ~/.bashrc
 cp ~/.bashrc configs/shells/bash/bashrc
 cp ~/.inputrc configs/shells/bash/inputrc
 
-# After modifying ~/.config/fish/config.fish
+### After modifying ~/.config/fish/config.fish
 cp ~/.config/fish/config.fish configs/shells/fish/config.fish
 
-# After modifying ~/.config/starship.toml
+### After modifying ~/.config/starship.toml
 cp ~/.config/starship.toml configs/shells/starship.toml
 
-# Commit to git
+### Commit to git
 git add configs/shells/
 git commit -m &quot;Update shell configs&quot;</code></pre>
 <h2 id="references">References</h2>

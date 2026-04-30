@@ -1,4 +1,4 @@
-# FISH Configuration Guide
+### FISH Configuration Guide
 
 ## Overview
 Fish (Friendly Interactive Shell) is configured as an alternative interactive shell with user-friendly defaults. It provides syntax highlighting, auto-suggestions, and tab completion out of the box, now enhanced with modern CLI tool integrations.
@@ -6,10 +6,10 @@ Fish (Friendly Interactive Shell) is configured as an alternative interactive sh
 ## Installation
 
 ```bash
-# Install fish
+### Install fish
 sudo pacman -S fish
 
-# Set as default shell (optional)
+### Set as default shell (optional)
 chsh -s /usr/bin/fish
 ```
 
@@ -30,7 +30,7 @@ curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fi
 
 ### Plugin Installation
 ```bash
-# Install new plugins
+### Install new plugins
 fisher install ilancosman/tide@v6
 fisher install jethrokuan/fzf.fish
 ```
@@ -62,15 +62,15 @@ Main configuration file for fish shell.
 ### Integration Configuration
 
 ```bash
-# ~/.config/fish/config.fish additions:
+### ~/.config/fish/config.fish additions:
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 zoxide init fish | source
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 thefuck --alias | source
 
-# FZF + FD INTEGRATION
+### FZF + FD INTEGRATION
 set -gx FZF_DEFAULT_COMMAND 'fd --type f --follow --exclude .git'
 set -gx FZF_CTRL_T_COMMAND 'fd --type f --follow --exclude .git'
 set -gx FZF_ALT_C_COMMAND 'fd --type d --follow --exclude .git'
@@ -100,7 +100,7 @@ fish_default_key_bindings
 ### Vi Mode (Optional)
 To enable vi keybindings:
 ```fish
-# In config.fish:
+### In config.fish:
 fish_vi_key_bindings
 ```
 
@@ -193,14 +193,14 @@ fd "filename"   # Find files with fd
 Define custom functions in config.fish:
 
 ```fish
-# Create directory and enter it
+### Create directory and enter it
 function mkcd
     if test -n "$argv[1]"
         mkdir -p $argv[1]; and cd $argv[1]
     end
 end
 
-# Quick edit config
+### Quick edit config
 function fishconfig
     $EDITOR ~/.config/fish/config.fish
 end
@@ -231,16 +231,16 @@ Configure via `~/.config/starship.toml`
 Fish uses `set` instead of `export`:
 
 ```fish
-# Local variable (function-scoped)
+### Local variable (function-scoped)
 set myvar "value"
 
-# Global variable (session-wide)
+### Global variable (session-wide)
 set -g myvar "value"
 
-# Universal variable (persistent across sessions)
+### Universal variable (persistent across sessions)
 set -U myvar "value"
 
-# Export to child processes (environment)
+### Export to child processes (environment)
 set -gx PATH $PATH /new/path
 ```
 
@@ -249,10 +249,10 @@ set -gx PATH $PATH /new/path
 Fish supports both - abbreviations are better for frequently used commands:
 
 ```fish
-# Abbreviation (expands when you press space)
+### Abbreviation (expands when you press space)
 abbr -a gc git commit
 
-# Alias (always expands)
+### Alias (always expands)
 alias gc 'git commit -v'
 ```
 
@@ -265,7 +265,7 @@ Fish's tab completion is **context-aware**:
 
 Example:
 ```fish
-# Suggest git branches for git checkout
+### Suggest git branches for git checkout
 git checkout [Tab]
 ```
 

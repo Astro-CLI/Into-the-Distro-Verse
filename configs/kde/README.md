@@ -1,4 +1,4 @@
-# KDE Plasma Configuration Backup
+### KDE Plasma Configuration Backup
 
 This directory contains a backup of key KDE Plasma configuration files.
 

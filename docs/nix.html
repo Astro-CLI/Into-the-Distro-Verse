@@ -50,8 +50,7 @@
 <li><a
 href="#nix-functional-package-management-and-reproducible-environments"
 id="toc-nix-functional-package-management-and-reproducible-environments">Nix:
-Functional Package Management and Reproducible Environments</a>
-<ul>
+Functional Package Management and Reproducible Environments</a></li>
 <li><a href="#why-use-nix" id="toc-why-use-nix">🤔 Why use Nix?</a></li>
 <li><a href="#installation-setup" id="toc-installation-setup">🚀
 Installation &amp; Setup</a>
@@ -82,7 +81,6 @@ Management</a></li>
 Desktop Integration</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -90,9 +88,9 @@ Guides</a></li>
     This file contains comprehensive information about Nix, the purely functional package manager.
     Nix operates independently of your distribution's native package manager.
 -->
-<h1
+<h3
 id="nix-functional-package-management-and-reproducible-environments">Nix:
-Functional Package Management and Reproducible Environments</h1>
+Functional Package Management and Reproducible Environments</h3>
 <p>Nix represents a fundamentally different approach to package
 management through functional programming principles. Unlike imperative
 package managers (pacman, dnf, apt), Nix treats package definitions as
@@ -135,17 +133,17 @@ distribution and requirements.</p>
 <h3 id="arch-linux-installation">Arch Linux Installation</h3>
 <p>Arch packages Nix in its official repositories, though deployment
 requires manual daemon initialization:</p>
-<pre class="bash"><code># 1. Install the Nix package
+<pre class="bash"><code>### 1. Install the Nix package
 sudo pacman -S nix
 
-# 2. Enable and start the Nix daemon service
+### 2. Enable and start the Nix daemon service
 sudo systemctl enable --now nix-daemon.service
 
-# 3. Add your user to the nix-users group for unprivileged package operations
+### 3. Add your user to the nix-users group for unprivileged package operations
 sudo usermod -aG nix-users $USER
 
-# 4. Log out and back in for group membership to take effect
-# Then, add the default package channel
+### 4. Log out and back in for group membership to take effect
+### Then, add the default package channel
 nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
 nix-channel --update</code></pre>
 <h3 id="fedora-and-generic-linux-installation">Fedora and Generic Linux
@@ -164,26 +162,26 @@ distinct use cases.</p>
 <p>This pattern proves invaluable for development workflows. Rather than
 polluting your system with project-specific dependencies, nix-shell
 creates isolated temporary environments that dissolve upon exit:</p>
-<pre class="bash"><code># Enter a shell with Node.js available
+<pre class="bash"><code>### Enter a shell with Node.js available
 nix-shell -p nodejs_20
 
-# Within this shell, &#39;node&#39; and &#39;npm&#39; are accessible
-# Type &#39;exit&#39; to return to your normal environment
-# The packages remain cached for rapid re-entry</code></pre>
+### Within this shell, &#39;node&#39; and &#39;npm&#39; are accessible
+### Type &#39;exit&#39; to return to your normal environment
+### The packages remain cached for rapid re-entry</code></pre>
 <h3 id="persistent-user-profiles-nix-profile">Persistent User Profiles
 (nix profile)</h3>
 <p>For long-term application management, Nix profiles provide user-level
 package installation with full version tracking:</p>
-<pre class="bash"><code># Search for available packages
+<pre class="bash"><code>### Search for available packages
 nix search nixpkgs discord
 
-# Install a package to your profile
+### Install a package to your profile
 nix profile install nixpkgs#discord
 
-# List your profile&#39;s installed packages
+### List your profile&#39;s installed packages
 nix profile list
 
-# Upgrade all packages to their latest versions
+### Upgrade all packages to their latest versions
 nix profile upgrade &#39;.*&#39;</code></pre>
 <h3 id="legacy-command-interface-nix-env">Legacy Command Interface
 (nix-env)</h3>
@@ -198,7 +196,7 @@ Management</h2>
 functionality, the <code>/nix/store</code> directory accumulates
 significant storage over time. Periodic garbage collection reclaims this
 space while preserving usable package caches:</p>
-<pre class="bash"><code># Remove unreferenced package versions and unused runtimes
+<pre class="bash"><code>### Remove unreferenced package versions and unused runtimes
 nix-collect-garbage -d</code></pre>
 <hr />
 <h2 id="desktop-integration">⚠️ Desktop Integration</h2>
@@ -207,16 +205,16 @@ desktop environment’s application launcher. This occurs because desktop
 entry files reside in non-standard paths. To integrate Nix applications
 into your launcher:</p>
 <p><strong>For Bash/Zsh:</strong></p>
-<pre class="bash"><code># Add this line to ~/.bashrc or ~/.zshrc
+<pre class="bash"><code>### Add this line to ~/.bashrc or ~/.zshrc
 export XDG_DATA_DIRS=&quot;$HOME/.nix-profile/share:$XDG_DATA_DIRS&quot;
 
-# Then reload your shell configuration
+### Then reload your shell configuration
 source ~/.bashrc  # or source ~/.zshrc</code></pre>
 <p><strong>For Fish:</strong></p>
-<pre class="fish"><code># Add this line to ~/.config/fish/config.fish
+<pre class="fish"><code>### Add this line to ~/.config/fish/config.fish
 set -gx XDG_DATA_DIRS $HOME/.nix-profile/share $XDG_DATA_DIRS
 
-# Then reload your configuration
+### Then reload your configuration
 source ~/.config/fish/config.fish</code></pre>
 <p>This configuration ensures that desktop files from Nix packages are
 properly discovered during application menu initialization.</p>

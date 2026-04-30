@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#linux-security-hardening-protection"
 id="toc-linux-security-hardening-protection">Linux Security: Hardening
-&amp; Protection</a>
-<ul>
+&amp; Protection</a></li>
 <li><a href="#apparmor-mac" id="toc-apparmor-mac">🛡️ AppArmor (MAC)</a>
 <ul>
 <li><a href="#installation" id="toc-installation">1.
@@ -153,7 +152,6 @@ Guides</a></li>
 Would I Use This?</a></li>
 <li><a href="#related-guides-1" id="toc-related-guides-1">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -161,8 +159,8 @@ Guides</a></li>
     Defense-in-depth security hardening guide for Linux including AppArmor,
     firewalls, sandboxing, and privacy tools.
 -->
-<h1 id="linux-security-hardening-protection">Linux Security: Hardening
-&amp; Protection</h1>
+<h3 id="linux-security-hardening-protection">Linux Security: Hardening
+&amp; Protection</h3>
 <p>Security is about layers. This guide covers the “Defense in Depth”
 strategy for Linux systems, including Mandatory Access Control
 (AppArmor), Application Sandboxing (Firejail), Application Firewall
@@ -215,11 +213,11 @@ is a great alternative for mobile users.</p>
 <h3 id="option-a-ufw-simple-static---current-choice">Option A: UFW
 (Simple &amp; Static - Current Choice)</h3>
 <p>Best for desktops that stay on one network.</p>
-<pre class="bash"><code># Install and Enable
+<pre class="bash"><code>### Install and Enable
 sudo pacman -S ufw
 sudo systemctl enable --now ufw.service
 
-# Standard &quot;Gaming&quot; Policy
+### Standard &quot;Gaming&quot; Policy
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable</code></pre>
@@ -231,11 +229,11 @@ Settings &gt; Firewall</strong>.</li>
 &amp; Zones)</h3>
 <p>Best for laptops or users who need different rules for “Home” vs
 “Public” Wi-Fi.</p>
-<pre class="bash"><code># Install and Enable
+<pre class="bash"><code>### Install and Enable
 sudo pacman -S firewalld
 sudo systemctl enable --now firewalld.service
 
-# Change zones based on network trust
+### Change zones based on network trust
 sudo firewall-cmd --set-default-zone=home
 sudo firewall-cmd --reload</code></pre>
 <hr />
@@ -273,67 +271,67 @@ memory, and capabilities - <strong>X11/Wayland</strong> - Isolate GUI
 applications</p>
 <h3 id="installation-1">Installation</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 sudo pacman -S firejail
 
-# Fedora
+### Fedora
 sudo dnf install firejail
 
-# Debian/Ubuntu
+### Debian/Ubuntu
 sudo apt install firejail</code></pre>
 <h3 id="basic-usage">Basic Usage</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Run any application in a sandbox
+<pre class="bash"><code>### Run any application in a sandbox
 firejail firefox
 
-# Disable network access
+### Disable network access
 firejail --net=none firefox
 
-# Private /tmp and home directory
+### Private /tmp and home directory
 firejail --private firefox
 
-# Combine restrictions
+### Combine restrictions
 firejail --net=none --private --noroot chromium</code></pre>
 <h3 id="default-integration-automatic-sandboxing">Default Integration
 (Automatic Sandboxing)</h3>
 <p>Make Firejail the default for all supported applications:</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Create symlinks for all supported apps
+<pre class="bash"><code>### Create symlinks for all supported apps
 sudo firecfg
 
-# Now when you launch Firefox, Chromium, etc., they automatically run sandboxed</code></pre>
+### Now when you launch Firefox, Chromium, etc., they automatically run sandboxed</code></pre>
 <p><strong>To undo:</strong></p>
 <pre class="bash"><code>sudo firecfg --clean</code></pre>
 <h3 id="common-profiles">Common Profiles</h3>
 <p>Firejail includes pre-made security profiles for hundreds of
 applications:</p>
-<pre class="bash"><code># List available profiles
+<pre class="bash"><code>### List available profiles
 ls /etc/firejail/*.profile | wc -l
 
-# View a specific profile
+### View a specific profile
 less /etc/firejail/firefox.profile
 
-# Override a profile
+### Override a profile
 cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
 nano ~/.config/firejail/firefox.local</code></pre>
 <h3 id="custom-profiles">Custom Profiles</h3>
 <p>Create custom sandboxes for applications:</p>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Create a custom profile
+<pre class="bash"><code>### Create a custom profile
 nano ~/.config/firejail/myapp.profile</code></pre>
 <p><strong>Example profile:</strong></p>
-<pre class="conf"><code># Include the default template
+<pre class="conf"><code>### Include the default template
 include /etc/firejail/default.profile
 
-# Restrict filesystem access
+### Restrict filesystem access
 private-bin myapp
 private-tmp
 private-dev
 
-# Disable network
+### Disable network
 net none
 
-# Whitelist only specific directories
+### Whitelist only specific directories
 whitelist ~/Documents
 whitelist ~/Downloads</code></pre>
 <h3 id="security-vs-usability-trade-offs">Security vs Usability
@@ -377,10 +375,10 @@ Trade-offs</h3>
 <h3 id="gui-firetools">GUI: Firetools</h3>
 <p><strong>Firetools</strong> provides a graphical interface for
 Firejail.</p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 sudo pacman -S firetools
 
-# Launch
+### Launch
 firetools &amp;</code></pre>
 <h3 id="when-to-use-firejail">When to Use Firejail</h3>
 <p>✅ <strong>Good for:</strong> - Web browsers (Firefox, Chromium,
@@ -392,16 +390,16 @@ Torrent clients (Transmission, qBittorrent) - Office applications
 break functionality - Applications that need full system access</p>
 <h3 id="troubleshooting">Troubleshooting</h3>
 <p><strong>Application won’t start:</strong></p>
-<pre class="bash"><code># Run with debugging
+<pre class="bash"><code>### Run with debugging
 firejail --debug app
 
-# Disable specific restrictions
+### Disable specific restrictions
 firejail --noprofile app</code></pre>
 <p><strong>Sound doesn’t work:</strong></p>
-<pre class="bash"><code># Allow PulseAudio/PipeWire
+<pre class="bash"><code>### Allow PulseAudio/PipeWire
 firejail --keep-config-pulse app</code></pre>
 <p><strong>Can’t access files:</strong></p>
-<pre class="bash"><code># Whitelist specific directories
+<pre class="bash"><code>### Whitelist specific directories
 firejail --whitelist=~/Documents app</code></pre>
 <hr />
 <h2 id="application-firewall-opensnitch">🚨 Application Firewall:
@@ -419,21 +417,21 @@ persistence</strong> - Save decisions permanently - <strong>System-wide
 visibility</strong> - See exactly what’s connecting where</p>
 <h3 id="installation-2">Installation</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Arch (AUR)
+<pre class="bash"><code>### Arch (AUR)
 paru -S opensnitch
 
-# Fedora
+### Fedora
 sudo dnf copr enable @opensnitch/opensnitch
 sudo dnf install opensnitch opensnitch-ui
 
-# Debian/Ubuntu
-# Add repository from: https://github.com/evilsocket/opensnitch</code></pre>
+### Debian/Ubuntu
+### Add repository from: https://github.com/evilsocket/opensnitch</code></pre>
 <h3 id="starting-opensnitch">Starting OpenSnitch</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># Enable and start the daemon
+<pre class="bash"><code>### Enable and start the daemon
 sudo systemctl enable --now opensnitch
 
-# Launch the GUI (runs in system tray)
+### Launch the GUI (runs in system tray)
 opensnitch-ui</code></pre>
 <h3 id="first-time-setup">First-Time Setup</h3>
 <ol type="1">
@@ -491,13 +489,13 @@ Chromium, Brave) - Package managers (pacman, dnf, apt) - System services
 distribution’s update daemon)</p>
 <h3 id="advanced-cli-rules">Advanced: CLI Rules</h3>
 <p><strong>Shell (Bash/Zsh/Fish):</strong></p>
-<pre class="bash"><code># List all rules
+<pre class="bash"><code>### List all rules
 opensnitchd-rulesctl list
 
-# Export rules to JSON
+### Export rules to JSON
 opensnitchd-rulesctl export &gt; my-rules.json
 
-# Import rules
+### Import rules
 opensnitchd-rulesctl import my-rules.json</code></pre>
 <h3 id="performance-impact">Performance Impact</h3>
 <p>OpenSnitch uses eBPF and netfilter, so performance impact is
@@ -545,21 +543,21 @@ per connection</p>
 perimeter defense, OpenSnitch for application control.</p>
 <h3 id="troubleshooting-1">Troubleshooting</h3>
 <p><strong>Daemon won’t start:</strong></p>
-<pre class="bash"><code># Check status
+<pre class="bash"><code>### Check status
 sudo systemctl status opensnitch
 
-# View logs
+### View logs
 sudo journalctl -u opensnitch -f</code></pre>
 <p><strong>GUI not showing popups:</strong></p>
-<pre class="bash"><code># Restart the UI
+<pre class="bash"><code>### Restart the UI
 pkill opensnitch-ui
 opensnitch-ui &amp;
 
-# Check notification settings in your desktop environment</code></pre>
+### Check notification settings in your desktop environment</code></pre>
 <p><strong>Too many popups:</strong></p>
-<pre class="bash"><code># Switch to &quot;Allow by default&quot; temporarily
-# Create broad rules for common apps (browser, email, etc.)
-# Then switch back to &quot;Deny by default&quot;</code></pre>
+<pre class="bash"><code>### Switch to &quot;Allow by default&quot; temporarily
+### Create broad rules for common apps (browser, email, etc.)
+### Then switch back to &quot;Deny by default&quot;</code></pre>
 <hr />
 <h2 id="network-privacy-dns-over-tls-dot">🌐 Network Privacy:
 DNS-over-TLS (DoT)</h2>

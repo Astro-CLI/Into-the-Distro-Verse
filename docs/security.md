@@ -4,7 +4,7 @@
     firewalls, sandboxing, and privacy tools.
 -->
 
-# Linux Security: Hardening & Protection
+### Linux Security: Hardening & Protection
 
 Security is about layers. This guide covers the "Defense in Depth" strategy for Linux systems, including Mandatory Access Control (AppArmor), Application Sandboxing (Firejail), Application Firewall (OpenSnitch), Network Firewall (UFW), Antivirus (ClamAV), and Network Privacy (DNS-over-TLS).
 
@@ -70,11 +70,11 @@ A firewall controls network traffic. This system uses **UFW** for its simplicity
 ### Option A: UFW (Simple & Static - Current Choice)
 Best for desktops that stay on one network.
 ```bash
-# Install and Enable
+### Install and Enable
 sudo pacman -S ufw
 sudo systemctl enable --now ufw.service
 
-# Standard "Gaming" Policy
+### Standard "Gaming" Policy
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw enable
@@ -84,11 +84,11 @@ sudo ufw enable
 ### Option B: Firewalld (Dynamic & Zones)
 Best for laptops or users who need different rules for "Home" vs "Public" Wi-Fi.
 ```bash
-# Install and Enable
+### Install and Enable
 sudo pacman -S firewalld
 sudo systemctl enable --now firewalld.service
 
-# Change zones based on network trust
+### Change zones based on network trust
 sudo firewall-cmd --set-default-zone=home
 sudo firewall-cmd --reload
 ```
@@ -130,13 +130,13 @@ Firejail creates isolated environments for applications, restricting:
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Arch
+### Arch
 sudo pacman -S firejail
 
-# Fedora
+### Fedora
 sudo dnf install firejail
 
-# Debian/Ubuntu
+### Debian/Ubuntu
 sudo apt install firejail
 ```
 
@@ -144,16 +144,16 @@ sudo apt install firejail
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Run any application in a sandbox
+### Run any application in a sandbox
 firejail firefox
 
-# Disable network access
+### Disable network access
 firejail --net=none firefox
 
-# Private /tmp and home directory
+### Private /tmp and home directory
 firejail --private firefox
 
-# Combine restrictions
+### Combine restrictions
 firejail --net=none --private --noroot chromium
 ```
 
@@ -163,10 +163,10 @@ Make Firejail the default for all supported applications:
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Create symlinks for all supported apps
+### Create symlinks for all supported apps
 sudo firecfg
 
-# Now when you launch Firefox, Chromium, etc., they automatically run sandboxed
+### Now when you launch Firefox, Chromium, etc., they automatically run sandboxed
 ```
 
 **To undo:**
@@ -179,13 +179,13 @@ sudo firecfg --clean
 Firejail includes pre-made security profiles for hundreds of applications:
 
 ```bash
-# List available profiles
+### List available profiles
 ls /etc/firejail/*.profile | wc -l
 
-# View a specific profile
+### View a specific profile
 less /etc/firejail/firefox.profile
 
-# Override a profile
+### Override a profile
 cp /etc/firejail/firefox.profile ~/.config/firejail/firefox.local
 nano ~/.config/firejail/firefox.local
 ```
@@ -196,24 +196,24 @@ Create custom sandboxes for applications:
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Create a custom profile
+### Create a custom profile
 nano ~/.config/firejail/myapp.profile
 ```
 
 **Example profile:**
 ```conf
-# Include the default template
+### Include the default template
 include /etc/firejail/default.profile
 
-# Restrict filesystem access
+### Restrict filesystem access
 private-bin myapp
 private-tmp
 private-dev
 
-# Disable network
+### Disable network
 net none
 
-# Whitelist only specific directories
+### Whitelist only specific directories
 whitelist ~/Documents
 whitelist ~/Downloads
 ```
@@ -232,10 +232,10 @@ whitelist ~/Downloads
 **Firetools** provides a graphical interface for Firejail.
 
 ```bash
-# Arch
+### Arch
 sudo pacman -S firetools
 
-# Launch
+### Launch
 firetools &
 ```
 
@@ -258,22 +258,22 @@ firetools &
 
 **Application won't start:**
 ```bash
-# Run with debugging
+### Run with debugging
 firejail --debug app
 
-# Disable specific restrictions
+### Disable specific restrictions
 firejail --noprofile app
 ```
 
 **Sound doesn't work:**
 ```bash
-# Allow PulseAudio/PipeWire
+### Allow PulseAudio/PipeWire
 firejail --keep-config-pulse app
 ```
 
 **Can't access files:**
 ```bash
-# Whitelist specific directories
+### Whitelist specific directories
 firejail --whitelist=~/Documents app
 ```
 
@@ -296,25 +296,25 @@ OpenSnitch monitors every network connection attempt and lets you:
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Arch (AUR)
+### Arch (AUR)
 paru -S opensnitch
 
-# Fedora
+### Fedora
 sudo dnf copr enable @opensnitch/opensnitch
 sudo dnf install opensnitch opensnitch-ui
 
-# Debian/Ubuntu
-# Add repository from: https://github.com/evilsocket/opensnitch
+### Debian/Ubuntu
+### Add repository from: https://github.com/evilsocket/opensnitch
 ```
 
 ### Starting OpenSnitch
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# Enable and start the daemon
+### Enable and start the daemon
 sudo systemctl enable --now opensnitch
 
-# Launch the GUI (runs in system tray)
+### Launch the GUI (runs in system tray)
 opensnitch-ui
 ```
 
@@ -403,13 +403,13 @@ Duration: always
 
 **Shell (Bash/Zsh/Fish):**
 ```bash
-# List all rules
+### List all rules
 opensnitchd-rulesctl list
 
-# Export rules to JSON
+### Export rules to JSON
 opensnitchd-rulesctl export > my-rules.json
 
-# Import rules
+### Import rules
 opensnitchd-rulesctl import my-rules.json
 ```
 
@@ -436,27 +436,27 @@ OpenSnitch uses eBPF and netfilter, so performance impact is **minimal**:
 
 **Daemon won't start:**
 ```bash
-# Check status
+### Check status
 sudo systemctl status opensnitch
 
-# View logs
+### View logs
 sudo journalctl -u opensnitch -f
 ```
 
 **GUI not showing popups:**
 ```bash
-# Restart the UI
+### Restart the UI
 pkill opensnitch-ui
 opensnitch-ui &
 
-# Check notification settings in your desktop environment
+### Check notification settings in your desktop environment
 ```
 
 **Too many popups:**
 ```bash
-# Switch to "Allow by default" temporarily
-# Create broad rules for common apps (browser, email, etc.)
-# Then switch back to "Deny by default"
+### Switch to "Allow by default" temporarily
+### Create broad rules for common apps (browser, email, etc.)
+### Then switch back to "Deny by default"
 ```
 
 ---

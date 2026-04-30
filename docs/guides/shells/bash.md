@@ -1,4 +1,4 @@
-# BASH Configuration Guide
+### BASH Configuration Guide
 
 ## Overview
 Bash is configured as a fallback shell with zsh/fish-like features. While not as elegant as zsh/fish, it provides a comfortable Emacs-based interactive experience with modern CLI tool integrations.
@@ -32,24 +32,24 @@ Readline configuration file (shared with other shells using readline).
 ### Integration Configuration
 
 ```bash
-# ~/.bashrc additions:
+### ~/.bashrc additions:
 
-# HISTORY IMPROVEMENTS
+### HISTORY IMPROVEMENTS
 HISTSIZE=10000
 HISTFILESIZE=20000
 HISTCONTROL=ignoredups:erasedups
 HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 
-# STARSHIP PROMPT
+### STARSHIP PROMPT
 eval "$(starship init bash)"
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 eval "$(zoxide init bash)"
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 eval "$(thefuck --alias)"
 
-# FZF INTEGRATION
+### FZF INTEGRATION
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_COMMAND='fd --type f --follow --exclude .git'
 export FZF_CTRL_T_COMMAND='fd --type f --follow --exclude .git'
@@ -88,24 +88,24 @@ Configured in ~/.inputrc:
 ### Vi Mode (Optional)
 To enable vi keybindings instead:
 ```bash
-# Uncomment in ~/.inputrc:
-# set editing-mode vi
+### Uncomment in ~/.inputrc:
+### set editing-mode vi
 
-# Or in ~/.bashrc:
+### Or in ~/.bashrc:
 set -o vi
 ```
 
 ## Readline Configuration (~/.inputrc)
 
 ```bash
-# Emacs keybindings (explicit)
+### Emacs keybindings (explicit)
 set editing-mode emacs
 
-# History search with arrow keys
+### History search with arrow keys
 "\e[A": history-search-backward
 "\e[B": history-search-forward
 
-# Better completion
+### Better completion
 set completion-ignore-case on
 set bell-style none
 set show-all-if-ambiguous on

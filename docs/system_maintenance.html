@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#system-maintenance-snapshots-backups-recovery"
 id="toc-system-maintenance-snapshots-backups-recovery">System
-Maintenance: Snapshots, Backups &amp; Recovery</a>
-<ul>
+Maintenance: Snapshots, Backups &amp; Recovery</a></li>
 <li><a href="#why-this-matters" id="toc-why-this-matters">🤔 Why This
 Matters</a></li>
 <li><a href="#snapshot-tools-timeshift-vs.-snapper"
@@ -108,7 +107,6 @@ Quota Freezes</a></li>
 Would I Do This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -116,8 +114,8 @@ Guides</a></li>
     Essential maintenance for Arch Linux and Fedora, covering snapshots,
     backups, BTRFS operations, and bootloader management.
 -->
-<h1 id="system-maintenance-snapshots-backups-recovery">System
-Maintenance: Snapshots, Backups &amp; Recovery</h1>
+<h3 id="system-maintenance-snapshots-backups-recovery">System
+Maintenance: Snapshots, Backups &amp; Recovery</h3>
 <p>Your system will break. Maybe a bad update, maybe a config mistake.
 This guide sets up safety nets so you can recover quickly. We’ll cover
 snapshots (fast rollbacks), backups (disaster recovery), and bootloaders
@@ -144,10 +142,10 @@ let you “undo” changes.</p>
 Most Users)</h3>
 <p>Best if you want a simple GUI and don’t need power-user features.</p>
 <p><strong>Installation:</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 paru -S timeshift timeshift-autosnap
 
-# Fedora
+### Fedora
 sudo dnf install timeshift</code></pre>
 <p><strong>How it works:</strong> - Uses BTRFS subvolumes named
 <code>@</code> and <code>@home</code> - Automatic snapshots before
@@ -159,10 +157,10 @@ automatically backed up.</p>
 Alternative)</h3>
 <p>Best if you want granular control and more features.</p>
 <p><strong>Installation:</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 paru -S snapper snap-pac
 
-# Fedora
+### Fedora
 sudo dnf install snapper</code></pre>
 <p><strong>Setup:</strong></p>
 <pre class="bash"><code>sudo snapper -c root create-config /</code></pre>
@@ -206,28 +204,28 @@ GRUB vs. systemd-boot</h2>
 can boot into snapshots from here for recovery.</p>
 <h3 id="grub-best-for-snapshots">GRUB (Best for Snapshots)</h3>
 <p><strong>Installation:</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 sudo pacman -S grub-btrfs
 sudo systemctl enable --now grub-btrfsd.service
 
-# Fedora
+### Fedora
 sudo dnf install grub-btrfs</code></pre>
 <p><strong>Advantage:</strong> You’ll see snapshots in your boot menu
 for easy recovery.</p>
 <p><strong>Update after kernel changes:</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-# Fedora
+### Fedora
 sudo grub2-mkconfig -o /boot/grub2/grub.cfg</code></pre>
 <h3 id="systemd-boot-modern-faster">systemd-boot (Modern, Faster)</h3>
 <p><strong>Setup:</strong></p>
-<pre class="bash"><code># Arch
+<pre class="bash"><code>### Arch
 bootctl install</code></pre>
 <p><strong>Advantage:</strong> Simpler, faster, no configuration
 needed.</p>
 <p><strong>For snapshots on systemd-boot:</strong></p>
-<pre class="bash"><code># Arch (AUR)
+<pre class="bash"><code>### Arch (AUR)
 paru -S gummibbs</code></pre>
 <hr />
 <h2 id="comparing-arch-vs.-fedora-maintenance">📋 5. Comparing Arch
@@ -295,10 +293,10 @@ systemctl --user enable --now timeshift-autosnap-hourly</code></pre></li>
 </ol>
 <h3 id="btrfs-quota-freezes">BTRFS Quota Freezes</h3>
 <p>If your system freezes for 1-2 minutes during snapshots:</p>
-<pre class="bash"><code># Disable BTRFS quotas (stops the freezing)
+<pre class="bash"><code>### Disable BTRFS quotas (stops the freezing)
 sudo btrfs quota disable /
 
-# Note: TimeShift GUI won&#39;t show snapshot sizes, but it still works</code></pre>
+### Note: TimeShift GUI won&#39;t show snapshot sizes, but it still works</code></pre>
 <p>See the <a href="timeshift-io-optimization.html">TimeShift I/O
 Optimization</a> guide for detailed solutions.</p>
 <hr />

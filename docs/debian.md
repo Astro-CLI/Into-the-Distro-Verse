@@ -4,7 +4,7 @@
     Adapt these configurations based on your stability requirements and use case.
 -->
 
-# Debian: The Universal Foundation for Stable Computing
+### Debian: The Universal Foundation for Stable Computing
 
 Debian embodies a fundamentally different philosophy than rolling-release alternatives: its deliberate release cycles and stringent stability testing make it the foundation for numerous derivatives including Ubuntu, Kali, and Pop!_OS. This conservative approach—while ensuring reliability—sometimes necessitates external repository integration for modern software. This guide explores safe practices for expanding Debian's ecosystem while preserving system integrity.
 
@@ -67,10 +67,10 @@ While Debian's ecosystem encourages interoperability, combining repositories fro
 Ubuntu-specific PPAs may provide packages unavailable through standard Debian channels:
 
 ```bash
-# Add Ubuntu repository
+### Add Ubuntu repository
 echo "deb http://archive.ubuntu.com/ubuntu/ noble main universe" | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
-# Add the associated GPG signing key (repository-specific)
+### Add the associated GPG signing key (repository-specific)
 ```
 
 ### Kali Linux Repository Integration
@@ -78,10 +78,10 @@ echo "deb http://archive.ubuntu.com/ubuntu/ noble main universe" | sudo tee /etc
 Kali's specialized penetration testing tools may be valuable in security-focused environments:
 
 ```bash
-# Add Kali repository
+### Add Kali repository
 echo "deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/kali.list
 
-# Import Kali's package signing key
+### Import Kali's package signing key
 wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg
 ```
 
@@ -114,11 +114,11 @@ A priority of 100 ensures Debian's native packages take precedence. External rep
 Contemporary display protocols require explicit middleware for screen capture capabilities. Xwayland Video Bridge provides this bridging layer:
 
 ```bash
-# Primary installation method
+### Primary installation method
 sudo apt install xwaylandvideobridge
 
-# If unavailable in main repositories, check backports
-# sudo apt -t bookworm-backports install xwaylandvideobridge
+### If unavailable in main repositories, check backports
+### sudo apt -t bookworm-backports install xwaylandvideobridge
 ```
 
 Package availability varies between Debian and Ubuntu releases; backports or external PPAs may be necessary.

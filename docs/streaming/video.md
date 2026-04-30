@@ -67,7 +67,7 @@ stremio &
 
 ```bash
 brew install stremio
-# or
+### or
 brew install --cask stremio
 ```
 
@@ -156,13 +156,13 @@ In Stremio → Settings → Addons → Search for "Alldebrid"
 #### Step 1: Install Stremio
 
 ```bash
-# Linux
+### Linux
 sudo apt install stremio
 
-# macOS
+### macOS
 brew install stremio
 
-# Then launch
+### Then launch
 stremio &
 ```
 
@@ -286,19 +286,19 @@ In Stremio, go to **Addons** (top menu)
 **Installation (Ubuntu/Debian):**
 
 ```bash
-# Add repository
+### Add repository
 curl https://repo.jellyfin.org/ubuntu/jellyfin_ubuntu_amd64.keyring.gpg | sudo apt-key add -
 echo "deb [arch=amd64] https://repo.jellyfin.org/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/jellyfin.list
 
-# Install
+### Install
 sudo apt update
 sudo apt install jellyfin
 
-# Start service
+### Start service
 sudo systemctl start jellyfin
 sudo systemctl enable jellyfin
 
-# Access at http://localhost:8096
+### Access at http://localhost:8096
 ```
 
 **Linux (Docker):**
@@ -397,7 +397,7 @@ Visit https://www.plex.tv/downloads
 4. Wait a few seconds (indexing takes time)
 
 ```bash
-# Restart Stremio
+### Restart Stremio
 pkill stremio
 stremio &
 ```
@@ -439,12 +439,12 @@ stremio &
 ### Jellyfin: Slow Performance
 
 ```bash
-# Hardware acceleration (if GPU available)
-# In Jellyfin web UI:
-# Admin → Dashboard → Playback
-# Enable "Enable Hardware Encoding"
+### Hardware acceleration (if GPU available)
+### In Jellyfin web UI:
+### Admin → Dashboard → Playback
+### Enable "Enable Hardware Encoding"
 
-# Or restart with GPU support
+### Or restart with GPU support
 docker run -d \
   --name jellyfin \
   -p 8096:8096 \
@@ -504,23 +504,23 @@ docker run -d \
 ### Stremio (10 minutes)
 
 ```bash
-# Install
+### Install
 sudo apt install stremio
 
-# Launch
+### Launch
 stremio &
 
-# Then:
-# 1. Create free account at stremio.com
-# 2. Install Real-Debrid addon (Settings → Addons)
-# 3. Install Torrentio addon
-# 4. Browse & watch!
+### Then:
+### 1. Create free account at stremio.com
+### 2. Install Real-Debrid addon (Settings → Addons)
+### 3. Install Torrentio addon
+### 4. Browse & watch!
 ```
 
 ### Jellyfin (15 minutes)
 
 ```bash
-# Via Docker (easiest)
+### Via Docker (easiest)
 docker run -d \
   --name jellyfin \
   -p 8096:8096 \
@@ -528,8 +528,8 @@ docker run -d \
   -v jellyfin-config:/config \
   jellyfin/jellyfin
 
-# Access at http://localhost:8096
-# Create account, add media library, enjoy!
+### Access at http://localhost:8096
+### Create account, add media library, enjoy!
 ```
 
 ---

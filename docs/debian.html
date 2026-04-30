@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#debian-the-universal-foundation-for-stable-computing"
 id="toc-debian-the-universal-foundation-for-stable-computing">Debian:
-The Universal Foundation for Stable Computing</a>
-<ul>
+The Universal Foundation for Stable Computing</a></li>
 <li><a href="#package-manager-enhancement"
 id="toc-package-manager-enhancement">🚀 0. Package Manager
 Enhancement</a></li>
@@ -93,7 +92,6 @@ Infrastructure</a></li>
 Core APT Operations</a></li>
 <li><a href="#related-documentation" id="toc-related-documentation">🔗
 Related Documentation</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -101,8 +99,8 @@ Related Documentation</a></li>
     This file contains comprehensive repository management and optimization procedures for Debian.
     Adapt these configurations based on your stability requirements and use case.
 -->
-<h1 id="debian-the-universal-foundation-for-stable-computing">Debian:
-The Universal Foundation for Stable Computing</h1>
+<h3 id="debian-the-universal-foundation-for-stable-computing">Debian:
+The Universal Foundation for Stable Computing</h3>
 <p>Debian embodies a fundamentally different philosophy than
 rolling-release alternatives: its deliberate release cycles and
 stringent stability testing make it the foundation for numerous
@@ -157,18 +155,18 @@ consequences.</p>
 Integration</h3>
 <p>Ubuntu-specific PPAs may provide packages unavailable through
 standard Debian channels:</p>
-<pre class="bash"><code># Add Ubuntu repository
+<pre class="bash"><code>### Add Ubuntu repository
 echo &quot;deb http://archive.ubuntu.com/ubuntu/ noble main universe&quot; | sudo tee /etc/apt/sources.list.d/ubuntu.list
 
-# Add the associated GPG signing key (repository-specific)</code></pre>
+### Add the associated GPG signing key (repository-specific)</code></pre>
 <h3 id="kali-linux-repository-integration">Kali Linux Repository
 Integration</h3>
 <p>Kali’s specialized penetration testing tools may be valuable in
 security-focused environments:</p>
-<pre class="bash"><code># Add Kali repository
+<pre class="bash"><code>### Add Kali repository
 echo &quot;deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware&quot; | sudo tee /etc/apt/sources.list.d/kali.list
 
-# Import Kali&#39;s package signing key
+### Import Kali&#39;s package signing key
 wget -q -O - https://archive.kali.org/archive-key.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/kali-archive-keyring.gpg</code></pre>
 <hr />
 <h2 id="dependency-management-apt-pinning">⚖️ 3. Dependency Management:
@@ -195,11 +193,11 @@ Infrastructure</h3>
 <p>Contemporary display protocols require explicit middleware for screen
 capture capabilities. Xwayland Video Bridge provides this bridging
 layer:</p>
-<pre class="bash"><code># Primary installation method
+<pre class="bash"><code>### Primary installation method
 sudo apt install xwaylandvideobridge
 
-# If unavailable in main repositories, check backports
-# sudo apt -t bookworm-backports install xwaylandvideobridge</code></pre>
+### If unavailable in main repositories, check backports
+### sudo apt -t bookworm-backports install xwaylandvideobridge</code></pre>
 <p>Package availability varies between Debian and Ubuntu releases;
 backports or external PPAs may be necessary.</p>
 <hr />

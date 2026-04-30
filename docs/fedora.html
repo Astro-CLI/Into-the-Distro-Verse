@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#fedora-workstation-enterprise-grade-desktop-computing"
 id="toc-fedora-workstation-enterprise-grade-desktop-computing">Fedora
-Workstation: Enterprise-Grade Desktop Computing</a>
-<ul>
+Workstation: Enterprise-Grade Desktop Computing</a></li>
 <li><a href="#package-manager-optimization"
 id="toc-package-manager-optimization">🚀 1. Package Manager
 Optimization</a></li>
@@ -90,7 +89,6 @@ id="toc-mandatory-access-control-selinux">🔒 6. Mandatory Access
 Control: SELinux</a></li>
 <li><a href="#related-documentation" id="toc-related-documentation">🔗
 Related Documentation</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -98,8 +96,8 @@ Related Documentation</a></li>
     This file contains comprehensive setup and optimization procedures for Fedora Workstation.
     Adapt these configurations to your specific hardware and workflow requirements.
 -->
-<h1 id="fedora-workstation-enterprise-grade-desktop-computing">Fedora
-Workstation: Enterprise-Grade Desktop Computing</h1>
+<h3 id="fedora-workstation-enterprise-grade-desktop-computing">Fedora
+Workstation: Enterprise-Grade Desktop Computing</h3>
 <p>Fedora occupies a distinctive position in the Linux ecosystem as a
 contemporary, innovation-focused distribution backed by substantial
 corporate resources. While Fedora’s philosophy emphasizes cutting-edge
@@ -137,7 +135,7 @@ Software Coverage</h3>
 exclusively. This philosophical stance, while commendable, creates
 immediate gaps in multimedia support and proprietary drivers. RPM Fusion
 provides the necessary third-party repositories:</p>
-<pre class="bash"><code># Install both free and non-free repository definitions
+<pre class="bash"><code>### Install both free and non-free repository definitions
 sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm</code></pre>
 <p>This grants access to H.264 codecs, proprietary NVIDIA drivers, and
 numerous production-oriented software packages.</p>

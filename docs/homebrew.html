@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#homebrew-the-linux-brew"
-id="toc-homebrew-the-linux-brew">Homebrew: The Linux “Brew”</a>
-<ul>
+id="toc-homebrew-the-linux-brew">Homebrew: The Linux “Brew”</a></li>
 <li><a href="#why-use-homebrew-on-linux"
 id="toc-why-use-homebrew-on-linux">🤔 Why use Homebrew on
 Linux?</a></li>
@@ -72,7 +71,6 @@ Maintenance</a></li>
 id="toc-homebrew-vs.-nix-vs.-aur">⚖️ Homebrew vs. Nix vs. AUR</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -80,7 +78,7 @@ Guides</a></li>
     Guide to Homebrew package management on Linux - user-space package manager.
     Covers installation, basic usage, and comparison with system package managers.
 -->
-<h1 id="homebrew-the-linux-brew">Homebrew: The Linux “Brew”</h1>
+<h3 id="homebrew-the-linux-brew">Homebrew: The Linux “Brew”</h3>
 <p>Homebrew (originally for macOS) is a popular package manager for
 Linux that installs software into its own prefix (usually
 <code>/home/linuxbrew/.linuxbrew</code>). It’s a great way to get the
@@ -119,10 +117,10 @@ sudo dnf install procps-ng curl file git</code></pre>
 <p>After the script finishes, it will give you a few lines to add to
 your shell profile. <strong>Don’t skip this!</strong></p>
 <p><strong>Shell (Bash/Zsh):</strong></p>
-<pre class="bash"><code># Add this to your ~/.bashrc or ~/.zshrc
+<pre class="bash"><code>### Add this to your ~/.bashrc or ~/.zshrc
 eval &quot;$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)&quot;</code></pre>
 <p><strong>Shell (Fish):</strong></p>
-<pre class="fish"><code># Add this to your ~/.config/fish/config.fish
+<pre class="fish"><code>### Add this to your ~/.config/fish/config.fish
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)</code></pre>
 <p>Then, verify the installation:</p>
 <pre class="bash"><code>brew doctor</code></pre>

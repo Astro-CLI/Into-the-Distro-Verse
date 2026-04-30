@@ -4,7 +4,7 @@
     including GPU passthrough, Windows VMs, and advanced configurations.
 -->
 
-# Virtual Machines: The Complete GUI Guide 🖥️
+### Virtual Machines: The Complete GUI Guide 🖥️
 
 A practical, GUI-focused guide to KVM/QEMU/libvirt virtualization on Linux. Learn to create VMs, pass through GPUs and physical disks, install Windows with proper drivers, and build powerful virtualized workstations.
 
@@ -52,10 +52,10 @@ sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq vde2 bridge-ut
 
 **Fedora:**
 ```bash
-# One-liner that installs everything
+### One-liner that installs everything
 sudo dnf install @virtualization
 
-# Or install packages individually:
+### Or install packages individually:
 sudo dnf install qemu-kvm libvirt virt-manager virt-install virt-viewer bridge-utils libguestfs-tools
 ```
 
@@ -141,37 +141,37 @@ virt-manager
 **Check for KVM support:**
 ```bash
 lsmod | grep kvm
-# Should show: kvm_intel OR kvm_amd
+### Should show: kvm_intel OR kvm_amd
 ```
 
 **Verify CPU virtualization is enabled:**
 ```bash
 LC_ALL=C lscpu | grep Virtualization
-# Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)
+### Should show: Virtualization: VT-x (Intel) or AMD-V (AMD)
 ```
 
 **Check libvirt service status:**
 ```bash
 sudo systemctl status libvirtd
-# Should show: active (running)
+### Should show: active (running)
 ```
 
 **Verify you're in the libvirt group:**
 ```bash
 groups | grep libvirt
-# Should show: libvirt
+### Should show: libvirt
 ```
 
 **Test virsh connection:**
 ```bash
 virsh list --all
-# Should connect without errors and show empty VM list
+### Should connect without errors and show empty VM list
 ```
 
 **Launch virt-manager GUI:**
 ```bash
 virt-manager
-# Should open without connection errors
+### Should open without connection errors
 ```
 
 ---
@@ -325,7 +325,7 @@ When creating a VM, you need to choose a disk controller type. Here's what you n
 ### Download VirtIO Drivers
 
 ```bash
-# Download the latest stable VirtIO ISO
+### Download the latest stable VirtIO ISO
 cd ~/Downloads
 wget https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
 ```
@@ -429,20 +429,20 @@ After installing virtio drivers, install SPICE guest tools for:
 By default, libvirt might not have permission to access `/dev/sdb`:
 
 ```bash
-# Check current permissions
+### Check current permissions
 ls -l /dev/sdb
 
-# Add yourself to the disk group
+### Add yourself to the disk group
 sudo usermod -aG disk $USER
 
-# OR change libvirt user permissions (in /etc/libvirt/qemu.conf)
+### OR change libvirt user permissions (in /etc/libvirt/qemu.conf)
 sudo nano /etc/libvirt/qemu.conf
 
-# Uncomment and set:
+### Uncomment and set:
 user = "your-username"
 group = "your-username"
 
-# Restart libvirtd
+### Restart libvirtd
 sudo systemctl restart libvirtd
 ```
 
@@ -523,21 +523,21 @@ sudo reboot
 **Verify IOMMU is enabled:**
 ```bash
 dmesg | grep -i iommu
-# Should show IOMMU enabled
+### Should show IOMMU enabled
 ```
 
 ### Step 2: Find Your GPU's PCI IDs
 
 ```bash
 lspci -nnk | grep -i nvidia
-# OR
+### OR
 lspci -nnk | grep -i amd
-# OR
+### OR
 lspci -nnk | grep -i vga
 
-# Example output:
-# 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
-# 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]
+### Example output:
+### 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA104 [GeForce RTX 3070] [10de:2484]
+### 01:00.1 Audio device [0403]: NVIDIA Corporation GA104 High Definition Audio Controller [10de:228b]
 ```
 
 **Note the IDs in brackets:** `10de:2484` and `10de:228b`
@@ -582,7 +582,7 @@ sudo reboot
 **Verify GPU is bound to vfio:**
 ```bash
 lspci -nnk -d 10de:2484
-# Should show: Kernel driver in use: vfio-pci
+### Should show: Kernel driver in use: vfio-pci
 ```
 
 ### Step 4: Configure VM for GPU Passthrough
@@ -643,10 +643,10 @@ lspci -nnk -d 10de:2484
 
 **Error: "device is already in use"**
 ```bash
-# Check what's using it
+### Check what's using it
 lspci -k -s 01:00.0
 
-# Make sure host drivers are blacklisted
+### Make sure host drivers are blacklisted
 ```
 
 **Black screen / Code 43 error:**
@@ -656,7 +656,7 @@ lspci -k -s 01:00.0
 
 **VM won't start:**
 ```bash
-# Check libvirt logs
+### Check libvirt logs
 sudo journalctl -u libvirtd -f
 ```
 
@@ -677,48 +677,48 @@ cd gpu-passthrough
 ### From VirtualBox (VDI)
 
 ```bash
-# Convert VDI to qcow2
+### Convert VDI to qcow2
 qemu-img convert -f vdi -O qcow2 ~/VirtualBox\ VMs/myvm/disk.vdi ~/vm-disk.qcow2
 
-# Import in virt-manager:
-# 1. Create new VM → "Import existing disk image"
-# 2. Browse to ~/vm-disk.qcow2
-# 3. Select OS type
-# 4. Configure RAM/CPU → Finish
+### Import in virt-manager:
+### 1. Create new VM → "Import existing disk image"
+### 2. Browse to ~/vm-disk.qcow2
+### 3. Select OS type
+### 4. Configure RAM/CPU → Finish
 ```
 
 ### From VMware (VMDK)
 
 ```bash
-# Convert VMDK to qcow2
+### Convert VMDK to qcow2
 qemu-img convert -f vmdk -O qcow2 ~/vmware/myvm/disk.vmdk ~/vm-disk.qcow2
 
-# Import as above
+### Import as above
 ```
 
 ### From Hyper-V (VHD/VHDX)
 
 ```bash
-# Convert VHD to qcow2
+### Convert VHD to qcow2
 qemu-img convert -f vpc -O qcow2 ~/hyperv/disk.vhd ~/vm-disk.qcow2
 
-# Convert VHDX to qcow2
+### Convert VHDX to qcow2
 qemu-img convert -f vhdx -O qcow2 ~/hyperv/disk.vhdx ~/vm-disk.qcow2
 ```
 
 ### From Physical Disk (Clone Entire Drive)
 
 ```bash
-# Find your disk
+### Find your disk
 lsblk
 
-# Clone to image file (VERIFY DEVICE NAME!)
+### Clone to image file (VERIFY DEVICE NAME!)
 sudo dd if=/dev/sdb of=~/physical-disk.img bs=4M status=progress
 
-# Convert to qcow2 for better compression
+### Convert to qcow2 for better compression
 qemu-img convert -f raw -O qcow2 ~/physical-disk.img ~/vm-disk.qcow2
 
-# Import in virt-manager
+### Import in virt-manager
 ```
 
 ⚠️ **WARNING:** Triple-check device names! `if=/dev/sda` could wipe your host OS!
@@ -726,12 +726,12 @@ qemu-img convert -f raw -O qcow2 ~/physical-disk.img ~/vm-disk.qcow2
 ### Expand Disk Size After Import
 
 ```bash
-# Resize the qcow2 file
+### Resize the qcow2 file
 qemu-img resize ~/vm-disk.qcow2 +50G
 
-# Then inside the guest OS:
-# Linux: Use gparted or fdisk + resize2fs
-# Windows: Use Disk Management to extend partition
+### Then inside the guest OS:
+### Linux: Use gparted or fdisk + resize2fs
+### Windows: Use Disk Management to extend partition
 ```
 
 ---
@@ -859,55 +859,55 @@ virsh edit vm-name
 ### Starting/Stopping VMs
 
 ```bash
-# List all VMs
+### List all VMs
 virsh list --all
 
-# Start VM
+### Start VM
 virsh start vm-name
 
-# Shutdown gracefully
+### Shutdown gracefully
 virsh shutdown vm-name
 
-# Force stop (like pulling power)
+### Force stop (like pulling power)
 virsh destroy vm-name
 
-# Auto-start VM on boot
+### Auto-start VM on boot
 virsh autostart vm-name
 ```
 
 ### Getting VM Information
 
 ```bash
-# Get VM IP address
+### Get VM IP address
 virsh domifaddr vm-name
 
-# View VM details
+### View VM details
 virsh dominfo vm-name
 
-# Monitor resource usage
+### Monitor resource usage
 virt-top
 
-# Check if default network is running
+### Check if default network is running
 virsh net-list --all
 
-# Start default network
+### Start default network
 virsh net-start default
 ```
 
 ### Cloning VMs
 
 ```bash
-# Clone entire VM (auto-generates new disk)
+### Clone entire VM (auto-generates new disk)
 virt-clone --original vm-name --name new-vm-name --auto-clone
 ```
 
 ### Deleting VMs
 
 ```bash
-# Delete VM config (keeps disk)
+### Delete VM config (keeps disk)
 virsh undefine vm-name
 
-# Delete VM AND all disks
+### Delete VM AND all disks
 virsh undefine vm-name --remove-all-storage
 ```
 
@@ -926,17 +926,17 @@ virsh net-autostart default
 **Error: "Failed to connect socket"**
 ```bash
 sudo systemctl restart libvirtd
-# Check you're in libvirt group:
+### Check you're in libvirt group:
 groups | grep libvirt
-# If not, add yourself and logout/login
+### If not, add yourself and logout/login
 ```
 
 **Error: Permission denied accessing disk**
 ```bash
-# Check disk ownership
+### Check disk ownership
 ls -l /var/lib/libvirt/images/
 
-# Fix permissions
+### Fix permissions
 sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/
 ```
 
@@ -961,7 +961,7 @@ sudo chown -R libvirt-qemu:kvm /var/lib/libvirt/images/
 
 **VM crashes when starting with GPU:**
 ```bash
-# Check logs
+### Check logs
 sudo journalctl -u libvirtd -f
 ```
 
@@ -983,7 +983,7 @@ sudo journalctl -u libvirtd -f
 
 **Ultimate Arch Linux VM Installation:**
 ```bash
-# Automated setup script
+### Automated setup script
 git clone https://github.com/ChrisTitusTech/virtualization
 cd virtualization
 ./setup.sh

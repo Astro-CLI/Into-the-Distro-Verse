@@ -49,8 +49,7 @@
 <ul>
 <li><a href="#hosting-an-anonymous-website-on-tor-with-docker"
 id="toc-hosting-an-anonymous-website-on-tor-with-docker">Hosting an
-Anonymous Website on Tor with Docker</a>
-<ul>
+Anonymous Website on Tor with Docker</a></li>
 <li><a href="#why-would-i-do-this" id="toc-why-would-i-do-this">🤔 Why
 Would I Do This?</a></li>
 <li><a href="#whats-actually-happening"
@@ -122,7 +121,6 @@ id="toc-view-your-visitor-stats">📊 View Your Visitor Stats</a></li>
 Would I Use This?</a></li>
 <li><a href="#related-guides" id="toc-related-guides">🔗 Related
 Guides</a></li>
-</ul></li>
 </ul>
 </nav>
 <!-- 
@@ -131,8 +129,8 @@ Guides</a></li>
     using Docker containers for maximum isolation and privacy.
     Adapt to your content and security requirements.
 -->
-<h1 id="hosting-an-anonymous-website-on-tor-with-docker">Hosting an
-Anonymous Website on Tor with Docker</h1>
+<h3 id="hosting-an-anonymous-website-on-tor-with-docker">Hosting an
+Anonymous Website on Tor with Docker</h3>
 <p>Want a website that only works through Tor and can’t be traced back
 to you? This guide walks you through setting it up using Docker—the
 containerized approach keeps everything isolated and easy to manage.
@@ -409,29 +407,29 @@ address</h3>
 one back.</p>
 <hr />
 <h2 id="common-commands">📋 Common Commands</h2>
-<pre class="bash"><code># Start your site
+<pre class="bash"><code>### Start your site
 docker-compose up -d
 
-# Stop your site (keeps your address)
+### Stop your site (keeps your address)
 docker-compose down
 
-# See what&#39;s happening
+### See what&#39;s happening
 docker-compose logs -f
 
-# Check if everything is running
+### Check if everything is running
 docker-compose ps
 
-# Get your .onion address
+### Get your .onion address
 cat tor/keys/hostname</code></pre>
 <hr />
 <h2 id="security-tips">🔒 Security Tips</h2>
 <h3 id="metadata-is-dangerous">Metadata is Dangerous</h3>
 <p>Don’t upload photos with GPS data. Strip it first:</p>
-<pre class="bash"><code># Install exiftool
+<pre class="bash"><code>### Install exiftool
 sudo apt install exiftool          # Debian/Ubuntu
 sudo pacman -S perl-image-exiftool  # Arch
 
-# Strip all metadata
+### Strip all metadata
 exiftool -all= your-photo.jpg</code></pre>
 <h3 id="other-safety-rules">Other Safety Rules</h3>
 <ul>

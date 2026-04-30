@@ -184,7 +184,7 @@ flatpak run com.stremio.Stremio</code></pre>
 stremio &amp;</code></pre>
 <h4 id="macos">macOS</h4>
 <pre class="bash"><code>brew install stremio
-# or
+### or
 brew install --cask stremio</code></pre>
 <h4 id="windows">Windows</h4>
 <p>Download from: https://www.stremio.com/downloads</p>
@@ -291,13 +291,13 @@ addon - Paste API key - Done!</p>
 <h3 id="complete-setup-guide-15-minutes">Complete Setup Guide (15
 minutes)</h3>
 <h4 id="step-1-install-stremio">Step 1: Install Stremio</h4>
-<pre class="bash"><code># Linux
+<pre class="bash"><code>### Linux
 sudo apt install stremio
 
-# macOS
+### macOS
 brew install stremio
 
-# Then launch
+### Then launch
 stremio &amp;</code></pre>
 <h4 id="step-2-create-free-stremio-account">Step 2: Create Free Stremio
 Account</h4>
@@ -452,19 +452,19 @@ CinemaPlus - StreamRepay - OpenSubtitles</p>
 <p><strong>What:</strong> Open-source media server. Host your own
 movies/shows on a home server.</p>
 <p><strong>Installation (Ubuntu/Debian):</strong></p>
-<pre class="bash"><code># Add repository
+<pre class="bash"><code>### Add repository
 curl https://repo.jellyfin.org/ubuntu/jellyfin_ubuntu_amd64.keyring.gpg | sudo apt-key add -
 echo &quot;deb [arch=amd64] https://repo.jellyfin.org/ubuntu focal main&quot; | sudo tee /etc/apt/sources.list.d/jellyfin.list
 
-# Install
+### Install
 sudo apt update
 sudo apt install jellyfin
 
-# Start service
+### Start service
 sudo systemctl start jellyfin
 sudo systemctl enable jellyfin
 
-# Access at http://localhost:8096</code></pre>
+### Access at http://localhost:8096</code></pre>
 <p><strong>Linux (Docker):</strong></p>
 <pre class="bash"><code>docker run -d \
   --name jellyfin \
@@ -559,7 +559,7 @@ available.</p>
 2. Get a Debrid subscription (Real-Debrid recommended) 3. Check addon is
 enabled (Settings → Addons) 4. Wait a few seconds (indexing takes
 time)</p>
-<pre class="bash"><code># Restart Stremio
+<pre class="bash"><code>### Restart Stremio
 pkill stremio
 stremio &amp;</code></pre>
 <h3 id="real-debrid-api-key-not-working">Real-Debrid: API Key Not
@@ -583,12 +583,12 @@ Refresh Stremio (restart app) 3. Wait (takes ~5 seconds to index) 4. Try
 alternative addon (YTS for movies, EZTV for TV) 5. Search by exact
 title</p>
 <h3 id="jellyfin-slow-performance">Jellyfin: Slow Performance</h3>
-<pre class="bash"><code># Hardware acceleration (if GPU available)
-# In Jellyfin web UI:
-# Admin → Dashboard → Playback
-# Enable &quot;Enable Hardware Encoding&quot;
+<pre class="bash"><code>### Hardware acceleration (if GPU available)
+### In Jellyfin web UI:
+### Admin → Dashboard → Playback
+### Enable &quot;Enable Hardware Encoding&quot;
 
-# Or restart with GPU support
+### Or restart with GPU support
 docker run -d \
   --name jellyfin \
   -p 8096:8096 \
@@ -683,19 +683,19 @@ official services</p>
 <hr />
 <h2 id="quick-start">Quick Start</h2>
 <h3 id="stremio-10-minutes">Stremio (10 minutes)</h3>
-<pre class="bash"><code># Install
+<pre class="bash"><code>### Install
 sudo apt install stremio
 
-# Launch
+### Launch
 stremio &amp;
 
-# Then:
-# 1. Create free account at stremio.com
-# 2. Install Real-Debrid addon (Settings → Addons)
-# 3. Install Torrentio addon
-# 4. Browse &amp; watch!</code></pre>
+### Then:
+### 1. Create free account at stremio.com
+### 2. Install Real-Debrid addon (Settings → Addons)
+### 3. Install Torrentio addon
+### 4. Browse &amp; watch!</code></pre>
 <h3 id="jellyfin-15-minutes">Jellyfin (15 minutes)</h3>
-<pre class="bash"><code># Via Docker (easiest)
+<pre class="bash"><code>### Via Docker (easiest)
 docker run -d \
   --name jellyfin \
   -p 8096:8096 \
@@ -703,8 +703,8 @@ docker run -d \
   -v jellyfin-config:/config \
   jellyfin/jellyfin
 
-# Access at http://localhost:8096
-# Create account, add media library, enjoy!</code></pre>
+### Access at http://localhost:8096
+### Create account, add media library, enjoy!</code></pre>
 <hr />
 <h2 id="resources">Resources</h2>
 <ul>

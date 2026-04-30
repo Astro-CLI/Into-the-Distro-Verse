@@ -48,8 +48,7 @@
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#zsh-configuration-guide"
-id="toc-zsh-configuration-guide">ZSH Configuration Guide</a>
-<ul>
+id="toc-zsh-configuration-guide">ZSH Configuration Guide</a></li>
 <li><a href="#overview" id="toc-overview">Overview</a></li>
 <li><a href="#installation-framework"
 id="toc-installation-framework">Installation &amp; Framework</a>
@@ -98,10 +97,9 @@ id="toc-customization-points">Customization Points</a></li>
 <li><a href="#troubleshooting"
 id="toc-troubleshooting">Troubleshooting</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
-</ul></li>
 </ul>
 </nav>
-<h1 id="zsh-configuration-guide">ZSH Configuration Guide</h1>
+<h3 id="zsh-configuration-guide">ZSH Configuration Guide</h3>
 <h2 id="overview">Overview</h2>
 <p>ZSH is configured with <strong>Oh My Zsh</strong> framework,
 providing a feature-rich interactive shell experience with POSIX
@@ -160,15 +158,15 @@ compliance for scripts.</p>
 <li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
 </ul>
 <h3 id="integration-configuration">Integration Configuration</h3>
-<pre class="bash"><code># ~/.zshrc additions:
+<pre class="bash"><code>### ~/.zshrc additions:
 
-# ZOXIDE (smart cd)
+### ZOXIDE (smart cd)
 eval &quot;$(zoxide init zsh)&quot;
 
-# THEFUCK (fix typos)
+### THEFUCK (fix typos)
 eval &quot;$(thefuck --alias)&quot;
 
-# FZF + FD integration
+### FZF + FD integration
 export FZF_DEFAULT_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
 export FZF_CTRL_T_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
 export FZF_ALT_C_COMMAND=&#39;fd --type d --follow --exclude .git&#39;</code></pre>

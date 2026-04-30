@@ -4,7 +4,7 @@
     Feel free to tweak it for your own distro! 
 -->
 
-# Into the Distro-Verse 🌌
+### Into the Distro-Verse 🌌
 
 My name is Ariel, and for the last few years, I've been the only Linux user in my neighborhood... maybe. I’ve learned that with great power comes great responsibility, especially when you’re dealing with a massive amount of configuration files. This is my attempt at a distro-agnostic guide for everyone, from beginners to power users. While I mostly use Arch, I truly believe that any user can benefit from these configurations, regardless of which distro they call home.
 
