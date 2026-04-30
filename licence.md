@@ -1,20 +1,20 @@
-# License (LGPL 2.1 - The Honest Version)
+# License (LGPL v2.1 - Ariel's Edition)
 
 ## The Actual Terms
 
-You keep this guide fucking open. Don't fork it and then hide it like you own it. That's not how this works.
+Look, I put serious work into this guide. Testing it. Writing it. Making sure it actually works. So here's what I need from you:
 
-You can copy it, modify it, use it for whatever the hell you want, just don't pretend you invented it when you just tweaked some stuff.
+**Keep this fucking guide open.** Don't fork it and pretend you built it. Copy it, improve it, remix it, whatever. Just credit where it came from. Not hard.
 
-If you improve it, you share the improvements. That's the deal. You don't get to hoard the good stuff.
+**If you make it better, you share it back.** That's the deal. You figure out something better, find a new tool that works, catch something I fucked up. Share it. Same license. Don't hoard it. The whole reason I'm doing this public is so we all get smarter instead of playing gatekeeping games.
 
-**Here's the KEY difference from GPL:** You can use this with proprietary software. Seriously. You wanna build a closed-source tool and reference my guide? Go for it. You wanna link to this from a commercial app? Absolutely. The only rule is: if you modify *this guide itself*, you share your improvements under this same license. But everything else around it? Do whatever you want.
+**The important part:** use this with proprietary software. Do it. Build closed-source shit that references my guide? Absolutely. Commercial product? Go for it. Make money off what you learned here? I don't give a fuck. Only rule: if you modify THIS GUIDE, those changes stay open under this license. Everything else you build? Yours to profit on however you want. SaaS, proprietary, paid, whatever. I'm not here to force the world to be open source. I just want this guide accessible to everyone.
 
-If this breaks your computer, crashes your system, or ruins your day... yeah, that's not my problem. It's free. Free software comes with the caveat that if something goes wrong, that's on you.
+**Legal cover your ass section:** This guide might break shit. Might tank your workflow. Might cause chaos. That's on you. It's free. No warranty. I'm not liable. You ask for help, I'll probably help, but that's above my pay grade to guarantee.
 
-Help people if you can. Share what you know. Don't be one of those gatekeeping assholes who hoards information.
+**Real principle:** Help people learn. Share knowledge. Don't be the asshole charging for information that should be common knowledge. We're all just trying to figure this out.
 
-Basically, don't be a dick about it. That's the spirit of this license.
+Don't weaponize this. Don't be a cunt about it. That's the whole spirit.
 
 ---
 
