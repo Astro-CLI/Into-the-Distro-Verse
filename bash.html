@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>bash</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="website/index.html">Home</a>
+      <a href="website/history.html">History</a>
+      <a href="bash.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">bash</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#bash-configuration-guide"
+id="toc-bash-configuration-guide">BASH Configuration Guide</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#framework" id="toc-framework">Framework</a></li>
+<li><a href="#core-configuration-files"
+id="toc-core-configuration-files">Core Configuration Files</a>
+<ul>
+<li><a href="#bashrc" id="toc-bashrc">~/.bashrc</a></li>
+<li><a href="#inputrc" id="toc-inputrc">~/.inputrc</a></li>
+</ul></li>
+<li><a href="#cli-tools-integration" id="toc-cli-tools-integration">CLI
+Tools Integration</a>
+<ul>
+<li><a href="#installed-tools" id="toc-installed-tools">Installed
+Tools</a></li>
+<li><a href="#integration-configuration"
+id="toc-integration-configuration">Integration Configuration</a></li>
+</ul></li>
+<li><a href="#keybindings" id="toc-keybindings">Keybindings</a>
+<ul>
+<li><a href="#emacs-mode-default" id="toc-emacs-mode-default">Emacs Mode
+(Default)</a></li>
+<li><a href="#arrow-key-history-search"
+id="toc-arrow-key-history-search">Arrow Key History Search</a></li>
+<li><a href="#vi-mode-optional" id="toc-vi-mode-optional">Vi Mode
+(Optional)</a></li>
+</ul></li>
+<li><a href="#readline-configuration-.inputrc"
+id="toc-readline-configuration-.inputrc">Readline Configuration
+(~/.inputrc)</a></li>
+<li><a href="#aliases" id="toc-aliases">Aliases</a></li>
+<li><a href="#usage-examples" id="toc-usage-examples">Usage Examples</a>
+<ul>
+<li><a href="#navigation" id="toc-navigation">Navigation</a></li>
+<li><a href="#command-fixing" id="toc-command-fixing">Command
+Fixing</a></li>
+<li><a href="#fuzzy-finding" id="toc-fuzzy-finding">Fuzzy
+Finding</a></li>
+<li><a href="#documentation"
+id="toc-documentation">Documentation</a></li>
+</ul></li>
+<li><a href="#history-management" id="toc-history-management">History
+Management</a></li>
+<li><a href="#prompt" id="toc-prompt">Prompt</a></li>
+<li><a href="#sourcing-order-in-.bashrc"
+id="toc-sourcing-order-in-.bashrc">Sourcing Order (in
+~/.bashrc)</a></li>
+<li><a href="#posix-compliance" id="toc-posix-compliance">POSIX
+Compliance</a></li>
+<li><a href="#comparison-with-zsh"
+id="toc-comparison-with-zsh">Comparison with ZSH</a></li>
+<li><a href="#troubleshooting"
+id="toc-troubleshooting">Troubleshooting</a></li>
+<li><a href="#performance-notes" id="toc-performance-notes">Performance
+Notes</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="bash-configuration-guide">BASH Configuration Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>Bash is configured as a fallback shell with zsh/fish-like features.
+While not as elegant as zsh/fish, it provides a comfortable Emacs-based
+interactive experience with modern CLI tool integrations.</p>
+<h2 id="framework">Framework</h2>
+<p><strong>Oh My Bash</strong> (optional, not heavily used in this
+setup) - Path: <code>~/.oh-my-bash</code> - Provides theming and plugin
+system similar to Oh My Zsh</p>
+<h2 id="core-configuration-files">Core Configuration Files</h2>
+<h3 id="bashrc">~/.bashrc</h3>
+<p>Primary configuration file for interactive bash sessions.</p>
+<h3 id="inputrc">~/.inputrc</h3>
+<p>Readline configuration file (shared with other shells using
+readline).</p>
+<h2 id="cli-tools-integration">CLI Tools Integration</h2>
+<h3 id="installed-tools">Installed Tools</h3>
+<ul>
+<li><strong>zoxide</strong> - Smart cd replacement
+(<code>z &lt;dir&gt;</code>)</li>
+<li><strong>thefuck</strong> - Command typo fixer
+(<code>fuck</code>)</li>
+<li><strong>tealdeer</strong> - Fast manual pages
+(<code>tldr &lt;cmd&gt;</code>)</li>
+<li><strong>ripgrep (rg)</strong> - Fast grep replacement</li>
+<li><strong>fd</strong> - Fast find replacement</li>
+<li><strong>fzf</strong> - Fuzzy finder</li>
+<li><strong>bat</strong> - Colored cat replacement</li>
+<li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
+</ul>
+<h3 id="integration-configuration">Integration Configuration</h3>
+<pre class="bash"><code># ~/.bashrc additions:
+
+# HISTORY IMPROVEMENTS
+HISTSIZE=10000
+HISTFILESIZE=20000
+HISTCONTROL=ignoredups:erasedups
+HISTTIMEFORMAT=&quot;%Y-%m-%d %H:%M:%S &quot;
+
+# STARSHIP PROMPT
+eval &quot;$(starship init bash)&quot;
+
+# ZOXIDE (smart cd)
+eval &quot;$(zoxide init bash)&quot;
+
+# THEFUCK (fix typos)
+eval &quot;$(thefuck --alias)&quot;
+
+# FZF INTEGRATION
+[ -f ~/.fzf.bash ] &amp;&amp; source ~/.fzf.bash
+export FZF_DEFAULT_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
+export FZF_CTRL_T_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
+export FZF_ALT_C_COMMAND=&#39;fd --type d --follow --exclude .git&#39;</code></pre>
+<h2 id="keybindings">Keybindings</h2>
+<h3 id="emacs-mode-default">Emacs Mode (Default)</h3>
+<p>Explicitly set in ~/.inputrc:</p>
+<pre><code>set editing-mode emacs</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key Binding</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+A</code></td>
+<td>Start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+E</code></td>
+<td>End of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+K</code></td>
+<td>Delete to end of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Delete to start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+W</code></td>
+<td>Delete word backward</td>
+</tr>
+<tr>
+<td><code>Alt+D</code></td>
+<td>Delete word forward</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Fuzzy history search (fzf)</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Fuzzy file finder</td>
+</tr>
+<tr>
+<td><code>Ctrl+Alt+C</code></td>
+<td>Fuzzy directory finder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="arrow-key-history-search">Arrow Key History Search</h3>
+<p>Configured in ~/.inputrc:</p>
+<pre><code>&quot;\e[A&quot;: history-search-backward
+&quot;\e[B&quot;: history-search-forward</code></pre>
+<ul>
+<li>Press <code>Up arrow</code> to search backward through history</li>
+<li>Press <code>Down arrow</code> to search forward through history</li>
+</ul>
+<h3 id="vi-mode-optional">Vi Mode (Optional)</h3>
+<p>To enable vi keybindings instead:</p>
+<pre class="bash"><code># Uncomment in ~/.inputrc:
+# set editing-mode vi
+
+# Or in ~/.bashrc:
+set -o vi</code></pre>
+<h2 id="readline-configuration-.inputrc">Readline Configuration
+(~/.inputrc)</h2>
+<pre class="bash"><code># Emacs keybindings (explicit)
+set editing-mode emacs
+
+# History search with arrow keys
+&quot;\e[A&quot;: history-search-backward
+&quot;\e[B&quot;: history-search-forward
+
+# Better completion
+set completion-ignore-case on
+set bell-style none
+set show-all-if-ambiguous on
+set show-all-if-unmodified on</code></pre>
+<h2 id="aliases">Aliases</h2>
+<p>Modern tool replacements (automatic if installed):</p>
+<pre class="bash"><code>ls              # → eza --icons --git
+la              # → eza -a --icons --git
+ll              # → eza -al --icons --git
+cat             # → bat --paging=never</code></pre>
+<p>Standard navigation:</p>
+<pre class="bash"><code>..              # cd ..
+...             # cd ../..</code></pre>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="navigation">Navigation</h3>
+<pre class="bash"><code>z /tmp          # Jump to /tmp (remembers visited directories)
+z proj          # Fuzzy jump to any dir containing &quot;proj&quot;
+cd ..           # Traditional cd (works normally)</code></pre>
+<h3 id="command-fixing">Command Fixing</h3>
+<pre class="bash"><code>paru -Syy       # Typo
+fuck            # Fixes to: pacman -Syu or your common pattern</code></pre>
+<h3 id="fuzzy-finding">Fuzzy Finding</h3>
+<pre class="bash"><code>Ctrl+R          # Search command history with preview
+Ctrl+T          # Find and insert files
+Ctrl+Alt+C      # Navigate to directories</code></pre>
+<h3 id="documentation">Documentation</h3>
+<pre class="bash"><code>tldr ls         # Quick manual page for ls
+rg &quot;pattern&quot;    # Search files with ripgrep
+fd &quot;filename&quot;   # Find files with fd</code></pre>
+<h2 id="history-management">History Management</h2>
+<p>History settings in ~/.bashrc: - <strong>HISTSIZE</strong>: 10000
+(commands in memory) - <strong>HISTFILESIZE</strong>: 20000 (commands
+saved to disk) - <strong>HISTCONTROL</strong>: ignoredups:erasedups (no
+duplicates) - <strong>HISTTIMEFORMAT</strong>: Records timestamp for
+each command</p>
+<p>View full history with timestamps:</p>
+<pre class="bash"><code>history | tail -20</code></pre>
+<h2 id="prompt">Prompt</h2>
+<p><strong>Starship</strong> is used for the prompt:</p>
+<pre class="bash"><code>eval &quot;$(starship init bash)&quot;</code></pre>
+<p>Configure via <code>~/.config/starship.toml</code></p>
+<h2 id="sourcing-order-in-.bashrc">Sourcing Order (in ~/.bashrc)</h2>
+<ol type="1">
+<li>Oh My Bash initialization (if used)</li>
+<li>History configuration</li>
+<li>Starship prompt initialization</li>
+<li>zoxide initialization</li>
+<li>thefuck initialization</li>
+<li>FZF initialization and configuration</li>
+<li>Aliases and custom functions</li>
+</ol>
+<h2 id="posix-compliance">POSIX Compliance</h2>
+<p>Bash config is <strong>shell-specific only</strong>. For portable
+scripts:</p>
+<pre class="bash"><code>#!/bin/sh          # POSIX shell (portable, most compatible)
+#!/bin/bash        # Bash (if bash-specific features needed)</code></pre>
+<p>Note: Many bash features (.sh scripts) are not POSIX-compliant. Use
+<code>#!/bin/sh</code> for maximum portability.</p>
+<h2 id="comparison-with-zsh">Comparison with ZSH</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Bash</th>
+<th>ZSH</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interactive features</td>
+<td>Simpler</td>
+<td>More advanced</td>
+</tr>
+<tr>
+<td>Startup time</td>
+<td>Faster</td>
+<td>Slightly slower</td>
+</tr>
+<tr>
+<td>Plugin ecosystem</td>
+<td>Limited</td>
+<td>Extensive (Oh My Zsh)</td>
+</tr>
+<tr>
+<td>Syntax highlighting</td>
+<td>None (native)</td>
+<td>Built-in</td>
+</tr>
+<tr>
+<td>Auto-suggestions</td>
+<td>Via custom setup</td>
+<td>Built-in</td>
+</tr>
+<tr>
+<td>Scriptability</td>
+<td>Industry standard</td>
+<td>More powerful</td>
+</tr>
+<tr>
+<td>POSIX compatibility</td>
+<td>Better</td>
+<td>Good</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: With this setup, bash provides 80% of zsh’s
+interactive experience but remains more POSIX-compatible.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl+R not fuzzy searching</td>
+<td>Ensure fzf is installed: <code>which fzf</code></td>
+</tr>
+<tr>
+<td>History search with arrows broken</td>
+<td>Check ~/.inputrc has correct keybindings</td>
+</tr>
+<tr>
+<td>Aliases not working</td>
+<td>Verify they’re in ~/.bashrc, not ~/.bash_profile</td>
+</tr>
+<tr>
+<td>zoxide not working</td>
+<td>Run <code>eval "$(zoxide init bash)"</code> in .bashrc</td>
+</tr>
+<tr>
+<td>Slow startup</td>
+<td>Remove unused plugins/aliases, profile with
+<code>time bash -i -c ''</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="performance-notes">Performance Notes</h2>
+<ul>
+<li>Startup time: ~100-150ms (faster than zsh)</li>
+<li>FZF queries use fd (fast, respects .gitignore)</li>
+<li>Good for scripting and system maintenance tasks</li>
+<li>Suitable as fallback when zsh unavailable</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.gnu.org/software/bash/manual/">Bash
+Manual</a></li>
+<li><a
+href="https://www.gnu.org/software/bash/manual/html_node/Readline-Init-File-Syntax.html">Readline
+Init File Syntax</a></li>
+<li><a href="https://starship.rs/">Starship Prompt</a></li>
+<li><a href="https://github.com/junegunn/fzf">fzf</a></li>
+<li><a href="https://github.com/ajeetdsouza/zoxide">zoxide</a></li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="website/script.js"></script>
+</body>
+</html>

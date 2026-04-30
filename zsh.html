@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>zsh</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="website/index.html">Home</a>
+      <a href="website/history.html">History</a>
+      <a href="zsh.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">zsh</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#zsh-configuration-guide"
+id="toc-zsh-configuration-guide">ZSH Configuration Guide</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#installation-framework"
+id="toc-installation-framework">Installation &amp; Framework</a>
+<ul>
+<li><a href="#oh-my-zsh" id="toc-oh-my-zsh">Oh My Zsh</a></li>
+</ul></li>
+<li><a href="#core-plugins-enabled" id="toc-core-plugins-enabled">Core
+Plugins Enabled</a></li>
+<li><a href="#cli-tools-integration" id="toc-cli-tools-integration">CLI
+Tools Integration</a>
+<ul>
+<li><a href="#installed-tools" id="toc-installed-tools">Installed
+Tools</a></li>
+<li><a href="#integration-configuration"
+id="toc-integration-configuration">Integration Configuration</a></li>
+</ul></li>
+<li><a href="#keybindings" id="toc-keybindings">Keybindings</a>
+<ul>
+<li><a href="#default-emacs-mode" id="toc-default-emacs-mode">Default
+(Emacs Mode)</a></li>
+<li><a href="#history-suggestions" id="toc-history-suggestions">History
+Suggestions</a></li>
+<li><a href="#git-aliases-via-forgit"
+id="toc-git-aliases-via-forgit">Git Aliases (via forgit)</a></li>
+</ul></li>
+<li><a href="#usage-examples" id="toc-usage-examples">Usage Examples</a>
+<ul>
+<li><a href="#navigation" id="toc-navigation">Navigation</a></li>
+<li><a href="#command-fixing" id="toc-command-fixing">Command
+Fixing</a></li>
+<li><a href="#fuzzy-finding" id="toc-fuzzy-finding">Fuzzy
+Finding</a></li>
+<li><a href="#documentation"
+id="toc-documentation">Documentation</a></li>
+</ul></li>
+<li><a href="#aliases" id="toc-aliases">Aliases</a></li>
+<li><a href="#prompt" id="toc-prompt">Prompt</a></li>
+<li><a href="#sourcing-order-in-.zshrc"
+id="toc-sourcing-order-in-.zshrc">Sourcing Order (in ~/.zshrc)</a></li>
+<li><a href="#posix-compliance" id="toc-posix-compliance">POSIX
+Compliance</a></li>
+<li><a href="#performance-notes" id="toc-performance-notes">Performance
+Notes</a></li>
+<li><a href="#customization-points"
+id="toc-customization-points">Customization Points</a></li>
+<li><a href="#troubleshooting"
+id="toc-troubleshooting">Troubleshooting</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="zsh-configuration-guide">ZSH Configuration Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>ZSH is configured with <strong>Oh My Zsh</strong> framework,
+providing a feature-rich interactive shell experience with POSIX
+compliance for scripts.</p>
+<h2 id="installation-framework">Installation &amp; Framework</h2>
+<h3 id="oh-my-zsh">Oh My Zsh</h3>
+<pre class="bash"><code>sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</code></pre>
+<h2 id="core-plugins-enabled">Core Plugins Enabled</h2>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>git</strong></td>
+<td>Git shortcuts and helpers</td>
+</tr>
+<tr>
+<td><strong>fzf</strong></td>
+<td>Fuzzy finder integration (Ctrl+R, Ctrl+T, Ctrl+Alt+C)</td>
+</tr>
+<tr>
+<td><strong>zsh-syntax-highlighting</strong></td>
+<td>Colors commands as you type</td>
+</tr>
+<tr>
+<td><strong>zsh-autosuggestions</strong></td>
+<td>Shows history suggestions (fish-like)</td>
+</tr>
+<tr>
+<td><strong>zsh-completions</strong></td>
+<td>Enhanced completion system</td>
+</tr>
+<tr>
+<td><strong>forgit</strong></td>
+<td>Interactive git with fzf (gi, glo, gd aliases)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cli-tools-integration">CLI Tools Integration</h2>
+<h3 id="installed-tools">Installed Tools</h3>
+<ul>
+<li><strong>zoxide</strong> - Smart cd replacement
+(<code>z &lt;dir&gt;</code>)</li>
+<li><strong>thefuck</strong> - Command typo fixer
+(<code>fuck</code>)</li>
+<li><strong>tealdeer</strong> - Fast manual pages
+(<code>tldr &lt;cmd&gt;</code>)</li>
+<li><strong>ripgrep (rg)</strong> - Fast grep replacement</li>
+<li><strong>fd</strong> - Fast find replacement</li>
+<li><strong>fzf</strong> - Fuzzy finder</li>
+<li><strong>bat</strong> - Colored cat replacement</li>
+<li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
+</ul>
+<h3 id="integration-configuration">Integration Configuration</h3>
+<pre class="bash"><code># ~/.zshrc additions:
+
+# ZOXIDE (smart cd)
+eval &quot;$(zoxide init zsh)&quot;
+
+# THEFUCK (fix typos)
+eval &quot;$(thefuck --alias)&quot;
+
+# FZF + FD integration
+export FZF_DEFAULT_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
+export FZF_CTRL_T_COMMAND=&#39;fd --type f --follow --exclude .git&#39;
+export FZF_ALT_C_COMMAND=&#39;fd --type d --follow --exclude .git&#39;</code></pre>
+<h2 id="keybindings">Keybindings</h2>
+<h3 id="default-emacs-mode">Default (Emacs Mode)</h3>
+<p>Explicitly enabled via <code>bindkey -e</code></p>
+<table>
+<thead>
+<tr>
+<th>Key Binding</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+A</code></td>
+<td>Start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+E</code></td>
+<td>End of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+K</code></td>
+<td>Delete to end of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Delete to start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+W</code></td>
+<td>Delete word backward</td>
+</tr>
+<tr>
+<td><code>Alt+D</code></td>
+<td>Delete word forward</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Fuzzy history search (fzf)</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Fuzzy file finder</td>
+</tr>
+<tr>
+<td><code>Ctrl+Alt+C</code></td>
+<td>Fuzzy directory finder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="history-suggestions">History Suggestions</h3>
+<ul>
+<li>Type command prefix (e.g., <code>paru</code>)</li>
+<li>Gray suggestion appears (from history)</li>
+<li>Press <code>→</code> (right arrow) or <code>End</code> to
+accept</li>
+<li>Press <code>Escape</code> to dismiss</li>
+</ul>
+<h3 id="git-aliases-via-forgit">Git Aliases (via forgit)</h3>
+<ul>
+<li><code>gi</code> - Interactive gitignore</li>
+<li><code>glo</code> - Interactive git log</li>
+<li><code>gd</code> - Interactive git diff</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="navigation">Navigation</h3>
+<pre class="bash"><code>z /tmp          # Jump to /tmp (remembers visited directories)
+z proj          # Fuzzy jump to any dir containing &quot;proj&quot;
+..              # cd ..
+...             # cd ../..</code></pre>
+<h3 id="command-fixing">Command Fixing</h3>
+<pre class="bash"><code>paru -Syy       # Typo
+fuck            # Fixes to: pacman -Syu or your common pattern</code></pre>
+<h3 id="fuzzy-finding">Fuzzy Finding</h3>
+<pre class="bash"><code>Ctrl+R          # Search command history with preview
+Ctrl+T          # Find and insert files
+Ctrl+Alt+C      # Navigate to directories</code></pre>
+<h3 id="documentation">Documentation</h3>
+<pre class="bash"><code>tldr ls         # Quick manual page for ls
+rg &quot;pattern&quot;    # Search files with ripgrep
+fd &quot;filename&quot;   # Find files with fd</code></pre>
+<h2 id="aliases">Aliases</h2>
+<p>Modern tool replacements (automatic if installed):</p>
+<pre class="bash"><code>ls              # → eza --icons --git
+la              # → eza -a --icons --git
+ll              # → eza -al --icons --git
+cat             # → bat --paging=never</code></pre>
+<p>Standard navigation:</p>
+<pre class="bash"><code>..              # cd ..
+...             # cd ../..
+....            # cd ../../..
+.....           # cd ../../../..</code></pre>
+<h2 id="prompt">Prompt</h2>
+<p><strong>Starship</strong> is used for the prompt. Configure via:</p>
+<pre class="bash"><code>starship init zsh</code></pre>
+<h2 id="sourcing-order-in-.zshrc">Sourcing Order (in ~/.zshrc)</h2>
+<ol type="1">
+<li>Oh My Zsh initialization</li>
+<li>Starship prompt</li>
+<li>zoxide init</li>
+<li>thefuck init</li>
+<li>FZF configuration</li>
+</ol>
+<h2 id="posix-compliance">POSIX Compliance</h2>
+<p>ZSH config is <strong>shell-specific only</strong>. For portable
+scripts:</p>
+<pre class="bash"><code>#!/bin/sh          # POSIX shell (portable)
+#!/bin/bash        # Bash (if bash-specific features needed)</code></pre>
+<p>Use <code>.sh</code> extension for POSIX scripts to indicate
+portability.</p>
+<h2 id="performance-notes">Performance Notes</h2>
+<ul>
+<li>All plugins are lazy-loaded by Oh My Zsh</li>
+<li>History suggestions (zsh-autosuggestions) are instant</li>
+<li>FZF queries use fd (fast, respects .gitignore)</li>
+<li>Total startup time: ~200-300ms (acceptable for interactive
+shell)</li>
+</ul>
+<h2 id="customization-points">Customization Points</h2>
+<ul>
+<li><strong>Theme</strong>: Change via <code>starship</code>
+configuration (~/.config/starship.toml)</li>
+<li><strong>History</strong>: Modify <code>HISTSIZE</code>,
+<code>HISTFILESIZE</code> in .zshrc</li>
+<li><strong>Aliases</strong>: Add to ~/.zshrc or Oh My Zsh custom
+folder</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Suggestions not showing</td>
+<td>Check zsh-autosuggestions plugin is in plugins list</td>
+</tr>
+<tr>
+<td>FZF not working</td>
+<td>Verify fzf is installed: <code>which fzf</code></td>
+</tr>
+<tr>
+<td>Slow startup</td>
+<td>Run <code>zsh -x ~/.zshrc</code> to debug</td>
+</tr>
+<tr>
+<td>History search broken</td>
+<td>Check .inputrc doesn’t conflict (it shouldn’t for zsh)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://github.com/ohmyzsh/ohmyzsh">Oh My Zsh
+Documentation</a></li>
+<li><a
+href="https://github.com/zsh-users/zsh-autosuggestions">zsh-autosuggestions</a></li>
+<li><a href="https://starship.rs/">Starship Prompt</a></li>
+<li><a href="https://github.com/junegunn/fzf">fzf</a></li>
+<li><a href="https://github.com/ajeetdsouza/zoxide">zoxide</a></li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="website/script.js"></script>
+</body>
+</html>

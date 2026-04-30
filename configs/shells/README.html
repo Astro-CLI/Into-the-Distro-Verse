@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Home</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../../website/index.html">Home</a>
+      <a href="../../website/history.html">History</a>
+      <a href="README.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">Home</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#shell-configurations" id="toc-shell-configurations">Shell
+Configurations</a>
+<ul>
+<li><a href="#directory-structure"
+id="toc-directory-structure">Directory Structure</a></li>
+<li><a href="#quick-restore" id="toc-quick-restore">Quick Restore</a>
+<ul>
+<li><a href="#zsh" id="toc-zsh">ZSH</a></li>
+<li><a href="#bash" id="toc-bash">Bash</a></li>
+<li><a href="#fish" id="toc-fish">Fish</a></li>
+<li><a href="#starship-all-shells" id="toc-starship-all-shells">Starship
+(all shells)</a></li>
+<li><a href="#restore-all" id="toc-restore-all">Restore All</a></li>
+</ul></li>
+<li><a href="#prerequisites" id="toc-prerequisites">Prerequisites</a>
+<ul>
+<li><a href="#core-tools" id="toc-core-tools">Core Tools</a></li>
+<li><a href="#oh-my-zsh-for-zsh" id="toc-oh-my-zsh-for-zsh">Oh My Zsh
+(for ZSH)</a></li>
+<li><a href="#cli-tools" id="toc-cli-tools">CLI Tools</a></li>
+<li><a href="#zsh-plugins" id="toc-zsh-plugins">ZSH Plugins</a></li>
+<li><a href="#fish-plugins" id="toc-fish-plugins">Fish Plugins</a></li>
+<li><a href="#starship-prompt-all-shells"
+id="toc-starship-prompt-all-shells">Starship Prompt (all
+shells)</a></li>
+</ul></li>
+<li><a href="#configuration-highlights"
+id="toc-configuration-highlights">Configuration Highlights</a>
+<ul>
+<li><a href="#zsh-1" id="toc-zsh-1">ZSH</a></li>
+<li><a href="#bash-1" id="toc-bash-1">Bash</a></li>
+<li><a href="#fish-1" id="toc-fish-1">Fish</a></li>
+</ul></li>
+<li><a href="#notes" id="toc-notes">Notes</a></li>
+<li><a href="#troubleshooting"
+id="toc-troubleshooting">Troubleshooting</a></li>
+<li><a href="#updates" id="toc-updates">Updates</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="shell-configurations">Shell Configurations</h1>
+<p>This directory contains backup configurations for
+<strong>ZSH</strong>, <strong>Bash</strong>, and <strong>Fish</strong>
+shells.</p>
+<h2 id="directory-structure">Directory Structure</h2>
+<pre><code>shells/
+├── zsh/
+│   └── zshrc              # ZSH main config
+├── bash/
+│   ├── bashrc             # Bash main config
+│   └── inputrc            # Readline config (shared with bash, zsh)
+├── fish/
+│   └── config.fish        # Fish main config
+├── starship.toml          # Starship prompt config (all shells)
+└── README.md              # This file</code></pre>
+<h2 id="quick-restore">Quick Restore</h2>
+<h3 id="zsh">ZSH</h3>
+<pre class="bash"><code>cp configs/shells/zsh/zshrc ~/.zshrc
+exec zsh</code></pre>
+<h3 id="bash">Bash</h3>
+<pre class="bash"><code>cp configs/shells/bash/bashrc ~/.bashrc
+cp configs/shells/bash/inputrc ~/.inputrc
+exec bash</code></pre>
+<h3 id="fish">Fish</h3>
+<pre class="bash"><code>mkdir -p ~/.config/fish
+cp configs/shells/fish/config.fish ~/.config/fish/config.fish
+exec fish</code></pre>
+<h3 id="starship-all-shells">Starship (all shells)</h3>
+<pre class="bash"><code>mkdir -p ~/.config
+cp configs/shells/starship.toml ~/.config/starship.toml</code></pre>
+<h3 id="restore-all">Restore All</h3>
+<pre class="bash"><code># ZSH
+cp configs/shells/zsh/zshrc ~/.zshrc
+
+# Bash
+cp configs/shells/bash/bashrc ~/.bashrc
+cp configs/shells/bash/inputrc ~/.inputrc
+
+# Fish
+mkdir -p ~/.config/fish
+cp configs/shells/fish/config.fish ~/.config/fish/config.fish
+
+# Starship (all shells)
+mkdir -p ~/.config
+cp configs/shells/starship.toml ~/.config/starship.toml
+
+# Reload shell
+exec $SHELL</code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>Before restoring, ensure these are installed:</p>
+<h3 id="core-tools">Core Tools</h3>
+<pre class="bash"><code>paru -S zsh bash fish</code></pre>
+<h3 id="oh-my-zsh-for-zsh">Oh My Zsh (for ZSH)</h3>
+<pre class="bash"><code>sh -c &quot;$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</code></pre>
+<h3 id="cli-tools">CLI Tools</h3>
+<pre class="bash"><code>paru -S zoxide thefuck tealdeer ripgrep fd fzf bat eza</code></pre>
+<h3 id="zsh-plugins">ZSH Plugins</h3>
+<pre class="bash"><code># zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+# zsh-completions
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+
+# forgit
+git clone https://github.com/wfxr/forgit.git ~/.oh-my-zsh/custom/plugins/forgit</code></pre>
+<h3 id="fish-plugins">Fish Plugins</h3>
+<pre class="bash"><code># Fisher (plugin manager)
+curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.install.fish | source
+
+# Tide prompt
+fisher install ilancosman/tide@v6
+
+# FZF integration
+fisher install jethrokuan/fzf.fish</code></pre>
+<h3 id="starship-prompt-all-shells">Starship Prompt (all shells)</h3>
+<pre class="bash"><code>paru -S starship</code></pre>
+<h2 id="configuration-highlights">Configuration Highlights</h2>
+<h3 id="zsh-1">ZSH</h3>
+<ul>
+<li><strong>Framework</strong>: Oh My Zsh</li>
+<li><strong>Plugins</strong>: git, fzf, zsh-syntax-highlighting,
+zsh-autosuggestions, zsh-completions, forgit</li>
+<li><strong>Prompt</strong>: Starship</li>
+<li><strong>CLI integrations</strong>: zoxide, thefuck, fzf, fd, eza,
+bat</li>
+<li><strong>Keybindings</strong>: Emacs mode (Ctrl+A, Ctrl+E, etc.)</li>
+</ul>
+<h3 id="bash-1">Bash</h3>
+<ul>
+<li><strong>Prompt</strong>: Starship</li>
+<li><strong>Readline</strong>: Emacs mode with arrow key history
+search</li>
+<li><strong>CLI integrations</strong>: zoxide, thefuck, fzf, fd, eza,
+bat</li>
+<li><strong>History</strong>: 10000 commands with timestamps</li>
+</ul>
+<h3 id="fish-1">Fish</h3>
+<ul>
+<li><strong>Prompt</strong>: Starship</li>
+<li><strong>Built-in features</strong>: Syntax highlighting,
+auto-suggestions, tab completion</li>
+<li><strong>Plugins</strong>: Tide, fzf.fish</li>
+<li><strong>CLI integrations</strong>: zoxide, thefuck, fzf, fd, eza,
+bat</li>
+<li><strong>Keybindings</strong>: Emacs mode (default)</li>
+</ul>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>All shells use <strong>Emacs keybindings</strong> for
+consistency</li>
+<li>All shells have <strong>FZF integration</strong> (Ctrl+R, Ctrl+T,
+Ctrl+Alt+C)</li>
+<li>All shells support <strong>zoxide</strong> for smart cd
+(<code>z &lt;dir&gt;</code>)</li>
+<li><strong>Fish is NOT POSIX-compliant</strong> - use
+<code>#!/bin/sh</code> for portable scripts</li>
+<li><strong>ZSH and Bash</strong> are POSIX-safe for scripts (when
+configured correctly)</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plugin not found after restore</td>
+<td>Ensure Oh My Zsh plugins are cloned (see Prerequisites)</td>
+</tr>
+<tr>
+<td>Prompt not showing</td>
+<td>Ensure starship is installed: <code>which starship</code></td>
+</tr>
+<tr>
+<td>FZF not working</td>
+<td>Check fzf is installed and in PATH</td>
+</tr>
+<tr>
+<td>Slow shell startup</td>
+<td>Profile with: <code>time bash -i -c ''</code> or
+<code>time zsh -i -c ''</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="updates">Updates</h2>
+<p>When you modify your shell configuration, update the backups:</p>
+<pre class="bash"><code># After modifying ~/.zshrc
+cp ~/.zshrc configs/shells/zsh/zshrc
+
+# After modifying ~/.bashrc
+cp ~/.bashrc configs/shells/bash/bashrc
+cp ~/.inputrc configs/shells/bash/inputrc
+
+# After modifying ~/.config/fish/config.fish
+cp ~/.config/fish/config.fish configs/shells/fish/config.fish
+
+# After modifying ~/.config/starship.toml
+cp ~/.config/starship.toml configs/shells/starship.toml
+
+# Commit to git
+git add configs/shells/
+git commit -m &quot;Update shell configs&quot;</code></pre>
+<h2 id="references">References</h2>
+<p>See the parent directory for detailed documentation: -
+<code>zsh.md</code> - Complete ZSH setup guide - <code>bash.md</code> -
+Complete Bash setup guide - <code>fish.md</code> - Complete Fish setup
+guide</p>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../../website/script.js"></script>
+</body>
+</html>

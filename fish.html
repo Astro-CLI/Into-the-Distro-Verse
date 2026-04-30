@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>fish</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="website/index.html">Home</a>
+      <a href="website/history.html">History</a>
+      <a href="fish.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">fish</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#fish-configuration-guide"
+id="toc-fish-configuration-guide">FISH Configuration Guide</a>
+<ul>
+<li><a href="#overview" id="toc-overview">Overview</a></li>
+<li><a href="#installation" id="toc-installation">Installation</a></li>
+<li><a href="#framework-plugins" id="toc-framework-plugins">Framework
+&amp; Plugins</a>
+<ul>
+<li><a href="#plugin-manager" id="toc-plugin-manager">Plugin
+Manager</a></li>
+<li><a href="#installed-plugins" id="toc-installed-plugins">Installed
+Plugins</a></li>
+<li><a href="#plugin-installation" id="toc-plugin-installation">Plugin
+Installation</a></li>
+</ul></li>
+<li><a href="#core-configuration" id="toc-core-configuration">Core
+Configuration</a>
+<ul>
+<li><a href="#configfishconfig.fish"
+id="toc-configfishconfig.fish">~/.config/fish/config.fish</a></li>
+<li><a href="#key-defaults-out-of-box"
+id="toc-key-defaults-out-of-box">Key Defaults (Out of Box)</a></li>
+</ul></li>
+<li><a href="#cli-tools-integration" id="toc-cli-tools-integration">CLI
+Tools Integration</a>
+<ul>
+<li><a href="#installed-tools" id="toc-installed-tools">Installed
+Tools</a></li>
+<li><a href="#integration-configuration"
+id="toc-integration-configuration">Integration Configuration</a></li>
+</ul></li>
+<li><a href="#keybindings" id="toc-keybindings">Keybindings</a>
+<ul>
+<li><a href="#default-emacs-mode" id="toc-default-emacs-mode">Default
+(Emacs Mode)</a></li>
+<li><a href="#vi-mode-optional" id="toc-vi-mode-optional">Vi Mode
+(Optional)</a></li>
+</ul></li>
+<li><a href="#auto-suggestions"
+id="toc-auto-suggestions">Auto-Suggestions</a></li>
+<li><a href="#aliases" id="toc-aliases">Aliases</a></li>
+<li><a href="#colorful-man-pages" id="toc-colorful-man-pages">Colorful
+Man Pages</a></li>
+<li><a href="#usage-examples" id="toc-usage-examples">Usage Examples</a>
+<ul>
+<li><a href="#navigation" id="toc-navigation">Navigation</a></li>
+<li><a href="#command-fixing" id="toc-command-fixing">Command
+Fixing</a></li>
+<li><a href="#fuzzy-finding" id="toc-fuzzy-finding">Fuzzy
+Finding</a></li>
+<li><a href="#documentation"
+id="toc-documentation">Documentation</a></li>
+</ul></li>
+<li><a href="#custom-functions" id="toc-custom-functions">Custom
+Functions</a></li>
+<li><a href="#prompt" id="toc-prompt">Prompt</a></li>
+<li><a href="#sourcing-order-in-.configfishconfig.fish"
+id="toc-sourcing-order-in-.configfishconfig.fish">Sourcing Order (in
+~/.config/fish/config.fish)</a></li>
+<li><a href="#variables-in-fish" id="toc-variables-in-fish">Variables in
+Fish</a></li>
+<li><a href="#abbreviations-vs-aliases"
+id="toc-abbreviations-vs-aliases">Abbreviations vs Aliases</a></li>
+<li><a href="#tab-completion" id="toc-tab-completion">Tab
+Completion</a></li>
+<li><a href="#comparison-with-zshbash"
+id="toc-comparison-with-zshbash">Comparison with ZSH/BASH</a></li>
+<li><a href="#posix-compliance" id="toc-posix-compliance">POSIX
+Compliance</a></li>
+<li><a href="#troubleshooting"
+id="toc-troubleshooting">Troubleshooting</a></li>
+<li><a href="#performance-notes" id="toc-performance-notes">Performance
+Notes</a></li>
+<li><a href="#configuration-persistence"
+id="toc-configuration-persistence">Configuration Persistence</a></li>
+<li><a href="#references" id="toc-references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="fish-configuration-guide">FISH Configuration Guide</h1>
+<h2 id="overview">Overview</h2>
+<p>Fish (Friendly Interactive Shell) is configured as an alternative
+interactive shell with user-friendly defaults. It provides syntax
+highlighting, auto-suggestions, and tab completion out of the box, now
+enhanced with modern CLI tool integrations.</p>
+<h2 id="installation">Installation</h2>
+<pre class="bash"><code># Install fish
+sudo pacman -S fish
+
+# Set as default shell (optional)
+chsh -s /usr/bin/fish</code></pre>
+<h2 id="framework-plugins">Framework &amp; Plugins</h2>
+<h3 id="plugin-manager">Plugin Manager</h3>
+<p><strong>Fisher</strong> - Minimal plugin manager</p>
+<pre class="bash"><code>curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.install.fish | source</code></pre>
+<h3 id="installed-plugins">Installed Plugins</h3>
+<table>
+<thead>
+<tr>
+<th>Plugin</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ilancosman/tide</strong></td>
+<td>Modern prompt theme</td>
+</tr>
+<tr>
+<td><strong>jethrokuan/fzf.fish</strong></td>
+<td>Fuzzy finder integration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="plugin-installation">Plugin Installation</h3>
+<pre class="bash"><code># Install new plugins
+fisher install ilancosman/tide@v6
+fisher install jethrokuan/fzf.fish</code></pre>
+<h2 id="core-configuration">Core Configuration</h2>
+<h3 id="configfishconfig.fish">~/.config/fish/config.fish</h3>
+<p>Main configuration file for fish shell.</p>
+<h3 id="key-defaults-out-of-box">Key Defaults (Out of Box)</h3>
+<ul>
+<li><strong>Syntax highlighting</strong> - Colors commands as you
+type</li>
+<li><strong>Tab completion</strong> - Intelligent context-aware
+completions</li>
+<li><strong>History search</strong> - <code>Up/Down arrows</code>
+navigate history</li>
+<li><strong>Abbreviations</strong> - Expand typed abbreviations</li>
+<li><strong>Command suggestions</strong> - Similar to
+zsh-autosuggestions</li>
+</ul>
+<h2 id="cli-tools-integration">CLI Tools Integration</h2>
+<h3 id="installed-tools">Installed Tools</h3>
+<ul>
+<li><strong>zoxide</strong> - Smart cd replacement
+(<code>z &lt;dir&gt;</code>)</li>
+<li><strong>thefuck</strong> - Command typo fixer
+(<code>fuck</code>)</li>
+<li><strong>tealdeer</strong> - Fast manual pages
+(<code>tldr &lt;cmd&gt;</code>)</li>
+<li><strong>ripgrep (rg)</strong> - Fast grep replacement</li>
+<li><strong>fd</strong> - Fast find replacement</li>
+<li><strong>fzf</strong> - Fuzzy finder</li>
+<li><strong>bat</strong> - Colored cat replacement</li>
+<li><strong>eza</strong> - Modern ls replacement (with icons/git)</li>
+</ul>
+<h3 id="integration-configuration">Integration Configuration</h3>
+<pre class="bash"><code># ~/.config/fish/config.fish additions:
+
+# ZOXIDE (smart cd)
+zoxide init fish | source
+
+# THEFUCK (fix typos)
+thefuck --alias | source
+
+# FZF + FD INTEGRATION
+set -gx FZF_DEFAULT_COMMAND &#39;fd --type f --follow --exclude .git&#39;
+set -gx FZF_CTRL_T_COMMAND &#39;fd --type f --follow --exclude .git&#39;
+set -gx FZF_ALT_C_COMMAND &#39;fd --type d --follow --exclude .git&#39;</code></pre>
+<h2 id="keybindings">Keybindings</h2>
+<h3 id="default-emacs-mode">Default (Emacs Mode)</h3>
+<p>Explicitly enabled via:</p>
+<pre class="fish"><code>fish_default_key_bindings</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key Binding</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+A</code></td>
+<td>Start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+E</code></td>
+<td>End of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+K</code></td>
+<td>Delete to end of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Delete to start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+W</code></td>
+<td>Delete word backward</td>
+</tr>
+<tr>
+<td><code>Alt+D</code></td>
+<td>Delete word forward</td>
+</tr>
+<tr>
+<td><code>Up/Down</code></td>
+<td>Navigate history (with prefix search)</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Fuzzy history search (fzf)</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Fuzzy file finder</td>
+</tr>
+<tr>
+<td><code>Ctrl+Alt+C</code></td>
+<td>Fuzzy directory finder</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vi-mode-optional">Vi Mode (Optional)</h3>
+<p>To enable vi keybindings:</p>
+<pre class="fish"><code># In config.fish:
+fish_vi_key_bindings</code></pre>
+<h2 id="auto-suggestions">Auto-Suggestions</h2>
+<p>Fish’s <strong>built-in auto-suggestions</strong> show previous
+commands matching your prefix:</p>
+<p>Example:</p>
+<pre><code>&gt; paru
+paru -Syu;flatpak upgrade    # Grayed suggestion from history</code></pre>
+<ul>
+<li><strong>Accept suggestion</strong>: Press <code>→</code> (right
+arrow) or <code>End</code> key</li>
+<li><strong>Dismiss</strong>: Press <code>Escape</code> or
+<code>Ctrl+C</code></li>
+<li><strong>Continue typing</strong>: Filters the suggestion</li>
+</ul>
+<p>This is <strong>automatic</strong> - no plugin needed.</p>
+<h2 id="aliases">Aliases</h2>
+<p>Modern tool replacements (automatic if installed):</p>
+<pre class="fish"><code>alias ls=&#39;eza --icons --git&#39;
+alias la=&#39;eza -a --icons --git&#39;
+alias ll=&#39;eza -al --icons --git&#39;
+alias lt=&#39;eza --tree --icons&#39;
+alias cat=&#39;bat --paging=never&#39;</code></pre>
+<p>Standard navigation:</p>
+<pre class="fish"><code>alias ..=&#39;cd ..&#39;
+alias ...=&#39;cd ../..&#39;
+alias ....=&#39;cd ../../..&#39;
+alias .....=&#39;cd ../../../..&#39;</code></pre>
+<p>Git shortcuts:</p>
+<pre class="fish"><code>alias gst=&#39;git status&#39;
+alias ga=&#39;git add&#39;
+alias gc=&#39;git commit -v&#39;
+alias gcb=&#39;git checkout -b&#39;
+alias gp=&#39;git push&#39;
+alias gl=&#39;git pull&#39;</code></pre>
+<h2 id="colorful-man-pages">Colorful Man Pages</h2>
+<p>Configured in config.fish:</p>
+<pre class="fish"><code>if type -q bat
+    set -gx MANPAGER &quot;sh -c &#39;col -bx | bat -l man -p&#39;&quot;
+    set -gx MANROFFOPT &quot;-c&quot;
+end</code></pre>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="navigation">Navigation</h3>
+<pre class="fish"><code>z /tmp          # Jump to /tmp (remembers visited directories)
+z proj          # Fuzzy jump to any dir containing &quot;proj&quot;
+cd ..           # Traditional cd</code></pre>
+<h3 id="command-fixing">Command Fixing</h3>
+<pre class="fish"><code>paru -Syy       # Typo
+fuck            # Fixes to: pacman -Syu or your common pattern</code></pre>
+<h3 id="fuzzy-finding">Fuzzy Finding</h3>
+<pre class="fish"><code>Ctrl+R          # Search command history with preview
+Ctrl+T          # Find and insert files
+Ctrl+Alt+C      # Navigate to directories</code></pre>
+<h3 id="documentation">Documentation</h3>
+<pre class="fish"><code>tldr ls         # Quick manual page for ls
+rg &quot;pattern&quot;    # Search files with ripgrep
+fd &quot;filename&quot;   # Find files with fd</code></pre>
+<h2 id="custom-functions">Custom Functions</h2>
+<p>Define custom functions in config.fish:</p>
+<pre class="fish"><code># Create directory and enter it
+function mkcd
+    if test -n &quot;$argv[1]&quot;
+        mkdir -p $argv[1]; and cd $argv[1]
+    end
+end
+
+# Quick edit config
+function fishconfig
+    $EDITOR ~/.config/fish/config.fish
+end</code></pre>
+<h2 id="prompt">Prompt</h2>
+<p><strong>Starship</strong> is used for the prompt:</p>
+<pre class="fish"><code>starship init fish | source</code></pre>
+<p>Configure via <code>~/.config/starship.toml</code></p>
+<h2 id="sourcing-order-in-.configfishconfig.fish">Sourcing Order (in
+~/.config/fish/config.fish)</h2>
+<ol type="1">
+<li>Interactive session check
+(<code>if status is-interactive</code>)</li>
+<li>Aliases</li>
+<li>Custom functions</li>
+<li>zoxide initialization</li>
+<li>thefuck initialization</li>
+<li>FZF configuration</li>
+<li>Starship prompt initialization</li>
+<li>Colorful man pages setup</li>
+</ol>
+<h2 id="variables-in-fish">Variables in Fish</h2>
+<p>Fish uses <code>set</code> instead of <code>export</code>:</p>
+<pre class="fish"><code># Local variable (function-scoped)
+set myvar &quot;value&quot;
+
+# Global variable (session-wide)
+set -g myvar &quot;value&quot;
+
+# Universal variable (persistent across sessions)
+set -U myvar &quot;value&quot;
+
+# Export to child processes (environment)
+set -gx PATH $PATH /new/path</code></pre>
+<h2 id="abbreviations-vs-aliases">Abbreviations vs Aliases</h2>
+<p>Fish supports both - abbreviations are better for frequently used
+commands:</p>
+<pre class="fish"><code># Abbreviation (expands when you press space)
+abbr -a gc git commit
+
+# Alias (always expands)
+alias gc &#39;git commit -v&#39;</code></pre>
+<h2 id="tab-completion">Tab Completion</h2>
+<p>Fish’s tab completion is <strong>context-aware</strong>: - Press
+<code>Tab</code> to see all options - Tab completion suggests
+subcommands, file paths, git branches - Customize completions via
+<code>~/.config/fish/completions/</code></p>
+<p>Example:</p>
+<pre class="fish"><code># Suggest git branches for git checkout
+git checkout [Tab]</code></pre>
+<h2 id="comparison-with-zshbash">Comparison with ZSH/BASH</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Fish</th>
+<th>ZSH</th>
+<th>Bash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Out-of-box UX</td>
+<td>Excellent</td>
+<td>Good</td>
+<td>Basic</td>
+</tr>
+<tr>
+<td>Auto-suggestions</td>
+<td>Built-in</td>
+<td>Plugin</td>
+<td>Custom</td>
+</tr>
+<tr>
+<td>Syntax highlighting</td>
+<td>Built-in</td>
+<td>Plugin</td>
+<td>None</td>
+</tr>
+<tr>
+<td>Tab completion</td>
+<td>Excellent</td>
+<td>Plugin</td>
+<td>Basic</td>
+</tr>
+<tr>
+<td>POSIX compliance</td>
+<td>Poor</td>
+<td>Good</td>
+<td>Excellent</td>
+</tr>
+<tr>
+<td>Learning curve</td>
+<td>Easy</td>
+<td>Medium</td>
+<td>Easy</td>
+</tr>
+<tr>
+<td>Script compatibility</td>
+<td>Low</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note</strong>: Fish is best for interactive use. For scripts,
+use POSIX shell.</p>
+<h2 id="posix-compliance">POSIX Compliance</h2>
+<p>Fish is <strong>not POSIX-compliant</strong> by design. For portable
+scripts:</p>
+<pre class="bash"><code>#!/bin/sh          # POSIX shell (portable)
+#!/bin/bash        # Bash (if bash-specific features needed)</code></pre>
+<p>Fish syntax (e.g., <code>if</code>, <code>and</code>,
+<code>or</code>, string handling) is <strong>incompatible</strong> with
+POSIX shells.</p>
+<p><strong>Best practice</strong>: Use fish as your interactive shell,
+but write scripts in POSIX shell.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<table>
+<colgroup>
+<col style="width: 41%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr>
+<th>Issue</th>
+<th>Solution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auto-suggestions not showing</td>
+<td>Check config.fish is sourced properly</td>
+</tr>
+<tr>
+<td>Colors look wrong</td>
+<td>Try <code>set -U fish_color_normal normal</code> to reset
+colors</td>
+</tr>
+<tr>
+<td>Slow startup</td>
+<td>Remove unused plugins: <code>fisher list</code>,
+<code>fisher rm &lt;plugin&gt;</code></td>
+</tr>
+<tr>
+<td>Tide prompt issues</td>
+<td>Run <code>tide configure</code> to reconfigure</td>
+</tr>
+<tr>
+<td>FZF not working</td>
+<td>Verify fzf is installed: <code>which fzf</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="performance-notes">Performance Notes</h2>
+<ul>
+<li>Startup time: ~150-200ms (acceptable for interactive shell)</li>
+<li>Tab completion is instant (pre-computed)</li>
+<li>Syntax highlighting is real-time</li>
+<li>FZF queries use fd (fast, respects .gitignore)</li>
+</ul>
+<h2 id="configuration-persistence">Configuration Persistence</h2>
+<p>Fish saves configuration in multiple places: -
+<code>~/.config/fish/config.fish</code> - Manual config -
+<code>~/.config/fish/conf.d/</code> - Auto-sourced configs -
+<code>~/.config/fish/functions/</code> - Function definitions -
+<code>~/.local/share/fish/</code> - Universal variables and history</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://fishshell.com/docs/current/">Fish
+Documentation</a></li>
+<li><a href="https://github.com/jorgebucaran/fisher">Fisher Plugin
+Manager</a></li>
+<li><a href="https://github.com/IlanCosman/tide">Tide Prompt
+Theme</a></li>
+<li><a href="https://github.com/PatrickF1/fzf.fish">fzf.fish
+Plugin</a></li>
+<li><a href="https://starship.rs/">Starship Prompt</a></li>
+<li><a href="https://github.com/ajeetdsouza/zoxide">zoxide</a></li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="website/script.js"></script>
+</body>
+</html>
