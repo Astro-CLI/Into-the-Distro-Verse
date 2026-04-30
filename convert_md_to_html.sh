@@ -116,6 +116,16 @@ EOF
     rm "$TMP_HEADER" "$TMP_FOOTER"
 done
 
+# Post-process: Fix all .md links in HTML files to point to .html instead
+echo ""
+echo "Fixing internal links (.md -> .html) in all HTML files..."
+find . -name ".git" -prune -o -name "*.html" -type f -print0 | while IFS= read -r -d '' html_file; do
+    # Replace href="something.md" with href="something.html"
+    sed -i 's|href="\([^"]*\)\.md"|href="\1.html"|g' "$html_file"
+    # Also handle links with anchors: href="something.md#anchor" -> href="something.html#anchor"
+    sed -i 's|href="\([^"]*\)\.md#|href="\1.html#|g' "$html_file"
+done
+
 echo "---------------------------------------"
 echo "Summary: $COUNT converted, $FAILED failed."
 exit 0
