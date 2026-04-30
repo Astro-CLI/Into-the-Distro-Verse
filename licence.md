@@ -1,6 +1,34 @@
-you pinky promise you'll keep this shit open source, even if you fork it.
-you pinky promise you'll tell everyone you use linux, and brag about it.
-you pinky promise you'll try to help others in need, weather on linux or mac (eh.. fine) or windows (eww but ok).
+# License (GPL 2.0 - The Honest Version)
+
+## The Actual Terms
+
+You keep this code fucking open source. Don't fork it and then hide it like you own it. That's not how this works.
+
+You can copy it, modify it, use it for whatever the hell you want, just don't pretend you invented it when you just tweaked some shit.
+
+If you improve it, you share the improvements. That's the deal. You don't get to hoard the good stuff.
+
+Don't suddenly wake up and make it proprietary because you realized you could sell it. We both know that's bullshit.
+
+If this breaks your computer, crashes your system, or ruins your day... yeah, that's not my problem. It's free. Free software comes with the caveat that if something goes wrong, that's on you.
+
+Help people if you can. Share what you know. Don't be one of those gatekeeping assholes who hoards information.
+
+Basically, don't be a dick about it. That's the spirit of this license.
+
+---
+
+## The Serious Part
+
+This isn't some made-up bullshit license I invented. This software is licensed under GPL 2.0, which is a real, actual license with actual legal teeth behind it.
+
+I wrote the honest version above because GPL 2.0 is mind-numbingly boring and filled with corporate legal jargon that nobody wants to read. But if you need to know what the actual license says - for your job, for your company, for any real reason - read the real one below or at:
+
+https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+
+That's the license that matters. That's what covers this software. The honest version above is just me being straight about what the license actually means, but if there's any dispute or confusion, GPL 2.0 is what counts.
+
+TL;DR - GPL 2.0. Free software, open source, keep it that way, don't be a prick.
 
 ---
 
