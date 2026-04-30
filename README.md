@@ -71,10 +71,10 @@ Detailed setup and maintenance guides organized by category. All items listed al
 
 | Shell | Description | Documentation |
 | :--- | :--- | :--- |
-| **Bash** | Fallback shell with readline and modern tools | [bash.md](bash.md) |
-| **Fish** | User-friendly shell with native features | [fish.md](fish.md) |
+| **Bash** | Fallback shell with readline and modern tools | [docs/guides/shells/bash.md](docs/guides/shells/bash.md) |
+| **Fish** | User-friendly shell with native features | [docs/guides/shells/fish.md](docs/guides/shells/fish.md) |
 | **Shell Configs** | Backup and restore all shell configs (zsh, bash, fish, starship) | [configs/shells/README.md](configs/shells/README.md) |
-| **ZSH** | Complete setup with Oh My Zsh and modern tools | [zsh.md](zsh.md) |
+| **ZSH** | Complete setup with Oh My Zsh and modern tools | [docs/guides/shells/zsh.md](docs/guides/shells/zsh.md) |
 
 ### ♿ Accessibility & Usability
 
@@ -103,7 +103,7 @@ Detailed setup and maintenance guides organized by category. All items listed al
 
 | Resource | Description | Documentation |
 | :--- | :--- | :--- |
-| **License** | Project license information | [licence.md](licence.md) |
+| **License** | Project license information | [docs/legal/licence.md](docs/legal/licence.md) |
 | **Packages** | List of installed applications and restoration guide | [packages/README.md](packages/README.md) |
 
 ---
