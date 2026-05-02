@@ -45,6 +45,12 @@ Detailed setup and maintenance guides organized by category. All items listed al
 | **Snapshots** | System recovery with TimeShift/Snapper | [docs/snapshots.md](docs/snapshots.md) |
 | **Timeshift I/O Optimization** | Fixing snapshot-related freezes & performance | [docs/timeshift-io-optimization.md](docs/timeshift-io-optimization.md) |
 
+### 🔧 Hardware Fixes
+
+| Hardware | Description | Documentation |
+| :--- | :--- | :--- |
+| **Lenovo Trackpad** | Fixing I2C/IRQ timeout issues for ThinkBook 15 G4 | [docs/LENOVO_TRACKPAD_FIX.md](docs/LENOVO_TRACKPAD_FIX.md) |
+
 ### 🌐 Networking & Hosting
 
 | System | Description | Documentation |

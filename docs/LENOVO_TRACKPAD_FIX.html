@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>LENOVO TRACKPAD FIX</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="file:///home/astro/Documents/GitHub/Into-the-Distro-Verse/docs/LENOVO_TRACKPAD_FIX.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">LENOVO TRACKPAD FIX</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#lenovo-thinkbook-15-g4-iap-the-definitive-trackpad-fix"
+id="toc-lenovo-thinkbook-15-g4-iap-the-definitive-trackpad-fix">Lenovo
+ThinkBook 15 G4 IAP: The Definitive Trackpad Fix</a>
+<ul>
+<li><a href="#the-problem" id="toc-the-problem">1. The Problem</a></li>
+<li><a href="#thinking-process-attempts"
+id="toc-thinking-process-attempts">2. Thinking Process &amp;
+Attempts</a>
+<ul>
+<li><a href="#phase-1-the-standard-hid-fix-failed"
+id="toc-phase-1-the-standard-hid-fix-failed">Phase 1: The “Standard” HID
+Fix (Failed)</a></li>
+<li><a href="#phase-2-the-lenovo-quirk-failed"
+id="toc-phase-2-the-lenovo-quirk-failed">Phase 2: The Lenovo Quirk
+(Failed)</a></li>
+<li><a href="#phase-3-the-breakthrough---irq-27-the-smoking-gun"
+id="toc-phase-3-the-breakthrough---irq-27-the-smoking-gun">Phase 3: The
+Breakthrough - IRQ #27 (The “Smoking Gun”)</a></li>
+</ul></li>
+<li><a href="#the-final-solution-the-golden-parameters"
+id="toc-the-final-solution-the-golden-parameters">3. The Final Solution
+(The “Golden” Parameters)</a>
+<ul>
+<li><a href="#a.-the-kernel-command-line"
+id="toc-a.-the-kernel-command-line">A. The Kernel Command Line</a></li>
+<li><a href="#b.-early-initramfs-loading"
+id="toc-b.-early-initramfs-loading">B. Early Initramfs Loading</a></li>
+<li><a href="#c.-module-blacklisting" id="toc-c.-module-blacklisting">C.
+Module Blacklisting</a></li>
+</ul></li>
+<li><a href="#summary-of-implementation-script"
+id="toc-summary-of-implementation-script">4. Summary of Implementation
+Script</a></li>
+<li><a href="#sources-references" id="toc-sources-references">5. Sources
+&amp; References</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="lenovo-thinkbook-15-g4-iap-the-definitive-trackpad-fix">Lenovo
+ThinkBook 15 G4 IAP: The Definitive Trackpad Fix</h1>
+<p><strong>Date:</strong> May 2, 2026<br />
+<strong>Hardware:</strong> Lenovo ThinkBook 15 G4 IAP (Intel 12th Gen
+Alder Lake)<br />
+<strong>Device ID:</strong> <code>MSFT0001</code> (I2C HID
+Touchpad)<br />
+<strong>OS:</strong> CachyOS (Arch-based) - Kernel 7.0.3</p>
+<hr />
+<h2 id="the-problem">1. The Problem</h2>
+<p>The trackpad worked perfectly on Windows and Ubuntu but was dead on
+almost all other Linux distributions (Arch, Fedora, etc.).<br />
+<strong>Key Log Errors identified:</strong> -
+<code>i2c_designware i2c_designware.0: controller timed out</code> -
+<code>i2c_hid_acpi i2c-MSFT0001:01: can't add hid device: -110</code> -
+<code>i2c_hid_acpi i2c-MSFT0001:01: probe with driver i2c_hid_acpi failed with error -110</code></p>
+<hr />
+<h2 id="thinking-process-attempts">2. Thinking Process &amp;
+Attempts</h2>
+<h3 id="phase-1-the-standard-hid-fix-failed">Phase 1: The “Standard” HID
+Fix (Failed)</h3>
+<p><strong>Hypothesis:</strong> The ACPI resources were being mismanaged
+by the kernel, or the legacy PS/2 driver was interfering.<br />
+<strong>Action:</strong> Added <code>pci=nocrs</code> and
+<code>i8042.nopnp=1</code>.<br />
+<strong>Reasoning:</strong> <code>pci=nocrs</code> tells the kernel to
+ignore BIOS resource settings that often conflict with I2C devices.
+<code>i8042.nopnp=1</code> prevents the system from trying to treat the
+modern I2C pad as an old PS/2 mouse.<br />
+<strong>Result:</strong> No change. The timeout error persisted.</p>
+<h3 id="phase-2-the-lenovo-quirk-failed">Phase 2: The Lenovo Quirk
+(Failed)</h3>
+<p><strong>Hypothesis:</strong> Lenovo’s <code>ideapad_laptop</code>
+module was sending a “touchpad disabled” signal to the kernel, and the
+I2C clocks weren’t initializing fast enough for the 12th Gen CPU.<br />
+<strong>Action:</strong> Added
+<code>i2c_designware.clks_pre_pci=1</code>, <code>acpi_osi=Linux</code>,
+and blacklisted <code>ideapad_laptop</code>.<br />
+<strong>Reasoning:</strong> - <code>clks_pre_pci=1</code> forces early
+clock initialization for Intel serial buses. -
+<code>acpi_osi=Linux</code> tricks the BIOS into using the
+Linux-optimized hardware path. - Blacklisting
+<code>ideapad_laptop</code> stops a known bug where Lenovo’s extra
+buttons driver accidentally disables the touchpad.<br />
+<strong>Result:</strong> Still nothing. The logs showed the same
+timeout.</p>
+<h3 id="phase-3-the-breakthrough---irq-27-the-smoking-gun">Phase 3: The
+Breakthrough - IRQ #27 (The “Smoking Gun”)</h3>
+<p><strong>Analysis:</strong> Deep inspection of the
+<code>journalctl</code> logs after the second failure revealed a
+critical line hidden just before the timeout: &gt;
+<code>Disabling IRQ #27</code></p>
+<p><strong>Discovery:</strong> On Alder Lake (12th Gen) PCH, the I2C
+controller and the DMA controller share IRQ 27. The kernel was seeing
+“spurious interrupts” (noise) on that line and disabling it as a safety
+measure. This effectively cut the wire to the trackpad.</p>
+<hr />
+<h2 id="the-final-solution-the-golden-parameters">3. The Final Solution
+(The “Golden” Parameters)</h2>
+<p>To fix this, we had to implement a multi-layered approach to ensure
+the interrupt line stayed open and the drivers claimed the hardware
+before the conflict could occur.</p>
+<h3 id="a.-the-kernel-command-line">A. The Kernel Command Line</h3>
+<p>We updated <code>GRUB_CMDLINE_LINUX_DEFAULT</code> with: -
+<code>irqpoll</code>: Forces the kernel to poll for interrupts if the
+line is noisy. - <code>intremap=off</code>: Disables interrupt
+remapping, which is often buggy on certain Intel PCH revisions. -
+<code>i2c_designware.clks_pre_pci=1</code>: Ensures timing is correct. -
+<code>i8042.nopnp=1</code>: Disables legacy PNP. -
+<code>acpi_osi=Linux</code>: Enables the correct ACPI path.</p>
+<h3 id="b.-early-initramfs-loading">B. Early Initramfs Loading</h3>
+<p>We modified <code>/etc/mkinitcpio.conf</code> to load the drivers at
+the “Absolute Early Boot” stage:</p>
+<pre class="bash"><code>MODULES=(pinctrl_alderlake i2c_designware_platform i2c_hid_acpi)</code></pre>
+<p>This ensures the trackpad driver is active before the system switches
+from the bootloader to the real OS.</p>
+<h3 id="c.-module-blacklisting">C. Module Blacklisting</h3>
+<p>We permanently blacklisted the <code>ideapad_laptop</code> module in
+<code>/etc/modprobe.d/ideapad-blacklist.conf</code>.</p>
+<hr />
+<h2 id="summary-of-implementation-script">4. Summary of Implementation
+Script</h2>
+<p>The final fix was automated via a script <code>fix_trackpad.sh</code>
+that: 1. Updated <code>/etc/default/grub</code>. 2. Modified
+<code>/etc/mkinitcpio.conf</code>. 3. Added entries to
+<code>/etc/modules-load.d/</code>. 4. Regenerated the boot images using
+<code>mkinitcpio -P</code> and <code>grub-mkconfig</code>.</p>
+<hr />
+<h2 id="sources-references">5. Sources &amp; References</h2>
+<ul>
+<li><strong>Intel LPSS Documentation:</strong> Regarding I2C controller
+behavior on Alder Lake PCH.</li>
+<li><strong>Kernel.org Bugzilla:</strong> Reports regarding
+<code>INTC1055</code> and <code>MSFT0001</code> IRQ sharing.</li>
+<li><strong>Arch Wiki:</strong> “Touchpad not detected” section for
+Lenovo IdeaPad/ThinkBook.</li>
+<li><strong>System Logs:</strong> <code>journalctl -b</code> analysis of
+IRQ disablement events.</li>
+</ul>
+<p><strong>Status:</strong> FIXED. Trackpad is now fully functional in
+the “Distro-Verse”.</p>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>
