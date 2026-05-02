@@ -126,7 +126,9 @@ plugins=(
 #
 #OMB_TERM_USE_TPUT=no
 
-source "$OSH"/oh-my-bash.sh
+if [ -f "$OSH"/oh-my-bash.sh ]; then
+  source "$OSH"/oh-my-bash.sh
+fi
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -155,7 +157,6 @@ source "$OSH"/oh-my-bash.sh
 # Example aliases
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
-eval "$(starship init bash)"
 
 # ===== HISTORY IMPROVEMENTS =====
 HISTSIZE=10000
@@ -164,7 +165,9 @@ HISTCONTROL=ignoredups:erasedups
 HISTTIMEFORMAT="%Y-%m-%d %H:%M:%S "
 
 # ===== STARSHIP PROMPT (same as zsh/fish) =====
-eval "$(starship init bash)"
+if command -v starship &> /dev/null; then
+    eval "$(starship init bash)"
+fi
 
 # ===== ZOXIDE (smarter cd) =====
 eval "$(zoxide init bash)"

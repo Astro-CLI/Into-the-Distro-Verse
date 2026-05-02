@@ -56,8 +56,10 @@ if status is-interactive
         set -gx MANROFFOPT "-c"
     end
 end
-starship init fish | source
-export PATH="$HOME/.local/bin:$PATH"
+if type -q starship
+    starship init fish | source
+end
+set -gx PATH "$HOME/.local/bin" $PATH
 
 # ===== ZOXIDE (smarter cd) =====
 zoxide init fish | source

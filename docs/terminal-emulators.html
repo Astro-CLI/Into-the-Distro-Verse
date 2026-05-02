@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>terminal emulators</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="../website/style.css" />
+</head>
+<body>
+<header id="site-nav">
+  <div class="nav-container">
+    <a href="../website/index.html" class="nav-left">
+      <img src="https://github.com/astro-cli.png" alt="Profile" class="profile-pic">
+      <h1>Into the Distro-Verse</h1>
+    </a>
+    <nav class="nav-right">
+      <a href="../website/index.html">Home</a>
+      <a href="../website/history.html">History</a>
+      <a href="file:///home/astro/Documents/GitHub/Into-the-Distro-Verse/docs/terminal-emulators.md" class="markdown-viewer-btn">Raw</a>
+      <a href="https://github.com/astro-cli/Into-the-Distro-Verse" class="github-link" target="_blank">
+        <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" width="16" style="filter: invert(1);">
+        GitHub
+      </a>
+    </nav>
+  </div>
+</header>
+<header id="title-block-header">
+<h1 class="title">terminal emulators</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#terminal-emulators-ghostty-kitty"
+id="toc-terminal-emulators-ghostty-kitty">Terminal Emulators: Ghostty
+&amp; Kitty</a>
+<ul>
+<li><a href="#theming-catppuccin-frappe"
+id="toc-theming-catppuccin-frappe">🎨 Theming: Catppuccin
+Frappe</a></li>
+<li><a href="#ghostty" id="toc-ghostty">🐭 Ghostty</a>
+<ul>
+<li><a href="#location" id="toc-location">Location</a></li>
+<li><a href="#configuration"
+id="toc-configuration">Configuration</a></li>
+<li><a href="#keybindings-shared-with-kitty"
+id="toc-keybindings-shared-with-kitty">Keybindings (Shared with
+Kitty)</a></li>
+</ul></li>
+<li><a href="#kitty" id="toc-kitty">🐱 Kitty</a>
+<ul>
+<li><a href="#location-1" id="toc-location-1">Location</a></li>
+<li><a href="#configuration-1"
+id="toc-configuration-1">Configuration</a></li>
+</ul></li>
+<li><a href="#unified-keybindings" id="toc-unified-keybindings">🎯
+Unified Keybindings</a>
+<ul>
+<li><a href="#font-size-control" id="toc-font-size-control">Font Size
+Control</a></li>
+<li><a href="#split-management" id="toc-split-management">Split
+Management</a></li>
+<li><a href="#tab-management" id="toc-tab-management">Tab
+Management</a></li>
+<li><a href="#window-management" id="toc-window-management">Window
+Management</a></li>
+<li><a href="#copypaste" id="toc-copypaste">Copy/Paste</a></li>
+<li><a href="#search-selection" id="toc-search-selection">Search &amp;
+Selection</a></li>
+<li><a href="#config-management" id="toc-config-management">Config
+Management</a></li>
+</ul></li>
+<li><a href="#performance-tips" id="toc-performance-tips">⚡ Performance
+Tips</a>
+<ul>
+<li><a href="#ghostty-1" id="toc-ghostty-1">Ghostty</a></li>
+<li><a href="#kitty-1" id="toc-kitty-1">Kitty</a></li>
+</ul></li>
+<li><a href="#configuration-files" id="toc-configuration-files">🔗
+Configuration Files</a></li>
+<li><a href="#customization" id="toc-customization">🛠️ Customization</a>
+<ul>
+<li><a href="#adding-custom-keybindings"
+id="toc-adding-custom-keybindings">Adding Custom Keybindings</a></li>
+<li><a href="#adjusting-font" id="toc-adjusting-font">Adjusting
+Font</a></li>
+<li><a href="#theme-switching" id="toc-theme-switching">Theme
+Switching</a></li>
+</ul></li>
+<li><a href="#why-these-two" id="toc-why-these-two">🎓 Why These
+Two?</a></li>
+<li><a href="#resources" id="toc-resources">📚 Resources</a></li>
+</ul></li>
+</ul>
+</nav>
+<!-- 
+    WIKI GUIDE: terminal-emulators.md
+    Configuration and setup for modern terminal emulators: Ghostty and Kitty.
+    Both share a unified keybinding philosophy with Catppuccin Frappe theme.
+-->
+<h1 id="terminal-emulators-ghostty-kitty">Terminal Emulators: Ghostty
+&amp; Kitty</h1>
+<p>Modern terminal emulators optimized for speed, aesthetics, and
+consistency.</p>
+<hr />
+<h2 id="theming-catppuccin-frappe">🎨 Theming: Catppuccin Frappe</h2>
+<p>Both Ghostty and Kitty use <strong>Catppuccin Frappe</strong>, a
+soothing pastel color scheme.</p>
+<p><strong>Theme Details:</strong> - <strong>Foreground:</strong>
+<code>#C6D0F5</code> (soft white) - <strong>Background:</strong>
+<code>#303446</code> (deep blue-black) - <strong>Accent:</strong>
+<code>#CA9EE6</code> (lavender)</p>
+<p>This theme is: - Built-in to both emulators - Automatically loaded
+via config - Consistent across shells (bash, zsh, fish)</p>
+<hr />
+<h2 id="ghostty">🐭 Ghostty</h2>
+<p>Ghostty is a GPU-accelerated, modern terminal with minimal
+configuration overhead.</p>
+<h3 id="location">Location</h3>
+<pre><code>~/.config/ghostty/config</code></pre>
+<h3 id="configuration">Configuration</h3>
+<pre class="conf"><code>theme = Catppuccin Frappe
+cursor-style = bar
+cursor-style-blink = true</code></pre>
+<p><strong>Features:</strong> - Minimal, clean defaults - GPU rendering
+for smooth performance - Native Wayland support - Single-file config (no
+plugins needed)</p>
+<h3 id="keybindings-shared-with-kitty">Keybindings (Shared with
+Kitty)</h3>
+<p>See <a href="#-unified-keybindings">Unified Keybindings</a>
+below.</p>
+<p><strong>Ghostty-specific:</strong> - <code>ctrl+shift+,</code> = Open
+config editor - <code>ctrl+shift+i</code> = Inspector toggle</p>
+<hr />
+<h2 id="kitty">🐱 Kitty</h2>
+<p>Kitty is a GPU-based terminal with powerful extensibility and the
+<strong>cursor trail</strong> effect Ghostty lacks.</p>
+<h3 id="location-1">Location</h3>
+<pre><code>~/.config/kitty/kitty.conf</code></pre>
+<h3 id="configuration-1">Configuration</h3>
+<pre class="conf"><code># Theme
+include /tmp/catppuccin-frappe.conf
+
+# Font
+font_family      JetBrains Mono Nerd Font
+font_size        11
+
+# Cursor (Kitty-specific feature)
+cursor_shape     beam
+cursor_trail     1
+
+# Shell
+shell            /usr/bin/fish
+
+# No close confirmation
+confirm_os_window_close 0</code></pre>
+<p><strong>Key Features:</strong> - <strong>Cursor Trail:</strong>
+Visual feedback when typing (Kitty exclusive!) - Scriptable with Python
+- Advanced color palette management - Extensive keybinding
+customization</p>
+<hr />
+<h2 id="unified-keybindings">🎯 Unified Keybindings</h2>
+<p>Both emulators share a consistent keybinding philosophy inspired by
+modern terminal design.</p>
+<h3 id="font-size-control">Font Size Control</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+plus</code> or
+<code>ctrl+equal</code></td>
+<td style="text-align: left;">Increase font size</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+minus</code> or
+<code>ctrl+underscore</code></td>
+<td style="text-align: left;">Decrease font size</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+0</code></td>
+<td style="text-align: left;">Reset font size to default</td>
+</tr>
+</tbody>
+</table>
+<h3 id="split-management">Split Management</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+e</code></td>
+<td style="text-align: left;">Split terminal down (vertical)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+o</code></td>
+<td style="text-align: left;">Split terminal right (horizontal)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+d</code></td>
+<td style="text-align: left;">Close current split</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+z</code></td>
+<td style="text-align: left;">Zoom/maximize split focus</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+alt+arrow</code></td>
+<td style="text-align: left;">Navigate between splits</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tab-management">Tab Management</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+t</code></td>
+<td style="text-align: left;">New tab</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+w</code></td>
+<td style="text-align: left;">Close tab</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+tab</code></td>
+<td style="text-align: left;">Next tab</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+tab</code></td>
+<td style="text-align: left;">Previous tab</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+page_down</code></td>
+<td style="text-align: left;">Next tab</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+page_up</code></td>
+<td style="text-align: left;">Previous tab</td>
+</tr>
+</tbody>
+</table>
+<h3 id="window-management">Window Management</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+n</code></td>
+<td style="text-align: left;">New window</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+q</code></td>
+<td style="text-align: left;">Quit</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>alt+f4</code></td>
+<td style="text-align: left;">Close window</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+enter</code></td>
+<td style="text-align: left;">Toggle fullscreen</td>
+</tr>
+</tbody>
+</table>
+<h3 id="copypaste">Copy/Paste</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+c</code></td>
+<td style="text-align: left;">Copy to clipboard</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+v</code></td>
+<td style="text-align: left;">Paste from clipboard</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>shift+insert</code></td>
+<td style="text-align: left;">Paste from selection</td>
+</tr>
+</tbody>
+</table>
+<h3 id="search-selection">Search &amp; Selection</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+f</code></td>
+<td style="text-align: left;">Open search</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+a</code></td>
+<td style="text-align: left;">Select all text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="config-management">Config Management</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Keybinding</th>
+<th style="text-align: left;">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>ctrl+shift+,</code></td>
+<td style="text-align: left;">Reload config (Ghostty: open editor,
+Kitty: reload)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="performance-tips">⚡ Performance Tips</h2>
+<h3 id="ghostty-1">Ghostty</h3>
+<ul>
+<li>Uses GPU acceleration by default</li>
+<li>Minimal startup overhead</li>
+<li>Excellent Wayland performance</li>
+</ul>
+<h3 id="kitty-1">Kitty</h3>
+<ul>
+<li>GPU rendering enabled by default</li>
+<li>Consider disabling rarely-used features if performance is
+critical</li>
+<li>The <code>cursor_trail</code> effect is performant even at high
+scroll speeds</li>
+</ul>
+<hr />
+<h2 id="configuration-files">🔗 Configuration Files</h2>
+<p>All configs are symlinked from this repository:</p>
+<pre class="bash"><code># Ghostty
+~/.config/ghostty/config → .../Into-the-Distro-Verse/configs/ghostty/config
+
+# Kitty
+~/.config/kitty/kitty.conf → .../Into-the-Distro-Verse/configs/kitty/kitty.conf</code></pre>
+<p>This allows you to: - Version control your terminal configs - Sync
+settings across machines - Quickly revert to known-good states</p>
+<hr />
+<h2 id="customization">🛠️ Customization</h2>
+<h3 id="adding-custom-keybindings">Adding Custom Keybindings</h3>
+<p><strong>Ghostty:</strong> Edit <code>~/.config/ghostty/config</code>
+and add:</p>
+<pre class="conf"><code>keybind = YOUR_KEY=ACTION</code></pre>
+<p><strong>Kitty:</strong> Edit <code>~/.config/kitty/kitty.conf</code>
+and add:</p>
+<pre class="conf"><code>map YOUR_KEY  ACTION_NAME</code></pre>
+<h3 id="adjusting-font">Adjusting Font</h3>
+<p><strong>Ghostty:</strong></p>
+<pre class="conf"><code>font-family = Your Font Name
+font-size = 12</code></pre>
+<p><strong>Kitty:</strong></p>
+<pre class="conf"><code>font_family      Your Font Name
+font_size        12</code></pre>
+<h3 id="theme-switching">Theme Switching</h3>
+<p><strong>Ghostty:</strong></p>
+<pre class="conf"><code>theme = Your Theme Name</code></pre>
+<p><strong>Kitty:</strong></p>
+<pre class="conf"><code>include /path/to/theme.conf</code></pre>
+<hr />
+<h2 id="why-these-two">🎓 Why These Two?</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Feature</th>
+<th style="text-align: center;">Ghostty</th>
+<th style="text-align: center;">Kitty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Cursor Trail</td>
+<td style="text-align: center;">❌</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">GPU Rendering</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Wayland Support</td>
+<td style="text-align: center;">✅</td>
+<td style="text-align: center;">✅</td>
+</tr>
+<tr>
+<td style="text-align: left;">Config Complexity</td>
+<td style="text-align: center;">Low</td>
+<td style="text-align: center;">Medium</td>
+</tr>
+<tr>
+<td style="text-align: left;">Extensibility</td>
+<td style="text-align: center;">Native</td>
+<td style="text-align: center;">Python</td>
+</tr>
+<tr>
+<td style="text-align: left;">Startup Time</td>
+<td style="text-align: center;">Fast</td>
+<td style="text-align: center;">Fast</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Choose Ghostty</strong> for minimalism and speed.<br />
+<strong>Choose Kitty</strong> for the cursor trail effect and advanced
+customization.</p>
+<hr />
+<h2 id="resources">📚 Resources</h2>
+<ul>
+<li><strong>Catppuccin:</strong> https://catppuccin.com</li>
+<li><strong>Ghostty Docs:</strong> https://ghostty.org</li>
+<li><strong>Kitty Docs:</strong> https://sw.kovidgoyal.net/kitty/</li>
+<li><strong>Shell Integration:</strong> See
+<code>docs/shells.md</code></li>
+</ul>
+<footer>
+  <p>Into the Distro-Verse &copy; 2026 | Created by astro-cli | Built with Pandoc</p>
+</footer>
+<script src="../website/script.js"></script>
+</body>
+</html>
